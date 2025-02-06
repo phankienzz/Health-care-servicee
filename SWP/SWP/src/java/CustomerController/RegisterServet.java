@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package CustomerController;
 
 import dao.CustomerDAO;
 import java.io.IOException;
@@ -56,6 +56,29 @@ public class RegisterServet extends HttpServlet {
             String address = request.getParameter("address");
             String dateOfBirth = request.getParameter("dateOfBirth");
             String gender = request.getParameter("gender");
+            
+            //bat dien het thong tin
+//            if (username.isEmpty() || fullname.isEmpty() || email.isEmpty() || phone.isEmpty()
+//                    || password.isEmpty() || confirm_password.isEmpty() || address.isEmpty() || dateOfBirth.isEmpty() || gender.isEmpty()) {
+//                request.setAttribute("error", "Nhap day du thong tin");
+//                request.getRequestDispatcher("register.jsp").forward(request, response);
+//                return;
+//            }
+            
+            //sdt bat dau tu so khong, bat buoc 10 so
+//            if (!phone.matches("^0\\d{9}$")) {
+//                request.setAttribute("error", "So dien thoai khong hop le");
+//                request.getRequestDispatcher("register.jsp").forward(request, response);
+//                return;
+//            }
+            
+            //mat khau lon hon 8 ky tu
+//            if (password.length() < 8) {
+//                request.setAttribute("error", "mat khau it nhat 8 ky tu");
+//                request.getRequestDispatcher("register.jsp").forward(request, response);
+//                return;
+//            }
+
             if (!password.equals(confirm_password)) {
                 request.setAttribute("error", "Passwords do not match !");
                 request.getRequestDispatcher("register.jsp").forward(request, response);
@@ -74,11 +97,7 @@ public class RegisterServet extends HttpServlet {
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+   
     @Override
     public String getServletInfo() {
         return "Short description";

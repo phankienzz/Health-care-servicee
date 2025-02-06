@@ -1,9 +1,3 @@
-<%-- 
-    Document   : forgot-password
-    Created on : Jan 14, 2025, 1:51:47 AM
-    Author     : jaxbo
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,7 +23,8 @@
             <div class="account-page">
                 <div class="account-center">
                     <div class="account-box">
-                        <form class="form-signin"  action="forgot-password" method="post">
+                        <form class="form-signin"  action="requestPassword" method="post">
+                            <p class="text-danger text-center">${mess}</p>
                             <div class="account-logo">
                                 <a href="index-2.html"><img src="assets/img/logo-dark.png" alt=""></a>
                             </div>

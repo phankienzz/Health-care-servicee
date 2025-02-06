@@ -23,14 +23,22 @@
             <div class="account-page">
                 <div class="account-center">
                     <div class="account-box">
-                        <form class="form-signin"  action="requestPassword" method="post">
+                        <form class="form-signin"  action="resetPassword" method="POST">
                             <p class="text-danger text-center">${mess}</p>
                             <div class="account-logo">
                                 <a href="index-2.html"><img src="assets/img/logo-dark.png" alt=""></a>
                             </div>
                             <div class="form-group">
                                 <label for="email">Enter Your Email</label>
-                                <input type="text" name="email" class="form-control" autofocus>
+                                <input type="text" name="email" value="${email}" class="form-control" autofocus>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Password</label>
+                                <input type="password" name="password" class="form-control" autofocus>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Confirm password</label>
+                                <input type="password" name="confirm-password" class="form-control" autofocus>
                             </div>
                             <div class="form-group text-center">
                                 <button class="btn btn-primary account-btn" type="submit">Reset Password</button>

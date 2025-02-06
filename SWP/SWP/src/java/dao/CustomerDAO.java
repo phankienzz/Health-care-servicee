@@ -42,7 +42,7 @@ public class CustomerDAO extends DBContext {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            
         }
         return null;
     }
@@ -166,14 +166,78 @@ public class CustomerDAO extends DBContext {
             st.setString(6, gender);
             st.setInt(7, customerID);
             st.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
+        }
+    }
+    
+    public Customer getCustomerByEmail(String email){
+        String sql = "select * from Customer where email = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, email);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                return new Customer(
+                        rs.getInt("customerID"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("fullName"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getString("accountStatus"),
+                        rs.getString("registrationDate"),
+                        rs.getString("dateOfBirth"),
+                        rs.getString("gender"),
+                        rs.getString("profilePicture"));
+            }
+        } catch (SQLException e) {
+        }
+        return null;
+    }
+    
+    public Customer getCustomerByID(int customerID){
+        String sql = "select * from Customer where customerID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, customerID);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                return new Customer(
+                        rs.getInt("customerID"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("fullName"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getString("accountStatus"),
+                        rs.getString("registrationDate"),
+                        rs.getString("dateOfBirth"),
+                        rs.getString("gender"),
+                        rs.getString("profilePicture"));
+            }
+        } catch (SQLException e) {
+        }
+        return null;
+    }
+    
+    public void updatePassword(String email, String password) {
+        String sql = "update Customer set password = ? where email = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, password);
+            st.setString(2, email);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
         }
     }
 
     public static void main(String[] args) {
         CustomerDAO dao = new CustomerDAO();
-        Customer customer = dao.getCustomerAccount("test2", "test");
-        System.out.println(customer);
+//        Customer customer = dao.updatePassword("jaxboua0@gmail.com", "88888888");
+//        System.out.println(customer);
 //        for (Customer a : customer) {
 //            System.out.println(a);
 //        }

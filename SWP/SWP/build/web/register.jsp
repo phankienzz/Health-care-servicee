@@ -44,11 +44,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Mobile Number</label>
-                                <input type="text" name="phone" class="form-control">
+                                <input type="text" name="phone" class="form-control" pattern="0\d{9}" title="Số điện thoại phải có 10 số và bắt đầu bằng 0">
                             </div>
                             <div class="form-group">
                                 <label>Address</label>
-                                <input type="text" name="address" class="form-control">
+                                <input type="text" name="address" class="form-control" >
                             </div>
                             <div class="form-group">
                                 <label>Date of Birth</label>
@@ -65,17 +65,17 @@
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
-                                <input type="password" name="password" class="form-control">
+                                <input type="password" name="password" class="form-control" pattern=".{8,}" title="Mật khẩu phải nhiều hơn 8 ký tự">
                             </div>
                             <div class="form-group">
                                 <label>Confirm Password</label>
                                 <input type="password" name="confirm_password" class="form-control">
                             </div>
-                            <div class="form-group checkbox">
+<!--                            <div class="form-group checkbox">
                                 <label>
                                     <input type="checkbox"> I have read and agree the Terms & Conditions
                                 </label>
-                            </div>
+                            </div>-->
                             <div class="form-group text-center">
                                 <button class="btn btn-primary account-btn" type="submit">Signup</button>
                             </div>

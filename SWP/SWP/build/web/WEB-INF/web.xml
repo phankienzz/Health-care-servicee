@@ -1,27 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <servlet>
+        <servlet-name>ResetPassword</servlet-name>
+        <servlet-class>CustomerController.ResetPassword</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RequestPassword</servlet-name>
+        <url-pattern>/requestPassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ResetPassword</servlet-name>
+        <url-pattern>/resetPassword</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index_1.jsp</welcome-file>
     </welcome-file-list>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>controller.LoginServlet</servlet-class>
+        <servlet-class>CustomerController.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RegisterServet</servlet-name>
-        <servlet-class>controller.RegisterServet</servlet-class>
+        <servlet-class>CustomerController.RegisterServet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LogOutServlet</servlet-name>
-        <servlet-class>controller.LogOutServlet</servlet-class>
+        <servlet-class>CustomerController.LogOutServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProfileServlet</servlet-name>
-        <servlet-class>controller.ProfileServlet</servlet-class>
+        <servlet-class>CustomerController.ProfileServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>EditProfileServlet</servlet-name>
-        <servlet-class>controller.EditProfileServlet</servlet-class>
+        <servlet-class>CustomerController.EditProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RequestPassword</servlet-name>
+        <servlet-class>CustomerController.RequestPassword</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
