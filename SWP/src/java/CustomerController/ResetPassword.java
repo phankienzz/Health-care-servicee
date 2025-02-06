@@ -58,12 +58,12 @@ public class ResetPassword extends HttpServlet {
             TokenForgetPassword tokenForgetPassword = daoToken.getTokenPassword(token);
             resetService service = new resetService();
             if (tokenForgetPassword.isIsUsed()) {
-                request.setAttribute("mess", "token is used");
+                request.setAttribute("mess", "Token is used");
                 request.getRequestDispatcher("forgot-password.jsp").forward(request, response);
                 return;
             }
             if (service.isExpireTime(tokenForgetPassword.getExpiryTime())) {
-                request.setAttribute("mess", "token is expiry time");
+                request.setAttribute("mess", "Token is expiry time");
                 request.getRequestDispatcher("forgot-password.jsp").forward(request, response);
                 return;
             }
@@ -83,7 +83,7 @@ public class ResetPassword extends HttpServlet {
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirm-password");
         if (!password.equals(confirmPassword)) {
-            request.setAttribute("mess", "confirm password must same password");
+            request.setAttribute("mess", "Confirm password must same password");
             request.setAttribute("email", email);
             request.getRequestDispatcher("reset-password.jsp").forward(request, response);
             return;

@@ -55,7 +55,7 @@ public class RequestPassword extends HttpServlet {
         String email = request.getParameter("email");
         Customer customer = dao.getCustomerByEmail(email);
         if (customer == null) {
-            request.setAttribute("mess", "Email khong ton tai");
+            request.setAttribute("mess", "Email ís not exist");
             request.getRequestDispatcher("forgot-password.jsp").forward(request, response);
             return;
         }
@@ -67,17 +67,17 @@ public class RequestPassword extends HttpServlet {
         TokenForgetDAO daoToken = new TokenForgetDAO();
         boolean isInsert = daoToken.insertTokenForget(newTokenForget);
         if (!isInsert) {
-            request.setAttribute("mess", "have error in server");
+            request.setAttribute("mess", "Have error in server");
             request.getRequestDispatcher("forgot-password.jsp").forward(request, response);
             return;
         }
         boolean isSend = service.sendEmail(email, linkreset, customer.getUsername());
         if (!isSend) {
-            request.setAttribute("mess", "can not send request");
+            request.setAttribute("mess", "Can not send request");
             request.getRequestDispatcher("forgot-password.jsp").forward(request, response);
             return;
         }
-        request.setAttribute("mess", "send request successfully");
+        request.setAttribute("mess", "Send request successfully. Please check your email");
         request.getRequestDispatcher("forgot-password.jsp").forward(request, response);
     }
 
