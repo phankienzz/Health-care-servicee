@@ -106,13 +106,12 @@ public class CustomerDAO extends DBContext {
     }
 
     //Đăng nhập
-    public Customer customerLogin(String usernameOrEmail, String password) {
-        String sql = "select * from Customer where (username = ? OR email = ?) and password = ?";
+    public Customer customerLogin(String username, String password) {
+        String sql = "select * from Customer where username = ? and password = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, usernameOrEmail);
-            st.setString(2, usernameOrEmail);
-            st.setString(3, password);
+            st.setString(1, username);
+            st.setString(2, password);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 return new Customer(
@@ -252,8 +251,8 @@ public class CustomerDAO extends DBContext {
 
     public static void main(String[] args) {
         CustomerDAO dao = new CustomerDAO();
-//        Customer customer = dao.updatePassword("jaxboua0@gmail.com", "88888888");
-//        System.out.println(customer);
+        Customer customer = dao.customerLogin("patient1", "hash111");
+        System.out.println(customer);
 //        for (Customer a : customer) {
 //            System.out.println(a);
 //        }
