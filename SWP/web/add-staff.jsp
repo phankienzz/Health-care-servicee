@@ -1,6 +1,6 @@
 <%-- 
-    Document   : employees
-    Created on : Feb 8, 2025, 10:15:46 PM
+    Document   : add-staff
+    Created on : Feb 9, 2025, 12:06:29 AM
     Author     : Gigabyte
 --%>
 
@@ -10,7 +10,7 @@
 <html lang="en">
 
 
-    <!-- employees23:21-->
+    <!-- add-employee24:07-->
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -18,7 +18,6 @@
         <title>Preclinic - Medical & Hospital - Bootstrap 4 Admin Template</title>
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="assets/css/dataTables.bootstrap4.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
@@ -51,7 +50,7 @@
                                         <a href="activities.html">
                                             <div class="media">
                                                 <span class="avatar">
-                                                    <img alt="John Doe" src="assets/img/user.jpg" class="img-fluid">
+                                                    <img alt="John Doe" src="assets/img/user.jpg" class="img-fluid rounded-circle">
                                                 </span>
                                                 <div class="media-body">
                                                     <p class="noti-details"><span class="noti-title">John Doe</span> added new task <span class="noti-title">Patient appointment booking</span></p>
@@ -304,95 +303,103 @@
             <div class="page-wrapper">
                 <div class="content">
                     <div class="row">
-                        <div class="col-sm-4 col-3">
-                            <h4 class="page-title">Staff</h4>
-                        </div>
-                        <div class="col-sm-8 col-9 text-right m-b-20">
-                            <a href="addStaff" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Add Staff</a>
-                        </div>
-                    </div>
-                    <div class="row filter-row">
-                        <div class="col-sm-6 col-md-3">
-                            <div class="form-group form-focus">
-                                <label class="focus-label">Employee ID</label>
-                                <input type="text" class="form-control floating">
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <div class="form-group form-focus">
-                                <label class="focus-label">Employee Name</label>
-                                <input type="text" class="form-control floating">
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <div class="form-group form-focus select-focus">
-                                <label class="focus-label">Role</label>
-                                <select class="select floating">
-                                    <option>Select Role</option>
-                                    <c:forEach var = "role" items="${listRole}">
-                                        <option>${role.roleName}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <a href="#" class="btn btn-success btn-block"> Search </a>
+                        <div class="col-lg-8 offset-lg-2">
+                            <h4 class="page-title">Add Employee</h4>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="table-responsive">
-                                <table class="table table-striped custom-table">
-                                    <thead>
-                                        <tr>
-                                            <th style="min-width:200px;">Name</th>
-                                            <th>Employee ID</th>
-                                            <th>Email</th>
-                                            <th>Mobile</th>
-                                            <th style="min-width: 110px;">Join Date</th>
-                                            <th>Role</th>
-                                            <th class="text-right">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach var="staff" items="${listStaff}">
-                                            <tr>
-                                                <td>
-                                                    <img width="28" height="28" src="assets/img/user.jpg" class="rounded-circle" alt=""> <h2>${staff.fullName}</h2>
-                                                </td>
-                                                <td>${staff.staffID}</td>
-                                                <td>${staff.email}</td>
-                                                <td>${staff.phone}</td>
-                                                <td>${staff.hireDate}</td>
-                                                <td>
-                                                    <c:forEach var="role" items="${listRole}">
-                                                        <c:if test = "${role.roleID == staff.roleID}">
-                                                            <c:if test = "${staff.status == 'Active'}">
-                                                            <span class="custom-badge status-green">${role.roleName}</span>
-                                                            </c:if>
-                                                            <c:if test = "${staff.status == 'Inactive'}">
-                                                            <span class="custom-badge status-red">${role.roleName}</span>
-                                                            </c:if>
-                                                        </c:if>
-                                                    </c:forEach>
-                                                    
-                                                </td>
-                                                <td class="text-right">
-                                                    <div class="dropdown dropdown-action">
-                                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                            <a class="dropdown-item" href="edit-employee.html"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
+                        <div class="col-lg-8 offset-lg-2">
+                            <form action="addStaff" method="post">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>First Name <span class="text-danger">*</span></label>
+                                            <input name="firstName" class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Last Name</label>
+                                            <input name="lastName" class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Email <span class="text-danger">*</span></label>
+                                            <input name="email" class="form-control" type="email">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Password</label>
+                                            <input name="password" class="form-control" type="password">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Confirm Password</label>
+                                            <input name="confirmPass" class="form-control" type="password">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Staff ID <span class="text-danger">*</span></label>
+                                            <input name="staffID" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Joining Date <span class="text-danger">*</span></label>
+                                            <div class="cal-icon">
+                                                <input name="hireDate" class="form-control datetimepicker" type="text">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Phone </label>
+                                            <input name="phone" class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Department </label>
+                                            <input name="department" class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Role</label>
+                                            <select name = "roleID" class="select" >
+                                                <c:forEach var="role" items="${listRole}">
+                                                    <option value="${role.roleID}">${role.roleName}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="display-block">Status</label>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="status" id="employee_active" value="option1" checked>
+                                                <label class="form-check-label" for="employee_active">
+                                                    Active
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="status" id="employee_inactive" value="option2">
+                                                <label class="form-check-label" for="employee_inactive">
+                                                    Inactive
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-
-                                    </tbody>
-                                </table>
-                            </div>
+                                <div class="m-t-20 text-center">
+                                    <button class="btn btn-primary submit-btn">Create Staff</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -606,33 +613,19 @@
                     </div>
                 </div>
             </div>
-            <div id="delete_employee" class="modal fade delete-modal" role="dialog">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-body text-center">
-                            <img src="assets/img/sent.png" alt="" width="50" height="46">
-                            <h3>Are you sure want to delete this Employee?</h3>
-                            <div class="m-t-20"> <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="sidebar-overlay" data-reff=""></div>
         <script src="assets/js/jquery-3.2.1.min.js"></script>
         <script src="assets/js/popper.min.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
-        <script src="assets/js/jquery.dataTables.min.js"></script>
-        <script src="assets/js/dataTables.bootstrap4.min.js"></script>
         <script src="assets/js/jquery.slimscroll.js"></script>
         <script src="assets/js/select2.min.js"></script>
+        <script src="assets/js/app.js"></script>
         <script src="assets/js/moment.min.js"></script>
         <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
-        <script src="assets/js/app.js"></script>
+
     </body>
 
 
-    <!-- employees23:22-->
+    <!-- add-employee24:07-->
 </html>

@@ -70,6 +70,23 @@ public class StaffDAO extends DBContext {
         return listStaff; // Trả về danh sách khách hàng
     }
     
+    public void createStaff(String fullName, String email, String password, String phone, String hireDate, int roleID, String status, String department) {
+        String sql = "INSERT [dbo].[Staff] ( [fullName], [email], [password], [phone], [hireDate], [roleID], [status], [department], [profilePicture]) VALUES (?, ?, ?, ?, CONVERT(DATETIME, ?, 103), ? , ?, ?, NULL)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, fullName);
+            st.setString(2, email);
+            st.setString(3, password);
+            st.setString(4, phone);
+            st.setString(5, hireDate);
+            st.setInt(6, roleID);
+            st.setString(7, status);
+            st.setString(8, department);
+
+            st.executeUpdate();
+        } catch (SQLException e) {
+        }
+    }
     
     public static void main(String[] args) {
         StaffDAO dao = new StaffDAO();
