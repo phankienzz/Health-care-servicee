@@ -8,6 +8,8 @@ import context.DBContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import model.Staff;
 
 /**
@@ -40,6 +42,34 @@ public class StaffDAO extends DBContext {
         }
         return null;   
     }
+    
+    public List<Staff> getAllStaff() {
+        List<Staff> listStaff = new ArrayList<>();
+        String sql = "SELECT * FROM Staff";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int staffID = rs.getInt("staffID");
+                String fullName = rs.getString("fullName");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                String phone = rs.getString("phone");
+                String hireDate = rs.getString("hireDate");
+                int roleID = rs.getInt("roleID");
+                String status = rs.getString("status");
+                String department = rs.getString("department");
+                String profilePicture = rs.getString("profilePicture");
+
+                Staff staff = new Staff(staffID, fullName, email, password, phone, hireDate,roleID, status, department, profilePicture);
+                listStaff.add(staff); // Thêm customer vào danh sách
+            }
+
+        } catch (SQLException e) {
+        }
+        return listStaff; // Trả về danh sách khách hàng
+    }
+    
     
     public static void main(String[] args) {
         StaffDAO dao = new StaffDAO();
