@@ -248,6 +248,38 @@ public class CustomerDAO extends DBContext {
             System.out.println(e);
         }
     }
+    
+    public boolean checkOldPassword(int customerID, String oldPassword) {
+        String sql = "SELECT password FROM Customer WHERE customerID = ?";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, customerID);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    String storedPassword = rs.getString("password");
+                    // Here you may want to hash 'oldPassword' and compare with 'storedPassword'.
+                    // Assuming passwords are stored as plain text (not recommended), we directly compare.
+                    return storedPassword.equals(oldPassword);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error checking old password: " + e.getMessage());
+        }
+
+        return false; // return false if customer not found or any error occurs
+    }
+
+    public void changeCustomerPassword(int customerID, String password) {
+        String sql = "UPDATE Customer SET password = ? WHERE customerID = ?";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, password);
+            st.setInt(2, customerID);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error changing password: " + e.getMessage());
+        }
+    }
 
     public static void main(String[] args) {
         CustomerDAO dao = new CustomerDAO();
