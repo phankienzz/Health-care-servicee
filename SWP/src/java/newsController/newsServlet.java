@@ -5,6 +5,7 @@
 
 package newsController;
 
+import dao.CategoryDAO;
 import dao.NewsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import model.Category;
 import model.News;
 
 /**
@@ -53,6 +55,10 @@ public class newsServlet extends HttpServlet {
     throws ServletException, IOException {
         NewsDAO dao = new NewsDAO();
         List<News> newsList = dao.getAllNews();
+        
+        CategoryDAO daoCate = new CategoryDAO();
+        List<Category> cateList = daoCate.getAllCategory();
+        request.setAttribute("cateList", cateList);
         request.setAttribute("newsList", newsList);
         request.getRequestDispatcher("blog-sidebar.jsp").forward(request, response);
     } 

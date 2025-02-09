@@ -122,7 +122,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="blog-sidebar.html" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">News<i class="icofont-thin-down"></i></a>
                         <ul class="dropdown-menu" aria-labelledby="dropdown05">
-                            <li><a class="dropdown-item" href="blog-sidebar.jsp">Blog with Sidebar</a></li>
+                            <li><a class="dropdown-item" href="news">Blog with Sidebar</a></li>
                             <li><a class="dropdown-item" href="blog-single.html">Blog Single</a></li>
                         </ul>
                     </li>

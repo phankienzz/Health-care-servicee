@@ -20,7 +20,7 @@ public class NewsDAO extends DBContext {
 
     public List<News> getAllNews() {
         List<News> news = new ArrayList<>();
-        String sql = "select post_id, title, content, created_by, category_id, status, created_at, updated_at from Posts where status = 1";
+        String sql = "select * from Posts where status = 1";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
