@@ -62,7 +62,7 @@
 				<a class="nav-link" href="index_1.html">Home</a>
 			  </li>
 			   <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-			    <li class="nav-item"><a class="nav-link" href="service.html">Services</a></li>
+			    <li class="nav-item"><a class="nav-link" href="service.jsp">Services</a></li>
 
 			    <li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="department.html" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Department <i class="icofont-thin-down"></i></a>
@@ -218,7 +218,7 @@
 				<div class="section-title text-center">
 					<h2 class="mb-4">Meet Our Specialist</h2>
 					<div class="divider mx-auto my-4"></div>
-					<p>Today’s users expect effortless experiences. Don’t let essential people and processes stay stuck in the past. Speed it up, skip the hassles</p>
+					<p>Today?s users expect effortless experiences. Don?t let essential people and processes stay stuck in the past. Speed it up, skip the hassles</p>
 				</div>
 			</div>
 		</div>
@@ -241,7 +241,7 @@
 
 					<div class="content">
 						<h4 class="mt-4 mb-0"><a href="doctor-single.html">Marshal Root</a></h4>
-						<p>Surgeon, Сardiologist</p>
+						<p>Surgeon, ?ardiologist</p>
 					</div>
 				</div>
 			</div>
