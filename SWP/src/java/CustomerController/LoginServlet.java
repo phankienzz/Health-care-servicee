@@ -5,6 +5,7 @@
 package CustomerController;
 
 import dao.CustomerDAO;
+import dao.StaffDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Customer;
+import model.Staff;
 
 /**
  *
@@ -48,39 +50,64 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String usernameOrEmail = request.getParameter("usernameOrEmail");
+        String userType = request.getParameter("userType");
+        String user = request.getParameter("user");
         String password = request.getParameter("password");
         String rememberMe = request.getParameter("rememberMe");
 
-        CustomerDAO dao = new CustomerDAO();
-        Customer customerAccount = dao.customerLogin(usernameOrEmail, password);
+        HttpSession session = request.getSession();
+        if ("customer".equals(userType)) {
+            CustomerDAO dao = new CustomerDAO();
+            Customer customerAccount = dao.customerLogin(user, password);
 
-        if (customerAccount == null) {
-            request.setAttribute("error", "Invalid username, email, or password !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("customerAccount", customerAccount);
-
-            if (rememberMe != null) {
-                Cookie usernameCookie = new Cookie("usernameOrEmail", usernameOrEmail);
-                Cookie passwordCookie = new Cookie("password", usernameOrEmail);
-
-                usernameCookie.setMaxAge(30 * 24 * 60 * 60);
-                passwordCookie.setMaxAge(30 * 24 * 60 * 60);
-
-                response.addCookie(usernameCookie);
-                response.addCookie(passwordCookie);
+            if (customerAccount == null) {
+                request.setAttribute("error", "Invalid username or password !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             } else {
-                // Nếu "Remember Me" không được chọn, xóa cookies
-                Cookie usernameCookie = new Cookie("usernameOrEmail", "");
-                Cookie passwordCookie = new Cookie("password", "");
-                usernameCookie.setMaxAge(0);
-                passwordCookie.setMaxAge(0);
-                response.addCookie(usernameCookie);
-                response.addCookie(passwordCookie );
+                session.setAttribute("customerAccount", customerAccount);
+                if (rememberMe != null) {
+                    Cookie cusUsername = new Cookie("username", user);
+                    Cookie cusPassword = new Cookie("password", password);
+
+                    cusUsername.setMaxAge(30 * 24 * 60 * 60);
+                    cusPassword.setMaxAge(30 * 24 * 60 * 60);
+
+                    response.addCookie(cusUsername);
+                    response.addCookie(cusPassword);
+                } else {
+                    // Nếu "Remember Me" không được chọn, xóa cookies
+                    Cookie usernameCookie = new Cookie("username", "");
+                    Cookie passwordCookie = new Cookie("password", "");
+                    usernameCookie.setMaxAge(0);
+                    passwordCookie.setMaxAge(0);
+                    response.addCookie(usernameCookie);
+                    response.addCookie(passwordCookie);
+                }
             }
             response.sendRedirect("index_1.jsp");
+        } else if ("staff".equals(userType)) {
+            StaffDAO dao = new StaffDAO();
+            Staff staff = dao.staffLogin(user, password);
+
+            if (staff == null) {
+                request.setAttribute("error", "Invalid email or password!");
+                request.setAttribute("userType", "staff");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            } else {
+                session.setAttribute("user", staff);
+                if (rememberMe != null) {
+                    Cookie staffEmail = new Cookie("email", user);
+                    Cookie staffPassword = new Cookie("password", password);
+                    staffEmail.setMaxAge(30 * 24 * 60 * 60);
+                    staffPassword.setMaxAge(30 * 24 * 60 * 60);
+                    response.addCookie(staffEmail);
+                    response.addCookie(staffPassword);
+                }
+                response.sendRedirect("index_1.jsp");
+            }
+        } else {
+            request.setAttribute("error", "Invalid User Type");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
 

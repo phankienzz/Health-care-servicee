@@ -13,6 +13,7 @@ import model.Customer;
 @WebServlet(name = "ChangePassword", urlPatterns = {"/changePassword"})
 public class ChangePassword extends HttpServlet {
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 
