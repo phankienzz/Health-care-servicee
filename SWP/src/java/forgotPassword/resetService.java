@@ -21,8 +21,8 @@ import javax.mail.internet.MimeMessage;
  */
 public class resetService {
 
-    private final int LIMIT_MINUS = 10;
-    private final String from = "jaxboua1@gmail.com";
+    private final int LIMIT_MINUS = 10; //limit thoi gian ma token het han(10 phut)
+    private final String from = "jaxboua1@gmail.com"; 
     private final String password = "ckvs rsbv apth fdcl";
 
     public String generateToken() {

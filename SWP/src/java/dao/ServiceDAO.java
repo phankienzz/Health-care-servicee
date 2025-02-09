@@ -12,70 +12,64 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import model.Customer;
+import model.Service;
 
 /**
  *
  * @author jaxbo
  */
-public class CustomerDAO extends DBContext {
+public class ServiceDAO extends DBContext {
 
-    public Customer getCustomerAccount(String username, String password) {
-        String sql = "SELECT * FROM Customer WHERE username = ? AND password = ?";
+//    public Customer getCustomerAccount(String username, String password) {
+//        String sql = "SELECT * FROM Customer WHERE username = ? AND password = ?";
+//        try {
+//            PreparedStatement st = connection.prepareStatement(sql);
+//            st.setString(1, username);
+//            st.setString(2, password);
+//            ResultSet rs = st.executeQuery();
+//            while (rs.next()) {
+//                return new Customer(
+//                        rs.getInt("customerID"),
+//                        rs.getString("username"),
+//                        rs.getString("password"),
+//                        rs.getString("fullName"),
+//                        rs.getString("email"),
+//                        rs.getString("phone"),
+//                        rs.getString("address"),
+//                        rs.getString("accountStatus"),
+//                        rs.getString("registrationDate"),
+//                        rs.getString("dateOfBirth"),
+//                        rs.getString("gender"),
+//                        rs.getString("profilePicture"));
+//            }
+//
+//        } catch (SQLException e) {
+//            
+//        }
+//        return null;
+//    }
+    public List<Service> getAllService() {
+        List<Service> serviceList = new ArrayList<>();
+        String sql = "SELECT * FROM ServicePackage";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, username);
-            st.setString(2, password);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                return new Customer(
-                        rs.getInt("customerID"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("fullName"),
-                        rs.getString("email"),
-                        rs.getString("phone"),
-                        rs.getString("address"),
-                        rs.getString("accountStatus"),
-                        rs.getString("registrationDate"),
-                        rs.getString("dateOfBirth"),
-                        rs.getString("gender"),
-                        rs.getString("profilePicture"));
-            }
-
-        } catch (SQLException e) {
-            
-        }
-        return null;
-    }
-
-    public List<Customer> getAllCustomerAccount() {
-        List<Customer> customers = new ArrayList<>();
-        String sql = "SELECT * FROM Customer";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                int customerID = rs.getInt("customerID");
-                String username = rs.getString("username");
-                String password = rs.getString("password");
-                String fullName = rs.getString("fullName");
-                String email = rs.getString("email");
-                String phone = rs.getString("phone");
-                String address = rs.getString("address");
-                String accountStatus = rs.getString("accountStatus");
-                String registrationDate = rs.getString("registrationDate");
-                String dateOfBirth = rs.getString("dateOfBirth");
-                String gender = rs.getString("gender");
-                String profilePicture = rs.getString("profilePicture");
-
-                Customer customer = new Customer(customerID, username, password, fullName, email, phone, address,
-                        accountStatus, registrationDate, dateOfBirth, gender, profilePicture);
-                customers.add(customer); // Thêm customer vào danh sách
+                int packageID = rs.getInt("packageID");
+                String packageName = rs.getString("packageName");
+                String description = rs.getString("description");
+                String type = rs.getString("type");
+                Double price = rs.getDouble("price");
+                int duration = rs.getInt("duration");
+                String createdAt = rs.getString("createdAt");
+                
+                Service service = new Service(packageID, packageName, description, type, price, duration, createdAt);
+                serviceList.add(service);
             }
 
         } catch (SQLException e) {
         }
-        return customers; // Trả về danh sách khách hàng
+        return serviceList; // Trả về danh sách khách hàng
     }
 
     public Customer checkCustomerAccountExist(String username, String email) {
@@ -106,12 +100,13 @@ public class CustomerDAO extends DBContext {
     }
 
     //Đăng nhập
-    public Customer customerLogin(String username, String password) {
-        String sql = "select * from Customer where username = ? and password = ?";
+    public Customer customerLogin(String usernameOrEmail, String password) {
+        String sql = "select * from Customer where (username = ? OR email = ?) and password = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, username);
-            st.setString(2, password);
+            st.setString(1, usernameOrEmail);
+            st.setString(2, usernameOrEmail);
+            st.setString(3, password);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 return new Customer(
@@ -184,8 +179,8 @@ public class CustomerDAO extends DBContext {
         }
 
     }
-    
-    public Customer getCustomerByEmail(String email){
+
+    public Customer getCustomerByEmail(String email) {
         String sql = "select * from Customer where email = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -210,8 +205,8 @@ public class CustomerDAO extends DBContext {
         }
         return null;
     }
-    
-    public Customer getCustomerByID(int customerID){
+
+    public Customer getCustomerByID(int customerID) {
         String sql = "select * from Customer where customerID = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -236,7 +231,7 @@ public class CustomerDAO extends DBContext {
         }
         return null;
     }
-    
+
     public void updatePassword(String email, String password) {
         String sql = "update Customer set password = ? where email = ?";
         try {
@@ -248,43 +243,11 @@ public class CustomerDAO extends DBContext {
             System.out.println(e);
         }
     }
-    
-    public boolean checkOldPassword(int customerID, String oldPassword) {
-        String sql = "SELECT password FROM Customer WHERE customerID = ?";
-
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
-            st.setInt(1, customerID);
-            try (ResultSet rs = st.executeQuery()) {
-                if (rs.next()) {
-                    String storedPassword = rs.getString("password");
-                    // Here you may want to hash 'oldPassword' and compare with 'storedPassword'.
-                    // Assuming passwords are stored as plain text (not recommended), we directly compare.
-                    return storedPassword.equals(oldPassword);
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Error checking old password: " + e.getMessage());
-        }
-
-        return false; // return false if customer not found or any error occurs
-    }
-
-    public void changeCustomerPassword(int customerID, String password) {
-        String sql = "UPDATE Customer SET password = ? WHERE customerID = ?";
-
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
-            st.setString(1, password);
-            st.setInt(2, customerID);
-            st.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Error changing password: " + e.getMessage());
-        }
-    }
 
     public static void main(String[] args) {
         CustomerDAO dao = new CustomerDAO();
-        Customer customer = dao.customerLogin("patient1", "hash111");
-        System.out.println(customer);
+//        Customer customer = dao.updatePassword("jaxboua0@gmail.com", "88888888");
+//        System.out.println(customer);
 //        for (Customer a : customer) {
 //            System.out.println(a);
 //        }
