@@ -35,7 +35,6 @@ public class DBContext {
         try {
             System.out.println(new DBContext().connection);
             System.out.println("*Hello");
-            System.out.println("Co cai ");
         } catch (Exception e) {
         }
     }
