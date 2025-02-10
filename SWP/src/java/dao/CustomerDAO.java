@@ -147,7 +147,6 @@ public class CustomerDAO extends DBContext {
             st.setString(6, address);
             st.setString(7, dateOfBirth);
             st.setString(8, gender);
-
             st.executeUpdate();
         } catch (SQLException e) {
         }
@@ -283,7 +282,7 @@ public class CustomerDAO extends DBContext {
 
     public static void main(String[] args) {
         CustomerDAO dao = new CustomerDAO();
-        Customer customer = dao.customerLogin("patient1", "hash111");
+        Customer customer = dao.checkCustomerAccountExist("patient1", "hash111");
         System.out.println(customer);
 //        for (Customer a : customer) {
 //            System.out.println(a);
