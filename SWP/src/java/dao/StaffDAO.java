@@ -45,6 +45,61 @@ public class StaffDAO extends DBContext {
         return null;   
     }
     
+     public Staff getStaffByID(int staffID){
+        String sql = "select * from Staff where staffID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, staffID);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                return new Staff(
+                        rs.getInt("staffID"),
+                        rs.getString("fullName"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("phone"),
+                        rs.getString("gender"),
+                        rs.getString("dateOfBirth"),
+                        rs.getString("address"),
+                        rs.getString("hireDate"),
+                        rs.getInt("roleID"),
+                        rs.getString("status"),
+                        rs.getString("profilePicture"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;   
+    }
+    
+     public void updateStaff( int staffID, String fullName,String email, String password, String phone, String hireDate, int roleID, String status){
+        String sql = "update staff set fullName = ?, email = ?, password = ?, phone= ?, hireDate = CONVERT(DATETIME, ?, 103), roleID = ?, status = ? where staffID = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, fullName);
+            pre.setString(2, email);
+            pre.setString(3, password);
+            pre.setString(4, phone);
+            pre.setString(5, hireDate);
+            pre.setInt(6, roleID);
+            pre.setString(7, status);
+            pre.setInt(8, staffID);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+     
+     public void deleteByStaffID( int staffID){
+        String sql = "delete from staff where staffID = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);   
+            pre.setInt(1, staffID);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
     public List<Staff> getAllStaff() {
         List<Staff> listStaff = new ArrayList<>();
         String sql = "SELECT * FROM Staff";

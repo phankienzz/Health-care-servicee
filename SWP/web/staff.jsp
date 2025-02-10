@@ -368,25 +368,26 @@
                                                     <c:forEach var="role" items="${listRole}">
                                                         <c:if test = "${role.roleID == staff.roleID}">
                                                             <c:if test = "${staff.status == 'Active'}">
-                                                            <span class="custom-badge status-green">${role.roleName}</span>
+                                                                <span class="custom-badge status-green">${role.roleName}</span>
                                                             </c:if>
                                                             <c:if test = "${staff.status == 'Inactive'}">
-                                                            <span class="custom-badge status-red">${role.roleName}</span>
+                                                                <span class="custom-badge status-red">${role.roleName}</span>
                                                             </c:if>
                                                         </c:if>
                                                     </c:forEach>
-                                                    
+
                                                 </td>
                                                 <td class="text-right">
                                                     <div class="dropdown dropdown-action">
                                                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                                                         <div class="dropdown-menu dropdown-menu-right">
-                                                            <a class="dropdown-item" href="edit-employee.html"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                            <a class="dropdown-item" href="editStaff?staffID=${staff.staffID}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee" data-id="${staff.staffID}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                                         </div>
                                                     </div>
                                                 </td>
                                             </tr>
+
                                         </c:forEach>
 
 
@@ -612,9 +613,13 @@
                         <div class="modal-body text-center">
                             <img src="assets/img/sent.png" alt="" width="50" height="46">
                             <h3>Are you sure want to delete this Employee?</h3>
-                            <div class="m-t-20"> <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </div>
+                            <form id="deleteForm" action="deleteStaff" method="GET">
+                                <input type="hidden" name="staffID" id="deleteStaffID">
+                                <div class="m-t-20">
+                                    <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -631,6 +636,15 @@
         <script src="assets/js/moment.min.js"></script>
         <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
         <script src="assets/js/app.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#delete_employee').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget); // Lấy nút vừa bấm
+                    var staffID = button.data('id'); // Lấy staffID từ data-id
+                    $('#deleteStaffID').val(staffID); // Gán vào input trong form
+                });
+            });
+        </script>
     </body>
 
 

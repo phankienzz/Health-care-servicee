@@ -1,6 +1,6 @@
 <%-- 
-    Document   : add-staff
-    Created on : Feb 9, 2025, 12:06:29 AM
+    Document   : edit-staff
+    Created on : Feb 11, 2025, 1:51:31 AM
     Author     : Gigabyte
 --%>
 
@@ -10,7 +10,7 @@
 <html lang="en">
 
 
-    <!-- add-employee24:07-->
+    <!-- edit-employee24:07-->
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -18,8 +18,8 @@
         <title>Preclinic - Medical & Hospital - Bootstrap 4 Admin Template</title>
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <!--[if lt IE 9]>
                     <script src="assets/js/html5shiv.min.js"></script>
@@ -304,20 +304,18 @@
                 <div class="content">
                     <div class="row">
                         <div class="col-lg-8 offset-lg-2">
-                            <h4 class="page-title">Add Staff</h4>
+                            <h4 class="page-title">Edit Staff</h4>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-8 offset-lg-2">
-                            <form action="addStaff" method="post">
+                            <form action = "editStaff" method="POST">
                                 <div class="row">
+                                    <input type="text" id="hiddenInput" name="staffID" value="${staffID}" style="display: none;">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-
                                             <label>First Name <span class="text-danger">*</span></label>
                                             <input name="firstName" class="form-control" type="text" <c:if test="${firstName != null}"> value="${firstName}"     </c:if>>
-
-
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
@@ -393,7 +391,7 @@
                                     <h4><i style="color: green">${mess}</i></h4>
                                     </c:if>
                                 <div class="m-t-20 text-center">
-                                    <button class="btn btn-primary submit-btn">Create Staff</button>
+                                    <button class="btn btn-primary submit-btn">Save</button>
                                 </div>
                             </form>
                         </div>
@@ -616,12 +614,12 @@
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/jquery.slimscroll.js"></script>
         <script src="assets/js/select2.min.js"></script>
-        <script src="assets/js/app.js"></script>
         <script src="assets/js/moment.min.js"></script>
         <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
-
+        <script src="assets/js/app.js"></script>
     </body>
 
 
-    <!-- add-employee24:07-->
+    <!-- edit-employee24:07-->
 </html>
+

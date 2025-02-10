@@ -4,6 +4,10 @@
  */
 package StaffController;
 
+import static StaffController.addStaff.containsDigitOrSpecialChar;
+import static StaffController.addStaff.isValidPassword;
+import static StaffController.addStaff.isValidPhoneNumber;
+import static StaffController.addStaff.normalizeName;
 import dao.RoleDAO;
 import dao.StaffDAO;
 import java.io.IOException;
@@ -13,6 +17,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import model.Role;
 import model.Staff;
@@ -21,19 +27,15 @@ import model.Staff;
  *
  * @author Gigabyte
  */
-@WebServlet(name = "addStaff", urlPatterns = {"/addStaff"})
-public class addStaff extends HttpServlet {
+@WebServlet(name = "editStaff", urlPatterns = {"/editStaff"})
+public class editStaff extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        StaffDAO staffDAO = new StaffDAO();
-        List<Staff> listStaff = staffDAO.getAllStaff();
-        RoleDAO roleDAO = new RoleDAO();
-        List<Role> listRole = roleDAO.getAllRole();
-        request.setAttribute("listStaff", listStaff);
-        request.setAttribute("listRole", listRole);
-        request.getRequestDispatcher("add-staff.jsp").forward(request, response);
+    public static String formatDate(String input) {
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        LocalDateTime dateTime = LocalDateTime.parse(input, inputFormatter);
+        return dateTime.format(outputFormatter);
     }
 
     public static boolean containsDigitOrSpecialChar(String str) {
@@ -82,8 +84,43 @@ public class addStaff extends HttpServlet {
     }
 
     @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String staffID_raw = request.getParameter("staffID");
+        StaffDAO staffDAO = new StaffDAO();
+        int staffID = Integer.parseInt(staffID_raw);
+        Staff s = staffDAO.getStaffByID(staffID);
+        String fullName = s.getFullName();
+        String[] split = fullName.split("\\s+");
+        int i = 0;
+        String firstName = "";
+        String lastName = split[split.length - 1];
+        for (String str : split) {
+            if (i != str.length() - 1) {
+                firstName += " " + str;
+            }
+        }
+        request.setAttribute("staffID", staffID);
+        request.setAttribute("firstName", firstName.trim());
+        request.setAttribute("lastName", lastName.trim());
+        request.setAttribute("phone", s.getPhone());
+        request.setAttribute("email", s.getEmail());
+        request.setAttribute("roleID", s.getRoleID());
+        request.setAttribute("status", s.getStatus());
+        request.setAttribute("hireDate", formatDate(s.getHireDate()));
+        request.setAttribute("password", s.getPassword());
+        request.setAttribute("confirmPass", s.getPassword());
+        RoleDAO roleDAO = new RoleDAO();
+        List<Role> listRole = roleDAO.getAllRole();
+        request.setAttribute("listRole", listRole);
+        request.getRequestDispatcher("edit-staff.jsp").forward(request, response);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String staffID_raw = request.getParameter("staffID");
+        int staffID = Integer.parseInt(staffID_raw);
         StaffDAO staffDAO = new StaffDAO();
         RoleDAO roleDAO = new RoleDAO();
         List<Role> listRole = roleDAO.getAllRole();
@@ -106,40 +143,31 @@ public class addStaff extends HttpServlet {
         request.setAttribute("hireDate", hireDate);
         request.setAttribute("password", password);
         request.setAttribute("confirmPass", confirmPass);
+        request.setAttribute("staffID", staffID_raw);
         if (containsDigitOrSpecialChar(firstName) || containsDigitOrSpecialChar(lastName)) {
             request.setAttribute("error", "First Name or Last Name cannot contain digit or special character");
-            request.getRequestDispatcher("add-staff.jsp").forward(request, response);
+            request.getRequestDispatcher("edit-staff.jsp").forward(request, response);
             return;
         }
         if (!isValidPassword(password)) {
             request.setAttribute("error", "Password must contain at least 8 character, uppercase letter, digit and special character");
-            request.getRequestDispatcher("add-staff.jsp").forward(request, response);
+            request.getRequestDispatcher("edit-staff.jsp").forward(request, response);
             return;
         }
         if (!password.equals(confirmPass)) {
             request.setAttribute("error", "Confirm password incorrect");
-            request.getRequestDispatcher("add-staff.jsp").forward(request, response);
+            request.getRequestDispatcher("edit-staff.jsp").forward(request, response);
             return;
         }
         if (!isValidPhoneNumber(phone)) {
             request.setAttribute("error", "Phone number is not exist, please check again");
-            request.getRequestDispatcher("add-staff.jsp").forward(request, response);
+            request.getRequestDispatcher("edit-staff.jsp").forward(request, response);
             return;
         }
         String fullName = normalizeName(firstName) + " " + normalizeName(lastName);
-        staffDAO.createStaff(fullName, email, password, phone, hireDate, Integer.parseInt(roleID), status);
-        request.setAttribute("mess", "Add staff succesfully");
-        request.removeAttribute("firstName");
-        request.removeAttribute("lastName");
-        request.removeAttribute("phone");
-        request.removeAttribute("email");
-        request.removeAttribute("roleID");
-        request.removeAttribute("hireDate");
-        request.removeAttribute("status");
-        request.removeAttribute("password");
-        request.removeAttribute("confirmPass");
-        request.getRequestDispatcher("add-staff.jsp").forward(request, response);
-
+        staffDAO.updateStaff(staffID, fullName, email, password, phone, hireDate, Integer.parseInt(roleID), status);
+        request.setAttribute("mess", "Update staff succesfully");
+        request.getRequestDispatcher("edit-staff.jsp").forward(request, response);
     }
 
 }
