@@ -46,8 +46,7 @@ public class RegisterServet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try {
-            String username = request.getParameter("username");
+        String username = request.getParameter("username");
             String fullname = request.getParameter("fullname");
             String email = request.getParameter("email");
             String phone = request.getParameter("phone");
@@ -56,7 +55,7 @@ public class RegisterServet extends HttpServlet {
             String address = request.getParameter("address");
             String dateOfBirth = request.getParameter("dateOfBirth");
             String gender = request.getParameter("gender");
-            
+        try {
             //bat dien het thong tin
 //            if (username.isEmpty() || fullname.isEmpty() || email.isEmpty() || phone.isEmpty()
 //                    || password.isEmpty() || confirm_password.isEmpty() || address.isEmpty() || dateOfBirth.isEmpty() || gender.isEmpty()) {
