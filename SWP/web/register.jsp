@@ -92,7 +92,4 @@
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/app.js"></script>
     </body>
-
-
-    <!-- register24:03-->
 </html>

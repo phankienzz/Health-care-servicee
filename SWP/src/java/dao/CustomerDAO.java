@@ -181,7 +181,6 @@ public class CustomerDAO extends DBContext {
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
-
     }
     
     public Customer getCustomerByEmail(String email){
@@ -268,9 +267,10 @@ public class CustomerDAO extends DBContext {
         return false; // return false if customer not found or any error occurs
     }
 
+    
+    //doi mat khau
     public void changeCustomerPassword(int customerID, String password) {
         String sql = "UPDATE Customer SET password = ? WHERE customerID = ?";
-
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, password);
             st.setInt(2, customerID);
