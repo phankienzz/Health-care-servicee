@@ -8,6 +8,7 @@ import context.DBContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -153,37 +154,35 @@ public class CustomerDAO extends DBContext {
         }
     }
 
-    //Chỉnh sửa profile của Customer
-    public void updateCustomerProfile(String fullname, String email, String phone, String address, String dateOfBirth, String gender, int customerID) {
-        String sql = "UPDATE Customer SET fullName = ?, email = ?, phone = ?, address = ?, dateOfBirth = ?, gender = ? WHERE customerID = ?";
-        try {
-            // Parse date if necessary
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            java.util.Date parsedDate = sdf.parse(dateOfBirth);
-            java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
 
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, fullname);
-            st.setString(2, email);
-            st.setString(3, phone);
-            st.setString(4, address);
-            st.setDate(5, sqlDate); // Set parsed date here
-            st.setString(6, gender);
-            st.setInt(7, customerID);
+    
+    public void updateCustomerProfile(String fullName, String email, String phone, String address, String dateOfBirth, String gender, String profilePicture, int customerID) throws ParseException {
+    String sql = "UPDATE Customer SET fullName = ?, email = ?, phone = ?, address = ?, dateOfBirth = ?, gender = ?, profilePicture = ? WHERE customerID = ?";
+    try {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date parsedDate = sdf.parse(dateOfBirth);
+        java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
 
-            int rowsUpdated = st.executeUpdate();
-            if (rowsUpdated > 0) {
-                System.out.println("Customer profile updated successfully.");
-            } else {
-                System.out.println("No customer found with the provided ID.");
-            }
-        } catch (SQLException e) {
-            System.err.println("SQL Error: " + e.getMessage());
-        } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setString(1, fullName);
+        st.setString(2, email);
+        st.setString(3, phone);
+        st.setString(4, address);
+        st.setDate(5, sqlDate);
+        st.setString(6, gender);
+        st.setString(7, profilePicture);
+        st.setInt(8, customerID);
+
+        int rowsUpdated = st.executeUpdate();
+        if (rowsUpdated > 0) {
+            System.out.println("Customer profile updated successfully.");
+        } else {
+            System.out.println("No customer found with the provided ID.");
         }
-
+    } catch (SQLException | ParseException e) {
+        System.err.println("Error: " + e.getMessage());
     }
+}
     
     public Customer getCustomerByEmail(String email){
         String sql = "select * from Customer where email = ?";
@@ -282,11 +281,34 @@ public class CustomerDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        CustomerDAO dao = new CustomerDAO();
-        Customer customer = dao.customerLogin("patient1", "hash111");
-        System.out.println(customer);
-//        for (Customer a : customer) {
-//            System.out.println(a);
-//        }
+    CustomerDAO dao = new CustomerDAO();
+
+    // Simulating a customer login to retrieve customer details.
+    Customer customer = dao.customerLogin("patient1", "hash111");
+
+    // Checking if customer exists
+    if (customer != null) {
+        System.out.println("Customer logged in: " + customer);
+
+        // You might want to update some details of the customer
+        String newFullName = "John Doe Updated";
+        String newEmail = "john.doe.updated@example.com";
+        String newPhone = "123-456-7890";
+        String newAddress = "123 Updated St, City, State, 12345";
+        String newDateOfBirth = "1990-01-01"; // Format: yyyy-MM-dd
+        String newGender = "Male";
+        String newProfileImage = "new_image_path.jpg";
+        int customerID = customer.getCustomerID(); // Assuming getCustomerID() gives the customer's ID
+
+        try {
+            dao.updateCustomerProfile(newFullName, newEmail, newPhone, newAddress,
+                    newDateOfBirth, newGender, newProfileImage, customerID);
+        } catch (ParseException e) {
+            System.err.println("Error parsing date: " + e.getMessage());
+        }
+    } else {
+        System.out.println("Login failed: No customer found.");
     }
+}
+
 }

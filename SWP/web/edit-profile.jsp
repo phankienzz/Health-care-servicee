@@ -37,16 +37,17 @@
                             <h4 class="page-title">Edit Profile</h4>
                         </div>
                     </div>
-                    <form action="editprofile" method="post">
+                   <form action="editprofile" method="post" enctype="multipart/form-data">
                         <div class="card-box">
                             <h3 class="card-title">Basic Informations</h3>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="profile-img-wrap">
-                                        <img class="inline-block" src="assets/img/user.jpg" alt="user">
+                                    <div class="col-md-12">
+                                        <div class="profile-img-wrap">
+                                            <img class="inline-block" src="${sessionScope.customerAccount.profilePicture}" alt="user">
                                         <div class="fileupload btn">
-                                            <span class="btn-text">edit</span>
-                                            <input class="upload" type="file">
+                                            <span class="btn-text">Edit</span>
+                                            <input class="upload" type="file" name="profileImage">
                                         </div>
                                     </div>
                                     <div class="profile-basic">
@@ -55,78 +56,79 @@
                                                 <div class="form-group form-focus">
                                                     <label class="focus-label">Full Name</label>
                                                     <input type="text" class="form-control floating" name="fullName" value="${sessionScope.customerAccount.fullName}">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus">
-                                                <label class="focus-label">Birth Date</label>
-                                                <div class="cal-icon">
-                                                    <input class="form-control floating " type="text" name="dateOfBirth" placeholder="YYYY-MM-DD" value="${sessionScope.customerAccount.dateOfBirth}">
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus select-focus">
-                                                <label class="focus-label">Gender</label>
-                                                <select class="select form-control floating" name="gender">
-                                                    <option value="Male" ${sessionScope.customerAccount.gender == "Male" ? "selected" : ""}>Male</option>
-                                                    <option value="Female" ${sessionScope.customerAccount.gender == "Female" ? "selected" : ""}>Female</option>
-                                                </select>
+                                            <div class="col-md-6">
+                                                <div class="form-group form-focus">
+                                                    <label class="focus-label">Birth Date</label>
+                                                    <div class="cal-icon">
+                                                        <input class="form-control floating " type="text" name="dateOfBirth" placeholder="YYYY-MM-DD" value="${sessionScope.customerAccount.dateOfBirth}">
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group form-focus">
-                                                <label class="focus-label">Email</label>
-                                                <input type="text" class="form-control floating" name="email" value="${sessionScope.customerAccount.email}">
+
+                                            <div class="col-md-6">
+                                                <div class="form-group form-focus select-focus">
+                                                    <label class="focus-label">Gender</label>
+                                                    <select class="select form-control floating" name="gender">
+                                                        <option value="Male" ${sessionScope.customerAccount.gender == "Male" ? "selected" : ""}>Male</option>
+                                                        <option value="Female" ${sessionScope.customerAccount.gender == "Female" ? "selected" : ""}>Female</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group form-focus">
+                                                    <label class="focus-label">Email</label>
+                                                    <input type="text" class="form-control floating" name="email" value="${sessionScope.customerAccount.email}">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-box">
-                        <h3 class="card-title">Contact Informations</h3>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group form-focus">
-                                    <label class="focus-label">Address</label>
-                                    <input type="text" class="form-control floating" name="address" value="${sessionScope.customerAccount.address}">
+                        <div class="card-box">
+                            <h3 class="card-title">Contact Informations</h3>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group form-focus">
+                                        <label class="focus-label">Address</label>
+                                        <input type="text" class="form-control floating" name="address" value="${sessionScope.customerAccount.address}">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group form-focus">
-                                    <label class="focus-label">State</label>
-                                    <input type="text" class="form-control floating" value="New York">
+                                <div class="col-md-6">
+                                    <div class="form-group form-focus">
+                                        <label class="focus-label">State</label>
+                                        <input type="text" class="form-control floating" value="New York">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group form-focus">
-                                    <label class="focus-label">Country</label>
-                                    <input type="text" class="form-control floating" value="United States">
+                                <div class="col-md-6">
+                                    <div class="form-group form-focus">
+                                        <label class="focus-label">Country</label>
+                                        <input type="text" class="form-control floating" value="United States">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group form-focus">
-                                    <label class="focus-label">Pin Code</label>
-                                    <input type="text" class="form-control floating" value="10523">
+                                <div class="col-md-6">
+                                    <div class="form-group form-focus">
+                                        <label class="focus-label">Pin Code</label>
+                                        <input type="text" class="form-control floating" value="10523">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group form-focus">
-                                    <label class="focus-label">Phone Number</label>
-                                    <input type="text" class="form-control floating" name="phone" value="${sessionScope.customerAccount.phone}">
+                                <div class="col-md-6">
+                                    <div class="form-group form-focus">
+                                        <label class="focus-label">Phone Number</label>
+                                        <input type="text" class="form-control floating" name="phone" value="${sessionScope.customerAccount.phone}">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="text-center m-t-20">
-                        <button class="btn btn-primary submit-btn" type="submit">Save</button>
-                    </div>
+                        <div class="text-center m-t-20">
+                            <button class="btn btn-primary submit-btn" type="submit">Save</button>
+                        </div>
                 </form>
+                                    
 
                 <!--                    <form action="editprofile" method="post">
                                         <div class="form-group">
