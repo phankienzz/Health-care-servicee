@@ -1,25 +1,23 @@
 <%-- 
-    Document   : add-staff
-    Created on : Feb 9, 2025, 12:06:29 AM
+    Document   : roles-permissions
+    Created on : Feb 9, 2025, 2:52:37 PM
     Author     : Gigabyte
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
 
-    <!-- add-employee24:07-->
+    <!-- roles-permissions24:05-->
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
         <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
         <title>Preclinic - Medical & Hospital - Bootstrap 4 Admin Template</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
-        <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <!--[if lt IE 9]>
                     <script src="assets/js/html5shiv.min.js"></script>
@@ -32,7 +30,7 @@
             <div class="header">
                 <div class="header-left">
                     <a href="index-2.html" class="logo">
-                        <img src="assets/img/logo.png" width="35" height="35" alt=""> <span>Preclinic</span>
+                        <img src="assets/img/logo.png" width="35" height="35" alt="">
                     </a>
                 </div>
                 <a id="toggle_btn" href="javascript:void(0);"><i class="fa fa-bars"></i></a>
@@ -50,7 +48,7 @@
                                         <a href="activities.html">
                                             <div class="media">
                                                 <span class="avatar">
-                                                    <img alt="John Doe" src="assets/img/user.jpg" class="img-fluid rounded-circle">
+                                                    <img alt="John Doe" src="assets/img/user.jpg" class="img-fluid">
                                                 </span>
                                                 <div class="media-body">
                                                     <p class="noti-details"><span class="noti-title">John Doe</span> added new task <span class="noti-title">Patient appointment booking</span></p>
@@ -139,162 +137,41 @@
             </div>
             <div class="sidebar" id="sidebar">
                 <div class="sidebar-inner slimscroll">
-                    <div id="sidebar-menu" class="sidebar-menu">
+                    <div class="sidebar-menu">
                         <ul>
-                            <li class="menu-title">Main</li>
                             <li>
-                                <a href="index-2.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
+                                <a href="index-2.html"><i class="fa fa-home back-icon"></i> <span>Back to Home</span></a>
                             </li>
+                            <li class="menu-title">Settings</li>
                             <li>
-                                <a href="doctors.html"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
-                            </li>
-                            <li>
-                                <a href="patients.html"><i class="fa fa-wheelchair"></i> <span>Patients</span></a>
+                                <a href="settings.html"><i class="fa fa-building"></i> <span>Company Settings</span></a>
                             </li>
                             <li>
-                                <a href="appointments.html"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
+                                <a href="localization.html"><i class="fa fa-clock-o"></i> <span>Localization</span></a>
                             </li>
                             <li>
-                                <a href="schedule.html"><i class="fa fa-calendar-check-o"></i> <span>Doctor Schedule</span></a>
+                                <a href="theme-settings.html"><i class="fa fa-picture-o"></i> <span>Theme Settings</span></a>
+                            </li>
+                            <li class="active">
+                                <a href="roles-permissions.html"><i class="fa fa-key"></i> <span>Roles & Permissions</span></a>
                             </li>
                             <li>
-                                <a href="departments.html"><i class="fa fa-hospital-o"></i> <span>Departments</span></a>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-user"></i> <span> Employees </span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a class="active" href="employees.html">Employees List</a></li>
-                                    <li><a href="leaves.html">Leaves</a></li>
-                                    <li><a href="holidays.html">Holidays</a></li>
-                                    <li><a href="attendance.html">Attendance</a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-money"></i> <span> Accounts </span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="invoices.html">Invoices</a></li>
-                                    <li><a href="payments.html">Payments</a></li>
-                                    <li><a href="expenses.html">Expenses</a></li>
-                                    <li><a href="taxes.html">Taxes</a></li>
-                                    <li><a href="provident-fund.html">Provident Fund</a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-book"></i> <span> Payroll </span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="salary.html"> Employee Salary </a></li>
-                                    <li><a href="salary-view.html"> Payslip </a></li>
-                                </ul>
+                                <a href="email-settings.html"><i class="fa fa-envelope-o"></i> <span>Email Settings</span></a>
                             </li>
                             <li>
-                                <a href="chat.html"><i class="fa fa-comments"></i> <span>Chat</span> <span class="badge badge-pill bg-primary float-right">5</span></a>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-video-camera camera"></i> <span> Calls</span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="voice-call.html">Voice Call</a></li>
-                                    <li><a href="video-call.html">Video Call</a></li>
-                                    <li><a href="incoming-call.html">Incoming Call</a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-envelope"></i> <span> Email</span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="compose.html">Compose Mail</a></li>
-                                    <li><a href="inbox.html">Inbox</a></li>
-                                    <li><a href="mail-view.html">Mail View</a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-commenting-o"></i> <span> Blog</span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="blog.html">Blog</a></li>
-                                    <li><a href="blog-details.html">Blog View</a></li>
-                                    <li><a href="add-blog.html">Add Blog</a></li>
-                                    <li><a href="edit-blog.html">Edit Blog</a></li>
-                                </ul>
+                                <a href="invoice-settings.html"><i class="fa fa-pencil-square-o"></i> <span>Invoice Settings</span></a>
                             </li>
                             <li>
-                                <a href="assets.html"><i class="fa fa-cube"></i> <span>Assets</span></a>
+                                <a href="salary-settings.html"><i class="fa fa-money"></i> <span>Salary Settings</span></a>
                             </li>
                             <li>
-                                <a href="activities.html"><i class="fa fa-bell-o"></i> <span>Activities</span></a>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-flag-o"></i> <span> Reports </span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="expense-reports.html"> Expense Report </a></li>
-                                    <li><a href="invoice-reports.html"> Invoice Report </a></li>
-                                </ul>
+                                <a href="notifications-settings.html"><i class="fa fa-globe"></i> <span>Notifications</span></a>
                             </li>
                             <li>
-                                <a href="settings.html"><i class="fa fa-cog"></i> <span>Settings</span></a>
-                            </li>
-                            <li class="menu-title">UI Elements</li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-laptop"></i> <span> Components</span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="uikit.html">UI Kit</a></li>
-                                    <li><a href="typography.html">Typography</a></li>
-                                    <li><a href="tabs.html">Tabs</a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-edit"></i> <span> Forms</span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="form-basic-inputs.html">Basic Inputs</a></li>
-                                    <li><a href="form-input-groups.html">Input Groups</a></li>
-                                    <li><a href="form-horizontal.html">Horizontal Form</a></li>
-                                    <li><a href="form-vertical.html">Vertical Form</a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-table"></i> <span> Tables</span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="tables-basic.html">Basic Tables</a></li>
-                                    <li><a href="tables-datatables.html">Data Table</a></li>
-                                </ul>
+                                <a href="change-password.html"><i class="fa fa-lock"></i> <span>Change Password</span></a>
                             </li>
                             <li>
-                                <a href="calendar.html"><i class="fa fa-calendar"></i> <span>Calendar</span></a>
-                            </li>
-                            <li class="menu-title">Extras</li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-columns"></i> <span>Pages</span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="login.html"> Login </a></li>
-                                    <li><a href="register.html"> Register </a></li>
-                                    <li><a href="forgot-password.html"> Forgot Password </a></li>
-                                    <li><a href="change-password2.html"> Change Password </a></li>
-                                    <li><a href="lock-screen.html"> Lock Screen </a></li>
-                                    <li><a href="profile.html"> Profile </a></li>
-                                    <li><a href="gallery.html"> Gallery </a></li>
-                                    <li><a href="error-404.html">404 Error </a></li>
-                                    <li><a href="error-500.html">500 Error </a></li>
-                                    <li><a href="blank-page.html"> Blank Page </a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu">
-                                <a href="javascript:void(0);"><i class="fa fa-share-alt"></i> <span>Multi Level</span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li class="submenu">
-                                        <a href="javascript:void(0);"><span>Level 1</span> <span class="menu-arrow"></span></a>
-                                        <ul style="display: none;">
-                                            <li><a href="javascript:void(0);"><span>Level 2</span></a></li>
-                                            <li class="submenu">
-                                                <a href="javascript:void(0);"> <span> Level 2</span> <span class="menu-arrow"></span></a>
-                                                <ul style="display: none;">
-                                                    <li><a href="javascript:void(0);">Level 3</a></li>
-                                                    <li><a href="javascript:void(0);">Level 3</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="javascript:void(0);"><span>Level 2</span></a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);"><span>Level 1</span></a>
-                                    </li>
-                                </ul>
+                                <a href="leave-type.html"><i class="fa fa-cogs"></i> <span>Leave Type</span></a>
                             </li>
                         </ul>
                     </div>
@@ -303,93 +180,181 @@
             <div class="page-wrapper">
                 <div class="content">
                     <div class="row">
-                        <div class="col-lg-8 offset-lg-2">
-                            <h4 class="page-title">Add Staff</h4>
+                        <div class="col-sm-8">
+                            <h4 class="page-title">Roles & Permissions</h4>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-8 offset-lg-2">
-                            <form action="addStaff" method="post">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>First Name <span class="text-danger">*</span></label>
-                                            <input name="firstName" class="form-control" type="text">
+                        <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3">
+                            <a href="add-role.html" class="btn btn-primary btn-block"><i class="fa fa-plus"></i> Add Roles</a>
+                            <div class="roles-menu">
+                                <ul>
+                                    <li class="active">
+                                        <a href="javascript:void(0);">Administrator</a>
+                                        <span class="role-action">
+                                            <a href="edit-role.html">
+                                                <span class="action-circle large">
+                                                    <i class="material-icons">edit</i>
+                                                </span>
+                                            </a>
+                                            <a href="#" data-toggle="modal" data-target="#delete_role">
+                                                <span class="action-circle large delete-btn">
+                                                    <i class="material-icons">delete</i>
+                                                </span>
+                                            </a>
+                                        </span>
+                                    </li>
+                                    <li><a href="#">Doctor</a></li>
+                                    <li><a href="#">Nurse</a></li>
+                                    <li><a href="#">Laboratorist</a></li>
+                                    <li><a href="#">Pharmacist</a></li>
+                                    <li><a href="#">Accountant</a></li>
+                                    <li><a href="#">Receptionist</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-sm-8 col-md-8 col-lg-8 col-xl-9">
+                            <h6 class="card-title m-b-20">Module Access</h6>
+                            <div class="m-b-30">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        Employee
+                                        <div class="material-switch float-right">
+                                            <input id="staff_module" type="checkbox">
+                                            <label for="staff_module" class="badge-success"></label>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Last Name</label>
-                                            <input name="lastName" class="form-control" type="text">
+                                    </li>
+                                    <li class="list-group-item">
+                                        Holidays
+                                        <div class="material-switch float-right">
+                                            <input id="holidays_module" type="checkbox">
+                                            <label for="holidays_module" class="badge-success"></label>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Email <span class="text-danger">*</span></label>
-                                            <input name="email" class="form-control" type="email">
+                                    </li>
+                                    <li class="list-group-item">
+                                        Leave Request
+                                        <div class="material-switch float-right">
+                                            <input id="leave_module" type="checkbox">
+                                            <label for="leave_module" class="badge-success"></label>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Password</label>
-                                            <input name="password" class="form-control" type="password">
+                                    </li>
+                                    <li class="list-group-item">
+                                        Events
+                                        <div class="material-switch float-right">
+                                            <input id="events_module" type="checkbox">
+                                            <label for="events_module" class="badge-success"></label>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Confirm Password</label>
-                                            <input name="confirmPass" class="form-control" type="password">
+                                    </li>
+                                    <li class="list-group-item">
+                                        Chat
+                                        <div class="material-switch float-right">
+                                            <input id="chat_module" type="checkbox">
+                                            <label for="chat_module" class="badge-success"></label>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Joining Date <span class="text-danger">*</span></label>
-                                            <div class="cal-icon">
-                                                <input name="hireDate" class="form-control datetimepicker" type="text">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Phone </label>
-                                            <input name="phone" class="form-control" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Role</label>
-                                            <select name = "roleID" class="select" >
-                                                <c:forEach var="role" items="${listRole}">
-                                                    <option value="${role.roleID}">${role.roleName}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="display-block">Status</label>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="status" id="employee_active" value="Active" checked>
-                                                <label class="form-check-label" for="employee_active">
-                                                    Active
-                                                </label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="status" id="employee_inactive" value="Inactive">
-                                                <label class="form-check-label" for="employee_inactive">
-                                                    Inactive
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <c:if test="${error != null}">
-                                    <h4><i style="color: red">${error}</i></h4>
-                                </c:if>
-                                <div class="m-t-20 text-center">
-                                    <button class="btn btn-primary submit-btn">Create Staff</button>
-                                </div>
-                            </form>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Module Permission</th>
+                                            <th class="text-center">Read</th>
+                                            <th class="text-center">Write</th>
+                                            <th class="text-center">Create</th>
+                                            <th class="text-center">Delete</th>
+                                            <th class="text-center">Import</th>
+                                            <th class="text-center">Export</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Employee</td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Holidays</td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Leave Request</td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Events</td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" checked="">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -603,19 +568,28 @@
                     </div>
                 </div>
             </div>
+            <div id="delete_role" class="modal fade delete-modal" role="dialog">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body text-center">
+                            <img src="assets/img/sent.png" alt="" width="50" height="46">
+                            <h3>Are you sure want to delete this Role?</h3>
+                            <div class="m-t-20"> <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="sidebar-overlay" data-reff=""></div>
         <script src="assets/js/jquery-3.2.1.min.js"></script>
         <script src="assets/js/popper.min.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/jquery.slimscroll.js"></script>
-        <script src="assets/js/select2.min.js"></script>
         <script src="assets/js/app.js"></script>
-        <script src="assets/js/moment.min.js"></script>
-        <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
-
     </body>
 
 
-    <!-- add-employee24:07-->
-</html>
+    <!-- roles-permissions24:05-->
+</html>   .       c c                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             cccccccccccccccccc                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            cc        

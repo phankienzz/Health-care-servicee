@@ -31,10 +31,12 @@ public class StaffDAO extends DBContext {
                         rs.getString("email"),
                         rs.getString("password"),
                         rs.getString("phone"),
+                        rs.getString("gender"),
+                        rs.getString("dateOfBirth"),
+                        rs.getString("address"),
                         rs.getString("hireDate"),
                         rs.getInt("roleID"),
                         rs.getString("status"),
-                        rs.getString("department"),
                         rs.getString("profilePicture"));
             }
         } catch (SQLException e) {
@@ -55,13 +57,14 @@ public class StaffDAO extends DBContext {
                 String email = rs.getString("email");
                 String password = rs.getString("password");
                 String phone = rs.getString("phone");
+                String gender = rs.getString("gender");
+                String dateOfBirth = rs.getString("dateOfBirth");
+                String address = rs.getString("address");
                 String hireDate = rs.getString("hireDate");
                 int roleID = rs.getInt("roleID");
                 String status = rs.getString("status");
-                String department = rs.getString("department");
                 String profilePicture = rs.getString("profilePicture");
-
-                Staff staff = new Staff(staffID, fullName, email, password, phone, hireDate,roleID, status, department, profilePicture);
+                Staff staff = new Staff(staffID, fullName, email, password, phone,gender,dateOfBirth,address, hireDate,roleID, status, profilePicture);
                 listStaff.add(staff); // Thêm customer vào danh sách
             }
 
@@ -70,8 +73,8 @@ public class StaffDAO extends DBContext {
         return listStaff; // Trả về danh sách khách hàng
     }
     
-    public void createStaff(String fullName, String email, String password, String phone, String hireDate, int roleID, String status, String department) {
-        String sql = "INSERT [dbo].[Staff] ( [fullName], [email], [password], [phone], [hireDate], [roleID], [status], [department], [profilePicture]) VALUES (?, ?, ?, ?, CONVERT(DATETIME, ?, 103), ? , ?, ?, NULL)";
+    public void createStaff(String fullName, String email, String password, String phone, String hireDate, int roleID, String status) {
+        String sql = "INSERT [dbo].[Staff] ( [fullName], [email], [password], [phone], [hireDate], [roleID], [status], [profilePicture]) VALUES ( ?, ?, ?, ?, CONVERT(DATETIME, ?, 103), ?, ?, NULL)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, fullName);
@@ -81,7 +84,6 @@ public class StaffDAO extends DBContext {
             st.setString(5, hireDate);
             st.setInt(6, roleID);
             st.setString(7, status);
-            st.setString(8, department);
 
             st.executeUpdate();
         } catch (SQLException e) {
