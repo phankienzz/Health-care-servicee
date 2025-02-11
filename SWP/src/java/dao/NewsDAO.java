@@ -9,12 +9,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import model.News;
 import java.util.List;
+import model.News;
 
 /**
  *
- * @author jaxbo
+ * @author Hoang
  */
 public class NewsDAO extends DBContext {
 
@@ -46,9 +46,38 @@ public class NewsDAO extends DBContext {
         return news;
     }
 
+    public List<News> getNewsByCategory(int category_id) {
+        List<News> news = new ArrayList<>();
+        String sql = "select * from Posts where category_id = ? and status = 1";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, category_id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
+                String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
+
+                News n = new News(
+                        rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getInt("created_by"),
+                        rs.getInt("category_id"),
+                        rs.getInt("status"),
+                        createdAt,
+                        updatedAt);
+//                        rs.getString("created_at"),
+//                        rs.getString("updated_at"));
+                news.add(n);
+            }
+        } catch (SQLException e) {
+        }
+        return news;
+    }
+
     public static void main(String[] args) {
         NewsDAO dao = new NewsDAO();
-        List<News> newsList = dao.getAllNews();
+        List<News> newsList = dao.getNewsByCategory(1);
         for (News news : newsList) {
             System.out.println(news);
         }

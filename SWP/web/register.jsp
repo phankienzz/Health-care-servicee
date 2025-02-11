@@ -29,7 +29,7 @@
                             <div class="account-logo">
                                 <a href="index-2.html"><img src="assets/img/logo-dark.png" alt=""></a>
                             </div>
-                            <p class="text-danger">${error}</p>
+                            <p class="center">${error}</p>
                             <div class="form-group">
                                 <label>Username</label>
                                 <input type="text" name="username" class="form-control">
@@ -92,7 +92,4 @@
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/app.js"></script>
     </body>
-
-
-    <!-- register24:03-->
 </html>

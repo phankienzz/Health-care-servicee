@@ -59,11 +59,11 @@ public class RegisterServet extends HttpServlet {
         String dateOfBirthStr = request.getParameter("dateOfBirth");
         String gender = request.getParameter("gender");
         try {
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyy-MM-dd");
-            LocalDate dateOfBirth = LocalDate.parse(dateOfBirthStr, format);
-            LocalDate today = LocalDate.now(); // Lấy ngày hiện tại
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //dinh dang ngay thang theo yyyy-MM-dd
+            LocalDate dateOfBirth = LocalDate.parse(dateOfBirthStr, format); //chuyen doi tu Str sang LocalDate
+            LocalDate today = LocalDate.now(); // lay ngay hien tai
             if (dateOfBirth.isAfter(today)) {
-                request.setAttribute("error", "Ngay sinh khong duoc qua ngay hien tai");
+                request.setAttribute("error", "Date of Birth cannot be in the future!");
                 request.getRequestDispatcher("register.jsp").forward(request, response);
                 return;
             }
@@ -92,17 +92,22 @@ public class RegisterServet extends HttpServlet {
                 request.getRequestDispatcher("register.jsp").forward(request, response);
             } else {
                 CustomerDAO dao = new CustomerDAO();
-                Customer ac = dao.checkCustomerAccountExist(username, email);
-                if (ac == null) {
+                boolean usernameExists = dao.isUsernameExist(username);
+                boolean emailExists = dao.isEmailExist(email);
+
+                if (usernameExists) {
+                    request.setAttribute("error", "Username already exists!");
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                } else if (emailExists) {
+                    request.setAttribute("error", "Email already exists!");
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                } else {
                     dao.customerSignup(username, password, fullname, email, phone, address, dateOfBirthStr, gender);
                     response.sendRedirect("login.jsp");
-                } else {
-                    request.setAttribute("error", "Account Exist !");
-                    request.getRequestDispatcher("register.jsp").forward(request, response);
                 }
             }
         } catch (DateTimeParseException e) {
-            request.setAttribute("error", "Nhap theo dinh dang YYYY-MM-DD.");
+            request.setAttribute("error", "Nhap ngay sinh theo dinh dang YYYY-MM-DD.");
             request.getRequestDispatcher("register.jsp").forward(request, response);
         }
     }
