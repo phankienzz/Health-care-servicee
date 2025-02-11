@@ -22,10 +22,7 @@
         <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-        <!--[if lt IE 9]>
-                    <script src="assets/js/html5shiv.min.js"></script>
-                    <script src="assets/js/respond.min.js"></script>
-            <![endif]-->
+
     </head>
 
     <body>
