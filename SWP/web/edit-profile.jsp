@@ -37,19 +37,20 @@
                             <h4 class="page-title">Edit Profile</h4>
                         </div>
                     </div>
-                   <form action="editprofile" method="post" enctype="multipart/form-data">
+                    <form action="editprofile" method="post" enctype="multipart/form-data">
                         <div class="card-box">
                             <h3 class="card-title">Basic Informations</h3>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="col-md-12">
-                                        <div class="profile-img-wrap">
-                                            <img class="inline-block" src="${sessionScope.customerAccount.profilePicture}" alt="user">
+                                        <<div class="profile-img-wrap">
+                                            <img class="inline-block" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" >
                                         <div class="fileupload btn">
                                             <span class="btn-text">Edit</span>
                                             <input class="upload" type="file" name="profileImage">
                                         </div>
                                     </div>
+
                                     <div class="profile-basic">
                                         <div class="row">
                                             <div class="col-md-6">
@@ -128,7 +129,7 @@
                             <button class="btn btn-primary submit-btn" type="submit">Save</button>
                         </div>
                 </form>
-                                    
+
 
                 <!--                    <form action="editprofile" method="post">
                                         <div class="form-group">

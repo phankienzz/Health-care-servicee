@@ -2,6 +2,7 @@ package CustomerController;
 
 import dao.CustomerDAO;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,8 +13,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
-import java.io.File;
-import java.nio.file.Paths;
 import model.Customer;
 
 @MultipartConfig(
@@ -23,12 +22,15 @@ import model.Customer;
 )
 public class EditProfileServlet extends HttpServlet {
 
-    private static final String IMAGE_UPLOAD_DIR = "uploads";
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         Part filePart = request.getPart("profileImage");
+        InputStream imageStream = null;
+        if (filePart != null && filePart.getSize() > 0) {
+            imageStream = filePart.getInputStream();
+        }
+
         String fullName = request.getParameter("fullName");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
@@ -44,24 +46,9 @@ public class EditProfileServlet extends HttpServlet {
         }
         int customerID = customerProfile.getCustomerID();
 
-        // Xử lý upload ảnh
-        String imagePath = customerProfile.getProfilePicture();
-        String uploadPath = getServletContext().getRealPath("") + File.separator + IMAGE_UPLOAD_DIR;
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdir();
-        }
-
-        if (filePart != null && filePart.getSize() > 0) {
-            String fileName = "profile_" + customerID + ".jpg";
-            String filePath = uploadPath + File.separator + fileName;
-            filePart.write(filePath);
-            imagePath = IMAGE_UPLOAD_DIR + "/" + fileName;
-        }
-
         CustomerDAO dao = new CustomerDAO();
         try {
-            dao.updateCustomerProfile(fullName, email, phone, address, dateOfBirth, gender, uploadPath, customerID);
+            dao.updateCustomerProfile(fullName, email, phone, address, dateOfBirth, gender, imageStream, customerID);
         } catch (ParseException ex) {
             Logger.getLogger(EditProfileServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -73,10 +60,9 @@ public class EditProfileServlet extends HttpServlet {
         customerProfile.setAddress(address);
         customerProfile.setDateOfBirth(dateOfBirth);
         customerProfile.setGender(gender);
-        customerProfile.setProfilePicture(imagePath);
-
+        
         session.setAttribute("customerAccount", customerProfile);
-        response.sendRedirect("profile");
+        response.sendRedirect("profile.jsp");
     }
 
     @Override

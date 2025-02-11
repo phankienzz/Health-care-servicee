@@ -46,7 +46,7 @@
                                 <div class="profile-view">
                                     <div class="profile-img-wrap">
                                         <div class="profile-img">
-                                            <a href="#"><img class="avatar" src="${sessionScope.customerAccount.profilePicture}" alt="user"></a>
+                                            <a href="#"><img class="avatar" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" ></a>
                                         </div>
                                     </div>
                                     <div class="profile-basic">
