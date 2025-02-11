@@ -107,10 +107,10 @@
                                 <h5 class="mb-4">Categories</h5>
 
                                 <ul class="list-unstyled">
-                                <c:forEach var="cate" items="${cateList}">
+                                    <c:forEach var="cate" items="${cateList}">
                                         <li class="align-items-center">
                                             <a href="#">${cate.name}</a>
-                                            <span>(14)</span>
+                                            <!--<span>(14)</span>-->
                                         </li>
                                     </c:forEach>
                                 </ul>

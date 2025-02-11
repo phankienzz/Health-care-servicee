@@ -44,8 +44,6 @@ public class LogoutServlet extends HttpServlet {
             throws ServletException, IOException {
         // Xóa session
         HttpSession session = request.getSession(false);
-//        session.removeAttribute("customerAccount");
-//        response.sendRedirect("index_1.jsp");
         if (session != null) {
             session.invalidate();
         }
@@ -61,12 +59,6 @@ public class LogoutServlet extends HttpServlet {
                 }
             }
         }
-//        Cookie usernameCookie = new Cookie("user", "");
-//        Cookie passwordCookie = new Cookie("password", "");
-//        usernameCookie.setMaxAge(0);
-//        passwordCookie.setMaxAge(0);
-//        response.addCookie(usernameCookie);
-//        response.addCookie(passwordCookie);
 
         // Chuyển hướng về trang login
         response.sendRedirect("index_1.jsp");
