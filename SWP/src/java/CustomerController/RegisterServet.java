@@ -63,7 +63,7 @@ public class RegisterServet extends HttpServlet {
             LocalDate dateOfBirth = LocalDate.parse(dateOfBirthStr, format);
             LocalDate today = LocalDate.now(); // Lấy ngày hiện tại
             if (dateOfBirth.isAfter(today)) {
-                request.setAttribute("error", "Ngay sinh khong duoc qua ngay hien tai");
+                request.setAttribute("error", "Date of Birth cannot be in the future!");
                 request.getRequestDispatcher("register.jsp").forward(request, response);
                 return;
             }
