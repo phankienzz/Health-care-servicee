@@ -55,7 +55,7 @@
                                                 <div class="profile-info-left">
                                                     <h3 class="user-name m-t-0 mb-0">${sessionScope.customerAccount.fullName}</h3>
                                                 <small class="text-muted">Gynecologist</small>
-                                                <div class="staff-id">Employee ID : DR-0001</div>
+                                                <div class="staff-id">Customer ID : ${sessionScope.customerAccount.customerID}</div>
                                                 <div class="staff-msg"><a href="change-password.jsp" class="btn btn-primary">Change password</a></div>
                                             </div>
                                         </div>
