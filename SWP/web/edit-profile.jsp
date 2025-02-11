@@ -40,10 +40,11 @@
                     <form action="editprofile" method="post" enctype="multipart/form-data">
                         <div class="card-box">
                             <h3 class="card-title">Basic Informations</h3>
+                            <h4 class="center">${error}</h4>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="col-md-12">
-                                        <<div class="profile-img-wrap">
+                                        <div class="profile-img-wrap">
                                             <img class="inline-block" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" >
                                         <div class="fileupload btn">
                                             <span class="btn-text">Edit</span>
@@ -64,7 +65,7 @@
                                                 <div class="form-group form-focus">
                                                     <label class="focus-label">Birth Date</label>
                                                     <div class="cal-icon">
-                                                        <input class="form-control floating " type="text" name="dateOfBirth" placeholder="YYYY-MM-DD" value="${sessionScope.customerAccount.dateOfBirth}">
+                                                        <input class="form-control floating " type="date" name="dateOfBirth" placeholder="YYYY-MM-DD" value="${sessionScope.customerAccount.dateOfBirth}">
                                                     </div>
                                                 </div>
                                             </div>

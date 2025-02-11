@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
+import java.text.SimpleDateFormat;
 import model.Customer;
 
 @MultipartConfig(
@@ -38,6 +39,31 @@ public class EditProfileServlet extends HttpServlet {
             if (filePart != null && filePart.getSize() > 0) {
                 imageStream = filePart.getInputStream();
             }
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date parsedDate = sdf.parse(dateOfBirth);
+            java.util.Date currentDate = new java.util.Date();
+
+            // Kiểm tra nếu ngày sinh lớn hơn ngày hiện tại
+            if (parsedDate.after(currentDate)) {
+                request.setAttribute("error", "Date of Birth cannot be in the future!");
+                request.getRequestDispatcher("edit-profile.jsp").forward(request, response);
+                return;
+            }
+
+            if (!phone.matches("^0[0-9]{9}$")) {
+                request.setAttribute("error", "Invalid phone number! Must be 10 digits and start with 0.");
+                request.getRequestDispatcher("edit-profile.jsp").forward(request, response);
+                return;
+            }
+
+            // Kiểm tra định dạng email hợp lệ
+            if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
+                request.setAttribute("error", "Email invalid !! (ex: example@gmail.com).");
+                request.getRequestDispatcher("edit-profile.jsp").forward(request, response);
+                return;
+            }
+            
             HttpSession session = request.getSession();
             Customer customerProfile = (Customer) session.getAttribute("customerAccount");
             if (customerProfile == null) {
