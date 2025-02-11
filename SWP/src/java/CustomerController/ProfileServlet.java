@@ -48,7 +48,7 @@ public class ProfileServlet extends HttpServlet {
             return;
         }
 
-        request.setAttribute("customerProfile", customerProfile);
+        request.setAttribute("customerAccount", customerProfile);
         request.getRequestDispatcher("profile.jsp").forward(request, response);
 
     }
