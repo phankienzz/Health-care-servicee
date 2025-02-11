@@ -311,34 +311,38 @@
                             <a href="addStaff" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Add Staff</a>
                         </div>
                     </div>
-                    <div class="row filter-row">
-                        <div class="col-sm-6 col-md-3">
-                            <div class="form-group form-focus">
-                                <label class="focus-label">Employee ID</label>
-                                <input type="text" class="form-control floating">
+                    <form action="searchStaff" method="POST">
+                        <div class="row filter-row">
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group form-focus">
+                                    <label class="focus-label">Staff ID</label>
+                                    <input name="staffID" type="text" class="form-control floating">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group form-focus">
+                                    <label class="focus-label">Staff Name</label>
+                                    <input name="name" type="text" class="form-control floating">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group form-focus select-focus">
+                                    <label class="focus-label">Role</label>
+                                    <select name="roleID" class="select floating">
+                                        <option valule = "Select Role">Select Role</option>
+                                        <c:forEach var = "role" items="${listRole}">
+                                            <option value="${role.roleID}">${role.roleName}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                
+                                <input type="submit" value="Search" class="btn btn-success btn-block"/>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-3">
-                            <div class="form-group form-focus">
-                                <label class="focus-label">Employee Name</label>
-                                <input type="text" class="form-control floating">
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <div class="form-group form-focus select-focus">
-                                <label class="focus-label">Role</label>
-                                <select class="select floating">
-                                    <option>Select Role</option>
-                                    <c:forEach var = "role" items="${listRole}">
-                                        <option>${role.roleName}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <a href="#" class="btn btn-success btn-block"> Search </a>
-                        </div>
-                    </div>
+                    </form>
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-responsive">
@@ -346,7 +350,7 @@
                                     <thead>
                                         <tr>
                                             <th style="min-width:200px;">Name</th>
-                                            <th>Employee ID</th>
+                                            <th>Staff ID</th>
                                             <th>Email</th>
                                             <th>Mobile</th>
                                             <th style="min-width: 110px;">Join Date</th>
