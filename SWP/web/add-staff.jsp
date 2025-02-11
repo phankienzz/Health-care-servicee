@@ -1,8 +1,16 @@
+<%-- 
+    Document   : add-staff
+    Created on : Feb 9, 2025, 12:06:29 AM
+    Author     : Gigabyte
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
 
-    <!-- employees23:21-->
+    <!-- add-employee24:07-->
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -10,7 +18,6 @@
         <title>Preclinic - Medical & Hospital - Bootstrap 4 Admin Template</title>
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="assets/css/dataTables.bootstrap4.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
@@ -43,7 +50,7 @@
                                         <a href="activities.html">
                                             <div class="media">
                                                 <span class="avatar">
-                                                    <img alt="John Doe" src="assets/img/user.jpg" class="img-fluid">
+                                                    <img alt="John Doe" src="assets/img/user.jpg" class="img-fluid rounded-circle">
                                                 </span>
                                                 <div class="media-body">
                                                     <p class="noti-details"><span class="noti-title">John Doe</span> added new task <span class="noti-title">Patient appointment booking</span></p>
@@ -156,7 +163,7 @@
                             <li class="submenu">
                                 <a href="#"><i class="fa fa-user"></i> <span> Employees </span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
-                                    <li><a class="active" href="employees.html">Employees List</a></li>
+                                    <li><a class="active" href="staff">Employees List</a></li>
                                     <li><a href="leaves.html">Leaves</a></li>
                                     <li><a href="holidays.html">Holidays</a></li>
                                     <li><a href="attendance.html">Attendance</a></li>
@@ -296,167 +303,99 @@
             <div class="page-wrapper">
                 <div class="content">
                     <div class="row">
-                        <div class="col-sm-4 col-3">
-                            <h4 class="page-title">Employee</h4>
-                        </div>
-                        <div class="col-sm-8 col-9 text-right m-b-20">
-                            <a href="add-employee.html" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Add Employee</a>
-                        </div>
-                    </div>
-                    <div class="row filter-row">
-                        <div class="col-sm-6 col-md-3">
-                            <div class="form-group form-focus">
-                                <label class="focus-label">Employee ID</label>
-                                <input type="text" class="form-control floating">
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <div class="form-group form-focus">
-                                <label class="focus-label">Employee Name</label>
-                                <input type="text" class="form-control floating">
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <div class="form-group form-focus select-focus">
-                                <label class="focus-label">Role</label>
-                                <select class="select floating">
-                                    <option>Select Role</option>
-                                    <option>Nurse</option>
-                                    <option>Pharmacist</option>
-                                    <option>Laboratorist</option>
-                                    <option>Accountant</option>
-                                    <option>Receptionist</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <a href="#" class="btn btn-success btn-block"> Search </a>
+                        <div class="col-lg-8 offset-lg-2">
+                            <h4 class="page-title">Add Staff</h4>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="table-responsive">
-                                <table class="table table-striped custom-table">
-                                    <thead>
-                                        <tr>
-                                            <th style="min-width:200px;">Name</th>
-                                            <th>Employee ID</th>
-                                            <th>Email</th>
-                                            <th>Mobile</th>
-                                            <th style="min-width: 110px;">Join Date</th>
-                                            <th>Role</th>
-                                            <th class="text-right">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <img width="28" height="28" src="assets/img/user.jpg" class="rounded-circle" alt=""> <h2>Albina Simonis</h2>
-                                            </td>
-                                            <td>NS-0001</td>
-                                            <td>albinasimonis@example.com</td>
-                                            <td>828-634-2744</td>
-                                            <td>7 May 2015</td>
-                                            <td>
-                                                <span class="custom-badge status-green">Nurse</span>
-                                            </td>
-                                            <td class="text-right">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="edit-employee.html"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                    </div>
+                        <div class="col-lg-8 offset-lg-2">
+                            <form action="addStaff" method="post">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+
+                                            <label>First Name <span class="text-danger">*</span></label>
+                                            <input name="firstName" class="form-control" type="text" <c:if test="${firstName != null}"> value="${firstName}"     </c:if>>
+
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Last Name</label>
+                                                <input name="lastName" class="form-control" type="text" <c:if test="${lastName != null}"> value="${lastName}"     </c:if>>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Email <span class="text-danger">*</span></label>
+                                                <input name="email" class="form-control" type="email" <c:if test="${email != null}"> value="${email}"     </c:if>>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Password</label>
+                                                <input name="password" class="form-control" type="password" <c:if test="${password != null}"> value="${password}"     </c:if>>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Confirm Password</label>
+                                                <input name="confirmPass" class="form-control" type="password" <c:if test="${confirmPass != null}"> value="${confirmPass}"     </c:if>>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Joining Date <span class="text-danger">*</span></label>
+                                                <div class="cal-icon">
+                                                    <input name="hireDate" class="form-control datetimepicker" type="text" <c:if test="${hireDate != null}"> value="${hireDate}"     </c:if>>
                                                 </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img width="28" height="28" src="assets/img/user.jpg" class="rounded-circle" alt=""> <h2>Cristina Groves</h2>
-                                            </td>
-                                            <td>DR-0001</td>
-                                            <td>cristinagroves@example.com</td>
-                                            <td>928-344-5176</td>
-                                            <td>1 Jan 2013</td>
-                                            <td>
-                                                <span class="custom-badge status-blue">Doctor</span>
-                                            </td>
-                                            <td class="text-right">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="edit-employee.html"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                    </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Phone </label>
+                                                <input name="phone" class="form-control" type="text" <c:if test="${phone != null}"> value="${phone}"     </c:if>>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Role</label>
+                                                <select name = "roleID" class="select" >
+                                                <c:forEach var="role" items="${listRole}">
+                                                    <option value="${role.roleID}" <c:if test="${roleID == role.roleID}"> selected    </c:if>>${role.roleName}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="display-block">Status</label>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="status" id="employee_active" value="Active" <c:if test="${status == null}"> checked    </c:if><c:if test="${status == 'Active'}"> checked    </c:if>>
+                                                    <label class="form-check-label" for="employee_active">
+                                                        Active
+                                                    </label>
                                                 </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img width="28" height="28" src="assets/img/user.jpg" class="rounded-circle" alt=""> <h2>Mary Mericle</h2>
-                                            </td>
-                                            <td>SF-0003</td>
-                                            <td>marymericle@example.com</td>
-                                            <td>603-831-4983</td>
-                                            <td>27 Dec 2017</td>
-                                            <td>
-                                                <span class="custom-badge status-grey">Accountant</span>
-                                            </td>
-                                            <td class="text-right">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="edit-employee.html"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                    </div>
+                                                <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="status" id="employee_inactive" value="Inactive" <c:if test="${status == 'Inactive'}"> checked    </c:if>>
+                                                    <label class="form-check-label" for="employee_inactive">
+                                                        Inactive
+                                                    </label>
                                                 </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img width="28" height="28" src="assets/img/user.jpg" class="rounded-circle" alt=""> <h2>Haylie Feeney</h2>
-                                            </td>
-                                            <td>SF-0002</td>
-                                            <td>hayliefeeney@example.com</td>
-                                            <td>616-774-4962</td>
-                                            <td>21 Apr 2017</td>
-                                            <td>
-                                                <span class="custom-badge status-grey">Laboratorist</span>
-                                            </td>
-                                            <td class="text-right">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="edit-employee.html"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img width="28" height="28" src="assets/img/user.jpg" class="rounded-circle" alt=""> <h2>Zoe Butler</h2>
-                                            </td>
-                                            <td>SF-0001</td>
-                                            <td>zoebutler@example.com</td>
-                                            <td>444-555-9999</td>
-                                            <td>19 May 2012</td>
-                                            <td>
-                                                <span class="custom-badge status-grey">Pharmacist</span>
-                                            </td>
-                                            <td class="text-right">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="edit-employee.html"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <c:if test="${error != null}">
+                                    <h4><i style="color: red">${error}</i></h4>
+                                    </c:if>
+                                    <c:if test="${mess != null}">
+                                    <h4><i style="color: green">${mess}</i></h4>
+                                    </c:if>
+                                <div class="m-t-20 text-center">
+                                    <button class="btn btn-primary submit-btn">Create Staff</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -670,33 +609,19 @@
                     </div>
                 </div>
             </div>
-            <div id="delete_employee" class="modal fade delete-modal" role="dialog">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-body text-center">
-                            <img src="assets/img/sent.png" alt="" width="50" height="46">
-                            <h3>Are you sure want to delete this Employee?</h3>
-                            <div class="m-t-20"> <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="sidebar-overlay" data-reff=""></div>
         <script src="assets/js/jquery-3.2.1.min.js"></script>
         <script src="assets/js/popper.min.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
-        <script src="assets/js/jquery.dataTables.min.js"></script>
-        <script src="assets/js/dataTables.bootstrap4.min.js"></script>
         <script src="assets/js/jquery.slimscroll.js"></script>
         <script src="assets/js/select2.min.js"></script>
+        <script src="assets/js/app.js"></script>
         <script src="assets/js/moment.min.js"></script>
         <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
-        <script src="assets/js/app.js"></script>
+
     </body>
 
 
-    <!-- employees23:22-->
+    <!-- add-employee24:07-->
 </html>
