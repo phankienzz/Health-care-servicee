@@ -16,9 +16,9 @@ import jakarta.servlet.http.Part;
 import model.Customer;
 
 @MultipartConfig(
-    fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-    maxFileSize = 1024 * 1024 * 10,      // 10MB
-    maxRequestSize = 1024 * 1024 * 50    // 50MB
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
 )
 public class EditProfileServlet extends HttpServlet {
 
@@ -26,11 +26,6 @@ public class EditProfileServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         Part filePart = request.getPart("profileImage");
-        InputStream imageStream = null;
-        if (filePart != null && filePart.getSize() > 0) {
-            imageStream = filePart.getInputStream();
-        }
-
         String fullName = request.getParameter("fullName");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
@@ -38,31 +33,36 @@ public class EditProfileServlet extends HttpServlet {
         String dateOfBirth = request.getParameter("dateOfBirth");
         String gender = request.getParameter("gender");
 
-        HttpSession session = request.getSession();
-        Customer customerProfile = (Customer) session.getAttribute("customerAccount");
-        if (customerProfile == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
-        int customerID = customerProfile.getCustomerID();
-
-        CustomerDAO dao = new CustomerDAO();
         try {
+            InputStream imageStream = null;
+            if (filePart != null && filePart.getSize() > 0) {
+                imageStream = filePart.getInputStream();
+            }
+            HttpSession session = request.getSession();
+            Customer customerProfile = (Customer) session.getAttribute("customerAccount");
+            if (customerProfile == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+            int customerID = customerProfile.getCustomerID();
+
+            CustomerDAO dao = new CustomerDAO();
             dao.updateCustomerProfile(fullName, email, phone, address, dateOfBirth, gender, imageStream, customerID);
+
+            // Cập nhật session
+            customerProfile.setFullName(fullName);
+            customerProfile.setEmail(email);
+            customerProfile.setPhone(phone);
+            customerProfile.setAddress(address);
+            customerProfile.setDateOfBirth(dateOfBirth);
+            customerProfile.setGender(gender);
+
+            session.setAttribute("customerAccount", customerProfile);
+            response.sendRedirect("profile.jsp");
         } catch (ParseException ex) {
             Logger.getLogger(EditProfileServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        // Cập nhật session
-        customerProfile.setFullName(fullName);
-        customerProfile.setEmail(email);
-        customerProfile.setPhone(phone);
-        customerProfile.setAddress(address);
-        customerProfile.setDateOfBirth(dateOfBirth);
-        customerProfile.setGender(gender);
-        
-        session.setAttribute("customerAccount", customerProfile);
-        response.sendRedirect("profile.jsp");
     }
 
     @Override
