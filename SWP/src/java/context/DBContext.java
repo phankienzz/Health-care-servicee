@@ -30,12 +30,13 @@ public class DBContext {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public static void main(String[] args) {
         try {
             System.out.println(new DBContext().connection);
             System.out.println("*Hello");
-            
+            System.out.println("toi ten kien");
+
         } catch (Exception e) {
         }
     }
