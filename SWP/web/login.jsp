@@ -47,12 +47,14 @@
                                 <div class="input-group">
                                     <input type="password" name="password" id="password" value="<%= savedPassword %>" class="form-control" placeholder="Enter your password">
                                     <div class="input-group-append">
-                                        <button type="button" class="btn btn-outline-secondary" id="togglePasswordUser" tabindex="-1" onclick="togglePasswordVisibility('password', 'togglePasswordUser')">
-                                            <i class="fa fa-eye"></i>
+                                        <button type="button" class="btn btn-outline-secondary" id="togglePasswordUser" tabindex="-1" onclick="togglePasswordVisibility()">
+                                            <i class="fa fa-eye" id="passwordIcon"></i>
                                         </button>
                                     </div>
                                 </div>
                             </div>
+
+
 
                             <div class="form-group checkbox">
                                 <label><input type="checkbox" name="rememberMe" <% if (!savedUsername.isEmpty()) { %> checked <% } %>> Remember me</label>
@@ -87,27 +89,27 @@
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/app.js"></script>
         <script>
-                                            function toggleForm() {
-                                                var userType = document.getElementById("userType").value;
-                                                var userLabel = document.getElementById("userLabel");
-                                                var userInput = document.getElementById("user");
-                                                var googleLogin = document.getElementById("googleLoginBtn");
+                function toggleForm() {
+                    var userType = document.getElementById("userType").value;
+                    var userLabel = document.getElementById("userLabel");
+                    var userInput = document.getElementById("user");
+                    var googleLogin = document.getElementById("googleLoginBtn");
 
-                                                if (userType === "customer") {
-                                                    userLabel.innerText = "Username";
-                                                    userInput.placeholder = "Enter your username";
-                                                    userInput.type = "text";
-                                                    googleLogin.style.display = "block";
-                                                } else {
-                                                    userLabel.innerText = "Email";
-                                                    userInput.placeholder = "Enter your email";
-                                                    userInput.type = "email";
-                                                    googleLogin.style.display = "none";
-                                                }
-                                            }
-                                            window.onload = function () {
-                                                toggleForm();
-                                            };
+                    if (userType === "customer") {
+                        userLabel.innerText = "Username";
+                        userInput.placeholder = "Enter your username";
+                        userInput.type = "text";
+                        googleLogin.style.display = "block";
+                    } else {
+                        userLabel.innerText = "Email";
+                        userInput.placeholder = "Enter your email";
+                        userInput.type = "email";
+                        googleLogin.style.display = "none";
+                    }
+                }
+                window.onload = function () {
+                    toggleForm();
+                };
         </script>
     </body>
 </html>

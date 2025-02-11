@@ -5,6 +5,7 @@
 package dao;
 
 import context.DBContext;
+import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -79,32 +80,59 @@ public class CustomerDAO extends DBContext {
         return customers; // Trả về danh sách khách hàng
     }
 
-    public Customer checkCustomerAccountExist(String username, String email) {
-        String sql = "select * from Customer where username = ? or email = ? ";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, username);
-            st.setString(2, email);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                return new Customer(
-                        rs.getInt("customerID"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("fullName"),
-                        rs.getString("email"),
-                        rs.getString("phone"),
-                        rs.getString("address"),
-                        rs.getString("accountStatus"),
-                        rs.getString("registrationDate"),
-                        rs.getString("dateOfBirth"),
-                        rs.getString("gender"),
-                        rs.getString("profilePicture"));
-            }
-        } catch (SQLException e) {
-        }
-        return null;
+//    public Customer checkCustomerAccountExist(String username, String email) {
+//        String sql = "select * from Customer where username = ? or email = ? ";
+//        try {
+//            PreparedStatement st = connection.prepareStatement(sql);
+//            st.setString(1, username);
+//            st.setString(2, email);
+//            ResultSet rs = st.executeQuery();
+//            while (rs.next()) {
+//                return new Customer(
+//                        rs.getInt("customerID"),
+//                        rs.getString("username"),
+//                        rs.getString("password"),
+//                        rs.getString("fullName"),
+//                        rs.getString("email"),
+//                        rs.getString("phone"),
+//                        rs.getString("address"),
+//                        rs.getString("accountStatus"),
+//                        rs.getString("registrationDate"),
+//                        rs.getString("dateOfBirth"),
+//                        rs.getString("gender"),
+//                        rs.getString("profilePicture"));
+//            }
+//        } catch (SQLException e) {
+//        }
+//        return null;
+//    }
+    
+    
+    
+    public boolean isUsernameExist(String username) {
+    String sql = "SELECT customerID FROM Customer WHERE username = ?";
+    try (PreparedStatement st = connection.prepareStatement(sql)) {
+        st.setString(1, username);
+        ResultSet rs = st.executeQuery();
+        return rs.next(); // Nếu có dữ liệu, username đã tồn tại
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return false;
+}
+
+public boolean isEmailExist(String email) {
+    String sql = "SELECT customerID FROM Customer WHERE email = ?";
+    try (PreparedStatement st = connection.prepareStatement(sql)) {
+        st.setString(1, email);
+        ResultSet rs = st.executeQuery();
+        return rs.next(); // Nếu có dữ liệu, email đã tồn tại
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
 
     //Đăng nhập
     public Customer customerLogin(String username, String password) {
@@ -156,7 +184,7 @@ public class CustomerDAO extends DBContext {
 
 
     
-    public void updateCustomerProfile(String fullName, String email, String phone, String address, String dateOfBirth, String gender, String profilePicture, int customerID) throws ParseException {
+   public void updateCustomerProfile(String fullName, String email, String phone, String address, String dateOfBirth, String gender, InputStream profilePicture, int customerID) throws ParseException {
     String sql = "UPDATE Customer SET fullName = ?, email = ?, phone = ?, address = ?, dateOfBirth = ?, gender = ?, profilePicture = ? WHERE customerID = ?";
     try {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -170,7 +198,11 @@ public class CustomerDAO extends DBContext {
         st.setString(4, address);
         st.setDate(5, sqlDate);
         st.setString(6, gender);
-        st.setString(7, profilePicture);
+        if (profilePicture != null) {
+            st.setBlob(7, profilePicture);
+        } else {
+            st.setNull(7, java.sql.Types.BLOB);
+        }
         st.setInt(8, customerID);
 
         int rowsUpdated = st.executeUpdate();
@@ -183,6 +215,7 @@ public class CustomerDAO extends DBContext {
         System.err.println("Error: " + e.getMessage());
     }
 }
+
     
     public Customer getCustomerByEmail(String email){
         String sql = "select * from Customer where email = ?";
@@ -280,35 +313,35 @@ public class CustomerDAO extends DBContext {
         }
     }
 
-    public static void main(String[] args) {
-    CustomerDAO dao = new CustomerDAO();
-
-    // Simulating a customer login to retrieve customer details.
-    Customer customer = dao.customerLogin("patient1", "hash111");
-
-    // Checking if customer exists
-    if (customer != null) {
-        System.out.println("Customer logged in: " + customer);
-
-        // You might want to update some details of the customer
-        String newFullName = "John Doe Updated";
-        String newEmail = "john.doe.updated@example.com";
-        String newPhone = "123-456-7890";
-        String newAddress = "123 Updated St, City, State, 12345";
-        String newDateOfBirth = "1990-01-01"; // Format: yyyy-MM-dd
-        String newGender = "Male";
-        String newProfileImage = "new_image_path.jpg";
-        int customerID = customer.getCustomerID(); // Assuming getCustomerID() gives the customer's ID
-
-        try {
-            dao.updateCustomerProfile(newFullName, newEmail, newPhone, newAddress,
-                    newDateOfBirth, newGender, newProfileImage, customerID);
-        } catch (ParseException e) {
-            System.err.println("Error parsing date: " + e.getMessage());
-        }
-    } else {
-        System.out.println("Login failed: No customer found.");
-    }
-}
+//    public static void main(String[] args) {
+//    CustomerDAO dao = new CustomerDAO();
+//
+//    // Simulating a customer login to retrieve customer details.
+//    Customer customer = dao.customerLogin("patient1", "hash111");
+//
+//    // Checking if customer exists
+//    if (customer != null) {
+//        System.out.println("Customer logged in: " + customer);
+//
+//        // You might want to update some details of the customer
+//        String newFullName = "John Doe Updated";
+//        String newEmail = "john.doe.updated@example.com";
+//        String newPhone = "123-456-7890";
+//        String newAddress = "123 Updated St, City, State, 12345";
+//        String newDateOfBirth = "1990-01-01"; // Format: yyyy-MM-dd
+//        String newGender = "Male";
+//        String newProfileImage = "new_image_path.jpg";
+//        int customerID = customer.getCustomerID(); // Assuming getCustomerID() gives the customer's ID
+//
+//        try {
+//            dao.updateCustomerProfile(newFullName, newEmail, newPhone, newAddress,
+//                    newDateOfBirth, newGender, newProfileImage, customerID);
+//        } catch (ParseException e) {
+//            System.err.println("Error parsing date: " + e.getMessage());
+//        }
+//    } else {
+//        System.out.println("Login failed: No customer found.");
+//    }
+//}
 
 }

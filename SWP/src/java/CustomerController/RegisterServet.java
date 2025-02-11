@@ -92,13 +92,19 @@ public class RegisterServet extends HttpServlet {
                 request.getRequestDispatcher("register.jsp").forward(request, response);
             } else {
                 CustomerDAO dao = new CustomerDAO();
-                Customer ac = dao.checkCustomerAccountExist(username, email);
-                if (ac == null) {
+                boolean usernameExists = dao.isUsernameExist(username);
+                boolean emailExists = dao.isEmailExist(email);
+
+                if (usernameExists) {
+                    request.setAttribute("error", "Username already exists!");
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                } else if (emailExists) {
+                    request.setAttribute("error", "Email already exists!");
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                } else {
+                    // Nếu cả hai đều chưa tồn tại, tiến hành đăng ký
                     dao.customerSignup(username, password, fullname, email, phone, address, dateOfBirthStr, gender);
                     response.sendRedirect("login.jsp");
-                } else {
-                    request.setAttribute("error", "Account Exist !");
-                    request.getRequestDispatcher("register.jsp").forward(request, response);
                 }
             }
         } catch (DateTimeParseException e) {

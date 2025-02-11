@@ -43,13 +43,14 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="col-md-12">
-                                        <div class="profile-img-wrap">
-                                            <a href="#"><img class="avatar" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" ></a>
+                                        <<div class="profile-img-wrap">
+                                            <img class="inline-block" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" >
                                         <div class="fileupload btn">
                                             <span class="btn-text">Edit</span>
                                             <input class="upload" type="file" name="profileImage">
                                         </div>
                                     </div>
+
                                     <div class="profile-basic">
                                         <div class="row">
                                             <div class="col-md-6">
