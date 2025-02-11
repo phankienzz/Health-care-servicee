@@ -46,14 +46,15 @@
                                 <div class="profile-view">
                                     <div class="profile-img-wrap">
                                         <div class="profile-img">
-                                            <a href="#"><img class="avatar" src="${sessionScope.customerAccount.profilePicture}" alt="user"></a>
-                                        </div>
+                                            <a href="#"><img class="avatar" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" ></a>
+
                                     </div>
-                                    <div class="profile-basic">
-                                        <div class="row">
-                                            <div class="col-md-5">
-                                                <div class="profile-info-left">
-                                                    <h3 class="user-name m-t-0 mb-0">${sessionScope.customerAccount.fullName}</h3>
+                                </div>
+                                <div class="profile-basic">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="profile-info-left">
+                                                <h3 class="user-name m-t-0 mb-0">${sessionScope.customerAccount.fullName}</h3>
                                                 <small class="text-muted">Gynecologist</small>
                                                 <div class="staff-id">Customer ID : ${sessionScope.customerAccount.customerID}</div>
                                                 <div class="staff-msg"><a href="change-password.jsp" class="btn btn-primary">Change password</a></div>
@@ -96,16 +97,16 @@
                         <li class="nav-item"><a class="nav-link" href="#bottom-tab3" data-toggle="tab">Messages</a></li>
                     </ul>
 
-                    
-        </div>
-        <div class="sidebar-overlay" data-reff=""></div>
-        <script src="assets/js/jquery-3.2.1.min.js"></script>
-        <script src="assets/js/popper.min.js"></script>
-        <script src="assets/js/bootstrap.min.js"></script>
-        <script src="assets/js/jquery.slimscroll.js"></script>
-        <script src="assets/js/app.js"></script>
-    </body>
+
+                </div>
+                <div class="sidebar-overlay" data-reff=""></div>
+                <script src="assets/js/jquery-3.2.1.min.js"></script>
+                <script src="assets/js/popper.min.js"></script>
+                <script src="assets/js/bootstrap.min.js"></script>
+                <script src="assets/js/jquery.slimscroll.js"></script>
+                <script src="assets/js/app.js"></script>
+                </body>
 
 
-    <!-- profile23:03-->
-</html>
+                <!-- profile23:03-->
+                </html>
