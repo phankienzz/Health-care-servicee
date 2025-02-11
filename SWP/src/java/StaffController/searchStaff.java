@@ -4,6 +4,7 @@
  */
 package StaffController;
 
+import context.ValidFunction;
 import dao.RoleDAO;
 import dao.StaffDAO;
 import java.io.IOException;
@@ -30,25 +31,6 @@ public class searchStaff extends HttpServlet {
             throws ServletException, IOException {
 
     }
-    public static String normalizeName(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            return "";
-        }
-        name = name.trim().toLowerCase(); // Loại bỏ khoảng trắng đầu cuối và chuyển về chữ thường
-        String[] words = name.split("\\s+"); // Tách các từ dựa vào khoảng trắng
-        StringBuilder normalized = new StringBuilder();
-
-        for (String word : words) {
-            if (!word.isEmpty()) {
-                normalized.append(Character.toUpperCase(word.charAt(0))) // Viết hoa chữ cái đầu
-                        .append(word.substring(1)) // Giữ lại phần còn lại
-                        .append(" "); // Thêm khoảng trắng giữa các từ
-            }
-        }
-
-        return normalized.toString().trim(); // Loại bỏ khoảng trắng cuối cùng
-    }
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -56,7 +38,8 @@ public class searchStaff extends HttpServlet {
         String staffID_raw = request.getParameter("staffID");
         String name = request.getParameter("name");
         String roleID = request.getParameter("roleID");
-        
+
+        ValidFunction valid = new ValidFunction();
         RoleDAO roleDAO = new RoleDAO();
         List<Role> listRole = roleDAO.getAllRole();
         request.setAttribute("listRole", listRole);
@@ -65,11 +48,12 @@ public class searchStaff extends HttpServlet {
         if (staffID_raw.isEmpty() && name.isEmpty() && roleID.equalsIgnoreCase("Select role")) {
             listStaff = staffDAO.getAllStaff();
         }
-        if (staffID_raw != null && !staffID_raw.isEmpty()) {
+        if (!staffID_raw.isEmpty()) {
             try {
                 int staffID = Integer.parseInt(staffID_raw);
                 Staff s = new Staff();
                 s = staffDAO.getStaffByID(staffID);
+                request.setAttribute("staffID", staffID);
                 listStaff.add(s);
             } catch (Exception e) {
                 listStaff = staffDAO.getAllStaff();
@@ -77,10 +61,12 @@ public class searchStaff extends HttpServlet {
                 request.getRequestDispatcher("staff.jsp").forward(request, response);
             }
         }
-        if (name != null && !name.isEmpty()) {
-            listStaff = staffDAO.getStaffByName(normalizeName(name));
+        if ( !name.isEmpty()) {
+            request.setAttribute("name", name);
+            listStaff = staffDAO.getStaffByName(valid.normalizeName(name));
         }
         if (!roleID.equalsIgnoreCase("Select role")) {
+            request.setAttribute("roleID", roleID);
             listStaff = staffDAO.getStaffByRole(Integer.parseInt(roleID));
         }
 

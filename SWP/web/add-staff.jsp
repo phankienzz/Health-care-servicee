@@ -363,7 +363,7 @@
                                                 <label>Role</label>
                                                 <select name = "roleID" class="select" >
                                                 <c:forEach var="role" items="${listRole}">
-                                                    <option value="${role.roleID}" <c:if test="${roleID == role.roleID}"> selected    </c:if>>${role.roleName}</option>
+                                                    <option value="${role.roleID}" <c:if test="${roleID == role.roleID}"> selected</c:if>>${role.roleName}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>

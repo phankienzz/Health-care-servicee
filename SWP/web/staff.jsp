@@ -313,22 +313,22 @@
                             <div class="col-sm-6 col-md-3">
                                 <div class="form-group form-focus">
                                     <label class="focus-label">Staff ID</label>
-                                    <input name="staffID" type="text" class="form-control floating">
+                                    <input name="staffID"   type="text" class="form-control floating" <c:if test="${staffID != null}"> value="${staffID}"</c:if>>
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-3">
                                 <div class="form-group form-focus">
                                     <label class="focus-label">Staff Name</label>
-                                    <input name="name" type="text" class="form-control floating">
+                                    <input name="name" type="text" class="form-control floating" <c:if test="${name != null}"> value="${name}"</c:if>>
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-3">
                                 <div class="form-group form-focus select-focus">
                                     <label class="focus-label">Role</label>
                                     <select name="roleID" class="select floating">
-                                        <option valule = "Select Role">Select Role</option>
+                                        <option value = "Select Role" >Select Role</option>
                                         <c:forEach var = "role" items="${listRole}">
-                                            <option value="${role.roleID}">${role.roleName}</option>
+                                            <option value="${role.roleID}" <c:if test="${roleID == role.roleID}"> selected</c:if>>${role.roleName}</option>
                                         </c:forEach>
                                     </select>
                                 </div>

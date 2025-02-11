@@ -4,6 +4,7 @@
  */
 package StaffController;
 
+import context.ValidFunction;
 import dao.RoleDAO;
 import dao.StaffDAO;
 import java.io.IOException;
@@ -36,54 +37,12 @@ public class addStaff extends HttpServlet {
         request.getRequestDispatcher("add-staff.jsp").forward(request, response);
     }
 
-    public static boolean containsDigitOrSpecialChar(String str) {
-        return str.matches(".*[^a-zA-Z\\s].*"); // Kiểm tra nếu có ký tự không phải chữ cái hoặc khoảng trắng
-    }
-
-    public static String normalizeName(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            return "";
-        }
-        name = name.trim().toLowerCase(); // Loại bỏ khoảng trắng đầu cuối và chuyển về chữ thường
-        String[] words = name.split("\\s+"); // Tách các từ dựa vào khoảng trắng
-        StringBuilder normalized = new StringBuilder();
-
-        for (String word : words) {
-            if (!word.isEmpty()) {
-                normalized.append(Character.toUpperCase(word.charAt(0))) // Viết hoa chữ cái đầu
-                        .append(word.substring(1)) // Giữ lại phần còn lại
-                        .append(" "); // Thêm khoảng trắng giữa các từ
-            }
-        }
-
-        return normalized.toString().trim(); // Loại bỏ khoảng trắng cuối cùng
-    }
-
-    public static boolean isValidPhoneNumber(String input) {
-        // Kiểm tra chuỗi có đúng 10 ký tự số không
-        if (!input.matches("\\d{10}")) {
-            return false;
-        }
-
-        // Kiểm tra chuỗi có bắt đầu bằng '0' không
-        return input.startsWith("0");
-    }
-
-    public static boolean isValidPassword(String password) {
-        // Kiểm tra độ dài ít nhất 8 ký tự
-        if (password.length() < 8) {
-            return false;
-        }
-
-        // Biểu thức chính quy kiểm tra điều kiện
-        String regex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$";
-
-        return password.matches(regex);
-    }
+    
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ValidFunction valid = new ValidFunction();
         StaffDAO staffDAO = new StaffDAO();
         RoleDAO roleDAO = new RoleDAO();
         List<Role> listRole = roleDAO.getAllRole();
@@ -106,12 +65,12 @@ public class addStaff extends HttpServlet {
         request.setAttribute("hireDate", hireDate);
         request.setAttribute("password", password);
         request.setAttribute("confirmPass", confirmPass);
-        if (containsDigitOrSpecialChar(firstName) || containsDigitOrSpecialChar(lastName)) {
+        if (valid.containsDigitOrSpecialChar(firstName) || valid.containsDigitOrSpecialChar(lastName)) {
             request.setAttribute("error", "First Name or Last Name cannot contain digit or special character");
             request.getRequestDispatcher("add-staff.jsp").forward(request, response);
             return;
         }
-        if (!isValidPassword(password)) {
+        if (!valid.isValidPassword(password)) {
             request.setAttribute("error", "Password must contain at least 8 character, uppercase letter, digit and special character");
             request.getRequestDispatcher("add-staff.jsp").forward(request, response);
             return;
@@ -121,12 +80,12 @@ public class addStaff extends HttpServlet {
             request.getRequestDispatcher("add-staff.jsp").forward(request, response);
             return;
         }
-        if (!isValidPhoneNumber(phone)) {
+        if (!valid.isValidPhoneNumber(phone)) {
             request.setAttribute("error", "Phone number is not exist, please check again");
             request.getRequestDispatcher("add-staff.jsp").forward(request, response);
             return;
         }
-        String fullName = normalizeName(firstName) + " " + normalizeName(lastName);
+        String fullName = valid.normalizeName(firstName) + " " + valid.normalizeName(lastName);
         staffDAO.createStaff(fullName, email, password, phone, hireDate, Integer.parseInt(roleID), status);
         request.setAttribute("mess", "Add staff succesfully");
         request.removeAttribute("firstName");
