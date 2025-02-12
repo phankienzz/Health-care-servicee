@@ -1038,6 +1038,18 @@ textarea.form-control {
 	-moz-transition: all 0.4s ease;
 	transition: all 0.4s ease;
 }
+
+.page-wrapper-profile {
+	left: 0;
+
+	margin: 100px 100px 0px 100px;
+	padding-top: 50px;
+	position: relative;
+	-webkit-transition: all 0.4s ease;
+	-moz-transition: all 0.4s ease;
+	transition: all 0.4s ease;
+}
+
 .page-wrapper > .content {
 	padding: 30px;
 }
