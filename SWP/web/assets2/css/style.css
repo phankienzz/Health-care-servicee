@@ -111,14 +111,14 @@ input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focu
 }
 
 .btn-main {
-  background: #009efb;
+  background: #e12454;
   color: #fff;
-  border-color: #009efb;
+  border-color: #e12454;
 }
 
 .btn-main:hover {
-  background: #e12454;
-  border-color: #e12454;
+  background: #009efb;
+  border-color: #009efb;
   color: #fff;
 }
 
@@ -679,7 +679,7 @@ a:focus {
 }
 
 .service i {
-  color: #e12454;
+  color: black;
 }
 
 .service h4 {
@@ -937,7 +937,7 @@ a:focus {
 
 .testimonial-block.style-2 i {
   bottom: -20px;
-  color: #e12454;
+  color: black;
   opacity: .3;
 }
 
@@ -1464,6 +1464,7 @@ a:focus {
 
 .backtop {
   position: fixed;
+  /* background: black; */
   background: #e12454;
   z-index: 9999;
   display: inline-block;
