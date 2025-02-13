@@ -94,7 +94,7 @@ public class LoginServlet extends HttpServlet {
                 request.setAttribute("userType", "staff");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             } else {
-                session.setAttribute("user", staff);
+                session.setAttribute("staffAccount", staff);
                 if (rememberMe != null) {
                     Cookie staffEmail = new Cookie("email", user);
                     Cookie staffPassword = new Cookie("password", password);

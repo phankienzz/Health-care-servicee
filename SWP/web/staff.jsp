@@ -22,7 +22,40 @@
         <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-
+        <style>
+            .pagination {
+                float: right;
+                margin: 0 0 5px;
+            }
+            .pagination li a {
+                border: none;
+                font-size: 13px;
+                min-width: 30px;
+                min-height: 30px;
+                color: #999;
+                margin: 0 2px;
+                line-height: 30px;
+                border-radius: 2px !important;
+                text-align: center;
+                padding: 0 6px;
+            }
+            .pagination li a:hover {
+                color: #666;
+            }
+            .pagination li.active a, .pagination li.active a.page-link {
+                background: #03A9F4;
+            }
+            .pagination li.active a:hover {
+                background: #0397d6;
+            }
+            .pagination li.disabled i {
+                color: #ccc;
+            }
+            .pagination li i {
+                font-size: 16px;
+                padding-top: 6px
+            }
+        </style>
     </head>
 
     <body>
@@ -314,19 +347,19 @@
                                 <div class="form-group form-focus">
                                     <label class="focus-label">Staff ID</label>
                                     <input name="staffID"   type="text" class="form-control floating" <c:if test="${staffID != null}"> value="${staffID}"</c:if>>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <div class="form-group form-focus">
-                                    <label class="focus-label">Staff Name</label>
-                                    <input name="name" type="text" class="form-control floating" <c:if test="${name != null}"> value="${name}"</c:if>>
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="form-group form-focus">
+                                        <label class="focus-label">Staff Name</label>
+                                        <input name="name" type="text" class="form-control floating" <c:if test="${name != null}"> value="${name}"</c:if>>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <div class="form-group form-focus select-focus">
-                                    <label class="focus-label">Role</label>
-                                    <select name="roleID" class="select floating">
-                                        <option value = "Select Role" >Select Role</option>
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="focus-label">Role</label>
+                                        <select name="roleID" class="select floating">
+                                            <option value = "Select Role" >Select Role</option>
                                         <c:forEach var = "role" items="${listRole}">
                                             <option value="${role.roleID}" <c:if test="${roleID == role.roleID}"> selected</c:if>>${role.roleName}</option>
                                         </c:forEach>
@@ -334,7 +367,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-3">
-                                
+
                                 <input type="submit" value="Search" class="btn btn-success btn-block"/>
                             </div>
                         </div>
@@ -343,7 +376,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-responsive">
-                                <table class="table table-striped custom-table">
+                                <table class="table table-striped custom-table  ">
                                     <thead>
                                         <tr>
                                             <th style="min-width:200px;">Name</th>
@@ -396,6 +429,18 @@
                                 </table>
                             </div>
                         </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="hint-text">Showing <b>6</b> out of <b>10</b> entries</div>
+                        <ul class="pagination">
+                            <li class="page-item "><a href="#">Previous</a></li>
+                            <li class="page-item" ><a href="#">1</a></li>
+                            <li class="page-item" ><a href="#">2</a></li>
+                            <li class="page-item" ><a href="#">3</a></li>
+                            <li class="page-item" ><a href="#">4</a></li>
+                            <li class="page-item" ><a href="#">5</a></li>
+                            <li class="page-item "><a href="#">Next</a></li>
+                        </ul>
                     </div>
                 </div>
                 <div class="notification-box">

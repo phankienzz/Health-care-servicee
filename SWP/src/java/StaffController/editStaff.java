@@ -58,8 +58,7 @@ public class editStaff extends HttpServlet {
         request.setAttribute("roleID", s.getRoleID());
         request.setAttribute("status", s.getStatus());
         request.setAttribute("hireDate", valid.formatDate(s.getHireDate()));
-        request.setAttribute("password", s.getPassword());
-        request.setAttribute("confirmPass", s.getPassword());
+
         RoleDAO roleDAO = new RoleDAO();
         List<Role> listRole = roleDAO.getAllRole();
         request.setAttribute("listRole", listRole);
@@ -82,8 +81,7 @@ public class editStaff extends HttpServlet {
         String phone = request.getParameter("phone");
         String roleID = request.getParameter("roleID");
         String hireDate = request.getParameter("hireDate");
-        String password = request.getParameter("password");
-        String confirmPass = request.getParameter("confirmPass");
+
         String status = request.getParameter("status");
         request.setAttribute("firstName", firstName);
         request.setAttribute("lastName", lastName);
@@ -92,31 +90,21 @@ public class editStaff extends HttpServlet {
         request.setAttribute("roleID", roleID);
         request.setAttribute("status", status);
         request.setAttribute("hireDate", hireDate);
-        request.setAttribute("password", password);
-        request.setAttribute("confirmPass", confirmPass);
+
         request.setAttribute("staffID", staffID_raw);
         if (valid.containsDigitOrSpecialChar(firstName) || valid.containsDigitOrSpecialChar(lastName)) {
             request.setAttribute("error", "First Name or Last Name cannot contain digit or special character");
             request.getRequestDispatcher("edit-staff.jsp").forward(request, response);
             return;
         }
-        if (!valid.isValidPassword(password)) {
-            request.setAttribute("error", "Password must contain at least 8 character, uppercase letter, digit and special character");
-            request.getRequestDispatcher("edit-staff.jsp").forward(request, response);
-            return;
-        }
-        if (!password.equals(confirmPass)) {
-            request.setAttribute("error", "Confirm password incorrect");
-            request.getRequestDispatcher("edit-staff.jsp").forward(request, response);
-            return;
-        }
+
         if (!valid.isValidPhoneNumber(phone)) {
             request.setAttribute("error", "Phone number is not exist, please check again");
             request.getRequestDispatcher("edit-staff.jsp").forward(request, response);
             return;
         }
         String fullName = valid.normalizeName(firstName) + " " + valid.normalizeName(lastName);
-        staffDAO.updateStaff(staffID, fullName, email, password, phone, hireDate, Integer.parseInt(roleID), status);
+        staffDAO.updateStaff(staffID, fullName, email, phone, hireDate, Integer.parseInt(roleID), status);
         request.setAttribute("mess", "Update staff succesfully");
         request.getRequestDispatcher("edit-staff.jsp").forward(request, response);
     }
