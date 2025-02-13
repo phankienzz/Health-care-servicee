@@ -12,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import model.Category;
 import model.News;
@@ -49,6 +50,23 @@ public class categoryNews extends HttpServlet {
         }
     }
 
+    private String formatDate(String date) {
+        if (date == null || date.isEmpty()) {
+            return null;
+        }
+        try {
+            // Chuyển từ chuỗi ngày ban đầu (yyyy-MM-dd HH:mm:ss) sang Timestamp
+            java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
+            // Định dạng Timestamp thành chuỗi dd/MM/yyyy
+            java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
+            return dateFormat.format(timestamp);
+        } catch (IllegalArgumentException e) {
+            // Xử lý nếu chuỗi ngày không đúng định dạng ban đầu
+            System.err.println("Error formatting date: " + e.getMessage());
+            return null;
+        }
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -56,6 +74,12 @@ public class categoryNews extends HttpServlet {
         NewsDAO dao = new NewsDAO();
         List<News> list = dao.getNewsByCategory(categoryID);
         List<Category> cateList = dao.getAllCategoryNews();
+
+        // Định dạng ngày sử dụng phương thức tiện ích
+        for (News news : list) {
+            news.setCreated_at(formatDate(news.getCreated_at()));
+            news.setUpdated_at(formatDate(news.getUpdated_at()));
+        }
         request.setAttribute("cateList", cateList);
         request.setAttribute("newsList", list);
         request.getRequestDispatcher("blog-sidebar.jsp").forward(request, response);

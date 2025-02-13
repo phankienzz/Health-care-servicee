@@ -8,7 +8,6 @@ import context.DBContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import model.Category;
@@ -23,23 +22,14 @@ public class NewsDAO extends DBContext {
     public List<News> getAllNews() {
         List<News> news = new ArrayList<>();
         String sql = "select * from Posts where status = 1";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                // Kiểm tra giá trị Timestamp
-                java.sql.Timestamp createdTimestamp = rs.getTimestamp("created_at");
-                java.sql.Timestamp updatedTimestamp = rs.getTimestamp("updated_at");
+                String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
+                String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
 
-                // Định dạng ngày nếu không null
-                String createdAt = (createdTimestamp != null) ? dateFormat.format(createdTimestamp) : null;
-                String updatedAt = (updatedTimestamp != null) ? dateFormat.format(updatedTimestamp) : null;
-
-                // Tạo đối tượng News
-                News n = new News(
-                        rs.getInt("post_id"),
+                News n = new News(rs.getInt("post_id"),
                         rs.getString("title"),
                         rs.getString("content"),
                         rs.getInt("created_by"),
@@ -48,16 +38,16 @@ public class NewsDAO extends DBContext {
                         rs.getString("image"),
                         rs.getString("detail"),
                         createdAt,
-                        updatedAt
-                );
+                        updatedAt);
+//                        rs.getString("created_at"),
+//                        rs.getString("updated_at"));
                 news.add(n);
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Ghi log lỗi để kiểm tra
         }
         return news;
     }
-
+    
     public List<Category> getAllCategoryNews() {
         List<Category> cate = new ArrayList<>();
         String sql = "select * from Categories where status = 1";
@@ -79,24 +69,16 @@ public class NewsDAO extends DBContext {
 
     public List<News> getNewsByCategory(String category_id) {
         List<News> news = new ArrayList<>();
-        String sql = "select * from Posts where status = 1";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
+        String sql = "select * from Posts where category_id = ? and status = 1";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, category_id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                // Kiểm tra giá trị Timestamp
-                java.sql.Timestamp createdTimestamp = rs.getTimestamp("created_at");
-                java.sql.Timestamp updatedTimestamp = rs.getTimestamp("updated_at");
+                String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
+                String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
 
-                // Định dạng ngày nếu không null
-                String createdAt = (createdTimestamp != null) ? dateFormat.format(createdTimestamp) : null;
-                String updatedAt = (updatedTimestamp != null) ? dateFormat.format(updatedTimestamp) : null;
-
-                // Tạo đối tượng News
-                News n = new News(
-                        rs.getInt("post_id"),
+                News n = new News(rs.getInt("post_id"),
                         rs.getString("title"),
                         rs.getString("content"),
                         rs.getInt("created_by"),
@@ -105,12 +87,12 @@ public class NewsDAO extends DBContext {
                         rs.getString("image"),
                         rs.getString("detail"),
                         createdAt,
-                        updatedAt
-                );
+                        updatedAt);
+//                        rs.getString("created_at"),
+//                        rs.getString("updated_at"));
                 news.add(n);
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Ghi log lỗi để kiểm tra
         }
         return news;
     }
@@ -122,7 +104,7 @@ public class NewsDAO extends DBContext {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, "%" + title + "%");
             ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
+            while (rs.next()) {                
                 News n = new News(
                         rs.getInt("post_id"),
                         rs.getString("title"),

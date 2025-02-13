@@ -48,16 +48,24 @@ public class newsServlet extends HttpServlet {
             out.println("</body>");
             out.println("</html>");
         }
-    } 
-    
-    public static String formatDate(String input) {
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-        LocalDateTime dateTime = LocalDateTime.parse(input, inputFormatter);
-        return dateTime.format(outputFormatter);
     }
-
+    
+    private String formatDate(String date) {
+        if (date == null || date.isEmpty()) {
+            return null;
+        }
+        try {
+            // Chuyển từ chuỗi ngày ban đầu (yyyy-MM-dd HH:mm:ss) sang Timestamp
+            java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
+            // Định dạng Timestamp thành chuỗi dd/MM/yyyy
+            java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
+            return dateFormat.format(timestamp);
+        } catch (IllegalArgumentException e) {
+            // Xử lý nếu chuỗi ngày không đúng định dạng ban đầu
+            System.err.println("Error formatting date: " + e.getMessage());
+            return null;
+        }
+    }
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -65,6 +73,11 @@ public class newsServlet extends HttpServlet {
         NewsDAO dao = new NewsDAO();
         List<News> newsList = dao.getAllNews();
         List<Category> cateList = dao.getAllCategoryNews();
+        // Định dạng ngày sử dụng phương thức tiện ích
+        for (News news : newsList) {
+            news.setCreated_at(formatDate(news.getCreated_at()));
+            news.setUpdated_at(formatDate(news.getUpdated_at()));
+        }
         request.setAttribute("cateList", cateList);
         request.setAttribute("newsList", newsList);
         request.getRequestDispatcher("blog-sidebar.jsp").forward(request, response);
