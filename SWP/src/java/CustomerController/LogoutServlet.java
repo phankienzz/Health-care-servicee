@@ -21,7 +21,6 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet(name = "LogoutServlet", urlPatterns = {"/logout"})
 public class LogoutServlet extends HttpServlet {
 
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -42,25 +41,9 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Xóa session
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
 
-        // Xóa cookie
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("username") || cookie.getName().equals("password")) {
-                    cookie.setValue("");
-                    cookie.setMaxAge(0);
-                    response.addCookie(cookie);
-                }
-            }
-        }
-
-        // Chuyển hướng về trang login
+        HttpSession session = request.getSession();
+        session.removeAttribute("customerAccount");
         response.sendRedirect("index_1.jsp");
     }
 

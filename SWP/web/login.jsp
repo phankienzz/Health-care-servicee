@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -10,14 +10,25 @@
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     </head>
     <body class="bg-light">
+        <%
+            Cookie[] cookies = request.getCookies();
+            String savedUsername = "";
+            String savedPassword = "";
+
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("username".equals(cookie.getName())) {
+                        savedUsername = cookie.getValue();
+                    }
+                    if ("password".equals(cookie.getName())) {
+                        savedPassword = cookie.getValue();
+                    }
+                }
+            }
+        %>
         <div class="container d-flex justify-content-center align-items-center vh-100">
             <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%;">
                 <div class="card-body">
-
-                    <% String savedUsername = (String) request.getAttribute("savedUsername");
-                           if (savedUsername == null) savedUsername = ""; %>
-                    <% String savedPassword = (String) request.getAttribute("savedPassword");
-                           if (savedPassword == null) savedPassword = ""; %>
                     <div class="text-center mb-4">
                         <a href="index-2.html">
                             <img src="assets/img/logo-dark.png" alt="Logo" class="mb-3" style="max-width: 120px;">
