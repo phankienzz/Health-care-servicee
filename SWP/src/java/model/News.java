@@ -15,28 +15,28 @@ public class News {
     private int postId;
     private String title;
     private String content;
-    private int createdBy;
-    private int categoryId;
-    private String status;
+    private int created_by;
+    private int category_id;
+    private int status;
     private String image;
     private String detail;
-    private Date createdAt;
-    private Date updatedAt;
+    private String created_at;
+    private String updated_at;
 
     public News() {
     }
 
-    public News(int postId, String title, String content, int createdBy, int categoryId, String status, String image, String detail, Date createdAt, Date updatedAt) {
+    public News(int postId, String title, String content, int created_by, int category_id, int status, String image, String detail, String created_at, String updated_at) {
         this.postId = postId;
         this.title = title;
         this.content = content;
-        this.createdBy = createdBy;
-        this.categoryId = categoryId;
+        this.created_by = created_by;
+        this.category_id = category_id;
         this.status = status;
         this.image = image;
         this.detail = detail;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
     }
 
     public int getPostId() {
@@ -63,27 +63,27 @@ public class News {
         this.content = content;
     }
 
-    public int getCreatedBy() {
-        return createdBy;
+    public int getCreated_by() {
+        return created_by;
     }
 
-    public void setCreatedBy(int createdBy) {
-        this.createdBy = createdBy;
+    public void setCreated_by(int created_by) {
+        this.created_by = created_by;
     }
 
-    public int getCategoryId() {
-        return categoryId;
+    public int getCategory_id() {
+        return category_id;
     }
 
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory_id(int category_id) {
+        this.category_id = category_id;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -103,25 +103,25 @@ public class News {
         this.detail = detail;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public String getCreated_at() {
+        return created_at;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
     }
 
-    public Date getUpdatedAt() {
-        return updatedAt;
+    public String getUpdated_at() {
+        return updated_at;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setUpdated_at(String updated_at) {
+        this.updated_at = updated_at;
     }
 
     @Override
     public String toString() {
-        return "News{" + "postId=" + postId + ", title=" + title + ", content=" + content + ", createdBy=" + createdBy + ", categoryId=" + categoryId + ", status=" + status + ", image=" + image + ", detail=" + detail + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
+        return "News{" + "postId=" + postId + ", title=" + title + ", content=" + content + ", created_by=" + created_by + ", category_id=" + category_id + ", status=" + status + ", image=" + image + ", detail=" + detail + ", created_at=" + created_at + ", updated_at=" + updated_at + '}';
     }
 
 }

@@ -5,7 +5,7 @@
 
 package blog;
 
-import dao.BlogDAO;
+import dao.NewsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.Blog;
+import model.News;
 
 /**
  *
@@ -71,8 +71,8 @@ public class homeblog extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        BlogDAO blogDAO = new BlogDAO();
-        List<Blog> blogs = blogDAO.getAllBlogs();
+        NewsDAO blogDAO = new NewsDAO();
+        List<News> blogs = blogDAO.getAllBlogs();
         
         // Đặt danh sách blogs vào request attribute
         request.setAttribute("blogs", blogs);
