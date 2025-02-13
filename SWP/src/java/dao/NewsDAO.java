@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Category;
 import model.News;
-
 /**
  *
  * @author Hoang
@@ -28,7 +27,6 @@ public class NewsDAO extends DBContext {
             while (rs.next()) {
                 String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
                 String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
-
                 News n = new News(rs.getInt("post_id"),
                         rs.getString("title"),
                         rs.getString("content"),
@@ -47,7 +45,7 @@ public class NewsDAO extends DBContext {
         }
         return news;
     }
-    
+
     public List<Category> getAllCategoryNews() {
         List<Category> cate = new ArrayList<>();
         String sql = "select * from Categories where status = 1";
@@ -104,7 +102,7 @@ public class NewsDAO extends DBContext {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, "%" + title + "%");
             ResultSet rs = pre.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 News n = new News(
                         rs.getInt("post_id"),
                         rs.getString("title"),
