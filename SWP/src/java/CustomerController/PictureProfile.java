@@ -66,7 +66,7 @@ public class PictureProfile extends HttpServlet {
 
         try {
             DBContext dbContext = new DBContext();
-            Connection conn = (Connection) dbContext.connection; // Lấy kết nối từ DBContext
+            Connection conn = (Connection) dbContext.connection; 
 
             String sql = "SELECT profilePicture FROM Customer WHERE customerID = ?";
             PreparedStatement st = conn.prepareStatement(sql);

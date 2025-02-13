@@ -12,6 +12,10 @@
         <servlet-name>addBlog</servlet-name>
         <servlet-class>blog.addBlog</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>HomeBlogSeverlet</servlet-name>
+        <servlet-class>blog.HomeBlogSeverlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RequestPassword</servlet-name>
         <url-pattern>/requestPassword</url-pattern>
@@ -27,6 +31,10 @@
     <servlet-mapping>
         <servlet-name>addBlog</servlet-name>
         <url-pattern>/addblog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomeBlogSeverlet</servlet-name>
+        <url-pattern>/homeblogseverlet</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index_1.jsp</welcome-file>

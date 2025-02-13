@@ -43,7 +43,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="col-md-12">
-                                        <<div class="profile-img-wrap">
+                                        <div class="profile-img-wrap">
                                             <img class="inline-block" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" >
                                         <div class="fileupload btn">
                                             <span class="btn-text">Edit</span>
@@ -81,8 +81,11 @@
                                             <div class="col-md-6">
                                                 <div class="form-group form-focus">
                                                     <label class="focus-label">Email</label>
-                                                    <input type="text" class="form-control floating" name="email" value="${sessionScope.customerAccount.email}">
+                                                    <input type="text" class="form-control floating" name="email" value="${sessionScope.customerAccount.email}" >
+                                                    
                                                 </div>
+                                                    <div><p class="text-danger">${error}</p>
+                                                    </div>
                                             </div>
                                         </div>
                                     </div>

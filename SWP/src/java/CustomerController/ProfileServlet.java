@@ -42,7 +42,7 @@ public class ProfileServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Customer customerProfile = (Customer) session.getAttribute("customerAccount");
 
-        // Kiểm tra nếu người dùng chưa đăng nhập
+        
         if (customerProfile == null) {
             response.sendRedirect("login.jsp");
             return;

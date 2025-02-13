@@ -5,23 +5,30 @@
 
 package blog;
 
-import dao.BlogDAO;
+
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.OutputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;  // Import PreparedStatement
+import java.sql.ResultSet;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.Blog;
+import context.DBContext; // Import DBContext để lấy kết nối
+import java.io.PrintWriter;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name="homeblog", urlPatterns={"/homeblog"})
-public class homeblog extends HttpServlet {
+@WebServlet(name="LoadBlogImage", urlPatterns={"/LoadBlogImage"})
+public class LoadBlogImage extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,10 +45,10 @@ public class homeblog extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet homeblog</title>");  
+            out.println("<title>Servlet LoadBlogImage</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet homeblog at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet LoadBlogImage at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,9 +64,50 @@ public class homeblog extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
-    } 
+        throws ServletException, IOException {
+    String postIdParam = request.getParameter("postId");
+    
+    if (postIdParam == null || postIdParam.isEmpty()) {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing postId parameter.");
+        return;
+    }
+
+    try {
+        int postId = Integer.parseInt(postIdParam);
+        DBContext dbContext = new DBContext();
+        Connection conn = dbContext.connection; 
+
+        String sql = "SELECT image FROM Posts WHERE post_id = ?";
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, postId);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    Blob blob = rs.getBlob("image");
+                    if (blob != null && blob.length() > 0) {
+                        response.setContentType("image/jpeg");
+                        try (OutputStream out = response.getOutputStream()) {
+                            out.write(blob.getBytes(1, (int) blob.length()));
+                        }
+                    } else {
+                        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Image not found.");
+                    }
+                } else {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Post not found.");
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LoadBlogImage.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            conn.close();
+        }
+    } catch (NumberFormatException e) {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid postId parameter.");
+    } catch (SQLException e) {
+        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error.");
+        e.printStackTrace();
+    }
+}
+
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -71,18 +119,8 @@ public class homeblog extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        BlogDAO blogDAO = new BlogDAO();
-        List<Blog> blogs = blogDAO.getAllBlogs();
-        
-        // Đặt danh sách blogs vào request attribute
-        request.setAttribute("blogs", blogs);
-        
-        // Chuyển hướng đến trang JSP để hiển thị
-        request.getRequestDispatcher("blog.jsp").forward(request, response);
+        processRequest(request, response);
     }
-
-
-    
 
     /** 
      * Returns a short description of the servlet.

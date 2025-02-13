@@ -1,6 +1,9 @@
 package dao;
-
+import java.sql.Blob;
 import context.DBContext;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,45 +14,53 @@ import model.Customer;
 
 public class BlogDAO extends DBContext {
 
-    public void addBlogPost(String title, String content, int createdBy, int categoryId, boolean status, String detail, String imagePaths) {
-    String sql = "INSERT INTO Posts (title, content, created_by, category_id, status, detail, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    
-    try (PreparedStatement st = connection.prepareStatement(sql)) {
-        st.setString(1, title);
-        st.setString(2, content);
-        st.setInt(3, createdBy);
-        st.setInt(4, categoryId);
-        st.setBoolean(5, status);
-        st.setString(6, detail);
-        st.setString(7, imagePaths);
+    private static final Logger LOGGER = Logger.getLogger(BlogDAO.class.getName());
 
-        st.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
+public void addBlogPost(String title, String content, int createdBy, int categoryId, boolean status, String detail, InputStream imageStream) {
+        String sql = "INSERT INTO Posts (title, content, created_by, category_id, status, detail, image, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, GETDATE())";
 
-
-
-
-    public void updateBlogPost(int postId, String title, String content, String status, String image, String detail) {
-        String sql = "UPDATE BlogPosts SET title = ?, content = ?, status = ?, image = ?, detail = ?, updated_at = GETDATE() WHERE post_id = ?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, title);
             st.setString(2, content);
-            st.setString(3, status);
-            st.setString(4, image);
-            st.setString(5, detail);
-            st.setInt(6, postId);
-            st.executeUpdate();
+            st.setInt(3, createdBy);
+            st.setInt(4, categoryId);
+            st.setBoolean(5, status);
+            st.setString(6, detail);
+            
+            if (imageStream != null) {
+                st.setBinaryStream(7, imageStream);
+            } else {
+                st.setNull(7, java.sql.Types.BLOB);
+            }
+
+            int rowsAffected = st.executeUpdate();
+            if (rowsAffected > 0) {
+                LOGGER.info("Blog post added successfully.");
+            } else {
+                LOGGER.warning("No rows inserted, check the input data.");
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error adding blog post", e);
         }
     }
 
 
-public List<Blog> getAllBlogs() {
+//    public void updateBlogPost(int postId, String title, String content, String status, String image, String detail) {
+//        String sql = "UPDATE BlogPosts SET title = ?, content = ?, status = ?, image = ?, detail = ?, updated_at = GETDATE() WHERE post_id = ?";
+//        try {
+//            PreparedStatement st = connection.prepareStatement(sql);
+//            st.setString(1, title);
+//            st.setString(2, content);
+//            st.setString(3, status);
+//            st.setString(4, image);
+//            st.setString(5, detail);
+//            st.setInt(6, postId);
+//            st.executeUpdate();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
+    public List<Blog> getAllBlogs() {
     List<Blog> blogs = new ArrayList<>();
     String sql = "SELECT post_id, title, content, image, detail FROM Posts";
 
@@ -61,50 +72,73 @@ public List<Blog> getAllBlogs() {
             blog.setPostId(rs.getInt("post_id"));
             blog.setTitle(rs.getString("title"));
             blog.setContent(rs.getString("content"));
-            blog.setImage(rs.getString("image"));  // Lấy đường dẫn ảnh
-            blog.setDetail(rs.getString("detail"));
 
+            Blob blob = rs.getBlob("image");
+            if (blob != null) {
+                blog.setImage("LoadBlogImage?postId=" + blog.getPostId());
+            } else {
+                blog.setImage("default.jpg"); // Ảnh mặc định nếu không có ảnh
+            }
+
+            blog.setDetail(rs.getString("detail"));
             blogs.add(blog);
         }
 
     } catch (SQLException e) {
-        e.printStackTrace(); // Ghi log lỗi
+        e.printStackTrace();
+        System.err.println("❌ Error fetching blogs: " + e.getMessage());
     }
     return blogs;
 }
 
+    
+    
+   public Blog getBlogbyid(String id) {
+    String sql = "SELECT post_id, title, image, detail FROM Posts WHERE post_id = ?";
 
-//  public static void main(String[] args) {
-//    BlogDAO blogDAO = new BlogDAO(); // Create a BlogDAO object
-//
-//    // Add a new blog post
-//    String title = "Example Title";
-//    String content = "Example Content";
-//    int createdBy = 1;
-//    int categoryId = 1;
-//    String status = "Published";
-//
-//    blogDAO.addBlogPost(title, content, createdBy, categoryId, true, "This is a detailed description.", "path/to/image.jpg");
-//
-//    System.out.println("New Blog Post Added Successfully: " + title);
-//
-//    // Check all blog posts
-//    List<Blog> blogs = blogDAO.getAllBlogs();
-//    if (blogs.isEmpty()) {
-//        System.out.println("No blog posts available.");
-//    } else {
-//        for (Blog blog : blogs) {
-//            System.out.println("Retrieved Blog Post:");
-//            System.out.println("ID: " + blog.getPostId());
-//            System.out.println("Title: " + blog.getTitle());
-//            System.out.println("Content: " + blog.getContent());
-//            System.out.println("Image: " + blog.getImage());
-//            System.out.println("Detail: " + blog.getDetail());
-//            System.out.println("-------------------------------------");
-//        }
-//    }
-//}
+    try (PreparedStatement st = connection.prepareStatement(sql)) {
+        st.setString(1, id);
+
+        try (ResultSet rs = st.executeQuery()) {
+            if (rs.next()) {
+                Blog blog = new Blog();
+                blog.setPostId(rs.getInt("post_id")); 
+                blog.setTitle(rs.getString("title"));
+
+                Blob blob = rs.getBlob("image");
+                if (blob != null) {
+                    blog.setImage("LoadBlogImage?postId=" + blog.getPostId()); // Tải hình ảnh động
+                } else {
+                    blog.setImage("default.jpg"); // Ảnh mặc định nếu không có hình
+                }
+
+                blog.setDetail(rs.getString("detail"));
+                return blog;
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null;
 }
 
 
-    
+
+
+public static void main(String[] args) {
+        BlogDAO blogDAO = new BlogDAO();
+        List<Blog> blogs = blogDAO.getAllBlogs();
+
+        if (blogs.isEmpty()) {
+            System.out.println("⚠️ No blogs found in the database.");
+        } else {
+            System.out.println("✅ Blogs loaded successfully!");
+            for (Blog blog : blogs) {
+                System.out.println("📝 Title: " + blog.getTitle());
+                System.out.println("📸 Image: " + blog.getImage());
+                System.out.println("📝 Content: " + blog.getContent());
+                System.out.println("--------------------------------");
+            }
+        }
+    }
+}

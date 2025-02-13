@@ -26,9 +26,9 @@
                     <li class="submenu">
                         <a href="#"><i class="fa fa-commenting-o"></i> <span> Blog</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
-                            <li><a href="blog.html">Blog</a></li>
-                            <li><a href="blog-details.html">Blog View</a></li>
-                            <li><a class="active" href="add-blog.html">Add Blog</a></li>
+                            <li><a href="homeblogseverlet">Blog</a></li>
+                            <li><a href="blog-details.jsp">Blog View</a></li>
+                            <li><a class="active" href="add-blog.jsp">Add Blog</a></li>
                             <li><a href="edit-blog.html">Edit Blog</a></li>
                         </ul>
                     </li>
@@ -40,7 +40,9 @@
                     <div class="row">
                         <div class="col-lg-8 offset-lg-2">
                             <h4 class="page-title">Add Blog</h4>
-                            <form method="post" action="addblog" enctype="multipart/form-data">
+                           <form method="post" action="addblog" enctype="multipart/form-data">
+
+
                                 <div class="form-group">
                                     <label>Blog Name</label>
                                     <input class="form-control" type="text" name="name" required>
@@ -51,8 +53,10 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Blog Images</label>
-                                    <input class="form-control" type="file" name="images" multiple required>
-                                    <small class="form-text text-muted">Max. file size: 50 MB. Allowed images: jpg, gif, png. Maximum 10 images only.</small>
+                                    <input class="form-control" type="file" name="image" accept="image/jpeg, image/png, image/gif" multiple required>
+                                    <small class="form-text text-muted">
+                                        Max. file size: 50 MB per image. Allowed: jpg, gif, png. Max 10 images.
+                                    </small>
                                 </div>
                                 <div class="form-group">
                                     <label>Blog content</label>
@@ -61,11 +65,11 @@
                                 <div class="form-group">
                                     <label class="display-block">Blog Status</label>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" id="blog_active" value="on" checked>
+                                        <input class="form-check-input" type="radio" name="status" id="blog_active" value="true" checked>
                                         <label class="form-check-label" for="blog_active">Active</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" id="blog_inactive" value="off">
+                                        <input class="form-check-input" type="radio" name="status" id="blog_inactive" value="false">
                                         <label class="form-check-label" for="blog_inactive">Inactive</label>
                                     </div>
                                 </div>
@@ -74,13 +78,26 @@
                                 </div>
                             </form>
 
-
                             <script>
                                 document.querySelector('form').addEventListener('submit', function (event) {
                                     const files = document.querySelector('input[type="file"]').files;
+                                    const maxFiles = 10;
+                                    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+                                    if (files.length > maxFiles) {
+                                        alert('You can upload up to ' + maxFiles + ' images only.');
+                                        event.preventDefault();
+                                        return;
+                                    }
+
                                     for (let i = 0; i < files.length; i++) {
-                                        if (files[i].size > 50 * 1024 * 1024) { // 50 MB
-                                            alert('File size exceeds 50 MB');
+                                        if (files[i].size > 50 * 1024 * 1024) {
+                                            alert('File size exceeds 50 MB: ' + files[i].name);
+                                            event.preventDefault();
+                                            return;
+                                        }
+                                        if (!allowedTypes.includes(files[i].type)) {
+                                            alert('Invalid file type: ' + files[i].name);
                                             event.preventDefault();
                                             return;
                                         }
@@ -91,6 +108,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="sidebar-overlay" data-reff=""></div>
             <script src="assets/js/jquery-3.2.1.min.js"></script>
             <script src="assets/js/popper.min.js"></script>

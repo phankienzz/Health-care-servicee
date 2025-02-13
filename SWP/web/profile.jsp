@@ -27,7 +27,17 @@
     <body>
         <jsp:include page="editseting.jsp"></jsp:include>
 
+            <style>
+                .enlarged-img {
+                    max-width: 80%;
+                    max-height: 80vh;
+                    border-radius: 5px;
+                    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+                }
 
+
+
+            </style>
 
             <div class="page-wrapper">
                 <div class="content">
@@ -46,14 +56,35 @@
                                 <div class="profile-view">
                                     <div class="profile-img-wrap">
                                         <div class="profile-img">
-                                            <a href="#"><img class="avatar" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" ></a>
+                                            <a href="#" data-toggle="modal" data-target="#imageModal">
+                                                <img class="avatar" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" alt="Profile Picture">
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Modal Bootstrap -->
+                                <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Profile Picture</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <img id="modalImage" class="img-fluid enlarged-img" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" alt="Profile Picture">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="profile-basic">
-                                        <div class="row">
-                                            <div class="col-md-5">
-                                                <div class="profile-info-left">
-                                                    <h3 class="user-name m-t-0 mb-0">${sessionScope.customerAccount.fullName}</h3>
+                                </div>
+
+
+                                <div class="profile-basic">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="profile-info-left">
+                                                <h3 class="user-name m-t-0 mb-0">${sessionScope.customerAccount.fullName}</h3>
                                                 <small class="text-muted">Gynecologist</small>
                                                 <div class="staff-id">Employee ID : DR-0001</div>
                                                 <div class="staff-msg"><a href="change-password.jsp" class="btn btn-primary">Change password</a></div>
@@ -96,16 +127,16 @@
                         <li class="nav-item"><a class="nav-link" href="#bottom-tab3" data-toggle="tab">Messages</a></li>
                     </ul>
 
-                    
-        </div>
-        <div class="sidebar-overlay" data-reff=""></div>
-        <script src="assets/js/jquery-3.2.1.min.js"></script>
-        <script src="assets/js/popper.min.js"></script>
-        <script src="assets/js/bootstrap.min.js"></script>
-        <script src="assets/js/jquery.slimscroll.js"></script>
-        <script src="assets/js/app.js"></script>
-    </body>
+
+                </div>
+                <div class="sidebar-overlay" data-reff=""></div>
+                <script src="assets/js/jquery-3.2.1.min.js"></script>
+                <script src="assets/js/popper.min.js"></script>
+                <script src="assets/js/bootstrap.min.js"></script>
+                <script src="assets/js/jquery.slimscroll.js"></script>
+                <script src="assets/js/app.js"></script>
+                </body>
 
 
-    <!-- profile23:03-->
-</html>
+                <!-- profile23:03-->
+                </html>

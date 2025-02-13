@@ -185,7 +185,14 @@ public boolean isEmailExist(String email) {
 
     
    public void updateCustomerProfile(String fullName, String email, String phone, String address, String dateOfBirth, String gender, InputStream profilePicture, int customerID) throws ParseException {
-    String sql = "UPDATE Customer SET fullName = ?, email = ?, phone = ?, address = ?, dateOfBirth = ?, gender = ?, profilePicture = ? WHERE customerID = ?";
+    String sql;
+    
+    if (profilePicture != null) {
+        sql = "UPDATE Customer SET fullName = ?, email = ?, phone = ?, address = ?, dateOfBirth = ?, gender = ?, profilePicture = ? WHERE customerID = ?";
+    } else {
+        sql = "UPDATE Customer SET fullName = ?, email = ?, phone = ?, address = ?, dateOfBirth = ?, gender = ? WHERE customerID = ?";
+    }
+
     try {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         java.util.Date parsedDate = sdf.parse(dateOfBirth);
@@ -198,12 +205,13 @@ public boolean isEmailExist(String email) {
         st.setString(4, address);
         st.setDate(5, sqlDate);
         st.setString(6, gender);
+
         if (profilePicture != null) {
             st.setBlob(7, profilePicture);
+            st.setInt(8, customerID);
         } else {
-            st.setNull(7, java.sql.Types.BLOB);
+            st.setInt(7, customerID);
         }
-        st.setInt(8, customerID);
 
         int rowsUpdated = st.executeUpdate();
         if (rowsUpdated > 0) {
@@ -215,6 +223,7 @@ public boolean isEmailExist(String email) {
         System.err.println("Error: " + e.getMessage());
     }
 }
+
 
     
     public Customer getCustomerByEmail(String email){

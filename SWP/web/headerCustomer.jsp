@@ -63,7 +63,7 @@
                             <li class="nav-item dropdown has-arrow">
                                 <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
                                     <span class="user-img">
-                                        <img class="rounded-circle" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}"   width="45" height="30" >
+                                        <img class="rounded-circle" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" width="50" height="35"  >
                                         <span class="status online"></span>
                                     </span>
                                     <span>${sessionScope.customerAccount.fullName}</span>
