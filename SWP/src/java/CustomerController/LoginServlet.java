@@ -65,7 +65,7 @@ public class LoginServlet extends HttpServlet {
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             } else {
                 session.setAttribute("customerAccount", customerAccount);
-                if (rememberMe != null) {
+                if ("on".equals(rememberMe)) {
                     Cookie cusUsername = new Cookie("username", user);
                     Cookie cusPassword = new Cookie("password", password);
 
@@ -95,7 +95,7 @@ public class LoginServlet extends HttpServlet {
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             } else {
                 session.setAttribute("user", staff);
-                if (rememberMe != null) {
+                if ("on".equals(rememberMe)) {
                     Cookie staffEmail = new Cookie("email", user);
                     Cookie staffPassword = new Cookie("password", password);
                     staffEmail.setMaxAge(30 * 24 * 60 * 60);
