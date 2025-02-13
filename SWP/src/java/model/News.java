@@ -4,40 +4,47 @@
  */
 package model;
 
+import java.util.Date;
+
 /**
  *
  * @author jaxbo
  */
 public class News {
-    private int post_id;
+
+    private int postId;
     private String title;
     private String content;
-    private int created_by;
-    private int category_id;
-    private int status;
-    private String created_at;
-    private String updated_at;
+    private int createdBy;
+    private int categoryId;
+    private String status;
+    private String image;
+    private String detail;
+    private Date createdAt;
+    private Date updatedAt;
 
     public News() {
     }
 
-    public News(int post_id, String title, String content, int created_by, int category_id, int status, String created_at, String updated_at) {
-        this.post_id = post_id;
+    public News(int postId, String title, String content, int createdBy, int categoryId, String status, String image, String detail, Date createdAt, Date updatedAt) {
+        this.postId = postId;
         this.title = title;
         this.content = content;
-        this.created_by = created_by;
-        this.category_id = category_id;
+        this.createdBy = createdBy;
+        this.categoryId = categoryId;
         this.status = status;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        this.image = image;
+        this.detail = detail;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    public int getPost_id() {
-        return post_id;
+    public int getPostId() {
+        return postId;
     }
 
-    public void setPost_id(int post_id) {
-        this.post_id = post_id;
+    public void setPostId(int postId) {
+        this.postId = postId;
     }
 
     public String getTitle() {
@@ -56,50 +63,65 @@ public class News {
         this.content = content;
     }
 
-    public int getCreated_by() {
-        return created_by;
+    public int getCreatedBy() {
+        return createdBy;
     }
 
-    public void setCreated_by(int created_by) {
-        this.created_by = created_by;
+    public void setCreatedBy(int createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public int getCategory_id() {
-        return category_id;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory_id(int category_id) {
-        this.category_id = category_id;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    public String getImage() {
+        return image;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public String getUpdated_at() {
-        return updated_at;
+    public String getDetail() {
+        return detail;
     }
 
-    public void setUpdated_at(String updated_at) {
-        this.updated_at = updated_at;
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
     public String toString() {
-        return "New{" + "post_id=" + post_id + ", title=" + title + ", content=" + content + ", created_by=" + created_by + ", category_id=" + category_id + ", status=" + status + ", created_at=" + created_at + ", updated_at=" + updated_at + '}';
+        return "News{" + "postId=" + postId + ", title=" + title + ", content=" + content + ", createdBy=" + createdBy + ", categoryId=" + categoryId + ", status=" + status + ", image=" + image + ", detail=" + detail + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
     }
 
-    
 }
