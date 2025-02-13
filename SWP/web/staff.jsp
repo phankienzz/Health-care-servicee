@@ -289,7 +289,7 @@
                                 <thead>
                                     <tr>
                                         <th style="min-width:200px;">Name</th>
-                                        <th>Employee ID</th>
+                                        <th>Staff ID</th>
                                         <th>Email</th>
                                         <th>Mobile</th>
                                         <th style="min-width: 110px;">Join Date</th>

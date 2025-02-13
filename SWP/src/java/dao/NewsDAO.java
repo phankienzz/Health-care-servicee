@@ -8,10 +8,12 @@ import context.DBContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import model.Category;
 import model.News;
+
 /**
  *
  * @author Hoang
@@ -21,13 +23,23 @@ public class NewsDAO extends DBContext {
     public List<News> getAllNews() {
         List<News> news = new ArrayList<>();
         String sql = "select * from Posts where status = 1";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
-                String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
-                News n = new News(rs.getInt("post_id"),
+                // Kiểm tra giá trị Timestamp
+                java.sql.Timestamp createdTimestamp = rs.getTimestamp("created_at");
+                java.sql.Timestamp updatedTimestamp = rs.getTimestamp("updated_at");
+
+                // Định dạng ngày nếu không null
+                String createdAt = (createdTimestamp != null) ? dateFormat.format(createdTimestamp) : null;
+                String updatedAt = (updatedTimestamp != null) ? dateFormat.format(updatedTimestamp) : null;
+
+                // Tạo đối tượng News
+                News n = new News(
+                        rs.getInt("post_id"),
                         rs.getString("title"),
                         rs.getString("content"),
                         rs.getInt("created_by"),
@@ -36,12 +48,12 @@ public class NewsDAO extends DBContext {
                         rs.getString("image"),
                         rs.getString("detail"),
                         createdAt,
-                        updatedAt);
-//                        rs.getString("created_at"),
-//                        rs.getString("updated_at"));
+                        updatedAt
+                );
                 news.add(n);
             }
         } catch (SQLException e) {
+            e.printStackTrace(); // Ghi log lỗi để kiểm tra
         }
         return news;
     }
@@ -67,16 +79,24 @@ public class NewsDAO extends DBContext {
 
     public List<News> getNewsByCategory(String category_id) {
         List<News> news = new ArrayList<>();
-        String sql = "select * from Posts where category_id = ? and status = 1";
+        String sql = "select * from Posts where status = 1";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, category_id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
-                String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
+                // Kiểm tra giá trị Timestamp
+                java.sql.Timestamp createdTimestamp = rs.getTimestamp("created_at");
+                java.sql.Timestamp updatedTimestamp = rs.getTimestamp("updated_at");
 
-                News n = new News(rs.getInt("post_id"),
+                // Định dạng ngày nếu không null
+                String createdAt = (createdTimestamp != null) ? dateFormat.format(createdTimestamp) : null;
+                String updatedAt = (updatedTimestamp != null) ? dateFormat.format(updatedTimestamp) : null;
+
+                // Tạo đối tượng News
+                News n = new News(
+                        rs.getInt("post_id"),
                         rs.getString("title"),
                         rs.getString("content"),
                         rs.getInt("created_by"),
@@ -85,12 +105,12 @@ public class NewsDAO extends DBContext {
                         rs.getString("image"),
                         rs.getString("detail"),
                         createdAt,
-                        updatedAt);
-//                        rs.getString("created_at"),
-//                        rs.getString("updated_at"));
+                        updatedAt
+                );
                 news.add(n);
             }
         } catch (SQLException e) {
+            e.printStackTrace(); // Ghi log lỗi để kiểm tra
         }
         return news;
     }

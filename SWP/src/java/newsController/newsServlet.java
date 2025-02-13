@@ -13,6 +13,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import model.Category;
 import model.News;
@@ -47,6 +49,14 @@ public class newsServlet extends HttpServlet {
             out.println("</html>");
         }
     } 
+    
+    public static String formatDate(String input) {
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        LocalDateTime dateTime = LocalDateTime.parse(input, inputFormatter);
+        return dateTime.format(outputFormatter);
+    }
 
     
     @Override
