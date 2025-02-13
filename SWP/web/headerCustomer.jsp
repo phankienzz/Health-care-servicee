@@ -40,14 +40,13 @@
         </style>
     </style>
 </head>
-<body>
     <header>
         <div class="main-wrapper">
             <div class="header">
                 <div class="header-left">
                     <a href="index_1.jsp" class="logo">
                         <img src="assets/img/logo.png" width="35" height="35" alt="Preclinic">
-                        <span>Preclinic</span>
+                        <span>Novena</span>
                     </a>
                 </div>
                 <!-- Improved Login Button -->
@@ -113,7 +112,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="doctor.html" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Doctors <i class="icofont-thin-down"></i></a>
                         <ul class="dropdown-menu" aria-labelledby="dropdown03">
-                            <li><a class="dropdown-item" href="doctor.html">Doctors</a></li>
+                            <li><a class="dropdown-item" href="doctor.jsp">Doctors</a></li>
                             <li><a class="dropdown-item" href="doctor-single.html">Doctor Single</a></li>
                             <li><a class="dropdown-item" href="appoinment.html">Appointment</a></li>
                         </ul>
@@ -130,5 +129,4 @@
             </div>
         </div>
     </nav>
-</body>
 </html>
