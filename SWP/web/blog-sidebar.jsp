@@ -47,7 +47,9 @@
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="row">
-
+                            <c:if test="${empty newsList}">
+                                <p>No news available.</p>
+                            </c:if>
                             <c:forEach var="news" items="${newsList}">  
                                 <div class="col-lg-12 col-md-12 mb-5">
                                     <div class="blog-item">
@@ -69,8 +71,6 @@
                                     </div>
                                 </div>
                             </c:forEach>
-
-
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -107,9 +107,9 @@
                                 <h5 class="mb-4">Categories</h5>
 
                                 <ul class="list-unstyled">
-                                    <c:forEach var="cate" items="${cateList}">
+                                    <c:forEach var="o" items="${cateList}">
                                         <li class="align-items-center">
-                                            <a href="#">${cate.name}</a>
+                                            <a href="categoryNews?categoryID=${o.category_id}">${o.name}</a>
                                             <!--<span>(14)</span>-->
                                         </li>
                                     </c:forEach>

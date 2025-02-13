@@ -20,8 +20,8 @@ import model.News;
  *
  * @author Hoang
  */
-@WebServlet(name = "searchNews", urlPatterns = {"/searchNews"})
-public class searchNews extends HttpServlet {
+@WebServlet(name = "categoryNews", urlPatterns = {"/categoryNews"})
+public class categoryNews extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,48 +40,27 @@ public class searchNews extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet searchNews</title>");
+            out.println("<title>Servlet categoryNews</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet searchNews at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet categoryNews at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        String search = request.getParameter("search");
+        String categoryID = request.getParameter("categoryID");
         NewsDAO dao = new NewsDAO();
-
-        List<News> searchResults = dao.searchByTitle(search);
+        List<News> list = dao.getNewsByCategory(categoryID);
         List<Category> cateList = dao.getAllCategoryNews();
-        request.setAttribute("newsList", searchResults);
         request.setAttribute("cateList", cateList);
-        request.setAttribute("searchValue", search);
+        request.setAttribute("newsList", list);
         request.getRequestDispatcher("blog-sidebar.jsp").forward(request, response);
-
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
