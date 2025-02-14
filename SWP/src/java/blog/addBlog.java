@@ -31,7 +31,17 @@ public class addBlog extends HttpServlet {
 
         // Lấy file ảnh từ form
         Part filePart = request.getPart("image");
-        InputStream imageStream = (filePart != null) ? filePart.getInputStream() : null;
+        InputStream imageStream = null;
+
+        if (filePart != null && filePart.getSize() > 0) {
+            String fileType = filePart.getContentType();
+            if (!"image/png".equals(fileType)) {
+                request.setAttribute("error", "Only PNG images are allowed!");
+                request.getRequestDispatcher("add-blog.jsp").forward(request, response);
+                return;
+            }
+            imageStream = filePart.getInputStream();
+        }
 
         // Gọi DAO để thêm blog vào database
         BlogDAO blogDAO = new BlogDAO();

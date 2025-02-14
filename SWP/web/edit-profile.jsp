@@ -60,14 +60,18 @@
                                                 </div>
                                             </div>
 
+                                                
+                                                
                                             <div class="col-md-6">
                                                 <div class="form-group form-focus">
                                                     <label class="focus-label">Birth Date</label>
                                                     <div class="cal-icon">
-                                                        <input class="form-control floating " type="text" name="dateOfBirth" placeholder="YYYY-MM-DD" value="${sessionScope.customerAccount.dateOfBirth}">
+                                                        <input class="form-control floating" type="text" name="dateOfBirth" placeholder="DD-MM-YYYY" 
+                                                               value="${sessionScope.customerAccount.dateOfBirth}">
                                                     </div>
                                                 </div>
                                             </div>
+
 
                                             <div class="col-md-6">
                                                 <div class="form-group form-focus select-focus">
@@ -82,10 +86,10 @@
                                                 <div class="form-group form-focus">
                                                     <label class="focus-label">Email</label>
                                                     <input type="text" class="form-control floating" name="email" value="${sessionScope.customerAccount.email}" >
-                                                    
+
                                                 </div>
-                                                    <div><p class="text-danger">${error}</p>
-                                                    </div>
+                                                <div><p class="text-danger">${error}</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

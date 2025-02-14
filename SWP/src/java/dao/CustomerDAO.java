@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import model.Customer;
 
@@ -182,6 +183,10 @@ public boolean isEmailExist(String email) {
         }
     }
 
+    
+    
+
+    
 
     
    public void updateCustomerProfile(String fullName, String email, String phone, String address, String dateOfBirth, String gender, InputStream profilePicture, int customerID) throws ParseException {
@@ -224,6 +229,8 @@ public boolean isEmailExist(String email) {
     }
 }
 
+   
+   
 
     
     public Customer getCustomerByEmail(String email){
