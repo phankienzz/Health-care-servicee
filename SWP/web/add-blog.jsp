@@ -10,6 +10,13 @@
         <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/tagsinput.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+
+                <script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
+               
+
+
+
     </head>
     <body>
         <div class="main-wrapper">
@@ -40,7 +47,7 @@
                     <div class="row">
                         <div class="col-lg-8 offset-lg-2">
                             <h4 class="page-title">Add Blog</h4>
-                           <form method="post" action="addblog" enctype="multipart/form-data">
+                            <form method="post" action="addblog" enctype="multipart/form-data">
 
 
                                 <div class="form-group">
@@ -60,7 +67,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Blog content</label>
-                                    <textarea cols="30" rows="6" class="form-control" name="descriptiondetail" required></textarea>
+                                    <textarea cols="30" rows="6" class="form-control" id="descriptiondetail" name="descriptiondetail" required></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label class="display-block">Blog Status</label>
@@ -79,11 +86,23 @@
                             </form>
 
                             <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    if (typeof CKEDITOR !== "undefined") {
+                                        CKEDITOR.replace('descriptiondetail');
+                                    } else {
+                                        console.error("CKEditor không t?i ???c!");
+                                    }
+                                });
+                            </script>
+
+                            <script>
+
+                          
+
                                 document.querySelector('form').addEventListener('submit', function (event) {
                                     const files = document.querySelector('input[type="file"]').files;
                                     const maxFiles = 10;
                                     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-
                                     if (files.length > maxFiles) {
                                         alert('You can upload up to ' + maxFiles + ' images only.');
                                         event.preventDefault();

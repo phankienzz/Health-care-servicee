@@ -7,7 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Blog;
+import model.News;
 
 @WebServlet(name = "blogdetail", urlPatterns = {"/blogdetail"})
 public class blogdetail extends HttpServlet {
@@ -19,7 +19,7 @@ public class blogdetail extends HttpServlet {
 
         if (id != null) {
             BlogDAO dao = new BlogDAO();
-            Blog blog = dao.getBlogbyid(id);
+            News blog = dao.getBlogbyid(id);
 
             if (blog != null) {
                 request.setAttribute("blogdetail", blog);

@@ -1,33 +1,33 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
-/**
- *
- * @author jaxbo
- */
+import java.util.Date;
+
+
+
 public class News {
-    private int post_id;
+   private int post_id;
     private String title;
     private String content;
     private int created_by;
     private int category_id;
-    private int status;
-    private String created_at;
-    private String updated_at;
-
+    private String status;
+    private String image;
+    private String detail;
+    private Date created_at;
+    private Date updated_at;
+    
     public News() {
     }
 
-    public News(int post_id, String title, String content, int created_by, int category_id, int status, String created_at, String updated_at) {
+    public News(int post_id, String title, String content, int created_by, int category_id, String status, String image, String detail, Date created_at, Date updated_at) {
         this.post_id = post_id;
         this.title = title;
         this.content = content;
         this.created_by = created_by;
         this.category_id = category_id;
         this.status = status;
+        this.image = image;
+        this.detail = detail;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
@@ -72,34 +72,51 @@ public class News {
         this.category_id = category_id;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public String getCreated_at() {
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public Date getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(String created_at) {
+    public void setCreated_at(Date created_at) {
         this.created_at = created_at;
     }
 
-    public String getUpdated_at() {
+    public Date getUpdated_at() {
         return updated_at;
     }
 
-    public void setUpdated_at(String updated_at) {
+    public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
     }
 
     @Override
     public String toString() {
-        return "New{" + "post_id=" + post_id + ", title=" + title + ", content=" + content + ", created_by=" + created_by + ", category_id=" + category_id + ", status=" + status + ", created_at=" + created_at + ", updated_at=" + updated_at + '}';
+        return "News{" + "post_id=" + post_id + ", title=" + title + ", content=" + content + ", created_by=" + created_by + ", category_id=" + category_id + ", status=" + status + ", image=" + image + ", detail=" + detail + ", created_at=" + created_at + ", updated_at=" + updated_at + '}';
     }
 
+    
     
 }

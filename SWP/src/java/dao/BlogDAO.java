@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import model.Blog;
+import model.News;
 import model.Customer;
 
 public class BlogDAO extends DBContext {
@@ -60,22 +60,22 @@ public void addBlogPost(String title, String content, int createdBy, int categor
 //            e.printStackTrace();
 //        }
 //    }
-    public List<Blog> getAllBlogs() {
-    List<Blog> blogs = new ArrayList<>();
+    public List<News> getAllBlogs() {
+    List<News> blogs = new ArrayList<>();
     String sql = "SELECT post_id, title, content, image, detail FROM Posts";
 
     try (PreparedStatement st = connection.prepareStatement(sql);
          ResultSet rs = st.executeQuery()) {
 
         while (rs.next()) {
-            Blog blog = new Blog();
-            blog.setPostId(rs.getInt("post_id"));
+            News blog = new News();
+            blog.setPost_id(rs.getInt("post_id"));
             blog.setTitle(rs.getString("title"));
             blog.setContent(rs.getString("content"));
 
             Blob blob = rs.getBlob("image");
             if (blob != null) {
-                blog.setImage("LoadBlogImage?postId=" + blog.getPostId());
+                blog.setImage("LoadBlogImage?postId=" + blog.getPost_id());
             } else {
                 blog.setImage("default.jpg"); // Ảnh mặc định nếu không có ảnh
             }
@@ -93,7 +93,7 @@ public void addBlogPost(String title, String content, int createdBy, int categor
 
     
     
-   public Blog getBlogbyid(String id) {
+   public News getBlogbyid(String id) {
     String sql = "SELECT post_id, title, image, detail FROM Posts WHERE post_id = ?";
 
     try (PreparedStatement st = connection.prepareStatement(sql)) {
@@ -101,13 +101,13 @@ public void addBlogPost(String title, String content, int createdBy, int categor
 
         try (ResultSet rs = st.executeQuery()) {
             if (rs.next()) {
-                Blog blog = new Blog();
-                blog.setPostId(rs.getInt("post_id")); 
+                News blog = new News();
+                blog.setPost_id(rs.getInt("post_id")); 
                 blog.setTitle(rs.getString("title"));
 
                 Blob blob = rs.getBlob("image");
                 if (blob != null) {
-                    blog.setImage("LoadBlogImage?postId=" + blog.getPostId()); // Tải hình ảnh động
+                    blog.setImage("LoadBlogImage?postId=" + blog.getPost_id()); // Tải hình ảnh động
                 } else {
                     blog.setImage("default.jpg"); // Ảnh mặc định nếu không có hình
                 }
@@ -127,13 +127,13 @@ public void addBlogPost(String title, String content, int createdBy, int categor
 
 public static void main(String[] args) {
         BlogDAO blogDAO = new BlogDAO();
-        List<Blog> blogs = blogDAO.getAllBlogs();
+        List<News> blogs = blogDAO.getAllBlogs();
 
         if (blogs.isEmpty()) {
             System.out.println("⚠️ No blogs found in the database.");
         } else {
             System.out.println("✅ Blogs loaded successfully!");
-            for (Blog blog : blogs) {
+            for (News blog : blogs) {
                 System.out.println("📝 Title: " + blog.getTitle());
                 System.out.println("📸 Image: " + blog.getImage());
                 System.out.println("📝 Content: " + blog.getContent());

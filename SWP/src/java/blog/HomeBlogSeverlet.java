@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.Blog;
+import model.News;
 
 /**
  *
@@ -35,7 +35,7 @@ public class HomeBlogSeverlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         BlogDAO dao = new BlogDAO();
-        List<Blog> blogs = dao.getAllBlogs();
+        List<News> blogs = dao.getAllBlogs();
 
         if (blogs.isEmpty()) {
             System.out.println("⚠️ No blogs found in the database.");

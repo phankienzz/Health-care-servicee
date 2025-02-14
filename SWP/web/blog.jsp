@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.List" %>
-<%@ page import="model.Blog" %> <!-- Thay your.package bằng tên gói thực tế -->
+<%@ page import="model.News" %> <!-- Thay your.package bằng tên gói thực tế -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,6 +15,9 @@
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+        
+        
+        
         <!--[if lt IE 9]>
                     <script src="assets/js/html5shiv.min.js"></script>
                     <script src="assets/js/respond.min.js"></script>
@@ -321,16 +324,16 @@
                                 <div class="col-sm-6 col-md-6 col-lg-4">
                                     <div class="blog grid-blog">
                                         <div class="blog-image">
-                                            <a href="blogdetail?postId=${blog.postId}">
+                                            <a href="blogdetail?postId=${blog.post_id}">
                                                 <img class="img-fluid" src="${blog.image}" alt="${blog.title}">
                                             </a>
                                         </div>
                                         <div class="blog-content">
                                             <h3 class="blog-title">
-                                                <a href="blogdetail?postId=${blog.postId}">${blog.title}</a>
+                                                <a href="blogdetail?postId=${blog.post_id}">${blog.title}</a>
                                             </h3>
                                             <p>${blog.content}</p>
-                                            <a href="blogdetail?postId=${blog.postId}" class="read-more">
+                                            <a href="blogdetail?postId=${blog.post_id}" class="read-more">
                                                 <i class="fa fa-long-arrow-right"></i> Read More
                                             </a>
                                         </div>
