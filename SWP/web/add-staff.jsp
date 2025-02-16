@@ -332,18 +332,7 @@
                                                 <input name="email" class="form-control" type="email" <c:if test="${email != null}"> value="${email}"     </c:if>>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Password</label>
-                                                <input name="password" class="form-control" type="password" <c:if test="${password != null}"> value="${password}"     </c:if>>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Confirm Password</label>
-                                                <input name="confirmPass" class="form-control" type="password" <c:if test="${confirmPass != null}"> value="${confirmPass}"     </c:if>>
-                                            </div>
-                                        </div>
+                                        
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Joining Date <span class="text-danger">*</span></label>
@@ -363,7 +352,7 @@
                                                 <label>Role</label>
                                                 <select name = "roleID" class="select" >
                                                 <c:forEach var="role" items="${listRole}">
-                                                    <option value="${role.roleID}" <c:if test="${roleID == role.roleID}"> selected    </c:if>>${role.roleName}</option>
+                                                    <option value="${role.roleID}" <c:if test="${roleID == role.roleID}"> selected</c:if>>${role.roleName}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>

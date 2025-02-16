@@ -4,6 +4,7 @@
  */
 package StaffController;
 
+import context.ValidFunction;
 import dao.RoleDAO;
 import dao.StaffDAO;
 import java.io.IOException;
@@ -13,9 +14,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.List;
 import model.Role;
 import model.Staff;
+import util.Email;
 
 /**
  *
@@ -23,6 +27,19 @@ import model.Staff;
  */
 @WebServlet(name = "addStaff", urlPatterns = {"/addStaff"})
 public class addStaff extends HttpServlet {
+
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    private static final int LENGTH = 8;
+
+    public static String generateRandomString() {
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder(LENGTH);
+        for (int i = 0; i < LENGTH; i++) {
+            int index = random.nextInt(CHARACTERS.length());
+            sb.append(CHARACTERS.charAt(index));
+        }
+        return sb.toString();
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -36,54 +53,10 @@ public class addStaff extends HttpServlet {
         request.getRequestDispatcher("add-staff.jsp").forward(request, response);
     }
 
-    public static boolean containsDigitOrSpecialChar(String str) {
-        return str.matches(".*[^a-zA-Z\\s].*"); // Kiểm tra nếu có ký tự không phải chữ cái hoặc khoảng trắng
-    }
-
-    public static String normalizeName(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            return "";
-        }
-        name = name.trim().toLowerCase(); // Loại bỏ khoảng trắng đầu cuối và chuyển về chữ thường
-        String[] words = name.split("\\s+"); // Tách các từ dựa vào khoảng trắng
-        StringBuilder normalized = new StringBuilder();
-
-        for (String word : words) {
-            if (!word.isEmpty()) {
-                normalized.append(Character.toUpperCase(word.charAt(0))) // Viết hoa chữ cái đầu
-                        .append(word.substring(1)) // Giữ lại phần còn lại
-                        .append(" "); // Thêm khoảng trắng giữa các từ
-            }
-        }
-
-        return normalized.toString().trim(); // Loại bỏ khoảng trắng cuối cùng
-    }
-
-    public static boolean isValidPhoneNumber(String input) {
-        // Kiểm tra chuỗi có đúng 10 ký tự số không
-        if (!input.matches("\\d{10}")) {
-            return false;
-        }
-
-        // Kiểm tra chuỗi có bắt đầu bằng '0' không
-        return input.startsWith("0");
-    }
-
-    public static boolean isValidPassword(String password) {
-        // Kiểm tra độ dài ít nhất 8 ký tự
-        if (password.length() < 8) {
-            return false;
-        }
-
-        // Biểu thức chính quy kiểm tra điều kiện
-        String regex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$";
-
-        return password.matches(regex);
-    }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ValidFunction valid = new ValidFunction();
         StaffDAO staffDAO = new StaffDAO();
         RoleDAO roleDAO = new RoleDAO();
         List<Role> listRole = roleDAO.getAllRole();
@@ -94,8 +67,7 @@ public class addStaff extends HttpServlet {
         String phone = request.getParameter("phone");
         String roleID = request.getParameter("roleID");
         String hireDate = request.getParameter("hireDate");
-        String password = request.getParameter("password");
-        String confirmPass = request.getParameter("confirmPass");
+
         String status = request.getParameter("status");
         request.setAttribute("firstName", firstName);
         request.setAttribute("lastName", lastName);
@@ -104,41 +76,37 @@ public class addStaff extends HttpServlet {
         request.setAttribute("roleID", roleID);
         request.setAttribute("status", status);
         request.setAttribute("hireDate", hireDate);
-        request.setAttribute("password", password);
-        request.setAttribute("confirmPass", confirmPass);
-        if (containsDigitOrSpecialChar(firstName) || containsDigitOrSpecialChar(lastName)) {
+
+        Email e = new Email();
+
+        if (valid.containsDigitOrSpecialChar(firstName) || valid.containsDigitOrSpecialChar(lastName)) {
             request.setAttribute("error", "First Name or Last Name cannot contain digit or special character");
             request.getRequestDispatcher("add-staff.jsp").forward(request, response);
             return;
         }
-        if (!isValidPassword(password)) {
-            request.setAttribute("error", "Password must contain at least 8 character, uppercase letter, digit and special character");
-            request.getRequestDispatcher("add-staff.jsp").forward(request, response);
-            return;
-        }
-        if (!password.equals(confirmPass)) {
-            request.setAttribute("error", "Confirm password incorrect");
-            request.getRequestDispatcher("add-staff.jsp").forward(request, response);
-            return;
-        }
-        if (!isValidPhoneNumber(phone)) {
+
+        if (!valid.isValidPhoneNumber(phone)) {
             request.setAttribute("error", "Phone number is not exist, please check again");
             request.getRequestDispatcher("add-staff.jsp").forward(request, response);
             return;
         }
-        String fullName = normalizeName(firstName) + " " + normalizeName(lastName);
-        staffDAO.createStaff(fullName, email, password, phone, hireDate, Integer.parseInt(roleID), status);
-        request.setAttribute("mess", "Add staff succesfully");
-        request.removeAttribute("firstName");
-        request.removeAttribute("lastName");
-        request.removeAttribute("phone");
-        request.removeAttribute("email");
-        request.removeAttribute("roleID");
-        request.removeAttribute("hireDate");
-        request.removeAttribute("status");
-        request.removeAttribute("password");
-        request.removeAttribute("confirmPass");
-        request.getRequestDispatcher("add-staff.jsp").forward(request, response);
+        String fullName = valid.normalizeName(firstName) + " " + valid.normalizeName(lastName);
+        String rand = generateRandomString();
+        if (!e.sendEmail(email, rand)) {
+            request.setAttribute("mess", "Please check your email");
+            request.getRequestDispatcher("add-staff.jsp").forward(request, response);
+        } else {
+            staffDAO.createStaff(fullName, email, rand, phone, hireDate, Integer.parseInt(roleID), status);
+            request.setAttribute("mess", "Add staff succesfully");
+            request.removeAttribute("firstName");
+            request.removeAttribute("lastName");
+            request.removeAttribute("phone");
+            request.removeAttribute("email");
+            request.removeAttribute("roleID");
+            request.removeAttribute("hireDate");
+            request.removeAttribute("status");
+            request.getRequestDispatcher("add-staff.jsp").forward(request, response);
+        }
 
     }
 

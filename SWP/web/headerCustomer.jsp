@@ -50,9 +50,39 @@
                     </a>
                 </div>
                 <!-- Improved Login Button -->
-                <c:if test="${sessionScope.customerAccount == null}">
+                <c:if test="${sessionScope.customerAccount == null && sessionScope.staffAccount == null}">
                     <div class="login-container">
                         <a href="login.jsp" class="btn btn-primary btn-login">Đăng Nhập</a>
+                    </div>
+                </c:if>
+                
+                <c:if test="${sessionScope.staffAccount != null}">
+                    <div class="header-right float-right">
+                        <ul class="nav user-menu">
+                            <li class="nav-item dropdown has-arrow">
+                                <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
+                                    <span class="user-img">
+                                        <img class="rounded-circle" src="pictureprofile?customerID=${sessionScope.staffAccount.staffID}"   width="45" height="30" >
+                                        <span class="status online"></span>
+                                    </span>
+                                    <span>${sessionScope.staffAccount.fullName}</span>
+                                </a>
+                                <div class="dropdown-menu">                                  
+                                    <a class="dropdown-item" href="profile.jsp">My Profile</a>
+                                    <!--<a class="dropdown-item" href="settings.html">Settings</a>-->
+                                    <a class="dropdown-item" href="logout">Logout</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="dropdown mobile-user-menu float-right">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="profile.jsp">My Profile</a>
+
+                            <a class="dropdown-item" href="settings.html">Settings</a>
+                            <a class="dropdown-item" href="logout">Logout</a>
+                        </div>
                     </div>
                 </c:if>
 

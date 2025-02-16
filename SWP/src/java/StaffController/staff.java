@@ -5,6 +5,7 @@
 
 package StaffController;
 
+import context.ValidFunction;
 import dao.RoleDAO;
 import dao.StaffDAO;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import model.Role;
 import model.Staff;
@@ -32,10 +34,22 @@ public class staff extends HttpServlet {
     throws ServletException, IOException {
         StaffDAO staffDAO = new StaffDAO();
         List<Staff> listStaff = staffDAO.getAllStaff();
+        List<Staff> list = new ArrayList<>();
+        ValidFunction valid = new ValidFunction();
+        for(Staff s : listStaff){
+            String dateBirth;
+            if(s.getDateOfBirth() != null){
+                 dateBirth = valid.formatDate(s.getDateOfBirth());
+            }else{
+                dateBirth = s.getDateOfBirth();
+            }
+            Staff r = new Staff(s.getStaffID(),s.getFullName(), s.getEmail(), s.getPassword(), s.getPhone(), s.getGender(),dateBirth, s.getAddress(), valid.formatDate(s.getHireDate()), s.getRoleID(), s.getStatus(),s.getProfilePicture());
+            list.add(r);
+        }
         RoleDAO roleDAO = new RoleDAO();
         List<Role> listRole = roleDAO.getAllRole();
-        request.setAttribute("listStaff", listStaff);
-        request.setAttribute("listRole", listRole );
+        request.setAttribute("listStaff", list);
+         request.setAttribute("listRole", listRole );
         request.getRequestDispatcher("staff.jsp").forward(request, response);
     } 
 
