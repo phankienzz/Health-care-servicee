@@ -47,7 +47,7 @@ public class NewsDAO extends DBContext {
         }
         return news;
     }
-    
+
     public List<Category> getAllCategoryNews() {
         List<Category> cate = new ArrayList<>();
         String sql = "select * from Categories where status = 1";
@@ -104,7 +104,7 @@ public class NewsDAO extends DBContext {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, "%" + title + "%");
             ResultSet rs = pre.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 News n = new News(
                         rs.getInt("post_id"),
                         rs.getString("title"),
@@ -119,10 +119,43 @@ public class NewsDAO extends DBContext {
                 );
                 news.add(n);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return news;
+    }
 
+    public int getTotalNews() {
+        String sql = "SELECT COUNT(*) FROM Posts WHERE status = 1";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<News> pagingNews(int index) {
+        List<News> list = new ArrayList<>();
+        String sql = " ";
+        return list;
+    }
+
+    public int count(String title) {
+        String sql = "select count(*) from Posts where title like ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, "%" + title + "%");
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return 0;
     }
 
     public void addBlogPost(String title, String content, int createdBy, int categoryId, boolean status, String detail, String imagePaths) {
@@ -184,9 +217,12 @@ public class NewsDAO extends DBContext {
 
     public static void main(String[] args) {
         NewsDAO dao = new NewsDAO();
-        List<News> newsList = dao.getNewsByCategory("2");
-        for (News news : newsList) {
-            System.out.println(news);
-        }
+//        List<News> newsList = dao.getNewsByCategory("2");
+//        for (News news : newsList) {
+//            System.out.println(news);
+//        }
+        int count = dao.getTotalNews();
+        System.out.println(count);
+
     }
 }

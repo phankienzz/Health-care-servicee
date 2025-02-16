@@ -168,10 +168,11 @@
                     <div class="col-lg-8">
                         <nav class="pagination py-2 d-inline-block">
                             <div class="nav-links">
-                                <span aria-current="page" class="page-numbers current">1</span>
-                                <a class="page-numbers" href="#">2</a>
-                                <a class="page-numbers" href="#">3</a>
-                                <a class="page-numbers" href="#"><i class="icofont-thin-double-right"></i></a>
+                                <c:forEach begin="1" end="${endPage}" var="i">
+                                    <!--<span aria-current="page" class="page-numbers current">1</span>-->
+                                    <a class="page-numbers" href="#">${i}</a>
+                                </c:forEach>
+                                <!--<a class="page-numbers" href="#"><i class="icofont-thin-double-right"></i></a>-->
                             </div>
                         </nav>
                     </div>
