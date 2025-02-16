@@ -169,20 +169,6 @@ public class NewsDAO extends DBContext {
         return list;
     }
 
-    public int count(String title) {
-        String sql = "select count(*) from Posts where title like ?";
-        try {
-            PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setString(1, "%" + title + "%");
-            ResultSet rs = pre.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        } catch (Exception e) {
-        }
-        return 0;
-    }
-
     public void addBlogPost(String title, String content, int createdBy, int categoryId, boolean status, String detail, String imagePaths) {
         String sql = "INSERT INTO Posts (title, content, created_by, category_id, status, detail, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
 

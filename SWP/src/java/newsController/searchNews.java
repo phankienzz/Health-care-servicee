@@ -59,15 +59,7 @@ public class searchNews extends HttpServlet {
             List<News> searchResults = dao.searchByTitle(search);
             List<Category> cateList = dao.getAllCategoryNews();
             
-//            int count = dao.count(search);
-//            //số lượng bài viết trong mỗi trang
-//            int pageSize = 3;
-//            int endPage = 0;
-//            endPage =  count / pageSize;
-//            if(count % pageSize != 0){
-//                endPage++;
-//            }
-//            request.setAttribute("endPage", endPage);
+
             request.setAttribute("newsList", searchResults);
             request.setAttribute("cateList", cateList);
             request.setAttribute("searchValue", search);

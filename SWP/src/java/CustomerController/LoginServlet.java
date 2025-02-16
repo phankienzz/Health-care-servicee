@@ -97,11 +97,19 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("staffAccount", staff);
                 if ("on".equals(rememberMe)) {
                     Cookie staffEmail = new Cookie("email", user);
-                    Cookie staffPassword = new Cookie("password", password);
+                    Cookie staffPassword = new Cookie("staffpassword", password);
                     staffEmail.setMaxAge(30 * 24 * 60 * 60);
                     staffPassword.setMaxAge(30 * 24 * 60 * 60);
                     response.addCookie(staffEmail);
                     response.addCookie(staffPassword);
+                }else {
+                    // Nếu "Remember Me" không được chọn, xóa cookies
+                    Cookie usernameCookie = new Cookie("email", "");
+                    Cookie passwordCookie = new Cookie("staffpassword", "");
+                    usernameCookie.setMaxAge(0);
+                    passwordCookie.setMaxAge(0);
+                    response.addCookie(usernameCookie);
+                    response.addCookie(passwordCookie);
                 }
                 response.sendRedirect("index_1.jsp");
             }
