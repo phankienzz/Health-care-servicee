@@ -71,24 +71,32 @@ public class newsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String indexPage = request.getParameter("index");
+        if (indexPage == null) {
+            indexPage = "1";
+        }
+
+        int index = Integer.parseInt(indexPage);
         NewsDAO dao = new NewsDAO();
-        List<News> newsList = dao.getAllNews();
         List<Category> cateList = dao.getAllCategoryNews();
+        List<News> pagingPage = dao.pagingNews(index);
 
         int count = dao.getTotalNews();
         int endPage = count / 3;
         if (count % 3 != 0) {
             endPage++;
         }
+
         // Định dạng ngày sử dụng phương thức tiện ích
-        for (News news : newsList) {
+        for (News news : pagingPage) {
             news.setCreated_at(formatDate(news.getCreated_at()));
             news.setUpdated_at(formatDate(news.getUpdated_at()));
         }
 
+        request.setAttribute("pagingPage", pagingPage);
         request.setAttribute("endPage", endPage);
         request.setAttribute("cateList", cateList);
-        request.setAttribute("newsList", newsList);
+        request.setAttribute("tag", index);
         request.getRequestDispatcher("blog-sidebar.jsp").forward(request, response);
     }
 

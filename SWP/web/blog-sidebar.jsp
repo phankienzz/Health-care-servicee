@@ -47,10 +47,10 @@
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="row">
-                            <c:if test="${empty newsList}">
+                            <c:if test="${empty pagingPage}">
                                 <p>No news available.</p>
                             </c:if>
-                            <c:forEach var="news" items="${newsList}">  
+                            <c:forEach var="news" items="${pagingPage}">  
                                 <div class="col-lg-12 col-md-12 mb-5">
                                     <div class="blog-item">
                                         <div class="blog-thumb">
@@ -168,9 +168,9 @@
                     <div class="col-lg-8">
                         <nav class="pagination py-2 d-inline-block">
                             <div class="nav-links">
-                                <c:forEach begin="1" end="${endPage}" var="i">
+                                <c:forEach  begin="1" end="${endPage}" var="i">
                                     <!--<span aria-current="page" class="page-numbers current">1</span>-->
-                                    <a class="page-numbers" href="#">${i}</a>
+                                    <a class="page-numbers ${tag == i?"page-numbers current":""}" href="news?index=${i}">${i}</a>
                                 </c:forEach>
                                 <!--<a class="page-numbers" href="#"><i class="icofont-thin-double-right"></i></a>-->
                             </div>
@@ -224,7 +224,6 @@
                                 <li><a href="#">Privacy Policy</a></li>
                                 <li><a href="#">Company Support </a></li>
                                 <li><a href="#">FAQuestions</a></li>
-                                <li><a href="#">Company Licence</a></li>
                             </ul>
                         </div>
                     </div>
@@ -253,21 +252,9 @@
                     </div>
                 </div>
 
-                <div class="footer-btm py-4 mt-5">
+               <div class="footer-btm py-4 mt-5">
                     <div class="row align-items-center justify-content-between">
-                        <div class="col-lg-6">
-                            <div class="copyright">
-                                &copy; Copyright Reserved to <span class="text-color">Novena</span> by <a href="https://themefisher.com/" target="_blank">Themefisher</a>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="subscribe-form text-lg-right mt-5 mt-lg-0">
-                                <form action="#" class="subscribe">
-                                    <input type="text" class="form-control" placeholder="Your Email address">
-                                    <a href="#" class="btn btn-main-2 btn-round-full">Subscribe</a>
-                                </form>
-                            </div>
-                        </div>
+                        
                     </div>
 
                     <div class="row">

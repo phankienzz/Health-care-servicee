@@ -537,7 +537,6 @@
                                 <li><a href="#">Privacy Policy</a></li>
                                 <li><a href="#">Company Support </a></li>
                                 <li><a href="#">FAQuestions</a></li>
-                                <li><a href="#">Company Licence</a></li>
                             </ul>
                         </div>
                     </div>

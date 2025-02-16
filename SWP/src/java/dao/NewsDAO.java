@@ -140,7 +140,32 @@ public class NewsDAO extends DBContext {
 
     public List<News> pagingNews(int index) {
         List<News> list = new ArrayList<>();
-        String sql = " ";
+        String sql = "select * from Posts order by post_id offset ? rows  fetch  next 3 rows only";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            int offset = (index - 1) * 3;
+            pre.setInt(1,offset );
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
+                String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
+
+                News n = new News(rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getInt("created_by"),
+                        rs.getInt("category_id"),
+                        rs.getInt("status"),
+                        rs.getString("image"),
+                        rs.getString("detail"),
+                        createdAt,
+                        updatedAt);
+//                        rs.getString("created_at"),
+//                        rs.getString("updated_at"));
+                list.add(n);
+            }
+        } catch (Exception e) {
+        }
         return list;
     }
 
@@ -217,12 +242,12 @@ public class NewsDAO extends DBContext {
 
     public static void main(String[] args) {
         NewsDAO dao = new NewsDAO();
-//        List<News> newsList = dao.getNewsByCategory("2");
-//        for (News news : newsList) {
-//            System.out.println(news);
-//        }
-        int count = dao.getTotalNews();
-        System.out.println(count);
+        List<News> newsList = dao.pagingNews(3);
+        for (News news : newsList) {
+            System.out.println(news);
+        }
+//        int count = dao.getTotalNews();
+//        System.out.println(count);
 
     }
 }
