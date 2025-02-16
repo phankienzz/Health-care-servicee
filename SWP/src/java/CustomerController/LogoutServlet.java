@@ -43,7 +43,7 @@ public class LogoutServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-        session.removeAttribute("customerAccount");
+        session.invalidate();
         response.sendRedirect("index_1.jsp");
     }
 

@@ -107,6 +107,10 @@
                                 <h5 class="mb-4">Categories</h5>
 
                                 <ul class="list-unstyled">
+                                    <li class="align-items-center">
+                                            <a href="news">All</a>
+                                            <!--<span>(14)</span>-->
+                                        </li>
                                     <c:forEach var="o" items="${cateList}">
                                         <li class="align-items-center">
                                             <a href="categoryNews?categoryID=${o.category_id}">${o.name}</a>

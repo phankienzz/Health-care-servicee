@@ -16,8 +16,11 @@ public class ChangePassword extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-
         response.setContentType("text/html;charset=UTF-8");
+         String oldPassword = request.getParameter("old_password");
+        String newPassword = request.getParameter("new_password");
+        String confirmPassword = request.getParameter("confirm_new_password");
+
         HttpSession session = request.getSession();
         Customer customer = (Customer) session.getAttribute("customerAccount");
 
@@ -27,11 +30,6 @@ public class ChangePassword extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
-
-        String oldPassword = request.getParameter("old_password");
-        String newPassword = request.getParameter("new_password");
-        String confirmPassword = request.getParameter("confirm_new_password");
-
         CustomerDAO dao = new CustomerDAO();
         int customerID = customer.getCustomerID();
 

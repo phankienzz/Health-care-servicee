@@ -4,6 +4,7 @@
     Author     : jaxbo
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,116 +27,231 @@
     </head>
 
     <body>
-        <div class="main-wrapper">
-
-            <!--Dùng chung được cho Profile và Edit-Profile-->
-            <div class="header">
-                <div class="header-left">
-                    <a href="dashboard.html" class="logo">
-                        <img src="assets/img/logo.png" width="35" height="35" alt=""> <span>Preclinic</span>
-                    </a>
-                </div>
-                <ul class="nav user-menu float-right">
-                    <li class="nav-item dropdown has-arrow">
-                        <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
-                            <span class="user-img"><img class="rounded-circle" src="assets/img/user.jpg" width="40"
-                                                        alt="Admin">
-                                <span class="status online"></span></span>
-                                <span>${sessionScope.customerAccount.fullName}</span>
+        <c:if test="${sessionScope.customerAccount != null}">
+            <div class="main-wrapper">
+                <!--Dùng chung được cho Profile và Edit-Profile-->
+                <div class="header">
+                    <div class="header-left">
+                        <a href="dashboard.html" class="logo">
+                            <img src="assets/img/logo.png" width="35" height="35" alt=""> <span>Preclinic</span>
                         </a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="profile.jsp">My Profile</a>
-                            <a class="dropdown-item" href="edit-profile.jsp">Edit Profile</a>
-                            <a class="dropdown-item" href="settings.jsp">Settings</a>
-                            <a class="dropdown-item" href="logout">Logout</a>
+                    </div>
+                    <ul class="nav user-menu float-right">
+                        <li class="nav-item dropdown has-arrow">
+                            <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
+                                <span class="user-img"><img class="rounded-circle" src="assets/img/user.jpg" width="40"
+                                                            alt="Admin">
+                                    <span class="status online"></span></span>
+                                <span>${sessionScope.customerAccount.fullName}</span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="profile.jsp">My Profile</a>
+                                <a class="dropdown-item" href="edit-profile.jsp">Edit Profile</a>
+                                <a class="dropdown-item" href="settings.jsp">Settings</a>
+                                <a class="dropdown-item" href="logout">Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="dropdown mobile-user-menu float-right">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
+                                class="fa fa-ellipsis-v"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="profile.html">My Profile</a>
+                            <a class="dropdown-item" href="edit-profile.html">Edit Profile</a>
+                            <a class="dropdown-item" href="settings.html">Settings</a>
+                            <a class="dropdown-item" href="login.html">Logout</a>
                         </div>
-                    </li>
-                </ul>
-                <div class="dropdown mobile-user-menu float-right">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
-                            class="fa fa-ellipsis-v"></i></a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="profile.html">My Profile</a>
-                        <a class="dropdown-item" href="edit-profile.html">Edit Profile</a>
-                        <a class="dropdown-item" href="settings.html">Settings</a>
-                        <a class="dropdown-item" href="login.html">Logout</a>
                     </div>
                 </div>
-            </div>
 
-            <div class="page-wrapper-profile">
-                <div class="content">
-                    <div class="row">
-                        <div class="col-sm-7 col-6">
-                            <h4 class="page-title">My Profile</h4>
-                        </div>
-
-                        <div class="col-sm-5 col-6 text-right m-b-30">
-                            <a href="edit-profile.jsp" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Edit Profile</a>
-                        </div>
-                    </div>
-                    <div class="card-box profile-header">
+                <div class="page-wrapper-profile">
+                    <div class="content">
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="profile-view">
-                                    <div class="profile-img-wrap">
-                                        <div class="profile-img">
-                                            <a href="#"><img class="avatar" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" alt=""></a>
-                                        </div>
-                                    </div>
-                                    <div class="profile-basic">
-                                        <div class="row">
-                                            <div class="col-md-5">
-                                                <div class="profile-info-left">
-                                                    <h3 class="user-name m-t-0 mb-0">${sessionScope.customerAccount.fullName}</h3>
-                                                    <!--<small class="text-muted">Gynecologist</small>-->
-                                                    <div class="staff-id">Customer ID : ${sessionScope.customerAccount.customerID}</div>
-                                                    <div class="staff-msg"><a href="change-password.jsp" class="btn btn-primary">Change Password</a></div>
-                                                </div>
+                            <div class="col-sm-7 col-6">
+                                <h4 class="page-title">My Profile</h4>
+                            </div>
+
+                            <div class="col-sm-5 col-6 text-right m-b-30">
+                                <a href="edit-profile.jsp" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Edit Profile</a>
+                            </div>
+                        </div>
+                        <div class="card-box profile-header">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="profile-view">
+                                        <div class="profile-img-wrap">
+                                            <div class="profile-img">
+                                                <a href="#"><img class="avatar" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" alt=""></a>
                                             </div>
-                                            <div class="col-md-7">
-                                                <ul class="personal-info">
-                                                    <li>
-                                                        <span class="title">Phone:</span>
-                                                        <span class="text"><a
-                                                                href="#">${sessionScope.customerAccount.phone}</a></span>
-                                                    </li>
-                                                    <li>
-                                                        <span class="title">Email:</span>
-                                                        <span class="text"><a
-                                                                href="#">${sessionScope.customerAccount.email}</a></span>
-                                                    </li>
-                                                    <li>
-                                                        <span class="title">Birthday:</span>
-                                                        <span
-                                                            class="text">${sessionScope.customerAccount.dateOfBirth}</span>
-                                                    </li>
-                                                    <li>
-                                                        <span class="title">Address:</span>
-                                                        <span class="text">${sessionScope.customerAccount.address}</span>
-                                                    </li>
-                                                    <li>
-                                                        <span class="title">Gender:</span>
-                                                        <span class="text">${sessionScope.customerAccount.gender}</span>
-                                                    </li>
-                                                </ul>
+                                        </div>
+
+                                        <div class="profile-basic">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <div class="profile-info-left">
+                                                        <h3 class="user-name m-t-0 mb-0">${sessionScope.customerAccount.fullName}</h3>
+                                                        <!--<small class="text-muted">Gynecologist</small>-->
+                                                        <div class="staff-id">Customer ID : ${sessionScope.customerAccount.customerID}</div>
+                                                        <div class="staff-msg"><a href="change-password.jsp" class="btn btn-primary">Change Password</a></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <ul class="personal-info">
+                                                        <li>
+                                                            <span class="title">Phone:</span>
+                                                            <span class="text"><a
+                                                                    href="#">${sessionScope.customerAccount.phone}</a></span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="title">Email:</span>
+                                                            <span class="text"><a
+                                                                    href="#">${sessionScope.customerAccount.email}</a></span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="title">Birthday:</span>
+                                                            <span
+                                                                class="text">${sessionScope.customerAccount.dateOfBirth}</span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="title">Address:</span>
+                                                            <span class="text">${sessionScope.customerAccount.address}</span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="title">Gender:</span>
+                                                            <span class="text">${sessionScope.customerAccount.gender}</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!--                    <div class="profile-tabs">
+                                                <ul class="nav nav-tabs nav-tabs-bottom">
+                                                    <li class="nav-item"><a class="nav-link active" href="#about-cont" data-toggle="tab">About</a></li>
+                                                    <li class="nav-item"><a class="nav-link" href="#bottom-tab2" data-toggle="tab">Profile</a></li>
+                                                    <li class="nav-item"><a class="nav-link" href="#bottom-tab3" data-toggle="tab">Messages</a></li>
+                                                </ul>
+                                            </div> -->
                     </div>
-<!--                    <div class="profile-tabs">
-                        <ul class="nav nav-tabs nav-tabs-bottom">
-                            <li class="nav-item"><a class="nav-link active" href="#about-cont" data-toggle="tab">About</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#bottom-tab2" data-toggle="tab">Profile</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#bottom-tab3" data-toggle="tab">Messages</a></li>
-                        </ul>
-                    </div> -->
                 </div>
             </div>
-        </div>
+        </c:if>
+
+        <c:if test="${sessionScope.staffAccount != null}">
+            <div class="main-wrapper">
+                <!--Dùng chung được cho Profile và Edit-Profile-->
+                <div class="header">
+                    <div class="header-left">
+                        <a href="dashboard.html" class="logo">
+                            <img src="assets/img/logo.png" width="35" height="35" alt=""> <span>Preclinic</span>
+                        </a>
+                    </div>
+                    <ul class="nav user-menu float-right">
+                        <li class="nav-item dropdown has-arrow">
+                            <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
+                                <span class="user-img"><img class="rounded-circle" src="assets/img/user.jpg" width="40"
+                                                            alt="Admin">
+                                    <span class="status online"></span></span>
+                                <span>${sessionScope.staffAccount.fullName}</span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="profile.jsp">My Profile</a>
+                                <a class="dropdown-item" href="edit-profile.jsp">Edit Profile</a>
+                                <a class="dropdown-item" href="settings.jsp">Settings</a>
+                                <a class="dropdown-item" href="logout">Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="dropdown mobile-user-menu float-right">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
+                                class="fa fa-ellipsis-v"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="profile.html">My Profile</a>
+                            <a class="dropdown-item" href="edit-profile.html">Edit Profile</a>
+                            <a class="dropdown-item" href="settings.html">Settings</a>
+                            <a class="dropdown-item" href="login.html">Logout</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-wrapper-profile">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-sm-7 col-6">
+                                <h4 class="page-title">My Profile</h4>
+                            </div>
+
+                            <div class="col-sm-5 col-6 text-right m-b-30">
+                                <a href="edit-profile.jsp" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Edit Profile</a>
+                            </div>
+                        </div>
+                        <div class="card-box profile-header">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="profile-view">
+                                        <div class="profile-img-wrap">
+                                            <div class="profile-img">
+                                                <a href="#"><img class="avatar" src="" alt=""></a>
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-basic">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <div class="profile-info-left">
+                                                        <h3 class="user-name m-t-0 mb-0">${sessionScope.staffAccount.fullName}</h3>
+                                                        <!--<small class="text-muted">Gynecologist</small>-->
+                                                        <div class="staff-id">Staff ID : ${sessionScope.staffAccount.staffID}</div>
+                                                        <div class="staff-msg"><a href="change-password.jsp" class="btn btn-primary">Change Password</a></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <ul class="personal-info">
+                                                        <li>
+                                                            <span class="title">Phone:</span>
+                                                            <span class="text"><a
+                                                                    href="#">${sessionScope.staffAccount.phone}</a></span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="title">Email:</span>
+                                                            <span class="text"><a
+                                                                    href="#">${sessionScope.staffAccount.email}</a></span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="title">Birthday:</span>
+                                                            <span
+                                                                class="text">${sessionScope.staffAccount.dateOfBirth}</span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="title">Address:</span>
+                                                            <span class="text">${sessionScope.staffAccount.address}</span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="title">Gender:</span>
+                                                            <span class="text">${sessionScope.staffAccount.gender}</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--                    <div class="profile-tabs">
+                                                <ul class="nav nav-tabs nav-tabs-bottom">
+                                                    <li class="nav-item"><a class="nav-link active" href="#about-cont" data-toggle="tab">About</a></li>
+                                                    <li class="nav-item"><a class="nav-link" href="#bottom-tab2" data-toggle="tab">Profile</a></li>
+                                                    <li class="nav-item"><a class="nav-link" href="#bottom-tab3" data-toggle="tab">Messages</a></li>
+                                                </ul>
+                                            </div> -->
+                    </div>
+                </div>
+            </div>
+        </c:if>
         <div class="sidebar-overlay" data-reff=""></div>
         <script src="assets/js/jquery-3.2.1.min.js"></script>
         <script src="assets/js/popper.min.js"></script>

@@ -40,123 +40,123 @@
         </style>
     </style>
 </head>
-    <header>
-        <div class="main-wrapper">
-            <div class="header">
-                <div class="header-left">
-                    <a href="index_1.jsp" class="logo">
-                        <img src="assets/img/logo.png" width="35" height="35" alt="Preclinic">
-                        <span>Novena</span>
-                    </a>
+<header>
+    <div class="main-wrapper">
+        <div class="header">
+            <div class="header-left">
+                <a href="index_1.jsp" class="logo">
+                    <img src="assets/img/logo.png" width="35" height="35" alt="Preclinic">
+                    <span>Novena</span>
+                </a>
+            </div>
+            <!-- Improved Login Button -->
+            <c:if test="${sessionScope.customerAccount == null && sessionScope.staffAccount == null}">
+                <div class="login-container">
+                    <a href="login.jsp" class="btn btn-primary btn-login">Đăng Nhập</a>
                 </div>
-                <!-- Improved Login Button -->
-                <c:if test="${sessionScope.customerAccount == null && sessionScope.staffAccount == null}">
-                    <div class="login-container">
-                        <a href="login.jsp" class="btn btn-primary btn-login">Đăng Nhập</a>
-                    </div>
-                </c:if>
-                
-                <c:if test="${sessionScope.staffAccount != null}">
-                    <div class="header-right float-right">
-                        <ul class="nav user-menu">
-                            <li class="nav-item dropdown has-arrow">
-                                <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
-                                    <span class="user-img">
-                                        <img class="rounded-circle" src="pictureprofile?customerID=${sessionScope.staffAccount.staffID}"   width="45" height="30" >
-                                        <span class="status online"></span>
-                                    </span>
-                                    <span>${sessionScope.staffAccount.fullName}</span>
-                                </a>
-                                <div class="dropdown-menu">                                  
-                                    <a class="dropdown-item" href="profile.jsp">My Profile</a>
-                                    <!--<a class="dropdown-item" href="settings.html">Settings</a>-->
-                                    <a class="dropdown-item" href="logout">Logout</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="dropdown mobile-user-menu float-right">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="profile.jsp">My Profile</a>
+            </c:if>
 
-                            <a class="dropdown-item" href="settings.html">Settings</a>
-                            <a class="dropdown-item" href="logout">Logout</a>
-                        </div>
-                    </div>
-                </c:if>
+            <c:if test="${sessionScope.staffAccount != null}">
+                <div class="header-right float-right">
+                    <ul class="nav user-menu">
+                        <li class="nav-item dropdown has-arrow">
+                            <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
+                                <span class="user-img">
+                                    <img class="rounded-circle" src="pictureprofile?customerID=${sessionScope.staffAccount.staffID}"   width="45" height="30" >
+                                    <span class="status online"></span>
+                                </span>
+                                <span>${sessionScope.staffAccount.fullName}</span>
+                            </a>
+                            <div class="dropdown-menu">                                  
+                                <a class="dropdown-item" href="profile.jsp">My Profile</a>
+                                <!--<a class="dropdown-item" href="settings.html">Settings</a>-->
+                                <a class="dropdown-item" href="logout">Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dropdown mobile-user-menu float-right">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="profile.jsp">My Profile</a>
 
-                <c:if test="${sessionScope.customerAccount != null}">
-                    <div class="header-right float-right">
-                        <ul class="nav user-menu">
-                            <li class="nav-item dropdown has-arrow">
-                                <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
-                                    <span class="user-img">
-                                        <img class="rounded-circle" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}"   width="45" height="30" >
-                                        <span class="status online"></span>
-                                    </span>
-                                    <span>${sessionScope.customerAccount.fullName}</span>
-                                </a>
-                                <div class="dropdown-menu">                                  
-                                    <a class="dropdown-item" href="profile.jsp">My Profile</a>
-                                    <!--<a class="dropdown-item" href="settings.html">Settings</a>-->
-                                    <a class="dropdown-item" href="logout">Logout</a>
-                                </div>
-                            </li>
-                        </ul>
+                        <a class="dropdown-item" href="settings.html">Settings</a>
+                        <a class="dropdown-item" href="logout">Logout</a>
                     </div>
-                    <div class="dropdown mobile-user-menu float-right">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="profile.jsp">My Profile</a>
+                </div>
+            </c:if>
 
-                            <a class="dropdown-item" href="settings.html">Settings</a>
-                            <a class="dropdown-item" href="logout">Logout</a>
-                        </div>
+            <c:if test="${sessionScope.customerAccount != null}">
+                <div class="header-right float-right">
+                    <ul class="nav user-menu">
+                        <li class="nav-item dropdown has-arrow">
+                            <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
+                                <span class="user-img">
+                                    <img class="rounded-circle" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}"   width="45" height="30" >
+                                    <span class="status online"></span>
+                                </span>
+                                <span>${sessionScope.customerAccount.fullName}</span>
+                            </a>
+                            <div class="dropdown-menu">                                  
+                                <a class="dropdown-item" href="profile.jsp">My Profile</a>
+                                <!--<a class="dropdown-item" href="settings.html">Settings</a>-->
+                                <a class="dropdown-item" href="logout">Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dropdown mobile-user-menu float-right">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="profile.jsp">My Profile</a>
+
+                        <a class="dropdown-item" href="settings.html">Settings</a>
+                        <a class="dropdown-item" href="logout">Logout</a>
                     </div>
-                </c:if>
+                </div>
+            </c:if>
 
-            </div>
         </div>
-    </header>
-    <nav class="navbar navbar-expand-lg navigation" id="navbar">
-        <div class="container">
-            <a class="navbar-brand" href="index_1.jsp">
-                <img src="images/logo.png" alt="" class="img-fluid">
-            </a>
-            <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarmain" aria-controls="navbarmain" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="icofont-navigation-menu"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarmain">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active"><a class="nav-link" href="index_1.jsp">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about.jsp">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="service.jsp">Services</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="department.html" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Department <i class="icofont-thin-down"></i></a>
-                        <ul class="dropdown-menu" aria-labelledby="dropdown02">
-                            <li><a class="dropdown-item" href="department.jsp">Departments</a></li>
-                            <li><a class="dropdown-item" href="department-single.jsp">Department Single</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="doctor.html" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Doctors <i class="icofont-thin-down"></i></a>
-                        <ul class="dropdown-menu" aria-labelledby="dropdown03">
-                            <li><a class="dropdown-item" href="doctor.jsp">Doctors</a></li>
-                            <li><a class="dropdown-item" href="doctor-single.html">Doctor Single</a></li>
-                            <li><a class="dropdown-item" href="appoinment.html">Appointment</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="blog-sidebar.html" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">News<i class="icofont-thin-down"></i></a>
-                        <ul class="dropdown-menu" aria-labelledby="dropdown05">
-                            <li><a class="dropdown-item" href="news">Blog with Sidebar</a></li>
-                            <li><a class="dropdown-item" href="blog-single.html">Blog Single</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                </ul>
-            </div>
+    </div>
+</header>
+<nav class="navbar navbar-expand-lg navigation" id="navbar">
+    <div class="container">
+        <a class="navbar-brand" href="index_1.jsp">
+            <img src="images/logo.png" alt="" class="img-fluid">
+        </a>
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarmain" aria-controls="navbarmain" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="icofont-navigation-menu"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarmain">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active"><a class="nav-link" href="index_1.jsp">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="about.jsp">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="service.jsp">Services</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="department.html" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Department <i class="icofont-thin-down"></i></a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdown02">
+                        <li><a class="dropdown-item" href="department.jsp">Departments</a></li>
+                        <li><a class="dropdown-item" href="department-single.jsp">Department Single</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="doctor.html" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Doctors <i class="icofont-thin-down"></i></a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdown03">
+                        <li><a class="dropdown-item" href="doctor.jsp">Doctors</a></li>
+                        <li><a class="dropdown-item" href="doctor-single.html">Doctor Single</a></li>
+                        <li><a class="dropdown-item" href="appoinment.html">Appointment</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="blog-sidebar.html" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">News<i class="icofont-thin-down"></i></a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdown05">
+                        <li><a class="dropdown-item" href="news">Blog with Sidebar</a></li>
+                        <li><a class="dropdown-item" href="blog-single.html">Blog Single</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
 </html>
