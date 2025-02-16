@@ -27,7 +27,7 @@
                         <p class="text-danger text-center">${error}</p> <!-- Error message display -->
 
                         <div class="account-logo">
-                            <a href="index-2.html">
+                            <a href="dashboard.html">
                                 <img src="assets/img/logo-dark.png" alt="Logo">
                             </a>
                         </div>
