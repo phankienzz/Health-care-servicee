@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="83fc5800-4f4f-448a-91b1-966797d15fad" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/java/StaffController/addStaff.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/StaffController/deleteStaff.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/StaffController/editStaff.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/StaffController/searchStaff.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/StaffController/staff.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/context/ValidFunction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/dao/PermissionDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/dao/RoleDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/model/Permission.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/model/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/util/Email.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/add-staff.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/edit-staff.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/roles-permissions.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/CustomerController/EditProfileServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/CustomerController/EditProfileServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/CustomerController/LogOutServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/CustomerController/LogoutServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/CustomerController/LoginServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/CustomerController/LoginServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/CustomerController/ProfileServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/CustomerController/ProfileServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/CustomerController/RegisterServet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/CustomerController/RegisterServet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/CustomerController/RequestPassword.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/CustomerController/ResetPassword.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/blog/blogdetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/blog/blogdetail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/dao/BlogDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/dao/BlogDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/dao/CategoryDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/dao/CategoryDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/dao/CustomerDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/dao/CustomerDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/dao/NewsDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/dao/NewsDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/dao/StaffDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/dao/StaffDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/dao/TokenForgetDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/model/Staff.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/model/Staff.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/model/TokenForgetPassword.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/web/WEB-INF/web.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/add-employee.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/assets/css/bootstrap.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/assets/css/bootstrap.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/assets/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/assets/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/blog-sidebar.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/blog-sidebar.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/blog.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/blog.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/css_1/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/css_1/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/edit-blog.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/edit-blog.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/edit-employee.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/staff.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/edit-profile.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/edit-profile.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/employees.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/staff.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/headerCustomer.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/headerCustomer.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/payments.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/payments.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/profile.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/profile.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/provident-fund.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/provident-fund.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/register.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/register.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/scss/_common.scss" beforeDir="false" afterPath="$PROJECT_DIR$/web/scss/_common.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../database 05-02-2025.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../database 05-02-2025.sql" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="2t7pZt45ZSfr9h60bGg7OUVMQuZ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Merging Cuong",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/Shop123/ProjectAssigment (Ban sao)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.24978.46" />
+        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-IU-243.24978.46" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="83fc5800-4f4f-448a-91b1-966797d15fad" name="Changes" comment="" />
+      <created>1739713028049</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1739713028049</updated>
+      <workItem from="1739713029413" duration="133000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
