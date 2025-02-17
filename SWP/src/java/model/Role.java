@@ -4,22 +4,26 @@
  */
 package model;
 
+import java.util.List;
+
 /**
  *
  * @author Gigabyte
  */
 public class Role {
-    int roleID;
-    String roleName;
-    String decription;
+    private int roleID;
+    private String roleName;
+    private String description;
+    private List<Permission> permission;
 
     public Role() {
     }
 
-    public Role(int roleID, String roleName, String decription) {
+    public Role(int roleID, String roleName, String description, List<Permission> permission) {
         this.roleID = roleID;
         this.roleName = roleName;
-        this.decription = decription;
+        this.description = description;
+        this.permission = permission;
     }
 
     public int getRoleID() {
@@ -38,12 +42,22 @@ public class Role {
         this.roleName = roleName;
     }
 
-    public String getDecription() {
-        return decription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDecription(String decription) {
-        this.decription = decription;
+    public void setDescription(String description) {
+        this.description = description;
     }
+
+    public List<Permission> getPermission() {
+        return permission;
+    }
+
+    public void setPermission(List<Permission> permission) {
+        this.permission = permission;
+    }
+
+    
     
 }

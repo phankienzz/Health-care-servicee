@@ -46,7 +46,8 @@ public class searchStaff extends HttpServlet {
         StaffDAO staffDAO = new StaffDAO();
         List<Staff> listStaff = new ArrayList<>();
         if (staffID_raw.isEmpty() && name.isEmpty() && roleID.equalsIgnoreCase("Select role")) {
-            listStaff = staffDAO.getAllStaff();
+            response.sendRedirect("staff");
+            return;
         }
         if (!staffID_raw.isEmpty()) {
             try {

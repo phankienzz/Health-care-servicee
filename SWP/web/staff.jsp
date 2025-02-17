@@ -431,15 +431,13 @@
                         </div>
                     </div>
                     <div class="clearfix">
-                        <div class="hint-text">Showing <b>6</b> out of <b>10</b> entries</div>
+                        <div class="hint-text">Showing <b>5</b> out of <b>${size}</b> entries</div>
                         <ul class="pagination">
-                            <li class="page-item "><a href="#">Previous</a></li>
-                            <li class="page-item" ><a href="#">1</a></li>
-                            <li class="page-item" ><a href="#">2</a></li>
-                            <li class="page-item" ><a href="#">3</a></li>
-                            <li class="page-item" ><a href="#">4</a></li>
-                            <li class="page-item" ><a href="#">5</a></li>
-                            <li class="page-item "><a href="#">Next</a></li>
+                            <li class="page-item page-item ${currentPage == 1 ? 'disabled' : ''}"><a href="staff?page=${currentPage - 1}">Previous</a></li>
+                                <c:forEach var="i" begin="1" end="${totalPages}">
+                                <li class="page-item ${i == currentPage ? 'active' : ''}" ><a href="staff?page=${i}">${i}</a></li>
+                                </c:forEach>
+                            <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}"><a href="staff?page=${currentPage + 1}">Next</a></li>
                         </ul>
                     </div>
                 </div>

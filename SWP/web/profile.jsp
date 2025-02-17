@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,6 +41,7 @@
                             <a href="edit-profile.jsp" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Edit Profile</a>
                         </div>
                     </div>
+                   <c:if test="${sessionScope.customerAccount != null}">
                     <div class="card-box profile-header">
                         <div class="row">
                             <div class="col-md-12">
@@ -48,49 +50,104 @@
                                         <div class="profile-img">
                                             <a href="#" data-toggle="modal" data-target="#imageModal">
                                                 <img class="avatar" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" alt="Profile Picture">
-                                        </a>                                       
+                                            </a>                                       
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="profile-basic">
-                                    <div class="row">
-                                        <div class="col-md-5">
-                                            <div class="profile-info-left">
-                                                <h3 class="user-name m-t-0 mb-0">${sessionScope.customerAccount.fullName}</h3>
-                                                <small class="text-muted">Gynecologist</small>
-                                                <div class="staff-id">Employee ID : DR-0001</div>
-                                                <div class="staff-msg"><a href="change-password.jsp" class="btn btn-primary">Change password</a></div>
+                                    <div class="profile-basic">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <div class="profile-info-left">
+                                                    <h3 class="user-name m-t-0 mb-0">${sessionScope.customerAccount.fullName}</h3>
+                                                    <small class="text-muted">Gynecologist</small>
+                                                    <div class="staff-id">Employee ID : DR-0001</div>
+                                                    <div class="staff-msg"><a href="change-password.jsp" class="btn btn-primary">Change password</a></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <ul class="personal-info">
+                                                    <li>
+                                                        <span class="title">Phone:</span>
+                                                        <span class="text"><a href="#">${sessionScope.customerAccount.phone}</a></span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="title">Email:</span>
+                                                        <span class="text"><a href="#">${sessionScope.customerAccount.email}</a></span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="title">Birthday:</span>
+                                                        <span class="text">${sessionScope.customerAccount.dateOfBirth}</span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="title">Address:</span>
+                                                        <span class="text">${sessionScope.customerAccount.address}</span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="title">Gender:</span>
+                                                        <span class="text">${sessionScope.customerAccount.gender}</span>
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </div>
-                                        <div class="col-md-7">
-                                            <ul class="personal-info">
-                                                <li>
-                                                    <span class="title">Phone:</span>
-                                                    <span class="text"><a href="#">${sessionScope.customerAccount.phone}</a></span>
-                                                </li>
-                                                <li>
-                                                    <span class="title">Email:</span>
-                                                    <span class="text"><a href="#">${sessionScope.customerAccount.email}</a></span>
-                                                </li>
-                                                <li>
-                                                    <span class="title">Birthday:</span>
-                                                    <span class="text">${sessionScope.customerAccount.dateOfBirth}</span>
-                                                </li>
-                                                <li>
-                                                    <span class="title">Address:</span>
-                                                    <span class="text">${sessionScope.customerAccount.address}</span>
-                                                </li>
-                                                <li>
-                                                    <span class="title">Gender:</span>
-                                                    <span class="text">${sessionScope.customerAccount.gender}</span>
-                                                </li>
-                                            </ul>
-                                        </div>
                                     </div>
-                                </div>
-                            </div>                        
+                                </div>                        
+                            </div>
                         </div>
                     </div>
-                </div>
+                </c:if>
+                <c:if test="${sessionScope.staffAccount != null}">
+                    <div class="card-box profile-header">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="profile-view">
+                                    <div class="profile-img-wrap">
+                                        <div class="profile-img">
+                                            <a href="#" data-toggle="modal" data-target="#imageModal">
+                                                <img class="avatar" src="pictureprofile?staffID=${sessionScope.staffAccount.staffID}" alt="Profile Picture">
+                                            </a>                                       
+                                        </div>
+                                    </div>
+                                    <div class="profile-basic">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <div class="profile-info-left">
+                                                    <h3 class="user-name m-t-0 mb-0">${sessionScope.staffAccount.fullName}</h3>
+                                                    <small class="text-muted">Gynecologist</small>
+                                                    <div class="staff-id">Employee ID : DR-0001</div>
+                                                    <div class="staff-msg"><a href="change-password.jsp" class="btn btn-primary">Change password</a></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <ul class="personal-info">
+                                                    <li>
+                                                        <span class="title">Phone:</span>
+                                                        <span class="text"><a href="#">${sessionScope.staffAccount.phone}</a></span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="title">Email:</span>
+                                                        <span class="text"><a href="#">${sessionScope.staffAccount.email}</a></span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="title">Birthday:</span>
+                                                        <span class="text">${sessionScope.staffAccount.dateOfBirth}</span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="title">Address:</span>
+                                                        <span class="text">${sessionScope.staffAccount.address}</span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="title">Gender:</span>
+                                                        <span class="text">${sessionScope.staffAccount.gender}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                        
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
+
                 <div class="profile-tabs">
                     <ul class="nav nav-tabs nav-tabs-bottom">
                         <li class="nav-item"><a class="nav-link active" href="#about-cont" data-toggle="tab">About</a></li>
