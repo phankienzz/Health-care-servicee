@@ -97,37 +97,8 @@ public class NewsDAO extends DBContext {
         return news;
     }
 
-    public List<News> searchNewsByTitle(String title, int index) {
-        List<News> list = new ArrayList<>();
-        String sql = "SELECT * FROM Posts WHERE status = 1 AND title LIKE ? ORDER BY created_at DESC OFFSET ? ROWS FETCH NEXT 3 ROWS ONLY";
-        try {
-            PreparedStatement pre = connection.prepareStatement(sql);
-            int offset = (index - 1) * 3;
-            pre.setString(1, "%" + title + "%");
-            pre.setInt(2, offset);
-            ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
-                String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
-                String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
-
-                News n = new News(rs.getInt("post_id"),
-                        rs.getString("title"),
-                        rs.getString("content"),
-                        rs.getInt("created_by"),
-                        rs.getInt("category_id"),
-                        rs.getInt("status"),
-                        rs.getString("image"),
-                        rs.getString("detail"),
-                        createdAt,
-                        updatedAt);
-                list.add(n);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-
+    
+    //dem
     public int getTotalNews() {
         String sql = "SELECT COUNT(*) FROM Posts WHERE status = 1";
         try {
@@ -172,6 +143,7 @@ public class NewsDAO extends DBContext {
         return totalNews;
     }
 
+    //phan trang
     public List<News> pagingAllNews(int index) {
         List<News> list = new ArrayList<>();
         String sql = "select * from Posts where status = 1 order by post_id offset ? rows  fetch  next 3 rows only";
@@ -205,7 +177,7 @@ public class NewsDAO extends DBContext {
 
     public List<News> pagingNewsByCategory(String category_id, int index) {
         List<News> list = new ArrayList<>();
-        String sql = "select * from Posts where status = 1 and category_id = ? order by created_at desc OFFSET ? rows fetch next 3 rows only";
+        String sql = "select * from Posts where status = 1 and category_id = ? order by post_id OFFSET ? rows fetch next 3 rows only";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             int offset = (index - 1) * 3;
@@ -231,6 +203,37 @@ public class NewsDAO extends DBContext {
                 list.add(n);
             }
         } catch (SQLException e) {
+        }
+        return list;
+    }
+
+    public List<News> searchNewsByTitle(String title, int index) {
+        List<News> list = new ArrayList<>();
+        String sql = "SELECT * FROM Posts WHERE status = 1 AND title LIKE ? ORDER BY post_id OFFSET ? ROWS FETCH NEXT 3 ROWS ONLY";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            int offset = (index - 1) * 3;
+            pre.setString(1, "%" + title + "%");
+            pre.setInt(2, offset);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
+                String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
+
+                News n = new News(rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getInt("created_by"),
+                        rs.getInt("category_id"),
+                        rs.getInt("status"),
+                        rs.getString("image"),
+                        rs.getString("detail"),
+                        createdAt,
+                        updatedAt);
+                list.add(n);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return list;
     }
@@ -294,7 +297,7 @@ public class NewsDAO extends DBContext {
 
     public static void main(String[] args) {
         NewsDAO dao = new NewsDAO();
-        List<News> newsList = dao.searchNewsByTitle("h", 1);
+        List<News> newsList = dao.searchNewsByTitle("h", 2);
         for (News news : newsList) {
             System.out.println(news);
         }
