@@ -175,13 +175,13 @@ public class NewsDAO extends DBContext {
         return list;
     }
 
-    public List<News> pagingNewsByCategory(String category_id, int index) {
+    public List<News> pagingNewsByCategory(String categoryID, int index) {
         List<News> list = new ArrayList<>();
         String sql = "select * from Posts where status = 1 and category_id = ? order by post_id OFFSET ? rows fetch next 3 rows only";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             int offset = (index - 1) * 3;
-            pre.setString(1, category_id);
+            pre.setString(1, categoryID);
             pre.setInt(2, offset);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {

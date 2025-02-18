@@ -56,7 +56,7 @@ public class ValidFunction {
 
         return password.matches(regex);
     }
-    public  String formatDate(String input) {
+    public String formatDate(String input) {
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 

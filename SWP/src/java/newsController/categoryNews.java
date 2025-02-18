@@ -70,50 +70,34 @@ public class categoryNews extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Lấy categoryID từ request (nếu có)
+        // Lấy categoryID từ request
         String categoryID = request.getParameter("categoryID");
-
-        // Lấy index của trang hiện tại từ request
         String indexPage = request.getParameter("index");
         if (indexPage == null) {
-            indexPage = "1";  // Nếu không có tham số index thì mặc định là trang 1
+            indexPage = "1";
         }
-
-        int index = Integer.parseInt(indexPage);  // Chuyển index thành số nguyên
-
-        // Khởi tạo DAO và các đối tượng cần thiết
+        int page = Integer.parseInt(indexPage);
         NewsDAO dao = new NewsDAO();
-        List<Category> cateList = dao.getAllCategoryNews();  // Lấy danh sách các danh mục
-        List<News> pagingPage;
-
-        // Nếu có categoryID thì gọi phương thức pagingNewsByCategory để phân trang theo danh mục
-        if (categoryID != null && !categoryID.isEmpty()) {
-            pagingPage = dao.pagingNewsByCategory(categoryID, index);
-        } else {
-            pagingPage = dao.pagingAllNews(index);  // Nếu không có categoryID thì lấy tất cả bài viết
-        }
-
-        // Lấy tổng số bài viết trong danh mục (hoặc tất cả bài viết nếu không có categoryID)
-        int totalNews = (categoryID != null && !categoryID.isEmpty()) ? dao.countTotalNewsByCategory(categoryID) : dao.getTotalNews();
-
-        // Tính số trang
-        int endPage = totalNews / 3;
+        // Lấy danh sách bài viết theo danh mục và trang
+        List<News> pagingPage = dao.pagingNewsByCategory(categoryID, page);
+        List<Category> listCate = dao.getAllCategoryNews();
+        // Lấy tổng số bài viết theo danh mục
+        int totalNews = dao.countTotalNewsByCategory(categoryID);
+        int endPage = totalNews / 3; // Mỗi trang hiển thị 3 bài
         if (totalNews % 3 != 0) {
             endPage++;
         }
-
-        // Định dạng ngày tháng cho từng bài viết trong list
+        // Định dạng ngày nếu cần
         for (News news : pagingPage) {
             news.setCreated_at(formatDate(news.getCreated_at()));
             news.setUpdated_at(formatDate(news.getUpdated_at()));
         }
 
-        // Đặt các thuộc tính cho request để sử dụng trong JSP
         request.setAttribute("pagingPage", pagingPage);
         request.setAttribute("endPage", endPage);
-        request.setAttribute("cateList", cateList);
-        request.setAttribute("categoryID", categoryID);  // Truyền categoryID để sử dụng trong phân trang
-        request.setAttribute("page", index);  // Truyền số trang hiện tại
+        request.setAttribute("listCate", listCate);
+        request.setAttribute("categoryID", categoryID);
+        request.setAttribute("page", page);
         request.getRequestDispatcher("blog-sidebar.jsp").forward(request, response);
     }
 

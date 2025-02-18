@@ -62,11 +62,11 @@
                                                 <span class="text-black text-capitalize mr-3"><i class="icofont-calendar mr-1"></i>${news.created_at}</span>
                                             </div> 
 
-                                            <h2 class="mt-3 mb-3"><a href="blog-single.html">${news.title}</a></h2>
+                                            <h2 class="mt-3 mb-3"><a href="blog-single.jsp">${news.title}</a></h2>
 
                                             <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis aliquid architecto facere commodi cupiditate omnis voluptatibus inventore atque velit cum rem id assumenda quam recusandae ipsam ea porro, dicta ad.</p>
 
-                                            <a href="blog-single.html" target="_blank" class="btn btn-main btn-icon btn-round-full">Read More <i class="icofont-simple-right ml-2  "></i></a>
+                                            <a href="blog-single.jsp" target="_blank" class="btn btn-main btn-icon btn-round-full">Read More <i class="icofont-simple-right ml-2  "></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -111,9 +111,9 @@
                                         <a href="news">All</a>
                                         <!--<span>(14)</span>-->
                                     </li>
-                                    <c:forEach var="o" items="${cateList}">
+                                    <c:forEach var="o" items="${listCate}">
                                         <li class="align-items-center">
-                                            <a href="categoryNews?categoryID=${o.category_id}&index=1">${o.name}</a>
+                                            <a href="categoryNews?categoryID=${o.category_id}">${o.name}</a>
                                             <!--<span>(14)</span>-->
                                         </li>
                                     </c:forEach>
@@ -169,10 +169,16 @@
                         <nav class="pagination py-2 d-inline-block">
                             <div class="nav-links">
                                 <c:forEach  begin="1" end="${endPage}" var="i">
-                                    <a class="page-numbers ${page == i?"page-numbers current":""}" 
-                                       href="categoryNews?categoryID=${categoryID != null ? categoryID : ''}&index=${i}">${i}</a>
+                                    <c:if test="${categoryID == null || categoryID == ''}">
+                                        <a class="page-numbers ${page == i?"page-numbers current":""}" 
+                                           href="news?page=${i}">${i}</a>
+                                    </c:if>
+                                    
+                                    <c:if test="${categoryID != null && categoryID != ''}">
+                                        <a class="page-numbers ${page == i?"page-numbers current":""}" 
+                                           href="categoryNews?categoryID=${categoryID}&page=${i}">${i}</a>
+                                    </c:if>
                                 </c:forEach>
-                                <!--<a class="page-numbers" href="#"><i class="icofont-thin-double-right"></i></a>-->
                             </div>
                         </nav>
                     </div>
