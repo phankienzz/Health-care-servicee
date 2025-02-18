@@ -181,7 +181,7 @@ public class NewsDAO extends DBContext {
             while (rs.next()) {
                 String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
                 String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
-
+asdasdasd
                 News n = new News(rs.getInt("post_id"),
                         rs.getString("title"),
                         rs.getString("content"),
