@@ -96,7 +96,15 @@ public class LoginServlet extends HttpServlet {
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             } else {
                 ValidFunction valid = new ValidFunction();
-                Staff s = new Staff(staff.getStaffID(), staff.getFullName(), staff.getEmail(), staff.getPassword(), staff.getPhone(), staff.getGender(),valid.formatDate(staff.getDateOfBirth()), staff.getAddress(), valid.formatDate(staff.getHireDate()), staff.getRoleID(), staff.getStatus(),staff.getProfilePicture());
+                String dob = null;
+                String hireDate = null;
+                if(staff.getDateOfBirth() != null){
+                    dob = valid.formatDate(staff.getDateOfBirth());
+                }
+                if(staff.getHireDate() != null){
+                   hireDate = valid.formatDate(staff.getHireDate());
+                }
+                Staff s = new Staff(staff.getStaffID(), staff.getFullName(), staff.getEmail(), staff.getPassword(), staff.getPhone(), staff.getGender(),dob, staff.getAddress(), hireDate, staff.getRoleID(), staff.getStatus(),staff.getProfilePicture());
                 session.setAttribute("staffAccount", s);
                 if (rememberMe != null) {
                     Cookie staffEmail = new Cookie("email", user);
