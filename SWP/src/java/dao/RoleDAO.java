@@ -101,7 +101,7 @@ public class RoleDAO extends DBContext {
 
     public static void main(String[] args) {
         RoleDAO dao = new RoleDAO();
-        dao.deleteByRoleID(9);
+        System.out.println(dao.getRoleByID(7).getPermission().get(0).getPermissionName());
         
     }
 }

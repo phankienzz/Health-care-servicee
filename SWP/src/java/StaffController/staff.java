@@ -14,8 +14,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import model.Permission;
 import model.Role;
 import model.Staff;
 
@@ -68,6 +70,14 @@ public class staff extends HttpServlet {
             Staff r = new Staff(s.getStaffID(), s.getFullName(), s.getEmail(), s.getPassword(), s.getPhone(), s.getGender(), dateBirth, s.getAddress(), valid.formatDate(s.getHireDate()), s.getRoleID(), s.getStatus(), s.getProfilePicture());
             list.add(r);
         }
+        HttpSession session = request.getSession();
+        if (session.getAttribute("staffAccount") != null) {
+            Staff s = (Staff) session.getAttribute("staffAccount");
+            Role role = roleDAO.getRoleByID(s.getRoleID());
+            List<Permission> listPermission = role.getPermission();
+            request.setAttribute("listPermission", listPermission);
+        }
+        request.setAttribute("phanTrang", "cotontai");
         request.setAttribute("size", listStaff.size());
         request.setAttribute("listStaff", list);
         request.setAttribute("currentPage", page);
@@ -75,7 +85,6 @@ public class staff extends HttpServlet {
         request.getRequestDispatcher("staff.jsp").forward(request, response);
 
     }
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
