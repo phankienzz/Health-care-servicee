@@ -1,4 +1,5 @@
 package dao;
+
 import java.sql.Blob;
 import context.DBContext;
 import java.io.InputStream;
@@ -16,7 +17,7 @@ public class BlogDAO extends DBContext {
 
     private static final Logger LOGGER = Logger.getLogger(BlogDAO.class.getName());
 
-public void addBlogPost(String title, String content, int createdBy, int categoryId, boolean status, String detail, InputStream imageStream) {
+    public void addBlogPost(String title, String content, int createdBy, int categoryId, boolean status, String detail, InputStream imageStream) {
         String sql = "INSERT INTO Posts (title, content, created_by, category_id, status, detail, image, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, GETDATE())";
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
@@ -26,7 +27,7 @@ public void addBlogPost(String title, String content, int createdBy, int categor
             st.setInt(4, categoryId);
             st.setBoolean(5, status);
             st.setString(6, detail);
-            
+
             if (imageStream != null) {
                 st.setBinaryStream(7, imageStream);
             } else {
@@ -44,101 +45,138 @@ public void addBlogPost(String title, String content, int createdBy, int categor
         }
     }
 
-
-//    public void updateBlogPost(int postId, String title, String content, String status, String image, String detail) {
-//        String sql = "UPDATE BlogPosts SET title = ?, content = ?, status = ?, image = ?, detail = ?, updated_at = GETDATE() WHERE post_id = ?";
-//        try {
-//            PreparedStatement st = connection.prepareStatement(sql);
-//            st.setString(1, title);
-//            st.setString(2, content);
-//            st.setString(3, status);
-//            st.setString(4, image);
-//            st.setString(5, detail);
-//            st.setInt(6, postId);
-//            st.executeUpdate();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
-    public List<News> getAllBlogs() {
-    List<News> blogs = new ArrayList<>();
-    String sql = "SELECT post_id, title, content, image, detail FROM Posts";
-
-    try (PreparedStatement st = connection.prepareStatement(sql);
-         ResultSet rs = st.executeQuery()) {
-
-        while (rs.next()) {
-            News blog = new News();
-            blog.setPost_id(rs.getInt("post_id"));
-            blog.setTitle(rs.getString("title"));
-            blog.setContent(rs.getString("content"));
-
-            Blob blob = rs.getBlob("image");
-            if (blob != null) {
-                blog.setImage("LoadBlogImage?postId=" + blog.getPost_id());
-            } else {
-                blog.setImage("default.jpg"); // Ảnh mặc định nếu không có ảnh
-            }
-
-            blog.setDetail(rs.getString("detail"));
-            blogs.add(blog);
+    public boolean updateBlogPost(int postId, String title, String content, boolean status, InputStream imageStream, String detail) {
+        String sql = "UPDATE Posts SET title = ?, content = ?, status = ?, detail = ?, updated_at = GETDATE()";
+        if (imageStream != null) {
+            sql += ", image = ?";
         }
+        sql += " WHERE post_id = ?";
 
-    } catch (SQLException e) {
-        e.printStackTrace();
-        System.err.println("❌ Error fetching blogs: " + e.getMessage());
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, title);
+            st.setString(2, content);
+            st.setBoolean(3, status);
+            st.setString(4, detail);
+
+            int paramIndex = 5;
+            if (imageStream != null) {
+                st.setBinaryStream(paramIndex++, imageStream);
+            }
+            st.setInt(paramIndex, postId);
+
+            int rowsAffected = st.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error updating blog post", e);
+            return false;
+        }
     }
-    return blogs;
-}
 
-    
-    
-   public News getBlogbyid(String id) {
-    String sql = "SELECT post_id, title, image, detail FROM Posts WHERE post_id = ?";
+    public List<News> getAllBlogs() {
+        List<News> blogs = new ArrayList<>();
+        String sql = "SELECT post_id, title, content, image, detail FROM Posts";
 
-    try (PreparedStatement st = connection.prepareStatement(sql)) {
-        st.setString(1, id);
+        try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
 
-        try (ResultSet rs = st.executeQuery()) {
-            if (rs.next()) {
+            while (rs.next()) {
                 News blog = new News();
-                blog.setPost_id(rs.getInt("post_id")); 
+                blog.setPost_id(rs.getInt("post_id"));
                 blog.setTitle(rs.getString("title"));
+                blog.setContent(rs.getString("content"));
 
                 Blob blob = rs.getBlob("image");
                 if (blob != null) {
-                    blog.setImage("LoadBlogImage?postId=" + blog.getPost_id()); // Tải hình ảnh động
+                    blog.setImage("LoadBlogImage?postId=" + blog.getPost_id());
                 } else {
-                    blog.setImage("default.jpg"); // Ảnh mặc định nếu không có hình
+                    blog.setImage("default.jpg"); // Ảnh mặc định nếu không có ảnh
                 }
 
                 blog.setDetail(rs.getString("detail"));
-                return blog;
+                blogs.add(blog);
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("❌ Error fetching blogs: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return blogs;
     }
-    return null;
+
+    public News getBlogById(int id) {
+        String sql = "SELECT post_id, title, content, image, detail FROM Posts WHERE post_id = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, id);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    News blog = new News();
+                    blog.setPost_id(rs.getInt("post_id"));
+                    blog.setTitle(rs.getString("title"));
+                    blog.setContent(rs.getString("content"));
+
+                    Blob blob = rs.getBlob("image");
+                    blog.setImage(blob != null ? "LoadBlogImage?postId=" + blog.getPost_id() : "default.jpg");
+
+                    blog.setDetail(rs.getString("detail"));
+                    return blog;
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error fetching blog by ID", e);
+        }
+        return null;
+    }
+
+   public void deleteBlogPost(int postId) throws SQLException {
+    // Step 1: Delete all StaffReplies related to the comments of the post
+    String deleteStaffRepliesSql = "DELETE FROM dbo.StaffReplies WHERE comment_id IN (SELECT comment_id FROM dbo.Comments WHERE post_id = ?)";
+    try (PreparedStatement deleteStaffRepliesStmt = connection.prepareStatement(deleteStaffRepliesSql)) {
+        deleteStaffRepliesStmt.setInt(1, postId);
+        deleteStaffRepliesStmt.executeUpdate();
+    }
+
+    // Step 2: Delete all comments related to the post
+    String deleteCommentsSql = "DELETE FROM dbo.Comments WHERE post_id = ?";
+    try (PreparedStatement deleteCommentsStmt = connection.prepareStatement(deleteCommentsSql)) {
+        deleteCommentsStmt.setInt(1, postId);
+        deleteCommentsStmt.executeUpdate();
+    }
+
+    // Step 3: Delete the post itself
+    String deletePostSql = "DELETE FROM Posts WHERE post_id = ?";
+    try (PreparedStatement deletePostStmt = connection.prepareStatement(deletePostSql)) {
+        deletePostStmt.setInt(1, postId);
+        int rowsAffected = deletePostStmt.executeUpdate();
+
+        if (rowsAffected == 0) {
+            throw new SQLException("No blog post was deleted. Please check the postId.");
+        }
+        LOGGER.info("Blog post deleted successfully.");
+    }
 }
 
 
 
 
-public static void main(String[] args) {
-        BlogDAO blogDAO = new BlogDAO();
-        List<News> blogs = blogDAO.getAllBlogs();
 
-        if (blogs.isEmpty()) {
-            System.out.println("⚠️ No blogs found in the database.");
-        } else {
-            System.out.println("✅ Blogs loaded successfully!");
-            for (News blog : blogs) {
-                System.out.println("📝 Title: " + blog.getTitle());
-                System.out.println("📸 Image: " + blog.getImage());
-                System.out.println("📝 Content: " + blog.getContent());
-                System.out.println("--------------------------------");
-            }
-        }
-    }
+
+    
+//    public static void main(String[] args) {
+//        BlogDAO blogDAO = new BlogDAO();
+//
+//        // Kiểm tra với postId thực tế trong cơ sở dữ liệu của bạn
+//        int postIdToDelete = 4;  // Thay thế với postId mà bạn muốn kiểm tra
+//
+//        try {
+//            // Gọi phương thức xóa bài viết
+//            blogDAO.deleteBlogPost(postIdToDelete);
+//            System.out.println("Blog post with ID " + postIdToDelete + " has been deleted successfully.");
+//        } catch (SQLException e) {
+//            // Xử lý lỗi khi xóa bài viết
+//            LOGGER.log(Level.SEVERE, "Error deleting blog post with ID " + postIdToDelete, e);
+//            System.err.println("Error deleting blog post: " + e.getMessage());
+//        }
+//    }
+
+
+
 }

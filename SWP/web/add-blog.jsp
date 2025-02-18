@@ -12,9 +12,9 @@
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
 
-                <script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
-               
+        <script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
 
+       
 
 
     </head>
@@ -42,14 +42,15 @@
                 </ul>
             </div>
 
+            
+            
+            
             <div class="page-wrapper">
                 <div class="content">
                     <div class="row">
                         <div class="col-lg-8 offset-lg-2">
                             <h4 class="page-title">Add Blog</h4>
                             <form method="post" action="addblog" enctype="multipart/form-data">
-
-
                                 <div class="form-group">
                                     <label>Blog Name</label>
                                     <input class="form-control" type="text" name="name" required>
@@ -60,11 +61,35 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Blog Images</label>
-                                    <input class="form-control" type="file" name="image" accept="image/jpeg, image/png, image/gif" multiple required>
-                                    <small class="form-text text-muted">
-                                        Max. file size: 50 MB per image. Allowed: jpg, gif, png. Max 10 images.
-                                    </small>
+                                    <!-- Adding the 'accept' attribute to limit selection to PNG files -->
+                                    <input class="form-control" type="file" name="image" id="image" accept="image/png">
+
+                                    <c:if test="${not empty blog.image}">
+                                        <img src="${blog.image}" width="100">
+                                    </c:if>
                                 </div>
+
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", function () {
+                                        const fileInput = document.getElementById("image"); // The file input element
+
+                                        fileInput.addEventListener("change", function () {
+                                            const file = fileInput.files[0]; // Get the selected file
+
+                                            if (file) {
+                                                const fileType = file.type; // Get the MIME type of the file
+                                                const allowedTypes = ["image/png", "image/jpeg", "image/gif"]; // Allowed file types
+
+                                                // If the selected file is not an allowed image type, show an alert and clear the input
+                                                if (!allowedTypes.includes(fileType)) {
+                                                    alert("Only PNG, JPEG, and GIF files are allowed!");
+                                                    fileInput.value = ''; // Clear the file input
+                                                }
+                                            }
+                                        });
+                                    });
+
+                                </script>
                                 <div class="form-group">
                                     <label>Blog content</label>
                                     <textarea cols="30" rows="6" class="form-control" id="descriptiondetail" name="descriptiondetail" required></textarea>
@@ -89,34 +114,21 @@
                                 document.addEventListener("DOMContentLoaded", function () {
                                     if (typeof CKEDITOR !== "undefined") {
                                         CKEDITOR.replace('descriptiondetail');
-                                    } else {
-                                        console.error("CKEditor không t?i ???c!");
                                     }
                                 });
-                            </script>
-
-                            <script>
-
-                          
 
                                 document.querySelector('form').addEventListener('submit', function (event) {
-                                    const files = document.querySelector('input[type="file"]').files;
-                                    const maxFiles = 10;
-                                    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-                                    if (files.length > maxFiles) {
-                                        alert('You can upload up to ' + maxFiles + ' images only.');
-                                        event.preventDefault();
-                                        return;
-                                    }
+                                    const fileInput = document.querySelector('input[type="file"]');
+                                    const file = fileInput.files[0];
 
-                                    for (let i = 0; i < files.length; i++) {
-                                        if (files[i].size > 50 * 1024 * 1024) {
-                                            alert('File size exceeds 50 MB: ' + files[i].name);
+                                    if (file) {
+                                        if (file.size > 50 * 1024 * 1024) {
+                                            alert('File size exceeds 50 MB.');
                                             event.preventDefault();
                                             return;
                                         }
-                                        if (!allowedTypes.includes(files[i].type)) {
-                                            alert('Invalid file type: ' + files[i].name);
+                                        if (file.type !== 'image/png') {
+                                            alert('Only PNG files are allowed.');
                                             event.preventDefault();
                                             return;
                                         }
@@ -128,13 +140,20 @@
                 </div>
             </div>
 
-            <div class="sidebar-overlay" data-reff=""></div>
-            <script src="assets/js/jquery-3.2.1.min.js"></script>
-            <script src="assets/js/popper.min.js"></script>
-            <script src="assets/js/bootstrap.min.js"></script>
-            <script src="assets/js/jquery.slimscroll.js"></script>
-            <script src="assets/js/select2.min.js"></script>
-            <script src="assets/js/tagsinput.js"></script>
-            <script src="assets/js/app.js"></script>
-    </body>
+           
+        
+    </div>
+</div>
+</div>
+</div>
+
+<div class="sidebar-overlay" data-reff=""></div>
+<script src="assets/js/jquery-3.2.1.min.js"></script>
+<script src="assets/js/popper.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/jquery.slimscroll.js"></script>
+<script src="assets/js/select2.min.js"></script>
+<script src="assets/js/tagsinput.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
 </html>

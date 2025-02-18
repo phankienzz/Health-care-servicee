@@ -15,15 +15,34 @@
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-        
-        
-        
+
+
+
         <!--[if lt IE 9]>
                     <script src="assets/js/html5shiv.min.js"></script>
                     <script src="assets/js/respond.min.js"></script>
             <![endif]-->
     </head>
 
+    <style>
+        .btn-update {
+            display: inline-flex;
+            align-items: flex-start;
+            justify-content: flex-end;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-update:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
     <body>
         <div class="main-wrapper">
             <div class="header">
@@ -336,17 +355,26 @@
                                             <a href="blogdetail?postId=${blog.post_id}" class="read-more">
                                                 <i class="fa fa-long-arrow-right"></i> Read More
                                             </a>
+
+
                                         </div>
+                                        <a href="editblog?postId=${blog.post_id}" class="btn-update" >
+                                            Update
+                                        </a>
+                                       
+
                                     </div>
+
                                 </div>
+
                             </c:forEach>
-
-
+                             
 
                         </div>
 
                     </div>
                 </form>
+                            
             </div>
 
         </div>

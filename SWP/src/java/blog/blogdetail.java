@@ -14,23 +14,29 @@ public class blogdetail extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String id = request.getParameter("postId");
+        throws ServletException, IOException {
+    String postIdParam = request.getParameter("postId");
 
-        if (id != null) {
+    if (postIdParam != null) {
+        try {
+            int id = Integer.parseInt(postIdParam); // Chuyển đổi đúng cách
             BlogDAO dao = new BlogDAO();
-            News blog = dao.getBlogbyid(id);
+            News blog = dao.getBlogById(id); // Đảm bảo tên phương thức đúng với BlogDAO
 
             if (blog != null) {
                 request.setAttribute("blogdetail", blog);
                 request.getRequestDispatcher("blog-details.jsp").forward(request, response);
             } else {
-                response.sendRedirect("error.jsp"); // Chuyển hướng nếu không tìm thấy bài viết
+                response.sendRedirect("error.jsp"); // Nếu không tìm thấy bài viết
             }
-        } else {
-            response.sendRedirect("homeblogseverlet"); // Nếu thiếu postId, quay về danh sách blog
+        } catch (NumberFormatException e) {
+            response.sendRedirect("homeblogseverlet"); // Nếu postId không hợp lệ
         }
+    } else {
+        response.sendRedirect("homeblogseverlet"); // Nếu thiếu postId, quay về danh sách blog
     }
+}
+
 
     @Override
     public String getServletInfo() {

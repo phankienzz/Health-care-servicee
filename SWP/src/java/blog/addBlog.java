@@ -24,7 +24,7 @@ public class addBlog extends HttpServlet {
         String description = request.getParameter("description");
         String detail = request.getParameter("descriptiondetail");
         boolean status = "true".equals(request.getParameter("status"));
-        
+
         // Giả định người dùng ID = 1, category ID = 1 (có thể thay đổi)
         int createdBy = 1;
         int categoryId = 1;
@@ -34,14 +34,14 @@ public class addBlog extends HttpServlet {
         InputStream imageStream = null;
 
         if (filePart != null && filePart.getSize() > 0) {
-            String fileType = filePart.getContentType();
-            if (!"image/png".equals(fileType)) {
-                request.setAttribute("error", "Only PNG images are allowed!");
-                request.getRequestDispatcher("add-blog.jsp").forward(request, response);
-                return;
+                String contentType = filePart.getContentType();
+                // Kiểm tra loại file cho phép: PNG, JPEG, GIF
+                if (!contentType.equals("image/png") && !contentType.equals("image/jpeg") && !contentType.equals("image/gif")) {
+                    response.sendRedirect("edit-blog.jsp?error=Only+PNG,+JPEG,+and+GIF+files+are+allowed");
+                    return;
+                }
+                imageStream = filePart.getInputStream();
             }
-            imageStream = filePart.getInputStream();
-        }
 
         // Gọi DAO để thêm blog vào database
         BlogDAO blogDAO = new BlogDAO();
