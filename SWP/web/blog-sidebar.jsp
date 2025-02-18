@@ -113,7 +113,7 @@
                                     </li>
                                     <c:forEach var="o" items="${cateList}">
                                         <li class="align-items-center">
-                                            <a href="categoryNews?categoryID=${o.category_id}">${o.name}</a>
+                                            <a href="categoryNews?categoryID=${o.category_id}&index=1">${o.name}</a>
                                             <!--<span>(14)</span>-->
                                         </li>
                                     </c:forEach>
@@ -169,8 +169,8 @@
                         <nav class="pagination py-2 d-inline-block">
                             <div class="nav-links">
                                 <c:forEach  begin="1" end="${endPage}" var="i">
-                                    <!--<span aria-current="page" class="page-numbers current">1</span>-->
-                                    <a class="page-numbers ${tag == i?"page-numbers current":""}" href="news?index=${i}">${i}</a>
+                                    <a class="page-numbers ${page == i?"page-numbers current":""}" 
+                                       href="categoryNews?categoryID=${categoryID != null ? categoryID : ''}&index=${i}">${i}</a>
                                 </c:forEach>
                                 <!--<a class="page-numbers" href="#"><i class="icofont-thin-double-right"></i></a>-->
                             </div>

@@ -72,6 +72,7 @@ public class newsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String indexPage = request.getParameter("index");
+        String categoryID = request.getParameter("categoryID");
         if (indexPage == null) {
             indexPage = "1";
         }
@@ -79,11 +80,19 @@ public class newsServlet extends HttpServlet {
         int index = Integer.parseInt(indexPage);
         NewsDAO dao = new NewsDAO();
         List<Category> cateList = dao.getAllCategoryNews();
-        List<News> pagingPage = dao.pagingAllNews(index);
+        List<News> pagingPage;
 
-        int count = dao.getTotalNews();
-        int endPage = count / 3;
-        if (count % 3 != 0) {
+        if (categoryID != null && !categoryID.isEmpty()) {
+            // Nếu có categoryID thì gọi hàm paging theo category
+            pagingPage = dao.pagingNewsByCategory(categoryID, index);
+        } else {
+            // Nếu không có categoryID thì lấy toàn bộ news
+            pagingPage = dao.pagingAllNews(index);
+        }
+
+        int totalNews = (categoryID != null && !categoryID.isEmpty()) ? dao.countTotalNewsByCategory(categoryID) : dao.getTotalNews();
+        int endPage = totalNews / 3;
+        if (totalNews % 3 != 0) {
             endPage++;
         }
 
@@ -96,7 +105,8 @@ public class newsServlet extends HttpServlet {
         request.setAttribute("pagingPage", pagingPage);
         request.setAttribute("endPage", endPage);
         request.setAttribute("cateList", cateList);
-        request.setAttribute("tag", index);
+        request.setAttribute("categoryID", categoryID);  // Gửi categoryID cho jsp
+        request.setAttribute("page", index);
         request.getRequestDispatcher("blog-sidebar.jsp").forward(request, response);
     }
 

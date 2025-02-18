@@ -138,13 +138,28 @@ public class NewsDAO extends DBContext {
         return 0;
     }
 
+    public int countTotalNewsByCategory(String category_id) {
+        String sql = "SELECT COUNT(*) FROM Posts WHERE status = 1 AND category_id = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, category_id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public List<News> pagingAllNews(int index) {
         List<News> list = new ArrayList<>();
         String sql = "select * from Posts where status = 1 order by post_id offset ? rows  fetch  next 3 rows only";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             int offset = (index - 1) * 3;
-            pre.setInt(1,offset );
+            pre.setInt(1, offset);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
@@ -168,7 +183,7 @@ public class NewsDAO extends DBContext {
         }
         return list;
     }
-    
+
     public List<News> pagingNewsByCategory(String category_id, int index) {
         List<News> list = new ArrayList<>();
         String sql = "select * from Posts where status = 1 and category_id = ? order by created_at desc OFFSET ? rows fetch next 3 rows only";
@@ -176,12 +191,12 @@ public class NewsDAO extends DBContext {
             PreparedStatement pre = connection.prepareStatement(sql);
             int offset = (index - 1) * 3;
             pre.setString(1, category_id);
-            pre.setInt(2,offset );
+            pre.setInt(2, offset);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
                 String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
-asdasdasd
+
                 News n = new News(rs.getInt("post_id"),
                         rs.getString("title"),
                         rs.getString("content"),
@@ -200,9 +215,6 @@ asdasdasd
         }
         return list;
     }
-    
-    
-    
 
     public void addBlogPost(String title, String content, int createdBy, int categoryId, boolean status, String detail, String imagePaths) {
         String sql = "INSERT INTO Posts (title, content, created_by, category_id, status, detail, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -263,12 +275,12 @@ asdasdasd
 
     public static void main(String[] args) {
         NewsDAO dao = new NewsDAO();
-        List<News> newsList = dao.pagingNewsByCategory("1",0);
-        for (News news : newsList) {
-            System.out.println(news);
-        }
-//        int count = dao.getTotalNews();
-//        System.out.println(count);
+//        List<News> newsList = dao.pagingNewsByCategory("2", 1);
+//        for (News news : newsList) {
+//            System.out.println(news);
+//        }
+        int count = dao.countTotalNewsByCategory("1");
+        System.out.println(count);
 
     }
 }
