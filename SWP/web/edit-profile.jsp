@@ -37,6 +37,30 @@
                             <h4 class="page-title">Edit Profile</h4>
                         </div>
                     </div>
+
+
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const fileInput = document.getElementById("profileImage");
+
+                            fileInput.addEventListener("change", function () {
+                                const file = fileInput.files[0];
+
+                                if (file) {
+                                    const fileType = file.type;
+                                    const allowedTypes = ["image/png", "image/jpeg", "image/gif"];
+
+                                    if (!allowedTypes.includes(fileType)) {
+                                        alert("Only PNG, JPEG, and GIF files are allowed!");
+                                        fileInput.value = ''; // Clear the file input
+                                    }
+                                }
+                            });
+                        });
+
+
+                    </script>
                     <form action="editprofile" method="post" enctype="multipart/form-data">
                         <div class="card-box">
                             <h3 class="card-title">Basic Informations</h3>
@@ -47,7 +71,7 @@
                                             <img class="inline-block" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" >
                                         <div class="fileupload btn">
                                             <span class="btn-text">Edit</span>
-                                            <input class="upload" type="file" name="profileImage">
+                                            <input class="upload" type="file" name="profileImage" id="profileImage">
                                         </div>
                                     </div>
 
@@ -60,8 +84,8 @@
                                                 </div>
                                             </div>
 
-                                                
-                                                
+
+
                                             <div class="col-md-6">
                                                 <div class="form-group form-focus">
                                                     <label class="focus-label">Birth Date</label>
@@ -135,6 +159,7 @@
                         <div class="text-center m-t-20">
                             <button class="btn btn-primary submit-btn" type="submit">Save</button>
                         </div>
+                    </div>
                 </form>
 
 
