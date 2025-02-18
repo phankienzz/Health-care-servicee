@@ -48,7 +48,7 @@ public class searchNews extends HttpServlet {
             out.println("</html>");
         }
     }
-    
+
     private String formatDate(String date) {
         if (date == null || date.isEmpty()) {
             return null;
@@ -70,12 +70,12 @@ public class searchNews extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String indexPage = request.getParameter("index");
+        String search = request.getParameter("search");  // Lấy giá trị tìm kiếm từ form
         if (indexPage == null) {
             indexPage = "1";
         }
 
-        int index = Integer.parseInt(indexPage);
-        String search = request.getParameter("search");  // Lấy giá trị tìm kiếm từ form
+        int page = Integer.parseInt(indexPage);
 
         NewsDAO dao = new NewsDAO();
         List<Category> cateList = dao.getAllCategoryNews();
@@ -85,10 +85,10 @@ public class searchNews extends HttpServlet {
         int totalNews;
 
         if (search != null && !search.trim().isEmpty()) {
-            pagingPage = dao.searchNewsByTitle(search, index);  // Phương thức tìm kiếm
+            pagingPage = dao.searchNewsByTitle(search, page);  // Phương thức tìm kiếm
             totalNews = dao.getTotalNewsBySearch(search);
         } else {
-            pagingPage = dao.pagingAllNews(index);  // Phân trang khi không có tìm kiếm
+            pagingPage = dao.pagingAllNews(page);  // Phân trang khi không có tìm kiếm
             totalNews = dao.getTotalNews();
         }
 
@@ -106,7 +106,7 @@ public class searchNews extends HttpServlet {
         request.setAttribute("pagingPage", pagingPage);
         request.setAttribute("endPage", endPage);
         request.setAttribute("cateList", cateList);
-        request.setAttribute("page", index);
+        request.setAttribute("page", page);
         request.setAttribute("searchValue", search);  // Đưa giá trị tìm kiếm vào request
         request.getRequestDispatcher("blog-sidebar.jsp").forward(request, response);
     }
