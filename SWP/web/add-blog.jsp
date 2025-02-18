@@ -14,7 +14,7 @@
 
         <script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
 
-       
+
 
 
     </head>
@@ -42,9 +42,9 @@
                 </ul>
             </div>
 
-            
-            
-            
+
+
+
             <div class="page-wrapper">
                 <div class="content">
                     <div class="row">
@@ -62,34 +62,15 @@
                                 <div class="form-group">
                                     <label>Blog Images</label>
                                     <!-- Adding the 'accept' attribute to limit selection to PNG files -->
-                                    <input class="form-control" type="file" name="image" id="image" accept="image/png">
+                                   <input class="form-control" type="file" name="image" id="image" accept="image/png, image/jpeg, image/gif, image/jpg">
+
 
                                     <c:if test="${not empty blog.image}">
                                         <img src="${blog.image}" width="100">
                                     </c:if>
                                 </div>
 
-                                <script>
-                                    document.addEventListener("DOMContentLoaded", function () {
-                                        const fileInput = document.getElementById("image"); // The file input element
 
-                                        fileInput.addEventListener("change", function () {
-                                            const file = fileInput.files[0]; // Get the selected file
-
-                                            if (file) {
-                                                const fileType = file.type; // Get the MIME type of the file
-                                                const allowedTypes = ["image/png", "image/jpeg", "image/gif"]; // Allowed file types
-
-                                                // If the selected file is not an allowed image type, show an alert and clear the input
-                                                if (!allowedTypes.includes(fileType)) {
-                                                    alert("Only PNG, JPEG, and GIF files are allowed!");
-                                                    fileInput.value = ''; // Clear the file input
-                                                }
-                                            }
-                                        });
-                                    });
-
-                                </script>
                                 <div class="form-group">
                                     <label>Blog content</label>
                                     <textarea cols="30" rows="6" class="form-control" id="descriptiondetail" name="descriptiondetail" required></textarea>
@@ -117,33 +98,29 @@
                                     }
                                 });
 
-                                document.querySelector('form').addEventListener('submit', function (event) {
-                                    const fileInput = document.querySelector('input[type="file"]');
-                                    const file = fileInput.files[0];
-
-                                    if (file) {
-                                        if (file.size > 50 * 1024 * 1024) {
-                                            alert('File size exceeds 50 MB.');
-                                            event.preventDefault();
-                                            return;
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    document.getElementById("image").addEventListener("change", function () {
+                                        const file = this.files[0];
+                                        if (file) {
+                                            const allowedTypes = ["image/png", "image/jpeg", "image/gif", "image/jpg"];
+                                            if (!allowedTypes.includes(file.type) || file.size > 50 * 1024 * 1024) {
+                                                alert("Only PNG, JPEG, JPG, GIF files are allowed and must be under 50MB.");
+                                                this.value = ''; // Xóa file n?u không h?p l?
+                                            }
                                         }
-                                        if (file.type !== 'image/png') {
-                                            alert('Only PNG files are allowed.');
-                                            event.preventDefault();
-                                            return;
-                                        }
-                                    }
+                                    });
                                 });
+
                             </script>
                         </div>
                     </div>
                 </div>
             </div>
 
-           
-        
+
+
+        </div>
     </div>
-</div>
 </div>
 </div>
 
