@@ -48,25 +48,67 @@ public class searchNews extends HttpServlet {
             out.println("</html>");
         }
     }
+    
+    private String formatDate(String date) {
+        if (date == null || date.isEmpty()) {
+            return null;
+        }
+        try {
+            // Chuyển từ chuỗi ngày ban đầu (yyyy-MM-dd HH:mm:ss) sang Timestamp
+            java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
+            // Định dạng Timestamp thành chuỗi dd/MM/yyyy
+            java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
+            return dateFormat.format(timestamp);
+        } catch (IllegalArgumentException e) {
+            // Xử lý nếu chuỗi ngày không đúng định dạng ban đầu
+            System.err.println("Error formatting date: " + e.getMessage());
+            return null;
+        }
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        String search = request.getParameter("search");
-        try {
-            NewsDAO dao = new NewsDAO();
-//            List<News> searchResults = dao.searchNewsByTitle(search);
-            List<Category> cateList = dao.getAllCategoryNews();
-            
-
-//            request.setAttribute("newsList", searchResults);
-            request.setAttribute("cateList", cateList);
-            request.setAttribute("searchValue", search);
-            request.getRequestDispatcher("blog-sidebar.jsp").forward(request, response);
-        } catch (Exception e) {
+        String indexPage = request.getParameter("index");
+        if (indexPage == null) {
+            indexPage = "1";
         }
 
+        int index = Integer.parseInt(indexPage);
+        String search = request.getParameter("search");  // Lấy giá trị tìm kiếm từ form
+
+        NewsDAO dao = new NewsDAO();
+        List<Category> cateList = dao.getAllCategoryNews();
+
+        // Tìm kiếm và phân trang
+        List<News> pagingPage;
+        int totalNews;
+
+        if (search != null && !search.trim().isEmpty()) {
+            pagingPage = dao.searchNewsByTitle(search, index);  // Phương thức tìm kiếm
+            totalNews = dao.getTotalNewsBySearch(search);
+        } else {
+            pagingPage = dao.pagingAllNews(index);  // Phân trang khi không có tìm kiếm
+            totalNews = dao.getTotalNews();
+        }
+
+        int endPage = totalNews / 3;
+        if (totalNews % 3 != 0) {
+            endPage++;
+        }
+
+        // Định dạng ngày sử dụng phương thức tiện ích
+        for (News news : pagingPage) {
+            news.setCreated_at(formatDate(news.getCreated_at()));
+            news.setUpdated_at(formatDate(news.getUpdated_at()));
+        }
+
+        request.setAttribute("pagingPage", pagingPage);
+        request.setAttribute("endPage", endPage);
+        request.setAttribute("cateList", cateList);
+        request.setAttribute("page", index);
+        request.setAttribute("searchValue", search);  // Đưa giá trị tìm kiếm vào request
+        request.getRequestDispatcher("blog-sidebar.jsp").forward(request, response);
     }
 
     @Override

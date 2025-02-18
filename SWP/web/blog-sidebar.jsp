@@ -252,9 +252,9 @@
                     </div>
                 </div>
 
-               <div class="footer-btm py-4 mt-5">
+                <div class="footer-btm py-4 mt-5">
                     <div class="row align-items-center justify-content-between">
-                        
+
                     </div>
 
                     <div class="row">
