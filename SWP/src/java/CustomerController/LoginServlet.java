@@ -4,6 +4,7 @@
  */
 package CustomerController;
 
+import context.ValidFunction;
 import dao.CustomerDAO;
 import dao.StaffDAO;
 import java.io.IOException;
@@ -65,7 +66,7 @@ public class LoginServlet extends HttpServlet {
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             } else {
                 session.setAttribute("customerAccount", customerAccount);
-                if ("on".equals(rememberMe)) {
+                if (rememberMe != null) {
                     Cookie cusUsername = new Cookie("username", user);
                     Cookie cusPassword = new Cookie("password", password);
 
@@ -94,22 +95,16 @@ public class LoginServlet extends HttpServlet {
                 request.setAttribute("userType", "staff");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             } else {
-                session.setAttribute("staffAccount", staff);
-                if ("on".equals(rememberMe)) {
+                ValidFunction valid = new ValidFunction();
+                Staff s = new Staff(staff.getStaffID(), staff.getFullName(), staff.getEmail(), staff.getPassword(), staff.getPhone(), staff.getGender(),valid.formatDate(staff.getDateOfBirth()), staff.getAddress(), valid.formatDate(staff.getHireDate()), staff.getRoleID(), staff.getStatus(),staff.getProfilePicture());
+                session.setAttribute("staffAccount", s);
+                if (rememberMe != null) {
                     Cookie staffEmail = new Cookie("email", user);
-                    Cookie staffPassword = new Cookie("staffpassword", password);
+                    Cookie staffPassword = new Cookie("password", password);
                     staffEmail.setMaxAge(30 * 24 * 60 * 60);
                     staffPassword.setMaxAge(30 * 24 * 60 * 60);
                     response.addCookie(staffEmail);
                     response.addCookie(staffPassword);
-                }else {
-                    // Nếu "Remember Me" không được chọn, xóa cookies
-                    Cookie usernameCookie = new Cookie("email", "");
-                    Cookie passwordCookie = new Cookie("staffpassword", "");
-                    usernameCookie.setMaxAge(0);
-                    passwordCookie.setMaxAge(0);
-                    response.addCookie(usernameCookie);
-                    response.addCookie(passwordCookie);
                 }
                 response.sendRedirect("index_1.jsp");
             }
