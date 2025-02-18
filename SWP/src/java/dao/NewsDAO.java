@@ -138,9 +138,9 @@ public class NewsDAO extends DBContext {
         return 0;
     }
 
-    public List<News> pagingNews(int index) {
+    public List<News> pagingAllNews(int index) {
         List<News> list = new ArrayList<>();
-        String sql = "select * from Posts order by post_id offset ? rows  fetch  next 3 rows only";
+        String sql = "select * from Posts where status = 1 order by post_id offset ? rows  fetch  next 3 rows only";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             int offset = (index - 1) * 3;
@@ -164,10 +164,45 @@ public class NewsDAO extends DBContext {
 //                        rs.getString("updated_at"));
                 list.add(n);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return list;
     }
+    
+    public List<News> pagingNewsByCategory(String category_id, int index) {
+        List<News> list = new ArrayList<>();
+        String sql = "select * from Posts where status = 1 and category_id = ? order by created_at desc OFFSET ? rows fetch next 3 rows only";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            int offset = (index - 1) * 3;
+            pre.setString(1, category_id);
+            pre.setInt(2,offset );
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
+                String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
+
+                News n = new News(rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getInt("created_by"),
+                        rs.getInt("category_id"),
+                        rs.getInt("status"),
+                        rs.getString("image"),
+                        rs.getString("detail"),
+                        createdAt,
+                        updatedAt);
+//                        rs.getString("created_at"),
+//                        rs.getString("updated_at"));
+                list.add(n);
+            }
+        } catch (SQLException e) {
+        }
+        return list;
+    }
+    
+    
+    
 
     public void addBlogPost(String title, String content, int createdBy, int categoryId, boolean status, String detail, String imagePaths) {
         String sql = "INSERT INTO Posts (title, content, created_by, category_id, status, detail, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -228,7 +263,7 @@ public class NewsDAO extends DBContext {
 
     public static void main(String[] args) {
         NewsDAO dao = new NewsDAO();
-        List<News> newsList = dao.pagingNews(3);
+        List<News> newsList = dao.pagingNewsByCategory("1",0);
         for (News news : newsList) {
             System.out.println(news);
         }

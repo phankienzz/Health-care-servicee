@@ -79,7 +79,7 @@ public class newsServlet extends HttpServlet {
         int index = Integer.parseInt(indexPage);
         NewsDAO dao = new NewsDAO();
         List<Category> cateList = dao.getAllCategoryNews();
-        List<News> pagingPage = dao.pagingNews(index);
+        List<News> pagingPage = dao.pagingAllNews(index);
 
         int count = dao.getTotalNews();
         int endPage = count / 3;
