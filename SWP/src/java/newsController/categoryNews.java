@@ -51,20 +51,11 @@ public class categoryNews extends HttpServlet {
     }
 
     private String formatDate(String date) {
-        if (date == null || date.isEmpty()) {
-            return null;
-        }
-        try {
-            // Chuyển từ chuỗi ngày ban đầu (yyyy-MM-dd HH:mm:ss) sang Timestamp
-            java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
-            // Định dạng Timestamp thành chuỗi dd/MM/yyyy
-            java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
-            return dateFormat.format(timestamp);
-        } catch (IllegalArgumentException e) {
-            // Xử lý nếu chuỗi ngày không đúng định dạng ban đầu
-            System.err.println("Error formatting date: " + e.getMessage());
-            return null;
-        }
+        // Chuyển từ chuỗi ngày ban đầu (yyyy-MM-dd HH:mm:ss) sang Timestamp
+        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
+        // Định dạng Timestamp thành chuỗi dd/MM/yyyy
+        java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
+        return dateFormat.format(timestamp);
     }
 
     @Override
