@@ -28,6 +28,8 @@
 
     <body>
 
+        <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
         <jsp:include page="editseting.jsp"></jsp:include>
 
             <div class="page-wrapper">
@@ -86,15 +88,32 @@
 
 
 
-                                            <div class="col-md-6">
-                                                <div class="form-group form-focus">
-                                                    <label class="focus-label">Birth Date</label>
+<!--                                                    <div class="col-md-6">
+                                                        <div class="form-group form-focus">
+                                                            <label class="focus-label">Birth Date</label>
+                                                            <div class="cal-icon">
+                                                                <input class="form-control floating" type="text" name="dateOfBirth" placeholder="DD-MM-YYYY" 
+                                                                       value="${sessionScope.customerAccount.dateOfBirth}">
+                                                            </div>
+                                                        </div>
+                                                    </div>-->
+
+
+                                           
+
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Birth Date <span class="text-danger">*</span></label>
                                                     <div class="cal-icon">
-                                                        <input class="form-control floating" type="text" name="dateOfBirth" placeholder="DD-MM-YYYY" 
-                                                               value="${sessionScope.customerAccount.dateOfBirth}">
+                                                        <!-- Set the value of the input field dynamically -->
+                                                        <input name="dateOfBirth" class="form-control datetimepicker" type="text"
+                                                               value="${sessionScope.customerAccount.dateOfBirth != null ? sessionScope.customerAccount.dateOfBirth : ''}" />
                                                     </div>
                                                 </div>
                                             </div>
+
+
+
 
 
                                             <div class="col-md-6">

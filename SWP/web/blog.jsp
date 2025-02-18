@@ -42,6 +42,33 @@
             background-color: #0056b3;
         }
 
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-bar input {
+            width: 70%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .search-bar button {
+            padding: 8px 12px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .search-bar button:hover {
+            background-color: #0056b3;
+        }
+
+
     </style>
     <body>
         <div class="main-wrapper">
@@ -330,6 +357,15 @@
                             </div>
                         </div>
 
+                        <div class="col-md-6">
+                            <form action="Search_block" method="get" class="search-bar">
+                                <input type="text" name="query" placeholder="Search blogs..." value="${query}" required>
+                                <button type="submit"><i class="fa fa-search"></i></button>
+                            </form>
+                        </div>
+
+
+
                         <div class="row">
 
                             <%-- Debug: Kiểm tra danh sách blogs --%>
@@ -361,22 +397,43 @@
                                         <a href="editblog?postId=${blog.post_id}" class="btn-update" >
                                             Update
                                         </a>
-                                       
+
 
                                     </div>
 
                                 </div>
 
                             </c:forEach>
-                             
 
+
+                        </div>
+                        <div class="pagination">
+                            <c:if test="${totalPages > 1}">
+                                <ul class="pagination justify-content-center">
+                                    <c:if test="${currentPage > 1}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="homeblogseverlet?page=${currentPage - 1}">Previous</a>
+                                        </li>
+                                    </c:if>
+
+                                    <c:forEach begin="1" end="${totalPages}" var="i">
+                                        <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                            <a class="page-link" href="homeblogseverlet?page=${i}">${i}</a>
+                                        </li>
+                                    </c:forEach>
+
+                                    <c:if test="${currentPage < totalPages}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="homeblogseverlet?page=${currentPage + 1}">Next</a>
+                                        </li>
+                                    </c:if>
+                                </ul>
+                            </c:if>
                         </div>
 
                     </div>
                 </form>
-                            
-            </div>
-
+            </div>    
         </div>
 
     </div>

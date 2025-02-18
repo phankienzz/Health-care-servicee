@@ -154,6 +154,51 @@ public class BlogDAO extends DBContext {
     }
 }
 
+   
+   
+   public List<News> getBlogsByPage(int start, int total) {
+    List<News> blogs = new ArrayList<>();
+    String sql = "SELECT post_id, title, content, image, detail FROM Posts ORDER BY post_id DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+    try (PreparedStatement st = connection.prepareStatement(sql)) {
+        st.setInt(1, start);
+        st.setInt(2, total);
+        try (ResultSet rs = st.executeQuery()) {
+            while (rs.next()) {
+                News blog = new News();
+                blog.setPost_id(rs.getInt("post_id"));
+                blog.setTitle(rs.getString("title"));
+                blog.setContent(rs.getString("content"));
+
+                Blob blob = rs.getBlob("image");
+                blog.setImage(blob != null ? "LoadBlogImage?postId=" + blog.getPost_id() : "default.jpg");
+
+                blog.setDetail(rs.getString("detail"));
+                blogs.add(blog);
+            }
+        }
+    } catch (SQLException e) {
+        LOGGER.log(Level.SEVERE, "Error fetching paginated blogs", e);
+    }
+    return blogs;
+}
+
+   
+   public int getTotalBlogCount() {
+    int count = 0;
+    String sql = "SELECT COUNT(*) FROM Posts";
+
+    try (PreparedStatement st = connection.prepareStatement(sql);
+         ResultSet rs = st.executeQuery()) {
+        if (rs.next()) {
+            count = rs.getInt(1);
+        }
+    } catch (SQLException e) {
+        LOGGER.log(Level.SEVERE, "Error fetching total blog count", e);
+    }
+    return count;
+}
+
 
 
 

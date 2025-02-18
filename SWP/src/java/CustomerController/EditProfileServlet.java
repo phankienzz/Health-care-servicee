@@ -3,7 +3,6 @@ package CustomerController;
 import dao.CustomerDAO;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jakarta.servlet.ServletException;
@@ -13,9 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import model.Customer;
 
@@ -61,20 +58,6 @@ public class EditProfileServlet extends HttpServlet {
         String dateOfBirth = request.getParameter("dateOfBirth");
         String gender = request.getParameter("gender");
 
-        // Handle date formatting
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
-        String formattedDateOfBirth = null;
-
-        try {
-            Date parsedDate = inputFormat.parse(dateOfBirth);
-            formattedDateOfBirth = outputFormat.format(parsedDate);
-        } catch (ParseException e) {
-            request.setAttribute("error", "Invalid date format!");
-            request.getRequestDispatcher("edit-profile.jsp").forward(request, response);
-            return;
-        }
-
         HttpSession session = request.getSession();
         Customer customerProfile = (Customer) session.getAttribute("customerAccount");
 
@@ -87,8 +70,8 @@ public class EditProfileServlet extends HttpServlet {
         CustomerDAO dao = new CustomerDAO();
 
         try {
-            dao.updateCustomerProfile(fullName, email, phone, address, formattedDateOfBirth, gender, imageStream, customerID);
-        } catch (ParseException ex) {
+            dao.updateCustomerProfile(fullName, email, phone, address, dateOfBirth, gender, imageStream, customerID);
+        } catch (Exception ex) {
             Logger.getLogger(EditProfileServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -96,7 +79,7 @@ public class EditProfileServlet extends HttpServlet {
         customerProfile.setEmail(email);
         customerProfile.setPhone(phone);
         customerProfile.setAddress(address);
-        customerProfile.setDateOfBirth(formattedDateOfBirth);
+        customerProfile.setDateOfBirth(dateOfBirth);
         customerProfile.setGender(gender);
 
         session.setAttribute("customerAccount", customerProfile);

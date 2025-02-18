@@ -95,12 +95,15 @@
                                                 </li>
                                                 <li>
                                                     <span class="title">Email:</span>
-                                                    <span class="text"><a href="#">${sessionScope.customerAccount.email}</a></span>
+                                                    <span class="text"><a href="#">${sessionScope.customerAccount.email}</a></span
                                                 </li>
+
                                                 <li>
                                                     <span class="title">Birthday:</span>
                                                     <span class="text">${sessionScope.customerAccount.dateOfBirth}</span>
                                                 </li>
+
+
                                                 <li>
                                                     <span class="title">Address:</span>
                                                     <span class="text">${sessionScope.customerAccount.address}</span>
