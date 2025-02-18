@@ -1,16 +1,15 @@
 <%-- 
-    Document   : employees
-    Created on : Feb 8, 2025, 10:15:46 PM
-    Author     : Gigabyte
+    Document   : view-patient
+    Created on : Feb 19, 2025, 1:30:55 AM
+    Author     : Hoang
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
 
-    <!-- employees23:21-->
+    <!-- add-patient24:06-->
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -18,62 +17,32 @@
         <title>Preclinic - Medical & Hospital - Bootstrap 4 Admin Template</title>
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="assets/css/dataTables.bootstrap4.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-        <style>
-            .pagination {
-                float: right;
-                margin: 0 0 5px;
-            }
-            .pagination li a {
-                border: none;
-                font-size: 13px;
-                min-width: 30px;
-                min-height: 30px;
-                color: #999;
-                margin: 0 2px;
-                line-height: 30px;
-                border-radius: 2px !important;
-                text-align: center;
-                padding: 0 6px;
-            }
-            .pagination li a:hover {
-                color: #666;
-            }
-            .pagination li.active a, .pagination li.active a.page-link {
-                background: #03A9F4;
-            }
-            .pagination li.active a:hover {
-                background: #0397d6;
-            }
-            .pagination li.disabled i {
-                color: #ccc;
-            }
-            .pagination li i {
-                font-size: 16px;
-                padding-top: 6px
-            }
-        </style>
+        <!--[if lt IE 9]>
+                    <script src="assets/js/html5shiv.min.js"></script>
+                    <script src="assets/js/respond.min.js"></script>
+            <![endif]-->
     </head>
 
     <body>
         <div class="main-wrapper">
             <jsp:include page="headerStaff.jsp"></jsp:include>
+
             <div class="sidebar" id="sidebar">
                 <div class="sidebar-inner slimscroll">
                     <div id="sidebar-menu" class="sidebar-menu">
                         <ul>
                             <li class="menu-title">Main</li>
                             <li>
-                                <a href="index-2.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
+                                <a href="dashboard.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
                             </li>
                             <li>
                                 <a href="doctors.html"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
                             </li>
-                            <li>
-                                <a href="patients.html"><i class="fa fa-wheelchair"></i> <span>Patients</span></a>
+                            <li class="active">
+                                <a href="patient"><i class="fa fa-wheelchair"></i> <span>Patients</span></a>
                             </li>
                             <li>
                                 <a href="appointments.html"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
@@ -87,7 +56,7 @@
                             <li class="submenu">
                                 <a href="#"><i class="fa fa-user"></i> <span> Employees </span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
-                                    <li><a class="active" href="employees.html">Employees List</a></li>
+                                    <li><a href="employees.html">Employees List</a></li>
                                     <li><a href="leaves.html">Leaves</a></li>
                                     <li><a href="holidays.html">Holidays</a></li>
                                     <li><a href="attendance.html">Attendance</a></li>
@@ -227,140 +196,103 @@
             <div class="page-wrapper">
                 <div class="content">
                     <div class="row">
-                        <div class="col-sm-4 col-3">
-                            <h4 class="page-title">Staff</h4> 
+                        <div class="col-lg-8 offset-lg-2">
+                            <h4 class="page-title">View Patient</h4>
                         </div>
-                        <c:forEach var="permission" items="${listPermission}">
-                            <c:if test="${permission.permissionID == 23}">
-                                <div class="col-sm-8 col-9 text-right m-b-20">
-                                    <a href="addStaff" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Add Staff</a>
-                                </div>
-                            </c:if>
-                        </c:forEach>
-
                     </div>
-                    <form action="searchStaff" method="POST">
-                        <div class="row filter-row">
-                            <div class="col-sm-6 col-md-3">
-                                <div class="form-group form-focus">
-                                    <label class="focus-label">Staff ID</label>
-                                    <input name="staffID"   type="text" class="form-control floating" <c:if test="${staffID != null}"> value="${staffID}"</c:if>>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="form-group form-focus">
-                                        <label class="focus-label">Staff Name</label>
-                                        <input name="name" type="text" class="form-control floating" <c:if test="${name != null}"> value="${name}"</c:if>>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="form-group form-focus select-focus">
-                                        <label class="focus-label">Role</label>
-                                        <select name="roleID" class="select floating">
-                                            <option value = "Select Role" >Select Role</option>
-                                        <c:forEach var = "role" items="${listRole}">
-                                            <option value="${role.roleID}" <c:if test="${roleID == role.roleID}"> selected</c:if>>${role.roleName}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-
-                                <input type="submit" value="Search" class="btn btn-success btn-block"/>
-                            </div>
-                        </div>
-                    </form>
-
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="table-responsive">
-                                <table class="table table-striped custom-table  ">
-                                    <thead>
-                                        <tr>
-                                            <th style="min-width:200px;">Name</th>
-                                            <th>Staff ID</th>
-                                            <th>Email</th>
-                                            <th>Mobile</th>
-                                            <th style="min-width: 110px;">Join Date</th>
-                                            <th>Role</th>
-                                                <c:set var="isChecked" value="false"/>
-
-                                            <c:forEach var="permission" items="${listPermission}">
-                                                <c:if test="${permission.permissionID == 25 || permission.permissionID == 26}">
-                                                    <c:set var="isChecked" value="true"/>
-
-                                                </c:if>
-                                            </c:forEach>
-                                            <c:if test="${isChecked}">
-                                                <th class="text-right">Action</th>
-                                                </c:if>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach var="staff" items="${listStaff}">
-                                            <tr>
-                                                <td>
-                                                    <img width="28" height="28" src="assets/img/user.jpg" class="rounded-circle" alt=""> <h2>${staff.fullName}</h2>
-                                                </td>
-                                                <td>${staff.staffID}</td>
-                                                <td>${staff.email}</td>
-                                                <td>${staff.phone}</td>
-                                                <td>${staff.hireDate}</td>
-                                                <td>
-                                                    <c:forEach var="role" items="${listRole}">
-                                                        <c:if test = "${role.roleID == staff.roleID}">
-                                                            <c:if test = "${staff.status == 'Active'}">
-                                                                <span class="custom-badge status-green">${role.roleName}</span>
-                                                            </c:if>
-                                                            <c:if test = "${staff.status == 'Inactive'}">
-                                                                <span class="custom-badge status-red">${role.roleName}</span>
-                                                            </c:if>
-                                                        </c:if>
-                                                    </c:forEach>
-
-                                                </td>
-                                                <c:if test="${isChecked}">
-                                                    <td class="text-right">
-                                                        <div class="dropdown dropdown-action">
-                                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                                            <div class="dropdown-menu dropdown-menu-right">
-                                                                <c:forEach var="permission" items="${listPermission}">
-                                                                    <c:if test="${permission.permissionID == 25}">
-                                                                        <a class="dropdown-item" href="editStaff?staffID=${staff.staffID}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                                    </c:if>
-
-                                                                    <c:if test="${permission.permissionID == 26}">
-                                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee" data-id="${staff.staffID}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </c:if>
-                                            </tr>
-
-                                        </c:forEach>
-
-
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div class="col-lg-8 offset-lg-2">
+                            <form>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>First Name <span class="text-danger"></span></label>
+                                            <input class="form-control" type="text" readonly="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Last Name</label>
+                                            <input class="form-control" type="text" readonly="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Username <span class="text-danger"></span></label>
+                                            <input class="form-control" type="text" readonly="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Email <span class="text-danger"></span></label>
+                                            <input class="form-control" type="email" readonly="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Password</label>
+                                            <input class="form-control" type="password" readonly="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Date of Birth</label>
+                                            <div class="cal-icon">
+                                                <input type="text" class="form-control datetimepicker" readonly="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Gender</label>
+                                            <input type="text" class="form-control" readonly="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Address</label>
+                                            <input type="text" class="form-control" readonly="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Phone </label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Avatar</label>
+                                            <div class="profile-upload">
+                                                <div class="upload-img">
+                                                    <img alt="" src="assets/img/user.jpg">
+                                                </div>
+                                                <div class="upload-input">
+                                                    <input type="file" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="display-block">Status</label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="status" id="patient_active" value="option1" checked>
+                                        <label class="form-check-label" for="patient_active" >
+                                            Active
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="status" id="patient_inactive" value="option2">
+                                        <label class="form-check-label" for="patient_inactive">
+                                            Inactive
+                                        </label>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <c:if test="${phanTrang != null}">
-                        <div class="clearfix">
-                            <div class="hint-text">Showing <b>5</b> out of <b>${size}</b> entries</div>
-                            <ul class="pagination">
-                                <li class="page-item page-item ${currentPage == 1 ? 'disabled' : ''}"><a href="staff?page=${currentPage - 1}">Previous</a></li>
-                                    <c:forEach var="i" begin="1" end="${totalPages}">
-                                    <li class="page-item ${i == currentPage ? 'active' : ''}" ><a href="staff?page=${i}">${i}</a></li>
-                                    </c:forEach>
-                                <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}"><a href="staff?page=${currentPage + 1}">Next</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </c:if>
+                </div>
                 <div class="notification-box">
                     <div class="msg-sidebar notifications msg-noti">
                         <div class="topnav-dropdown-header">
@@ -571,46 +503,19 @@
                     </div>
                 </div>
             </div>
-            <div id="delete_employee" class="modal fade delete-modal" role="dialog">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-body text-center">
-                            <img src="assets/img/sent.png" alt="" width="50" height="46">
-                            <h3>Are you sure want to delete this Employee?</h3>
-                            <form id="deleteForm" action="deleteStaff" method="GET">
-                                <input type="hidden" name="staffID" id="deleteStaffID">
-                                <div class="m-t-20">
-                                    <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="sidebar-overlay" data-reff=""></div>
         <script src="assets/js/jquery-3.2.1.min.js"></script>
         <script src="assets/js/popper.min.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
-        <script src="assets/js/jquery.dataTables.min.js"></script>
-        <script src="assets/js/dataTables.bootstrap4.min.js"></script>
         <script src="assets/js/jquery.slimscroll.js"></script>
         <script src="assets/js/select2.min.js"></script>
         <script src="assets/js/moment.min.js"></script>
         <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
         <script src="assets/js/app.js"></script>
-        <script>
-            $(document).ready(function () {
-                $('#delete_employee').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget); // Lấy nút vừa bấm
-                    var staffID = button.data('id'); // Lấy staffID từ data-id
-                    $('#deleteStaffID').val(staffID); // Gán vào input trong form
-                });
-            });
-        </script>
     </body>
 
 
-    <!-- employees23:22-->
+    <!-- add-patient24:07-->
 </html>
+
