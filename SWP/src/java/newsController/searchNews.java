@@ -56,11 +56,11 @@ public class searchNews extends HttpServlet {
         String search = request.getParameter("search");
         try {
             NewsDAO dao = new NewsDAO();
-            List<News> searchResults = dao.searchByTitle(search);
+//            List<News> searchResults = dao.searchNewsByTitle(search);
             List<Category> cateList = dao.getAllCategoryNews();
             
 
-            request.setAttribute("newsList", searchResults);
+//            request.setAttribute("newsList", searchResults);
             request.setAttribute("cateList", cateList);
             request.setAttribute("searchValue", search);
             request.getRequestDispatcher("blog-sidebar.jsp").forward(request, response);

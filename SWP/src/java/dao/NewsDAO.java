@@ -97,16 +97,20 @@ public class NewsDAO extends DBContext {
         return news;
     }
 
-    public List<News> searchByTitle(String title) {
-        List<News> news = new ArrayList<>();
-        String sql = "  SELECT * FROM Posts WHERE status = 1 AND title LIKE ?";
+    public List<News> searchNewsByTitle(String title, int index) {
+        List<News> list = new ArrayList<>();
+        String sql = "SELECT * FROM Posts WHERE status = 1 AND title LIKE ? ORDER BY created_at DESC OFFSET ? ROWS FETCH NEXT 3 ROWS ONLY";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
+            int offset = (index - 1) * 3;
             pre.setString(1, "%" + title + "%");
+            pre.setInt(2, offset);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
-                News n = new News(
-                        rs.getInt("post_id"),
+                String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
+                String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
+
+                News n = new News(rs.getInt("post_id"),
                         rs.getString("title"),
                         rs.getString("content"),
                         rs.getInt("created_by"),
@@ -114,14 +118,14 @@ public class NewsDAO extends DBContext {
                         rs.getInt("status"),
                         rs.getString("image"),
                         rs.getString("detail"),
-                        rs.getString("created_at"),
-                        rs.getString("updated_at")
-                );
-                news.add(n);
+                        createdAt,
+                        updatedAt);
+                list.add(n);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return news;
+        return list;
     }
 
     public int getTotalNews() {
@@ -151,6 +155,21 @@ public class NewsDAO extends DBContext {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public int getTotalNewsBySearch(String title) {
+        int totalNews = 0;
+        String sql = "SELECT COUNT(*) FROM Posts WHERE status = 1 AND title LIKE ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, "%" + title + "%");
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                totalNews = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+        }
+        return totalNews;
     }
 
     public List<News> pagingAllNews(int index) {
@@ -275,12 +294,12 @@ public class NewsDAO extends DBContext {
 
     public static void main(String[] args) {
         NewsDAO dao = new NewsDAO();
-//        List<News> newsList = dao.pagingNewsByCategory("2", 1);
-//        for (News news : newsList) {
-//            System.out.println(news);
-//        }
-        int count = dao.countTotalNewsByCategory("1");
-        System.out.println(count);
+        List<News> newsList = dao.searchNewsByTitle("h", 1);
+        for (News news : newsList) {
+            System.out.println(news);
+        }
+//        int count = dao.getTotalNewsBySearch("h");
+//        System.out.println(count);
 
     }
 }
