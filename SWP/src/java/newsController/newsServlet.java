@@ -18,6 +18,7 @@ import java.util.List;
 import model.Category;
 import model.News;
 import context.ValidFunction;
+import java.util.ArrayList;
 
 /**
  *
@@ -64,15 +65,31 @@ public class newsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String indexPage = request.getParameter("page");
+        String categoryID = request.getParameter("categoryID");
+        String search = request.getParameter("search");
+
+        if (search == null) {
+            search = "";
+        }
         if (indexPage == null) {
             indexPage = "1";
         }
 
         int page = Integer.parseInt(indexPage);
         NewsDAO dao = new NewsDAO();
-        List<News> pagingPage = dao.pagingAllNews(page);
-        List<Category> listCate = dao.getAllCategoryNews();
-        int totalNews = dao.getTotalNews();
+        List<News> pagingPage = new ArrayList<>();
+        int totalNews = 0;
+
+        if (!search.isEmpty()) {
+            pagingPage = dao.searchNewsByTitle(search, page);
+            totalNews = dao.getTotalNewsBySearch(search);
+        } else if (categoryID != null && !categoryID.isEmpty()) {
+            pagingPage = dao.pagingNewsByCategory(categoryID, page);
+            totalNews = dao.countTotalNewsByCategory(categoryID);
+        } else {
+            pagingPage = dao.pagingAllNews(page);
+            totalNews = dao.getTotalNews();
+        }
 
         int endPage = totalNews / 3;
         if (totalNews % 3 != 0) {
@@ -85,9 +102,13 @@ public class newsServlet extends HttpServlet {
             news.setUpdated_at(formatDate(news.getUpdated_at()));
         }
 
+        List<Category> listCate = dao.getAllCategoryNews();
+
         request.setAttribute("pagingPage", pagingPage);
         request.setAttribute("endPage", endPage);
         request.setAttribute("listCate", listCate);
+        request.setAttribute("categoryID", categoryID);
+        request.setAttribute("search", search);
         request.setAttribute("page", page);
         request.getRequestDispatcher("blog-sidebar.jsp").forward(request, response);
     }

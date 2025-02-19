@@ -77,8 +77,8 @@
                         <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0">
                             <div class="sidebar-widget search  mb-3 ">
                                 <h5>Search Here</h5>
-                                <form action="searchNews" method="get" class="search-form">
-                                    <input type="text" name="search" class="form-control" placeholder="search" value="${searchValue}">
+                                <form action="news" method="get" class="search-form">
+                                    <input type="text" name="search" class="form-control" placeholder="search" value="${search}">
                                     <i class="ti-search"></i>
                                 </form>
                             </div>
@@ -111,9 +111,9 @@
                                         <a href="news">All</a>
                                         <!--<span>(14)</span>-->
                                     </li>
-                                    <c:forEach var="o" items="${listCate}">
+                                    <c:forEach var="cate" items="${listCate}">
                                         <li class="align-items-center">
-                                            <a href="categoryNews?categoryID=${o.category_id}">${o.name}</a>
+                                            <a href="news?categoryID=${cate.category_id}">${cate.name}</a>
                                             <!--<span>(14)</span>-->
                                         </li>
                                     </c:forEach>
@@ -168,17 +168,19 @@
                     <div class="col-lg-8">
                         <nav class="pagination py-2 d-inline-block">
                             <div class="nav-links">
-                                <c:forEach  begin="1" end="${endPage}" var="i">
-                                    <c:if test="${categoryID == null || categoryID == ''}">
-                                        <a class="page-numbers ${page == i?"page-numbers current":""}" 
-                                           href="news?page=${i}">${i}</a>
+                                <c:forEach begin="1" end="${endPage}" var="i">
+                                    <c:if test="${categoryID == null && searchQuery == ''}">
+                                        <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="news?page=${i}">${i}</a>
                                     </c:if>
-                                    
-                                    <c:if test="${categoryID != null && categoryID != ''}">
-                                        <a class="page-numbers ${page == i?"page-numbers current":""}" 
-                                           href="categoryNews?categoryID=${categoryID}&page=${i}">${i}</a>
+
+                                    <c:if test="${categoryID != null}">
+                                        <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="news?categoryID=${categoryID}&page=${i}">${i}</a>
                                     </c:if>
-                                </c:forEach>
+
+                                    <c:if test="${searchQuery != ''}">
+                                        <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="news?search=${search}&page=${i}">${i}</a>
+                                    </c:if>
+                                </c:forEach> 
                             </div>
                         </nav>
                     </div>
