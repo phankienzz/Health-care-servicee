@@ -17,7 +17,8 @@ import model.Staff;
  * @author jaxbo
  */
 public class StaffDAO extends DBContext {
-    public Staff staffLogin(String email, String password){
+
+    public Staff staffLogin(String email, String password) {
         String sql = "select * from Staff where email = ? and password = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -42,13 +43,13 @@ public class StaffDAO extends DBContext {
         } catch (SQLException e) {
             System.out.println(e);
         }
-        return null;   
+        return null;
     }
-    
+
     public List<Staff> getStaffs(int start, int total) {
         List<Staff> staffList = new ArrayList<>();
         String sql = "SELECT * FROM Staff ORDER BY staffID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-        
+
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, start);
@@ -67,7 +68,7 @@ public class StaffDAO extends DBContext {
                 int roleID = rs.getInt("roleID");
                 String status = rs.getString("status");
                 String profilePicture = rs.getString("profilePicture");
-                Staff staff = new Staff(staffID, fullName, email, password, phone,gender,dateOfBirth,address, hireDate,roleID, status, profilePicture);
+                Staff staff = new Staff(staffID, fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture);
                 staffList.add(staff); // Thêm customer vào danh sách
             }
 
@@ -75,8 +76,8 @@ public class StaffDAO extends DBContext {
         }
         return staffList; // Trả về danh sách khách hàng
     }
-    
-     public Staff getStaffByID(int staffID){
+
+    public Staff getStaffByID(int staffID) {
         String sql = "select * from Staff where staffID = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -100,10 +101,10 @@ public class StaffDAO extends DBContext {
         } catch (SQLException e) {
             System.out.println(e);
         }
-        return null;   
+        return null;
     }
-    
-     public void updateStaff( int staffID, String fullName,String email, String phone, String hireDate, int roleID, String status){
+
+    public void updateStaff(int staffID, String fullName, String email, String phone, String hireDate, int roleID, String status) {
         String sql = "update staff set fullName = ?, email = ?, phone= ?, hireDate = CONVERT(DATETIME, ?, 103), roleID = ?, status = ? where staffID = ?";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -119,7 +120,8 @@ public class StaffDAO extends DBContext {
             System.out.println(e);
         }
     }
-     public void updateStaffInfo( int staffID, String fullName,String email, String phone, String dateOfBirth, String gender, String address){
+
+    public void updateStaffInfo(int staffID, String fullName, String email, String phone, String dateOfBirth, String gender, String address) {
         String sql = "update staff set fullName = ?, email = ?, phone= ?, dateOfBirth = CONVERT(DATETIME, ?, 103), gender = ?, address = ? where staffID = ?";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -135,12 +137,14 @@ public class StaffDAO extends DBContext {
             System.out.println(e);
         }
     }
-     public List<Staff> getStaffByName(String  name){
-         List<Staff> listStaff = new ArrayList<>();
+
+    public List<Staff> getStaffByName(String name) {
+        List<Staff> listStaff = new ArrayList<>();
         String sql = "select * from staff where fullName like ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-             st.setString(1, "%"+name+"%");
+            st.setString(1, "%" + name + "%");
+
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int staffID = rs.getInt("staffID");
@@ -155,21 +159,22 @@ public class StaffDAO extends DBContext {
                 int roleID = rs.getInt("roleID");
                 String status = rs.getString("status");
                 String profilePicture = rs.getString("profilePicture");
-                Staff staff = new Staff(staffID, fullName, email, password, phone,gender,dateOfBirth,address, hireDate,roleID, status, profilePicture);
+                Staff staff = new Staff(staffID, fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture);
                 listStaff.add(staff); // Thêm customer vào danh sách
             }
 
         } catch (SQLException e) {
         }
         return listStaff; // Trả về danh sách khách hàng
-         
-     }
-     public List<Staff> getStaffByRole(int  number_roleID){
-         List<Staff> listStaff = new ArrayList<>();
-        String sql = "select * from staff where roleID = ?";
+
+    }
+
+    public List<Staff> getStaffByRole(int number_roleID) {
+        List<Staff> listStaff = new ArrayList<>();
+        String sql = "select * from staff where roleID = ? ";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-             st.setInt(1, number_roleID);
+            st.setInt(1, number_roleID);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int staffID = rs.getInt("staffID");
@@ -184,25 +189,154 @@ public class StaffDAO extends DBContext {
                 int roleID = rs.getInt("roleID");
                 String status = rs.getString("status");
                 String profilePicture = rs.getString("profilePicture");
-                Staff staff = new Staff(staffID, fullName, email, password, phone,gender,dateOfBirth,address, hireDate,roleID, status, profilePicture);
+                Staff staff = new Staff(staffID, fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture);
                 listStaff.add(staff); // Thêm customer vào danh sách
             }
 
         } catch (SQLException e) {
         }
         return listStaff; // Trả về danh sách khách hàng
-         
-     }
-     public void deleteByStaffID( int staffID){
+
+    }
+
+    public List<Staff> getStaffByNameandRole(int number_roleID, String name) {
+        List<Staff> listStaff = new ArrayList<>();
+        String sql = "select * from staff where fullName like ? and roleID = ? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, "%" + name + "%");
+            st.setInt(2, number_roleID);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int staffID = rs.getInt("staffID");
+                String fullName = rs.getString("fullName");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                String phone = rs.getString("phone");
+                String gender = rs.getString("gender");
+                String dateOfBirth = rs.getString("dateOfBirth");
+                String address = rs.getString("address");
+                String hireDate = rs.getString("hireDate");
+                int roleID = rs.getInt("roleID");
+                String status = rs.getString("status");
+                String profilePicture = rs.getString("profilePicture");
+                Staff staff = new Staff(staffID, fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture);
+                listStaff.add(staff); // Thêm customer vào danh sách
+            }
+
+        } catch (SQLException e) {
+        }
+        return listStaff; // Trả về danh sách khách hàng
+
+    }
+    public List<Staff> getStaffByNameandRolePaging(int role, String name, int start, int total) {
+        List<Staff> listStaff = new ArrayList<>();
+        String sql = "select * from staff where fullName like ? and roleID = ? ORDER BY staffID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, "%" + name + "%");
+            st.setInt(2, role);
+            st.setInt(3, start);
+            st.setInt(4, total);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int staffID = rs.getInt("staffID");
+                String fullName = rs.getString("fullName");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                String phone = rs.getString("phone");
+                String gender = rs.getString("gender");
+                String dateOfBirth = rs.getString("dateOfBirth");
+                String address = rs.getString("address");
+                String hireDate = rs.getString("hireDate");
+                int roleID = rs.getInt("roleID");
+                String status = rs.getString("status");
+                String profilePicture = rs.getString("profilePicture");
+                Staff staff = new Staff(staffID, fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture);
+                listStaff.add(staff); // Thêm customer vào danh sách
+            }
+
+        } catch (SQLException e) {
+        }
+        return listStaff; // Trả về danh sách khách hàng
+
+    }
+
+    public List<Staff> getStaffByNamePaging(String name, int start, int total) {
+        List<Staff> listStaff = new ArrayList<>();
+        String sql = "select * from staff where fullName like ? ORDER BY staffID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, "%" + name + "%");
+            st.setInt(2, start);
+            st.setInt(3, total);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int staffID = rs.getInt("staffID");
+                String fullName = rs.getString("fullName");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                String phone = rs.getString("phone");
+                String gender = rs.getString("gender");
+                String dateOfBirth = rs.getString("dateOfBirth");
+                String address = rs.getString("address");
+                String hireDate = rs.getString("hireDate");
+                int roleID = rs.getInt("roleID");
+                String status = rs.getString("status");
+                String profilePicture = rs.getString("profilePicture");
+                Staff staff = new Staff(staffID, fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture);
+                listStaff.add(staff); // Thêm customer vào danh sách
+            }
+
+        } catch (SQLException e) {
+        }
+        return listStaff; // Trả về danh sách khách hàng
+
+    }
+
+    public List<Staff> getStaffByRolePaging(int number_roleID, int start, int total) {
+        List<Staff> listStaff = new ArrayList<>();
+        String sql = "select * from staff where roleID = ? ORDER BY staffID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, number_roleID);
+            st.setInt(2, start);
+            st.setInt(3, total);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int staffID = rs.getInt("staffID");
+                String fullName = rs.getString("fullName");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                String phone = rs.getString("phone");
+                String gender = rs.getString("gender");
+                String dateOfBirth = rs.getString("dateOfBirth");
+                String address = rs.getString("address");
+                String hireDate = rs.getString("hireDate");
+                int roleID = rs.getInt("roleID");
+                String status = rs.getString("status");
+                String profilePicture = rs.getString("profilePicture");
+                Staff staff = new Staff(staffID, fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture);
+                listStaff.add(staff); // Thêm customer vào danh sách
+            }
+
+        } catch (SQLException e) {
+        }
+        return listStaff; // Trả về danh sách khách hàng
+
+    }
+
+    public void deleteByStaffID(int staffID) {
         String sql = "delete from staff where staffID = ?";
         try {
-            PreparedStatement pre = connection.prepareStatement(sql);   
+            PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, staffID);
             pre.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
         }
     }
+
     public List<Staff> getAllStaff() {
         List<Staff> listStaff = new ArrayList<>();
         String sql = "SELECT * FROM Staff";
@@ -222,7 +356,7 @@ public class StaffDAO extends DBContext {
                 int roleID = rs.getInt("roleID");
                 String status = rs.getString("status");
                 String profilePicture = rs.getString("profilePicture");
-                Staff staff = new Staff(staffID, fullName, email, password, phone,gender,dateOfBirth,address, hireDate,roleID, status, profilePicture);
+                Staff staff = new Staff(staffID, fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture);
                 listStaff.add(staff); // Thêm customer vào danh sách
             }
 
@@ -230,7 +364,7 @@ public class StaffDAO extends DBContext {
         }
         return listStaff; // Trả về danh sách khách hàng
     }
-    
+
     public void createStaff(String fullName, String email, String password, String phone, String hireDate, int roleID, String status) {
         String sql = "INSERT [dbo].[Staff] ( [fullName], [email], [password], [phone], [hireDate], [roleID], [status], [profilePicture]) VALUES ( ?, ?, ?, ?, CONVERT(DATETIME, ?, 103), ?, ?, NULL)";
         try {
@@ -247,7 +381,7 @@ public class StaffDAO extends DBContext {
         } catch (SQLException e) {
         }
     }
-    
+
     public boolean checkOldPassword(int staffID, String oldPassword) {
         String sql = "SELECT password FROM Staff WHERE staffID = ?";
 
@@ -267,7 +401,7 @@ public class StaffDAO extends DBContext {
 
         return false; // return false if customer not found or any error occurs
     }
-    
+
     public void changeStaffPassword(int staffID, String password) {
         String sql = "UPDATE Staff SET password = ? WHERE staffID = ?";
 
@@ -279,6 +413,7 @@ public class StaffDAO extends DBContext {
             System.out.println("Error changing password: " + e.getMessage());
         }
     }
+
     public static void main(String[] args) {
         StaffDAO dao = new StaffDAO();
         Staff s = dao.staffLogin("john.smith@medical.com", "Thang@2303");

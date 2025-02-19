@@ -241,7 +241,7 @@
                         </c:forEach>
 
                     </div>
-                    <form action="searchStaff" method="POST">
+                    <form action="staff" method="get">
                         <div class="row filter-row">
                             <div class="col-sm-6 col-md-3">
                                 <div class="form-group form-focus">
@@ -350,24 +350,24 @@
                             </div>
                         </div>
                     </div>
-                    <c:if test="${phanTrang != null}">
-                        <div class="clearfix">
-                            <div class="hint-text">Showing <b>5</b> out of <b>${size}</b> entries</div>
-                            <ul class="pagination">
-                                <c:if test="${currentPage != 1}">
-                                    <li class="page-item page-item ${currentPage == 1 ? 'disabled' : ''}"><a href="staff?page=${currentPage - 1}">Previous</a></li>
-                                    </c:if>
 
-                                <c:forEach var="i" begin="1" end="${totalPages}">
-                                    <li class="page-item ${i == currentPage ? 'active' : ''}" ><a href="staff?page=${i}">${i}</a></li>
-                                    </c:forEach>
-                                    <c:if test="${currentPage != totalPages}">
-                                    <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}"><a href="staff?page=${currentPage + 1}">Next</a></li>
-                                    </c:if>
-                            </ul>
-                        </div>
+                    <div class="clearfix">
+                        <div class="hint-text">Showing <b>${show}</b> out of <b>${size}</b> entries</div>
+                        <ul class="pagination">
+                            <c:if test="${currentPage != 1}">
+                                <li class="page-item page-item ${currentPage == 1 ? 'disabled' : ''}"><a href="staff?page=${currentPage - 1}&staffID=${staffID}&name=${name}&roleID=${roleID}">Previous</a></li>
+                                </c:if>
+
+                            <c:forEach var="i" begin="1" end="${totalPages}">
+                                <li class="page-item ${i == currentPage ? 'active' : ''}" ><a href="staff?page=${i}&staffID=${staffID}&name=${name}&roleID=${roleID}">${i}</a></li>
+                                </c:forEach>
+                                <c:if test="${currentPage != totalPages}">
+                                <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}"><a href="staff?page=${currentPage + 1}&staffID=${staffID}&name=${name}&roleID=${roleID}">Next</a></li>
+                                </c:if>
+                        </ul>
                     </div>
-                </c:if>
+                </div>
+
                 <div class="notification-box">
                     <div class="msg-sidebar notifications msg-noti">
                         <div class="topnav-dropdown-header">
