@@ -63,4 +63,12 @@ public class ValidFunction {
         LocalDateTime dateTime = LocalDateTime.parse(input, inputFormatter);
         return dateTime.format(outputFormatter);
     }
+    
+    public String formatDateNews(String date) {
+        // Chuyển từ chuỗi ngày ban đầu (yyyy-MM-dd HH:mm:ss) sang Timestamp
+        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
+        // Định dạng Timestamp thành chuỗi dd/MM/yyyy
+        java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
+        return dateFormat.format(timestamp);
+    }
 }

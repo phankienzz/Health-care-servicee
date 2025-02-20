@@ -12,8 +12,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import model.Category;
 import model.News;
@@ -53,17 +51,11 @@ public class newsServlet extends HttpServlet {
         }
     }
 
-    private String formatDate(String date) {
-        // Chuyển từ chuỗi ngày ban đầu (yyyy-MM-dd HH:mm:ss) sang Timestamp
-        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
-        // Định dạng Timestamp thành chuỗi dd/MM/yyyy
-        java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
-        return dateFormat.format(timestamp);
-    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ValidFunction valid = new ValidFunction();
+        NewsDAO dao = new NewsDAO();
         String indexPage = request.getParameter("page");
         String categoryID = request.getParameter("categoryID");
         String search = request.getParameter("search");
@@ -76,30 +68,30 @@ public class newsServlet extends HttpServlet {
         }
 
         int page = Integer.parseInt(indexPage);
-        NewsDAO dao = new NewsDAO();
         List<News> pagingPage = new ArrayList<>();
         int totalNews = 0;
+        int pageSize = 3; //so bai viet tren 1 page
 
         if (!search.isEmpty()) {
-            pagingPage = dao.searchNewsByTitle(search, page);
+            pagingPage = dao.searchNewsByTitle(search, page, pageSize);
             totalNews = dao.getTotalNewsBySearch(search);
         } else if (categoryID != null && !categoryID.isEmpty()) {
-            pagingPage = dao.pagingNewsByCategory(categoryID, page);
+            pagingPage = dao.pagingNewsByCategory(categoryID, page, pageSize);
             totalNews = dao.countTotalNewsByCategory(categoryID);
         } else {
-            pagingPage = dao.pagingAllNews(page);
+            pagingPage = dao.pagingAllNews(page, pageSize);
             totalNews = dao.getTotalNews();
         }
 
-        int endPage = totalNews / 3;
-        if (totalNews % 3 != 0) {
+        int endPage = totalNews / pageSize;
+        if (totalNews % pageSize != 0) {
             endPage++;
         }
 
         // Định dạng ngày sử dụng phương thức tiện ích
         for (News news : pagingPage) {
-            news.setCreated_at(formatDate(news.getCreated_at()));
-            news.setUpdated_at(formatDate(news.getUpdated_at()));
+            news.setCreated_at(valid.formatDateNews(news.getCreated_at()));
+            news.setUpdated_at(valid.formatDateNews(news.getUpdated_at()));
         }
 
         List<Category> listCate = dao.getAllCategoryNews();

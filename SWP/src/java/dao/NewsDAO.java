@@ -19,35 +19,6 @@ import model.News;
  */
 public class NewsDAO extends DBContext {
 
-    public List<News> getAllNews() {
-        List<News> news = new ArrayList<>();
-        String sql = "select * from Posts where status = 1";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
-                String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
-
-                News n = new News(rs.getInt("post_id"),
-                        rs.getString("title"),
-                        rs.getString("content"),
-                        rs.getInt("created_by"),
-                        rs.getInt("category_id"),
-                        rs.getInt("status"),
-                        rs.getString("image"),
-                        rs.getString("detail"),
-                        createdAt,
-                        updatedAt);
-//                        rs.getString("created_at"),
-//                        rs.getString("updated_at"));
-                news.add(n);
-            }
-        } catch (SQLException e) {
-        }
-        return news;
-    }
-
     public List<Category> getAllCategoryNews() {
         List<Category> cate = new ArrayList<>();
         String sql = "select * from Categories where status = 1";
@@ -144,13 +115,14 @@ public class NewsDAO extends DBContext {
     }
 
     //phan trang
-    public List<News> pagingAllNews(int index) {
+    public List<News> pagingAllNews(int index, int pageSize) {
         List<News> list = new ArrayList<>();
-        String sql = "select * from Posts where status = 1 order by post_id offset ? rows  fetch  next 3 rows only";
+        String sql = "select * from Posts where status = 1 order by post_id offset ? rows  fetch  next ? rows only";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
-            int offset = (index - 1) * 3;
+            int offset = (index - 1) * pageSize;
             pre.setInt(1, offset);
+            pre.setInt(2, pageSize);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
@@ -175,14 +147,15 @@ public class NewsDAO extends DBContext {
         return list;
     }
 
-    public List<News> pagingNewsByCategory(String categoryID, int index) {
+    public List<News> pagingNewsByCategory(String categoryID, int index, int pageSize) {
         List<News> list = new ArrayList<>();
-        String sql = "select * from Posts where status = 1 and category_id = ? order by post_id OFFSET ? rows fetch next 3 rows only";
+        String sql = "select * from Posts where status = 1 and category_id = ? order by post_id OFFSET ? rows fetch next ? rows only";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
-            int offset = (index - 1) * 3;
+            int offset = (index - 1) * pageSize;
             pre.setString(1, categoryID);
             pre.setInt(2, offset);
+            pre.setInt(3, pageSize);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
@@ -207,14 +180,15 @@ public class NewsDAO extends DBContext {
         return list;
     }
 
-    public List<News> searchNewsByTitle(String title, int index) {
+    public List<News> searchNewsByTitle(String title, int index, int pageSize) {
         List<News> list = new ArrayList<>();
-        String sql = "SELECT * FROM Posts WHERE status = 1 AND title LIKE ? ORDER BY post_id OFFSET ? ROWS FETCH NEXT 3 ROWS ONLY";
+        String sql = "SELECT * FROM Posts WHERE status = 1 AND title LIKE ? ORDER BY post_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
-            int offset = (index - 1) * 3;
+            int offset = (index - 1) * pageSize;
             pre.setString(1, "%" + title + "%");
             pre.setInt(2, offset);
+            pre.setInt(3, pageSize);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
