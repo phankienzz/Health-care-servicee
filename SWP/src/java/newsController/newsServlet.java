@@ -77,7 +77,7 @@ public class newsServlet extends HttpServlet {
             totalNews = dao.getTotalNewsBySearch(search);
         } else if (categoryID != null && !categoryID.isEmpty()) {
             pagingPage = dao.pagingNewsByCategory(categoryID, page, pageSize);
-            totalNews = dao.countTotalNewsByCategory(categoryID);
+            totalNews = dao.getTotalNewsByCategory(categoryID);
         } else {
             pagingPage = dao.pagingAllNews(page, pageSize);
             totalNews = dao.getTotalNews();

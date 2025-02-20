@@ -84,7 +84,7 @@ public class NewsDAO extends DBContext {
         return 0;
     }
 
-    public int countTotalNewsByCategory(String category_id) {
+    public int getTotalNewsByCategory(String category_id) {
         String sql = "SELECT COUNT(*) FROM Posts WHERE status = 1 AND category_id = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -275,7 +275,7 @@ public class NewsDAO extends DBContext {
 //        for (News news : newsList) {
 //            System.out.println(news);
 //        }
-        int count = dao.countTotalNewsByCategory("1");
+        int count = dao.getTotalNewsByCategory("1");
         System.out.println(count);
 
     }
