@@ -168,19 +168,23 @@
                     <div class="col-lg-8">
                         <nav class="pagination py-2 d-inline-block">
                             <div class="nav-links">
-                                <c:forEach begin="1" end="${endPage}" var="i">
-                                    <c:if test="${categoryID == null && searchQuery == ''}">
+                                <c:if test="${categoryID == null && search == ''}">
+                                    <c:forEach begin="1" end="${endPage}" var="i">
                                         <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="news?page=${i}">${i}</a>
-                                    </c:if>
+                                    </c:forEach>
+                                </c:if>
 
-                                    <c:if test="${categoryID != null}">
+                                <c:if test="${categoryID != null}">
+                                    <c:forEach begin="1" end="${endPage}" var="i">
                                         <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="news?categoryID=${categoryID}&page=${i}">${i}</a>
-                                    </c:if>
+                                    </c:forEach>
+                                </c:if>
 
-                                    <c:if test="${searchQuery != ''}">
+                                <c:if test="${search != ''}">
+                                    <c:forEach begin="1" end="${endPage}" var="i">
                                         <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="news?search=${search}&page=${i}">${i}</a>
-                                    </c:if>
-                                </c:forEach> 
+                                    </c:forEach>
+                                </c:if>
                             </div>
                         </nav>
                     </div>

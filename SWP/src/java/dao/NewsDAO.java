@@ -297,12 +297,12 @@ public class NewsDAO extends DBContext {
 
     public static void main(String[] args) {
         NewsDAO dao = new NewsDAO();
-        List<News> newsList = dao.searchNewsByTitle("h", 2);
-        for (News news : newsList) {
-            System.out.println(news);
-        }
-//        int count = dao.getTotalNewsBySearch("h");
-//        System.out.println(count);
+//        List<News> newsList = dao.searchNewsByTitle("h", 2);
+//        for (News news : newsList) {
+//            System.out.println(news);
+//        }
+        int count = dao.countTotalNewsByCategory("1");
+        System.out.println(count);
 
     }
 }
