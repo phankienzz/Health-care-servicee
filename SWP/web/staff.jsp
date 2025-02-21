@@ -318,7 +318,6 @@
                                                             </c:if>
                                                         </c:if>
                                                     </c:forEach>
-
                                                 </td>
                                                 <c:if test="${isChecked}">
                                                     <td class="text-right">
@@ -339,10 +338,7 @@
                                                     </td>
                                                 </c:if>
                                             </tr>
-
                                         </c:forEach>
-
-
                                     </tbody>
                                 </table>
                             </div>
