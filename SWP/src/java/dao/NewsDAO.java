@@ -1,0 +1,305 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package dao;
+
+import context.DBContext;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import model.Category;
+import model.News;
+
+/**
+ *
+ * @author Hoang
+ */
+public class NewsDAO extends DBContext {
+
+    public List<News> getAllNews() {
+        List<News> news = new ArrayList<>();
+        String sql = "select * from Posts where status = 1";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
+                String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
+
+                News n = new News(rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getInt("created_by"),
+                        rs.getInt("category_id"),
+                        rs.getInt("status"),
+                        rs.getString("image"),
+                        rs.getString("detail"),
+                        createdAt,
+                        updatedAt);
+//                        rs.getString("created_at"),
+//                        rs.getString("updated_at"));
+                news.add(n);
+            }
+        } catch (SQLException e) {
+        }
+        return news;
+    }
+
+    public List<Category> getAllCategoryNews() {
+        List<Category> cate = new ArrayList<>();
+        String sql = "select * from Categories where status = 1";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Category c = new Category(
+                        rs.getInt("category_id"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getInt("status"));
+                cate.add(c);
+            }
+        } catch (SQLException e) {
+        }
+        return cate;
+    }
+
+    public List<News> getNewsByCategory(String category_id) {
+        List<News> news = new ArrayList<>();
+        String sql = "select * from Posts where category_id = ? and status = 1";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, category_id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
+                String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
+
+                News n = new News(rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getInt("created_by"),
+                        rs.getInt("category_id"),
+                        rs.getInt("status"),
+                        rs.getString("image"),
+                        rs.getString("detail"),
+                        createdAt,
+                        updatedAt);
+//                        rs.getString("created_at"),
+//                        rs.getString("updated_at"));
+                news.add(n);
+            }
+        } catch (SQLException e) {
+        }
+        return news;
+    }
+
+    public List<News> searchNewsByTitle(String title, int index) {
+        List<News> list = new ArrayList<>();
+        String sql = "SELECT * FROM Posts WHERE status = 1 AND title LIKE ? ORDER BY created_at DESC OFFSET ? ROWS FETCH NEXT 3 ROWS ONLY";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            int offset = (index - 1) * 3;
+            pre.setString(1, "%" + title + "%");
+            pre.setInt(2, offset);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
+                String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
+
+                News n = new News(rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getInt("created_by"),
+                        rs.getInt("category_id"),
+                        rs.getInt("status"),
+                        rs.getString("image"),
+                        rs.getString("detail"),
+                        createdAt,
+                        updatedAt);
+                list.add(n);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public int getTotalNews() {
+        String sql = "SELECT COUNT(*) FROM Posts WHERE status = 1";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int countTotalNewsByCategory(String category_id) {
+        String sql = "SELECT COUNT(*) FROM Posts WHERE status = 1 AND category_id = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, category_id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getTotalNewsBySearch(String title) {
+        int totalNews = 0;
+        String sql = "SELECT COUNT(*) FROM Posts WHERE status = 1 AND title LIKE ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, "%" + title + "%");
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                totalNews = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+        }
+        return totalNews;
+    }
+
+    public List<News> pagingAllNews(int index) {
+        List<News> list = new ArrayList<>();
+        String sql = "select * from Posts where status = 1 order by post_id offset ? rows  fetch  next 3 rows only";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            int offset = (index - 1) * 3;
+            pre.setInt(1, offset);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
+                String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
+
+                News n = new News(rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getInt("created_by"),
+                        rs.getInt("category_id"),
+                        rs.getInt("status"),
+                        rs.getString("image"),
+                        rs.getString("detail"),
+                        createdAt,
+                        updatedAt);
+//                        rs.getString("created_at"),
+//                        rs.getString("updated_at"));
+                list.add(n);
+            }
+        } catch (SQLException e) {
+        }
+        return list;
+    }
+
+    public List<News> pagingNewsByCategory(String category_id, int index) {
+        List<News> list = new ArrayList<>();
+        String sql = "select * from Posts where status = 1 and category_id = ? order by created_at desc OFFSET ? rows fetch next 3 rows only";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            int offset = (index - 1) * 3;
+            pre.setString(1, category_id);
+            pre.setInt(2, offset);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
+                String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
+
+                News n = new News(rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getInt("created_by"),
+                        rs.getInt("category_id"),
+                        rs.getInt("status"),
+                        rs.getString("image"),
+                        rs.getString("detail"),
+                        createdAt,
+                        updatedAt);
+//                        rs.getString("created_at"),
+//                        rs.getString("updated_at"));
+                list.add(n);
+            }
+        } catch (SQLException e) {
+        }
+        return list;
+    }
+
+    public void addBlogPost(String title, String content, int createdBy, int categoryId, boolean status, String detail, String imagePaths) {
+        String sql = "INSERT INTO Posts (title, content, created_by, category_id, status, detail, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, title);
+            st.setString(2, content);
+            st.setInt(3, createdBy);
+            st.setInt(4, categoryId);
+            st.setBoolean(5, status);
+            st.setString(6, detail);
+            st.setString(7, imagePaths);
+
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateBlogPost(int postId, String title, String content, String status, String image, String detail) {
+        String sql = "UPDATE BlogPosts SET title = ?, content = ?, status = ?, image = ?, detail = ?, updated_at = GETDATE() WHERE post_id = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, title);
+            st.setString(2, content);
+            st.setString(3, status);
+            st.setString(4, image);
+            st.setString(5, detail);
+            st.setInt(6, postId);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<News> getAllBlogs() {
+        List<News> blogs = new ArrayList<>();
+        String sql = "SELECT post_id, title, content, image, detail FROM Posts";
+
+        try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+
+            while (rs.next()) {
+                News blog = new News();
+                blog.setPostId(rs.getInt("post_id"));
+                blog.setTitle(rs.getString("title"));
+                blog.setContent(rs.getString("content"));
+                blog.setImage(rs.getString("image"));  // Lấy đường dẫn ảnh
+                blog.setDetail(rs.getString("detail"));
+
+                blogs.add(blog);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Ghi log lỗi
+        }
+        return blogs;
+    }
+
+    public static void main(String[] args) {
+        NewsDAO dao = new NewsDAO();
+        List<News> newsList = dao.searchNewsByTitle("h", 1);
+        for (News news : newsList) {
+            System.out.println(news);
+        }
+//        int count = dao.getTotalNewsBySearch("h");
+//        System.out.println(count);
+
+    }
+}
