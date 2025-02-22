@@ -33,6 +33,7 @@
     <body id="top">
         <jsp:include page="headerCustomer.jsp"></jsp:include>
 
+        
         <!-- Slider Start -->
         <section class="banner">
             <div class="container">
