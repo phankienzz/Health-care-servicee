@@ -5,7 +5,6 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -32,82 +31,52 @@
             .navbar {
                 margin-top: 40px;
             }
-
+          
         </style>
-    </head>
-    <body>
-        <header>
-            <div class="main-wrapper">
-                <div class="header">
-                    <div class="header-left">
-                        <a href="index_1.jsp" class="logo">
-                            <img src="assets/img/logo.png" width="35" height="35" alt="Preclinic">
-                            <span>Preclinic</span>
-                        </a>
-                    </div>
-                    <!-- Improved Login Button -->               
-                    <c:if test="${sessionScope.customerAccount != null}">
-                        <div class="header-right float-right">
-                            <ul class="nav user-menu">
-                                <li class="nav-item dropdown has-arrow">
-                                    <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
-                                        <span class="user-img">
-                                            <img class="rounded-circle" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}"  width="24" >
-                                            <span class="status online"></span>
-                                        </span>
-                                        <span>${sessionScope.customerAccount.fullName}</span>
-                                    </a>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="profile.jsp">My Profile</a>
-
-                                        <a class="dropdown-item" href="settings.html">Settings</a>
-                                        <a class="dropdown-item" href="logout">Logout</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="dropdown mobile-user-menu float-right">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="profile.jsp">My Profile</a>
-
-                                <a class="dropdown-item" href="settings.html">Settings</a>
-                                <a class="dropdown-item" href="logout">Logout</a>
-                            </div>
-                        </div>
-                    </c:if>
-                    <c:if test="${sessionScope.staffAccount != null}">
-                        <div class="header-right float-right">
-                            <ul class="nav user-menu">
-                                <li class="nav-item dropdown has-arrow">
-                                    <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
-                                        <span class="user-img">
-                                            <img class="rounded-circle" src="pictureprofile?customerID=${sessionScope.staffAccount.staffID}"  width="24" >
-                                            <span class="status online"></span>
-                                        </span>
-                                        <span>${sessionScope.staffAccount.fullName}</span>
-                                    </a>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="profile.jsp">My Profile</a>
-
-                                        <a class="dropdown-item" href="settings.html">Settings</a>
-                                        <a class="dropdown-item" href="logout">Logout</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="dropdown mobile-user-menu float-right">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="profile.jsp">My Profile</a>
-
-                                <a class="dropdown-item" href="settings.html">Settings</a>
-                                <a class="dropdown-item" href="logout">Logout</a>
-                            </div>
-                        </div>
-                    </c:if>
-
+</head>
+<body>
+    <header>
+        <div class="main-wrapper">
+            <div class="header">
+                <div class="header-left">
+                    <a href="index_1.jsp" class="logo">
+                        <img src="assets/img/logo.png" width="35" height="35" alt="Preclinic">
+                        <span>Preclinic</span>
+                    </a>
                 </div>
+                <!-- Improved Login Button -->               
+                <c:if test="${sessionScope.customerAccount != null}">
+                    <div class="header-right float-right">
+                        <ul class="nav user-menu">
+                            <li class="nav-item dropdown has-arrow">
+                                <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
+                                    <span class="user-img">
+                                        <img class="rounded-circle" src="assets/img/user.jpg" width="24" alt="Admin">
+                                        <span class="status online"></span>
+                                    </span>
+                                    <span>${sessionScope.customerAccount.fullName}</span>
+                                </a>
+                                <div class="dropdown-menu">
+                            <a class="dropdown-item" href="profile.jsp">My Profile</a>
+                          
+                            <a class="dropdown-item" href="settings.html">Settings</a>
+                            <a class="dropdown-item" href="logout">Logout</a>
+                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="dropdown mobile-user-menu float-right">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="profile.jsp">My Profile</a>
+                           
+                            <a class="dropdown-item" href="settings.html">Settings</a>
+                            <a class="dropdown-item" href="logout">Logout</a>
+                        </div>
+                    </div>
+                </c:if>
+
             </div>
-        </header>
+        </div>
+    </header>
 </html>

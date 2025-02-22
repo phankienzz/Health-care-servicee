@@ -56,11 +56,19 @@ public class ValidFunction {
 
         return password.matches(regex);
     }
-    public  String formatDate(String input) {
+    public String formatDate(String input) {
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         LocalDateTime dateTime = LocalDateTime.parse(input, inputFormatter);
         return dateTime.format(outputFormatter);
+    }
+    
+    public String formatDateNews(String date) {
+        // Chuyển từ chuỗi ngày ban đầu (yyyy-MM-dd HH:mm:ss) sang Timestamp
+        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
+        // Định dạng Timestamp thành chuỗi dd/MM/yyyy
+        java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
+        return dateFormat.format(timestamp);
     }
 }

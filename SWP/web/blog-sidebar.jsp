@@ -47,8 +47,10 @@
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="row">
-
-                            <c:forEach var="news" items="${newsList}">  
+                            <c:if test="${empty pagingPage}">
+                                <p>No news available.</p>
+                            </c:if>
+                            <c:forEach var="news" items="${pagingPage}">  
                                 <div class="col-lg-12 col-md-12 mb-5">
                                     <div class="blog-item">
                                         <div class="blog-thumb">
@@ -60,25 +62,23 @@
                                                 <span class="text-black text-capitalize mr-3"><i class="icofont-calendar mr-1"></i>${news.created_at}</span>
                                             </div> 
 
-                                            <h2 class="mt-3 mb-3"><a href="blog-single.html">${news.title}</a></h2>
+                                            <h2 class="mt-3 mb-3"><a href="blog-single.jsp">${news.title}</a></h2>
 
                                             <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis aliquid architecto facere commodi cupiditate omnis voluptatibus inventore atque velit cum rem id assumenda quam recusandae ipsam ea porro, dicta ad.</p>
 
-                                            <a href="blog-single.html" target="_blank" class="btn btn-main btn-icon btn-round-full">Read More <i class="icofont-simple-right ml-2  "></i></a>
+                                            <a href="blog-single.jsp" target="_blank" class="btn btn-main btn-icon btn-round-full">Read More <i class="icofont-simple-right ml-2  "></i></a>
                                         </div>
                                     </div>
                                 </div>
                             </c:forEach>
-
-
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0">
                             <div class="sidebar-widget search  mb-3 ">
                                 <h5>Search Here</h5>
-                                <form action="#" class="search-form">
-                                    <input type="text" class="form-control" placeholder="search">
+                                <form action="news" method="get" class="search-form">
+                                    <input type="text" name="search" class="form-control" placeholder="search" value="${search}">
                                     <i class="ti-search"></i>
                                 </form>
                             </div>
@@ -107,9 +107,13 @@
                                 <h5 class="mb-4">Categories</h5>
 
                                 <ul class="list-unstyled">
-                                    <c:forEach var="cate" items="${cateList}">
+                                    <li class="align-items-center">
+                                        <a href="news">All</a>
+                                        <!--<span>(14)</span>-->
+                                    </li>
+                                    <c:forEach var="cate" items="${listCate}">
                                         <li class="align-items-center">
-                                            <a href="#">${cate.name}</a>
+                                            <a href="news?categoryID=${cate.category_id}">${cate.name}</a>
                                             <!--<span>(14)</span>-->
                                         </li>
                                     </c:forEach>
@@ -164,10 +168,23 @@
                     <div class="col-lg-8">
                         <nav class="pagination py-2 d-inline-block">
                             <div class="nav-links">
-                                <span aria-current="page" class="page-numbers current">1</span>
-                                <a class="page-numbers" href="#">2</a>
-                                <a class="page-numbers" href="#">3</a>
-                                <a class="page-numbers" href="#"><i class="icofont-thin-double-right"></i></a>
+                                <c:if test="${categoryID == null && search == ''}">
+                                    <c:forEach begin="1" end="${endPage}" var="i">
+                                        <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="news?page=${i}">${i}</a>
+                                    </c:forEach>
+                                </c:if>
+
+                                <c:if test="${categoryID != null}">
+                                    <c:forEach begin="1" end="${endPage}" var="i">
+                                        <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="news?categoryID=${categoryID}&page=${i}">${i}</a>
+                                    </c:forEach>
+                                </c:if>
+
+                                <c:if test="${search != ''}">
+                                    <c:forEach begin="1" end="${endPage}" var="i">
+                                        <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="news?search=${search}&page=${i}">${i}</a>
+                                    </c:forEach>
+                                </c:if>
                             </div>
                         </nav>
                     </div>
@@ -219,7 +236,6 @@
                                 <li><a href="#">Privacy Policy</a></li>
                                 <li><a href="#">Company Support </a></li>
                                 <li><a href="#">FAQuestions</a></li>
-                                <li><a href="#">Company Licence</a></li>
                             </ul>
                         </div>
                     </div>
@@ -250,19 +266,7 @@
 
                 <div class="footer-btm py-4 mt-5">
                     <div class="row align-items-center justify-content-between">
-                        <div class="col-lg-6">
-                            <div class="copyright">
-                                &copy; Copyright Reserved to <span class="text-color">Novena</span> by <a href="https://themefisher.com/" target="_blank">Themefisher</a>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="subscribe-form text-lg-right mt-5 mt-lg-0">
-                                <form action="#" class="subscribe">
-                                    <input type="text" class="form-control" placeholder="Your Email address">
-                                    <a href="#" class="btn btn-main-2 btn-round-full">Subscribe</a>
-                                </form>
-                            </div>
-                        </div>
+
                     </div>
 
                     <div class="row">

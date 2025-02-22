@@ -288,18 +288,7 @@ table.table td h2 span {
 	font-weight: normal;
 	margin-bottom: 20px;
 }
-.cal-icon:after {
-	background: transparent url("../img/calander.png") no-repeat scroll 0 0;
-	bottom: 0;
-	content: "";
-	display: block;
-	height: 19px;
-	margin: auto;
-	position: absolute;
-	right: 15px;
-	top: 0;
-	width: 17px;
-}
+
 .cal-icon {
 	position: relative;
 	width: 100%;
@@ -711,6 +700,23 @@ textarea.form-control {
 	height: 50px;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
+.center{
+	text-align: center;
+	font-weight: bold;
+	color: red;
+}
+
+.header-home {
+	background-color: #009efb;
+	left: 0;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: 1039;
+	height: 50px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
 .header .header-left {
 	float: left;
 	height: 50px;

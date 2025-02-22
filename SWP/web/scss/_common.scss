@@ -214,7 +214,7 @@ input[type="email"],input[type="password"],input[type="text"],input[type="tel"]{
     width: 100%;
     height: 100%;
     opacity: 0.9;
-    background:#009efb;
+    background:$primary-color;
   }
 }
 
@@ -280,7 +280,7 @@ a:focus {
 
 
 .page-title{
-  padding:90px 0px 5px 0px;
+  padding:120px 0px 70px 0px;
   position: relative;
   
   .block{

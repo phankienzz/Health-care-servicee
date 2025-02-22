@@ -73,7 +73,7 @@
                                     <a href="doctors.html"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
                                 </li>
                                 <li>
-                                    <a href="patients.html"><i class="fa fa-wheelchair"></i> <span>Patients</span></a>
+                                    <a href="patient"><i class="fa fa-wheelchair"></i> <span>Patients</span></a>
                                 </li>
                                 <li>
                                     <a href="appointments.html"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
@@ -232,15 +232,13 @@
                             </div>
                         <c:forEach var="permission" items="${listPermission}">
                             <c:if test="${permission.permissionID == 23}">
-
                                 <div class="col-sm-8 col-9 text-right m-b-20">
                                     <a href="addStaff" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Add Staff</a>
                                 </div>
-
                             </c:if>
                         </c:forEach>
-
                     </div>
+
                     <form action="staff" method="get">
                         <div class="row filter-row">
                             <div class="col-sm-6 col-md-3">
@@ -267,7 +265,6 @@
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-3">
-
                                 <input type="submit" value="Search" class="btn btn-success btn-block"/>
                             </div>
                         </div>
@@ -286,17 +283,14 @@
                                             <th style="min-width: 110px;">Join Date</th>
                                             <th>Role</th>
                                                 <c:set var="isChecked" value="false"/>
-
-                                            <c:forEach var="permission" items="${listPermission}">
-                                                <c:if test="${permission.permissionID == 25 || permission.permissionID == 26}">
-                                                    <c:set var="isChecked" value="true"/>
-
-                                                </c:if>
-                                            </c:forEach>
-                                            <c:if test="${isChecked}">
+                                                <c:forEach var="permission" items="${listPermission}">
+                                                    <c:if test="${permission.permissionID == 25 || permission.permissionID == 26}">
+                                                        <c:set var="isChecked" value="true"/>
+                                                    </c:if>
+                                                </c:forEach>
+                                                <c:if test="${isChecked}">
                                                 <th class="text-right">Action</th>
                                                 </c:if>
-
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -320,7 +314,6 @@
                                                             </c:if>
                                                         </c:if>
                                                     </c:forEach>
-
                                                 </td>
                                                 <c:if test="${isChecked}">
                                                     <td class="text-right">
@@ -341,10 +334,7 @@
                                                     </td>
                                                 </c:if>
                                             </tr>
-
                                         </c:forEach>
-
-
                                     </tbody>
                                 </table>
                             </div>
