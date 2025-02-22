@@ -27,9 +27,9 @@
                     <div class="account-box">
                         <form action="register" method="post" class="form-signin">
                             <div class="account-logo">
-                                <a href="dashboard.html"><img src="assets/img/logo-dark.png" alt=""></a>
+                                <a href="index-2.html"><img src="assets/img/logo-dark.png" alt=""></a>
                             </div>
-                            <p class="center">${error}</p>
+                            <p class="text-danger">${error}</p>
                             <div class="form-group">
                                 <label>Username</label>
                                 <input type="text" name="username" class="form-control">
@@ -52,7 +52,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Date of Birth</label>
-                                <input type="date" name="dateOfBirth" class="form-control" placeholder="YYYY-MM-DD" pattern="\d{4}-\d{2}-\d{2}" required>
+                                <input type="text" name="dateOfBirth" class="form-control" placeholder="YYYY-MM-DD" pattern="\d{4}-\d{2}-\d{2}" required>
                             </div>
                             <div class="form-group">
                                 <label for="gender">Gender</label>
@@ -60,7 +60,7 @@
                                     <option value="" disabled selected>Select your gender</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
-                                    <!--<option value="Other">Other</option>-->
+                                    <option value="Other">Other</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -92,4 +92,7 @@
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/app.js"></script>
     </body>
+
+
+    <!-- register24:03-->
 </html>
