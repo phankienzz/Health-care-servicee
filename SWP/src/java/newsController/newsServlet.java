@@ -12,11 +12,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import model.Category;
 import model.News;
+import context.ValidFunction;
+import java.util.ArrayList;
 
 /**
  *
@@ -51,62 +51,57 @@ public class newsServlet extends HttpServlet {
         }
     }
 
-    private String formatDate(String date) {
-        if (date == null || date.isEmpty()) {
-            return null;
-        }
-        try {
-            // Chuyển từ chuỗi ngày ban đầu (yyyy-MM-dd HH:mm:ss) sang Timestamp
-            java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
-            // Định dạng Timestamp thành chuỗi dd/MM/yyyy
-            java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
-            return dateFormat.format(timestamp);
-        } catch (IllegalArgumentException e) {
-            // Xử lý nếu chuỗi ngày không đúng định dạng ban đầu
-            System.err.println("Error formatting date: " + e.getMessage());
-            return null;
-        }
-    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String indexPage = request.getParameter("index");
+        ValidFunction valid = new ValidFunction();
+        NewsDAO dao = new NewsDAO();
+        String indexPage = request.getParameter("page");
         String categoryID = request.getParameter("categoryID");
+        String search = request.getParameter("search");
+
+        if (search == null) {
+            search = "";
+        }
         if (indexPage == null) {
             indexPage = "1";
         }
 
-        int index = Integer.parseInt(indexPage);
-        NewsDAO dao = new NewsDAO();
-        List<Category> cateList = dao.getAllCategoryNews();
-        List<News> pagingPage;
+        int page = Integer.parseInt(indexPage);
+        List<News> pagingPage = new ArrayList<>();
+        int totalNews = 0;
+        int pageSize = 3; //so bai viet tren 1 page
 
-        if (categoryID != null && !categoryID.isEmpty()) {
-            // Nếu có categoryID thì gọi hàm paging theo category
-            pagingPage = dao.pagingNewsByCategory(categoryID, index);
+        if (!search.isEmpty()) {
+            pagingPage = dao.searchNewsByTitle(search, page, pageSize);
+            totalNews = dao.getTotalNewsBySearch(search);
+        } else if (categoryID != null && !categoryID.isEmpty()) {
+            pagingPage = dao.pagingNewsByCategory(categoryID, page, pageSize);
+            totalNews = dao.getTotalNewsByCategory(categoryID);
         } else {
-            // Nếu không có categoryID thì lấy toàn bộ news
-            pagingPage = dao.pagingAllNews(index);
+            pagingPage = dao.pagingAllNews(page, pageSize);
+            totalNews = dao.getTotalNews();
         }
 
-        int totalNews = (categoryID != null && !categoryID.isEmpty()) ? dao.countTotalNewsByCategory(categoryID) : dao.getTotalNews();
-        int endPage = totalNews / 3;
-        if (totalNews % 3 != 0) {
+        int endPage = totalNews / pageSize;
+        if (totalNews % pageSize != 0) {
             endPage++;
         }
 
         // Định dạng ngày sử dụng phương thức tiện ích
         for (News news : pagingPage) {
-            news.setCreated_at(formatDate(news.getCreated_at()));
-            news.setUpdated_at(formatDate(news.getUpdated_at()));
+            news.setCreated_at(valid.formatDateNews(news.getCreated_at()));
+            news.setUpdated_at(valid.formatDateNews(news.getUpdated_at()));
         }
+
+        List<Category> listCate = dao.getAllCategoryNews();
 
         request.setAttribute("pagingPage", pagingPage);
         request.setAttribute("endPage", endPage);
-        request.setAttribute("cateList", cateList);
-        request.setAttribute("categoryID", categoryID);  // Gửi categoryID cho jsp
-        request.setAttribute("page", index);
+        request.setAttribute("listCate", listCate);
+        request.setAttribute("categoryID", categoryID);
+        request.setAttribute("search", search);
+        request.setAttribute("page", page);
         request.getRequestDispatcher("blog-sidebar.jsp").forward(request, response);
     }
 

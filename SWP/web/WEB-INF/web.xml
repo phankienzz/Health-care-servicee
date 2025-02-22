@@ -12,10 +12,6 @@
         <servlet-name>addBlog</servlet-name>
         <servlet-class>blog.addBlog</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>HomeBlogSeverlet</servlet-name>
-        <servlet-class>blog.HomeBlogSeverlet</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>RequestPassword</servlet-name>
         <url-pattern>/requestPassword</url-pattern>
@@ -32,10 +28,6 @@
         <servlet-name>addBlog</servlet-name>
         <url-pattern>/addblog</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>HomeBlogSeverlet</servlet-name>
-        <url-pattern>/homeblogseverlet</url-pattern>
-    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index_1.jsp</welcome-file>
     </welcome-file-list>
@@ -46,10 +38,6 @@
     <servlet>
         <servlet-name>RegisterServet</servlet-name>
         <servlet-class>CustomerController.RegisterServet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>LogOutServlet</servlet-name>
-        <servlet-class>CustomerController.LogOutServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProfileServlet</servlet-name>
@@ -70,10 +58,6 @@
     <servlet-mapping>
         <servlet-name>RegisterServet</servlet-name>
         <url-pattern>/register</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>LogOutServlet</servlet-name>
-        <url-pattern>/logout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProfileServlet</servlet-name>

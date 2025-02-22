@@ -52,7 +52,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Date of Birth</label>
-                                <input type="date" name="dateOfBirth" class="form-control" placeholder="YYYY-MM-DD" pattern="\d{4}-\d{2}-\d{2}" required>
+                                <input type="text" name="dateOfBirth" class="form-control" placeholder="YYYY-MM-DD" pattern="\d{4}-\d{2}-\d{2}" required>
                             </div>
                             <div class="form-group">
                                 <label for="gender">Gender</label>

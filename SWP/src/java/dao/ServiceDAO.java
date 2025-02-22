@@ -1,255 +1,331 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dao;
 
 import context.DBContext;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import model.Service;
+import java.io.InputStream;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import model.Customer;
-import model.Service;
 
-/**
- *
- * @author jaxbo
- */
-public class ServiceDAO extends DBContext {
+public class ServiceDAO {
 
-//    public Customer getCustomerAccount(String username, String password) {
-//        String sql = "SELECT * FROM Customer WHERE username = ? AND password = ?";
-//        try {
-//            PreparedStatement st = connection.prepareStatement(sql);
-//            st.setString(1, username);
-//            st.setString(2, password);
-//            ResultSet rs = st.executeQuery();
-//            while (rs.next()) {
-//                return new Customer(
-//                        rs.getInt("customerID"),
-//                        rs.getString("username"),
-//                        rs.getString("password"),
-//                        rs.getString("fullName"),
-//                        rs.getString("email"),
-//                        rs.getString("phone"),
-//                        rs.getString("address"),
-//                        rs.getString("accountStatus"),
-//                        rs.getString("registrationDate"),
-//                        rs.getString("dateOfBirth"),
-//                        rs.getString("gender"),
-//                        rs.getString("profilePicture"));
-//            }
-//
-//        } catch (SQLException e) {
-//            
-//        }
-//        return null;
-//    }
+    private Connection connection;
+
+    public ServiceDAO() {
+        try {
+            DBContext db = new DBContext();
+            this.connection = db.connection;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // ✅ Lấy tất cả dịch vụ
     public List<Service> getAllService() {
         List<Service> serviceList = new ArrayList<>();
         String sql = "SELECT * FROM ServicePackage";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                int packageID = rs.getInt("packageID");
-                String packageName = rs.getString("packageName");
-                String description = rs.getString("description");
-                String type = rs.getString("type");
-                Double price = rs.getDouble("price");
-                int duration = rs.getInt("duration");
-                String createdAt = rs.getString("createdAt");
-                
-                Service service = new Service(packageID, packageName, description, type, price, duration, createdAt);
-                serviceList.add(service);
-            }
 
+        try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+            while (rs.next()) {
+                serviceList.add(mapResultSetToService(rs));
+            }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return serviceList; // Trả về danh sách khách hàng
+        return serviceList;
     }
 
-    public Customer checkCustomerAccountExist(String username, String email) {
-        String sql = "select * from Customer where username = ? or email = ? ";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, username);
-            st.setString(2, email);
-            ResultSet rs = st.executeQuery();
+    public List<Service> getAll_ON_Service() {
+        List<Service> serviceList = new ArrayList<>();
+        String sql = "SELECT * FROM ServicePackage WHERE status = 'on'";
+
+        try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
             while (rs.next()) {
-                return new Customer(
-                        rs.getInt("customerID"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("fullName"),
-                        rs.getString("email"),
-                        rs.getString("phone"),
-                        rs.getString("address"),
-                        rs.getString("accountStatus"),
-                        rs.getString("registrationDate"),
-                        rs.getString("dateOfBirth"),
-                        rs.getString("gender"),
-                        rs.getString("profilePicture"));
+                serviceList.add(mapResultSetToService(rs));
             }
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return serviceList;
+    }
+
+    // ✅ Lấy ảnh từ `packageID`
+    public byte[] getImageById(int packageID) {
+        String sql = "SELECT service_image FROM ServicePackage WHERE packageID = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, packageID);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBytes("service_image");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
-    //Đăng nhập
-    public Customer customerLogin(String usernameOrEmail, String password) {
-        String sql = "select * from Customer where (username = ? OR email = ?) and password = ?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, usernameOrEmail);
-            st.setString(2, usernameOrEmail);
-            st.setString(3, password);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                return new Customer(
-                        rs.getInt("customerID"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("fullName"),
-                        rs.getString("email"),
-                        rs.getString("phone"),
-                        rs.getString("address"),
-                        rs.getString("accountStatus"),
-                        rs.getString("registrationDate"),
-                        rs.getString("dateOfBirth"),
-                        rs.getString("gender"),
-                        rs.getString("profilePicture"));
+    public Service getServiceById(int packageID) {
+        String sql = "SELECT * FROM ServicePackage WHERE packageID = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, packageID);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToService(rs);
+                }
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
         return null;
     }
 
-    //Đăng ký
-    public void customerSignup(String username, String password, String fullname, String email, String phone, String address, String dateOfBirth, String gender) {
-        String sql = "insert into Customer ([username], [password], [fullname],[email],[phone],[address],[accountStatus],[dateOfBirth],[gender]) values(?,?,?,?,?,?,'Active',?,?)";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, username);
-            st.setString(2, password);
-            st.setString(3, fullname);
-            st.setString(4, email);
-            st.setString(5, phone);
-            st.setString(6, address);
-            st.setString(7, dateOfBirth);
-            st.setString(8, gender);
-
-            st.executeUpdate();
-        } catch (SQLException e) {
+    // ✅ Thêm dịch vụ mới
+    // ✅ Cập nhật dịch vụ
+    public void updateService(int packageID, String packageName, String description, InputStream imageStream,
+            String type, double price, int duration) {
+        // Xây dựng câu lệnh SQL dựa trên việc có ảnh hay không
+        String sql;
+        if (imageStream != null) {
+            sql = "UPDATE ServicePackage SET packageName = ?, description = ?, type = ?, price = ?, duration = ?, service_image = ? WHERE packageID = ?";
+        } else {
+            sql = "UPDATE ServicePackage SET packageName = ?, description = ?, type = ?, price = ?, duration = ? WHERE packageID = ?";
         }
-    }
 
-    //Chỉnh sửa profile của Customer
-    public void updateCustomerProfile(String fullname, String email, String phone, String address, String dateOfBirth, String gender, int customerID) {
-        String sql = "UPDATE Customer SET fullName = ?, email = ?, phone = ?, address = ?, dateOfBirth = ?, gender = ? WHERE customerID = ?";
-        try {
-            // Parse date if necessary
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            java.util.Date parsedDate = sdf.parse(dateOfBirth);
-            java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, packageName);
+            st.setString(2, description);
+            st.setString(3, type);
+            st.setDouble(4, price);
+            st.setInt(5, duration);
 
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, fullname);
-            st.setString(2, email);
-            st.setString(3, phone);
-            st.setString(4, address);
-            st.setDate(5, sqlDate); // Set parsed date here
-            st.setString(6, gender);
-            st.setInt(7, customerID);
-
-            int rowsUpdated = st.executeUpdate();
-            if (rowsUpdated > 0) {
-                System.out.println("Customer profile updated successfully.");
+            if (imageStream != null) {
+                st.setBinaryStream(6, imageStream);
+                st.setInt(7, packageID);
             } else {
-                System.out.println("No customer found with the provided ID.");
+                st.setInt(6, packageID);
+            }
+
+            // In ra câu lệnh SQL để debug
+            System.out.println("Executing SQL: " + sql);
+            System.out.println("packageName: " + packageName);
+            System.out.println("description: " + description);
+            System.out.println("type: " + type);
+            System.out.println("price: " + price);
+            System.out.println("duration: " + duration);
+            System.out.println("packageID: " + packageID);
+
+            int rowsAffected = st.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Cập nhật thành công!");
+            } else {
+                System.err.println("Không có dòng nào được cập nhật. Kiểm tra packageID.");
             }
         } catch (SQLException e) {
-            System.err.println("SQL Error: " + e.getMessage());
-        } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
+            System.err.println("Lỗi SQL khi cập nhật dịch vụ: " + e.getMessage());
+            e.printStackTrace();
         }
-
     }
 
-    public Customer getCustomerByEmail(String email) {
-        String sql = "select * from Customer where email = ?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, email);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                return new Customer(
-                        rs.getInt("customerID"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("fullName"),
-                        rs.getString("email"),
-                        rs.getString("phone"),
-                        rs.getString("address"),
-                        rs.getString("accountStatus"),
-                        rs.getString("registrationDate"),
-                        rs.getString("dateOfBirth"),
-                        rs.getString("gender"),
-                        rs.getString("profilePicture"));
-            }
-        } catch (SQLException e) {
-        }
-        return null;
-    }
-
-    public Customer getCustomerByID(int customerID) {
-        String sql = "select * from Customer where customerID = ?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, customerID);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                return new Customer(
-                        rs.getInt("customerID"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("fullName"),
-                        rs.getString("email"),
-                        rs.getString("phone"),
-                        rs.getString("address"),
-                        rs.getString("accountStatus"),
-                        rs.getString("registrationDate"),
-                        rs.getString("dateOfBirth"),
-                        rs.getString("gender"),
-                        rs.getString("profilePicture"));
-            }
-        } catch (SQLException e) {
-        }
-        return null;
-    }
-
-    public void updatePassword(String email, String password) {
-        String sql = "update Customer set password = ? where email = ?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, password);
-            st.setString(2, email);
+    public void updateStatus(int packageID, String status) {
+        String sql = "UPDATE ServicePackage SET status = ? WHERE packageID = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, status);
+            st.setInt(2, packageID);
             st.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
+    }
+
+    // Chuyển đổi `ResultSet` thành `Service` để tránh lặp code
+    private Service mapResultSetToService(ResultSet rs) throws SQLException {
+        return new Service(
+                rs.getInt("packageID"),
+                rs.getString("packageName"),
+                rs.getString("description"),
+                rs.getBytes("service_image"),
+                rs.getString("type"),
+                rs.getDouble("price"),
+                rs.getInt("duration"),
+                rs.getString("status"),
+                rs.getString("createdAt")
+        );
+    }
+
+    public void addService(String packageName, String description, InputStream imageStream,
+            String type, double price, int duration, String status) {
+        String sql = "INSERT INTO ServicePackage (packageName, description, service_image, type, price, duration, status) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, packageName);
+            st.setString(2, description);
+
+            // Nếu có ảnh, lưu ảnh; nếu không, truyền NULL
+            if (imageStream != null) {
+                st.setBinaryStream(3, imageStream);
+            } else {
+                st.setNull(3, Types.BLOB);
+            }
+
+            st.setString(4, type);
+            st.setDouble(5, price);
+            st.setInt(6, duration);
+            st.setString(7, status);
+
+            st.executeUpdate();
+
+        } catch (Exception e) {
+            System.err.println("❌ Lỗi SQL khi thêm dịch vụ: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public List<Service> getAllOnServicesWithFilter(String sortBy) {
+        List<Service> serviceList = new ArrayList<>();
+        String sql = "";
+
+        // Xử lý lọc theo các tiêu chí
+        switch (sortBy) {
+            case "price_asc":
+                sql = "SELECT * FROM ServicePackage WHERE status = 'on' ORDER BY price ASC";
+                break;
+            case "price_desc":
+                sql = "SELECT * FROM ServicePackage WHERE status = 'on' ORDER BY price DESC";
+                break;
+            case "vip":
+                sql = "SELECT * FROM ServicePackage WHERE status = 'on' AND type = 'VIP'";
+                break;
+            case "basic":
+                sql = "SELECT * FROM ServicePackage WHERE status = 'on' AND type = 'Basic'";
+                break;
+            case "duration_asc":
+                sql = "SELECT * FROM ServicePackage WHERE status = 'on' ORDER BY duration ASC";
+                break;
+            case "duration_desc":
+                sql = "SELECT * FROM ServicePackage WHERE status = 'on' ORDER BY duration DESC";
+                break;
+            case "reload":
+                sql = "SELECT * FROM ServicePackage WHERE status = 'on'";
+                break;
+            default:
+                sql = "SELECT * FROM ServicePackage WHERE status = 'on'"; // Nếu không có filter, lấy tất cả
+        }
+
+        try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+            while (rs.next()) {
+                serviceList.add(mapResultSetToService(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return serviceList;
+    }
+
+    public List<Service> getAllServicesWithFilter(String sortBy) {
+        List<Service> serviceList = new ArrayList<>();
+        String sql = "";
+
+        // Xử lý lọc theo các tiêu chí
+        switch (sortBy) {
+            case "price_asc":
+                sql = "SELECT * FROM ServicePackage ORDER BY price ASC";
+                break;
+            case "price_desc":
+                sql = "SELECT * FROM ServicePackage ORDER BY price DESC";
+                break;
+            case "vip":
+                sql = "SELECT * FROM ServicePackage WHERE type = 'VIP'";
+                break;
+            case "basic":
+                sql = "SELECT * FROM ServicePackage WHERE type = 'Basic'";
+                break;
+            case "duration_asc":
+                sql = "SELECT * FROM ServicePackage ORDER BY duration ASC";
+                break;
+            case "duration_desc":
+                sql = "SELECT * FROM ServicePackage ORDER BY duration DESC";
+                break;
+            case "status_on":
+                sql = "SELECT * FROM ServicePackage WHERE status = 'on'";
+                break;
+            case "status_off":
+                sql = "SELECT * FROM ServicePackage WHERE status = 'off'";
+                break;
+            default:
+                sql = "SELECT * FROM ServicePackage"; // Nếu không có filter, lấy tất cả
+        }
+
+        try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+            while (rs.next()) {
+                serviceList.add(mapResultSetToService(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return serviceList;
+    }
+
+    public List<Service> getAllOnServicesWithSearch(String keyword) {
+        List<Service> serviceList = new ArrayList<>();
+        String sql = "SELECT * FROM ServicePackage WHERE status = 'on' AND packageName LIKE ?";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, "%" + keyword + "%");
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    serviceList.add(mapResultSetToService(rs));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return serviceList;
+    }
+
+    public List<Service> getAllServicesWithSearch(String keyword) {
+        List<Service> serviceList = new ArrayList<>();
+        String sql = "SELECT * FROM ServicePackage WHERE packageName LIKE ?";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, "%" + keyword + "%");
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    serviceList.add(mapResultSetToService(rs));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return serviceList;
+    }
+
+    public boolean isServiceNameExist(String packageName) {
+        String sql = "SELECT COUNT(*) FROM ServicePackage WHERE packageName = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, packageName);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static void main(String[] args) {
-        CustomerDAO dao = new CustomerDAO();
-//        Customer customer = dao.updatePassword("jaxboua0@gmail.com", "88888888");
-//        System.out.println(customer);
-//        for (Customer a : customer) {
-//            System.out.println(a);
-//        }
+        ServiceDAO dao = new ServiceDAO();
+        List<Service> list = dao.getAllService();
+        for (Service sv : list) {
+            System.out.println(sv);
+        }
     }
 }

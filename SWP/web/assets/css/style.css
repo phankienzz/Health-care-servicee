@@ -264,17 +264,13 @@ table.table td h2 span {
 	color: #aaa;
 }
 .card-box {
-    background-color: #fff;
-    border-radius: 4px;
-    margin: 30px auto; /* Căn giữa theo chiều ngang */
-    padding: 20px;
-    position: relative;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
-    max-width: 1100px; /* Giới hạn chiều rộng để không bị quá to */
-    width: 100%; /* Đảm bảo phản hồi tốt trên các màn hình nhỏ */
-    justify-content: space-between;
+	background-color: #fff;
+	border-radius: 4px;
+	margin-bottom: 30px;
+	padding: 20px;
+	position: relative;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
 }
-
 .card-title {
 	color: #333;
 	font-size: 16px;
@@ -292,18 +288,7 @@ table.table td h2 span {
 	font-weight: normal;
 	margin-bottom: 20px;
 }
-.cal-icon:after {
-	background: transparent url("../img/calander.png") no-repeat scroll 0 0;
-	bottom: 0;
-	content: "";
-	display: block;
-	height: 19px;
-	margin: auto;
-	position: absolute;
-	right: 15px;
-	top: 0;
-	width: 17px;
-}
+
 .cal-icon {
 	position: relative;
 	width: 100%;
@@ -484,8 +469,8 @@ table.table td h2 span {
 	color: #fff;
 }
 .btn-success {
-	background-color: #009efb;
-	border: 1px solid #009efb
+	background-color: #55ce63;
+	border: 1px solid #55ce63
 }
 .btn-success:hover,
 .btn-success:focus,
@@ -714,8 +699,24 @@ textarea.form-control {
 	z-index: 1039;
 	height: 50px;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-        justify-content: space-between; 
 }
+.center{
+	text-align: center;
+	font-weight: bold;
+	color: red;
+}
+
+.header-home {
+	background-color: #009efb;
+	left: 0;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: 1039;
+	height: 50px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
 .header .header-left {
 	float: left;
 	height: 50px;
@@ -782,7 +783,6 @@ textarea.form-control {
 .user-img {
 	display: inline-block;
 	position: relative;
-        
 }
 .header .user-img img {
 	width: 24px;
@@ -1044,6 +1044,18 @@ textarea.form-control {
 	-moz-transition: all 0.4s ease;
 	transition: all 0.4s ease;
 }
+
+.page-wrapper-profile {
+	left: 0;
+
+	margin: 100px 100px 0px 100px;
+	padding-top: 50px;
+	position: relative;
+	-webkit-transition: all 0.4s ease;
+	-moz-transition: all 0.4s ease;
+	transition: all 0.4s ease;
+}
+
 .page-wrapper > .content {
 	padding: 30px;
 }

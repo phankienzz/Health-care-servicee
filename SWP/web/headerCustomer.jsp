@@ -63,14 +63,14 @@
                             <li class="nav-item dropdown has-arrow">
                                 <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
                                     <span class="user-img">
-                                        <img class="rounded-circle" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" width="50" height="35"  >
+                                        <img class="rounded-circle" src="assets/img/user.jpg" width="24" alt="Admin">
                                         <span class="status online"></span>
                                     </span>
                                     <span>${sessionScope.customerAccount.fullName}</span>
                                 </a>
                                 <div class="dropdown-menu">                                  
                                     <a class="dropdown-item" href="profile.jsp">My Profile</a>
-
+                                    
                                     <a class="dropdown-item" href="settings.html">Settings</a>
                                     <a class="dropdown-item" href="logout">Logout</a>
                                 </div>
@@ -81,7 +81,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item" href="profile.jsp">My Profile</a>
-
+                           
                             <a class="dropdown-item" href="settings.html">Settings</a>
                             <a class="dropdown-item" href="logout">Logout</a>
                         </div>
@@ -101,9 +101,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarmain">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active"><a class="nav-link" href="index_1.jsp">Home</a></li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index_1.jsp">Home</a>
+                    </li>
                     <li class="nav-item"><a class="nav-link" href="about.jsp">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="service.jsp">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="loadservice">Services</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="department.html" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Department <i class="icofont-thin-down"></i></a>
                         <ul class="dropdown-menu" aria-labelledby="dropdown02">
@@ -122,7 +124,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="blog-sidebar.html" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">News<i class="icofont-thin-down"></i></a>
                         <ul class="dropdown-menu" aria-labelledby="dropdown05">
-                            <li><a class="dropdown-item" href="news">Blog with Sidebar</a></li>
+                            <li><a class="dropdown-item" href="news">All News</a></li>
                             <li><a class="dropdown-item" href="blog-single.html">Blog Single</a></li>
                         </ul>
                     </li>
