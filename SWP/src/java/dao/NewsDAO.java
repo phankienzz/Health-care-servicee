@@ -37,10 +37,10 @@ public class NewsDAO extends DBContext {
                         rs.getInt("status"),
                         rs.getString("image"),
                         rs.getString("detail"),
-                        createdAt,
-                        updatedAt);
-//                        rs.getString("created_at"),
-//                        rs.getString("updated_at"));
+//                        createdAt,
+//                        updatedAt);
+                        rs.getString("created_at"),
+                        rs.getString("updated_at"));
                 news.add(n);
             }
         } catch (SQLException e) {
@@ -277,7 +277,7 @@ public class NewsDAO extends DBContext {
 
             while (rs.next()) {
                 News blog = new News();
-                blog.setPostId(rs.getInt("post_id"));
+                blog.setPost_id(rs.getInt("post_id"));
                 blog.setTitle(rs.getString("title"));
                 blog.setContent(rs.getString("content"));
                 blog.setImage(rs.getString("image"));  // Lấy đường dẫn ảnh

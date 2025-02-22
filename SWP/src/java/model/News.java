@@ -10,16 +10,16 @@ public class News {
     private String content;
     private int created_by;
     private int category_id;
-    private String status;
+    private int status;
     private String image;
     private String detail;
-    private Date created_at;
-    private Date updated_at;
+    private String created_at;
+    private String updated_at;
     
     public News() {
     }
 
-    public News(int post_id, String title, String content, int created_by, int category_id, String status, String image, String detail, Date created_at, Date updated_at) {
+    public News(int post_id, String title, String content, int created_by, int category_id, int status, String image, String detail, String created_at, String updated_at) {
         this.post_id = post_id;
         this.title = title;
         this.content = content;
@@ -72,11 +72,11 @@ public class News {
         this.category_id = category_id;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -96,19 +96,19 @@ public class News {
         this.detail = detail;
     }
 
-    public Date getCreated_at() {
+    public String getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(Date created_at) {
+    public void setCreated_at(String created_at) {
         this.created_at = created_at;
     }
 
-    public Date getUpdated_at() {
+    public String getUpdated_at() {
         return updated_at;
     }
 
-    public void setUpdated_at(Date updated_at) {
+    public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
     }
 
@@ -117,6 +117,5 @@ public class News {
         return "News{" + "post_id=" + post_id + ", title=" + title + ", content=" + content + ", created_by=" + created_by + ", category_id=" + category_id + ", status=" + status + ", image=" + image + ", detail=" + detail + ", created_at=" + created_at + ", updated_at=" + updated_at + '}';
     }
 
-    
-    
+   
 }
