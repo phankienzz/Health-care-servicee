@@ -148,24 +148,7 @@
                                         <input type="text" class="form-control floating" name="address" value="${sessionScope.customerAccount.address}">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group form-focus">
-                                        <label class="focus-label">State</label>
-                                        <input type="text" class="form-control floating" value="New York">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group form-focus">
-                                        <label class="focus-label">Country</label>
-                                        <input type="text" class="form-control floating" value="United States">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group form-focus">
-                                        <label class="focus-label">Pin Code</label>
-                                        <input type="text" class="form-control floating" value="10523">
-                                    </div>
-                                </div>
+                                
                                 <div class="col-md-6">
                                     <div class="form-group form-focus">
                                         <label class="focus-label">Phone Number</label>

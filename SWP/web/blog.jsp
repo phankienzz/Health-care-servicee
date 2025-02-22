@@ -42,31 +42,6 @@
             background-color: #0056b3;
         }
 
-        .search-bar {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .search-bar input {
-            width: 70%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .search-bar button {
-            padding: 8px 12px;
-            background-color: #007bff;
-            border: none;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .search-bar button:hover {
-            background-color: #0056b3;
-        }
 
 
     </style>
@@ -251,7 +226,7 @@
                             <li class="submenu">
                                 <a href="#"><i class="fa fa-commenting-o"></i> <span> Blog</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
-                                    <li><a class="active" href="blog.jsp">Blog</a></li>
+                                    <li><a class="active" href="homeblogseverlet">Blog</a></li>
                                     <li><a href="blog-details.jsp">Blog View</a></li>
                                     <li><a href="add-blog.jsp">Add Blog</a></li>
                                     <li><a href="edit-blog.html">Edit Blog</a></li>
@@ -343,110 +318,124 @@
                     </div>
                 </div>
             </div>
-            <div class="page-wrapper" >
-                <form action="homeblogseverlet" method="post">
-                    <div class="content">
-                        <div class="row">
-                            <div class="col-sm-8 col-4">
-                                <h4 class="page-title">Blog</h4>
-                            </div>
-                            <div class="col-sm-4 col-8 text-right m-b-30">
-                                <a class="btn btn-primary btn-rounded float-right" href="add-blog.jsp">
-                                    <i class="fa fa-plus"></i> Add Blog
-                                </a>
-                            </div>
+            <div class="page-wrapper">
+                <div class="content">
+                    <div class="row">
+                        <div class="col-sm-8 col-4">
+                            <h4 class="page-title">Blog</h4>
                         </div>
-
-                        <div class="col-md-6">
-                            <form action="Search_block" method="get" class="search-bar">
-                                <input type="text" name="query" placeholder="Search blogs..." value="${query}" required>
-                                <button type="submit"><i class="fa fa-search"></i></button>
-                            </form>
+                        <div class="col-sm-4 col-8 text-right m-b-30">
+                            <a class="btn btn-primary btn-rounded float-right" href="add-blog.jsp">
+                                <i class="fa fa-plus"></i> Add Blog
+                            </a>
                         </div>
-
-
-
-                        <div class="row">
-
-                            <%-- Debug: Kiểm tra danh sách blogs --%>
-                            <c:if test="${empty blogs}">
-                                <div class="col-12">
-                                    <p style="color: red;">⚠️ No blogs available!</p>
-                                </div>
-                            </c:if>
-
-                            <c:forEach var="blog" items="${blogs}">
-                                <div class="col-sm-6 col-md-6 col-lg-4">
-                                    <div class="blog grid-blog">
-                                        <div class="blog-image">
-                                            <a href="blogdetail?postId=${blog.post_id}">
-                                                <img class="img-fluid" src="${blog.image}" alt="${blog.title}">
-                                            </a>
-                                        </div>
-                                        <div class="blog-content">
-                                            <h3 class="blog-title">
-                                                <a href="blogdetail?postId=${blog.post_id}">${blog.title}</a>
-                                            </h3>
-                                            <p>${blog.content}</p>
-                                            <a href="blogdetail?postId=${blog.post_id}" class="read-more">
-                                                <i class="fa fa-long-arrow-right"></i> Read More
-                                            </a>
-
-
-                                        </div>
-                                        <a href="editblog?postId=${blog.post_id}" class="btn-update" >
-                                            Update
-                                        </a>
-
-
-                                    </div>
-
-                                </div>
-
-                            </c:forEach>
-
-
-                        </div>
-                        <div class="pagination">
-                            <c:if test="${totalPages > 1}">
-                                <ul class="pagination justify-content-center">
-                                    <c:if test="${currentPage > 1}">
-                                        <li class="page-item">
-                                            <a class="page-link" href="homeblogseverlet?page=${currentPage - 1}">Previous</a>
-                                        </li>
-                                    </c:if>
-
-                                    <c:forEach begin="1" end="${totalPages}" var="i">
-                                        <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                            <a class="page-link" href="homeblogseverlet?page=${i}">${i}</a>
-                                        </li>
-                                    </c:forEach>
-
-                                    <c:if test="${currentPage < totalPages}">
-                                        <li class="page-item">
-                                            <a class="page-link" href="homeblogseverlet?page=${currentPage + 1}">Next</a>
-                                        </li>
-                                    </c:if>
-                                </ul>
-                            </c:if>
-                        </div>
-
                     </div>
-                </form>
-            </div>    
+
+
+
+                    <!-- Search Bar -->
+                    <form action="Search_block" method="get" class="d-flex mx-auto my-2 my-lg-0">
+                        <input type="text" name="keyword" id="searchKeyword" placeholder="Search blogs..." class="form-control" value="${keyword}">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </form>
+
+                    <!-- Hiển thị kết quả AJAX -->
+                    <div id="searchResults" class="row mt-3"></div>
+
+
+
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script>
+                        $(document).ready(function () {
+                            $("#searchKeyword").keyup(function () {
+                                let keyword = $(this).val().trim();
+                                if (keyword.length > 0) {
+                                    $.ajax({
+                                        url: "SearchByAjax",
+                                        method: "GET",
+                                        data: {keyword: keyword},
+                                        success: function (response) {
+                                            $("#searchResults").html(response);
+                                        }
+                                    });
+                                } else {
+                                    $("#searchResults").html("");
+                                }
+                            });
+                        });
+                    </script>
+
+
+
+                    <div class="row">
+                        <c:if test="${empty blogs}">
+                            <div class="col-12">
+                                <p style="color: red;">⚠️ No blogs available!</p>
+                            </div>
+                        </c:if>
+
+                        <c:forEach var="blog" items="${blogs}">
+                            <div class="col-sm-6 col-md-6 col-lg-4">
+                                <div class="blog grid-blog">
+                                    <div class="blog-image">
+                                        <a href="blogdetail?postId=${blog.post_id}">
+                                            <img class="img-fluid" src="${blog.image}" alt="${blog.title}">
+                                        </a>
+                                    </div>
+                                    <div class="blog-content">
+                                        <h3 class="blog-title">
+                                            <a href="blogdetail?postId=${blog.post_id}">${blog.title}</a>
+                                        </h3>
+                                        <p>${blog.content}</p>
+                                        <a href="blogdetail?postId=${blog.post_id}" class="read-more">
+                                            <i class="fa fa-long-arrow-right"></i> Read More
+                                        </a>
+                                    </div>
+                                    <a href="editblog?postId=${blog.post_id}" class="btn-update">
+                                        Update
+                                    </a>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <c:if test="${totalPages > 1}">
+                            <ul class="pagination justify-content-center">
+                                <c:if test="${currentPage > 1}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="homeblogseverlet?page=${currentPage - 1}">Previous</a>
+                                    </li>
+                                </c:if>
+
+                                <c:forEach begin="1" end="${totalPages}" var="i">
+                                    <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                        <a class="page-link" href="homeblogseverlet?page=${i}">${i}</a>
+                                    </li>
+                                </c:forEach>
+
+                                <c:if test="${currentPage < totalPages}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="homeblogseverlet?page=${currentPage + 1}">Next</a>
+                                    </li>
+                                </c:if>
+                            </ul>
+                        </c:if>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-    </div>
-</div>
-</div>
-<div class="sidebar-overlay" data-reff=""></div>
-<script src="assets/js/jquery-3.2.1.min.js"></script>
-<script src="assets/js/popper.min.js"></script>
-<script src="assets/js/bootstrap.min.js"></script>
-<script src="assets/js/jquery.slimscroll.js"></script>
-<script src="assets/js/app.js"></script>
-</body>
+        <div class="sidebar-overlay" data-reff=""></div>
+        <script src="assets/js/jquery-3.2.1.min.js"></script>
+        <script src="assets/js/popper.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.slimscroll.js"></script>
+        <script src="assets/js/app.js"></script>
+    </body>
 
 
-<!-- blog23:51-->
+    <!-- blog23:51-->
 </html>

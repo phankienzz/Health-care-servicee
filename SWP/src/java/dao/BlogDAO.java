@@ -126,102 +126,123 @@ public class BlogDAO extends DBContext {
         return null;
     }
 
-   public void deleteBlogPost(int postId) throws SQLException {
-    // Step 1: Delete all StaffReplies related to the comments of the post
-    String deleteStaffRepliesSql = "DELETE FROM dbo.StaffReplies WHERE comment_id IN (SELECT comment_id FROM dbo.Comments WHERE post_id = ?)";
-    try (PreparedStatement deleteStaffRepliesStmt = connection.prepareStatement(deleteStaffRepliesSql)) {
-        deleteStaffRepliesStmt.setInt(1, postId);
-        deleteStaffRepliesStmt.executeUpdate();
-    }
-
-    // Step 2: Delete all comments related to the post
-    String deleteCommentsSql = "DELETE FROM dbo.Comments WHERE post_id = ?";
-    try (PreparedStatement deleteCommentsStmt = connection.prepareStatement(deleteCommentsSql)) {
-        deleteCommentsStmt.setInt(1, postId);
-        deleteCommentsStmt.executeUpdate();
-    }
-
-    // Step 3: Delete the post itself
-    String deletePostSql = "DELETE FROM Posts WHERE post_id = ?";
-    try (PreparedStatement deletePostStmt = connection.prepareStatement(deletePostSql)) {
-        deletePostStmt.setInt(1, postId);
-        int rowsAffected = deletePostStmt.executeUpdate();
-
-        if (rowsAffected == 0) {
-            throw new SQLException("No blog post was deleted. Please check the postId.");
+    public void deleteBlogPost(int postId) throws SQLException {
+        // Step 1: Delete all StaffReplies related to the comments of the post
+        String deleteStaffRepliesSql = "DELETE FROM dbo.StaffReplies WHERE comment_id IN (SELECT comment_id FROM dbo.Comments WHERE post_id = ?)";
+        try (PreparedStatement deleteStaffRepliesStmt = connection.prepareStatement(deleteStaffRepliesSql)) {
+            deleteStaffRepliesStmt.setInt(1, postId);
+            deleteStaffRepliesStmt.executeUpdate();
         }
-        LOGGER.info("Blog post deleted successfully.");
-    }
-}
 
-   
-   
-   public List<News> getBlogsByPage(int start, int total) {
-    List<News> blogs = new ArrayList<>();
-    String sql = "SELECT post_id, title, content, image, detail FROM Posts ORDER BY post_id DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        // Step 2: Delete all comments related to the post
+        String deleteCommentsSql = "DELETE FROM dbo.Comments WHERE post_id = ?";
+        try (PreparedStatement deleteCommentsStmt = connection.prepareStatement(deleteCommentsSql)) {
+            deleteCommentsStmt.setInt(1, postId);
+            deleteCommentsStmt.executeUpdate();
+        }
 
-    try (PreparedStatement st = connection.prepareStatement(sql)) {
-        st.setInt(1, start);
-        st.setInt(2, total);
-        try (ResultSet rs = st.executeQuery()) {
-            while (rs.next()) {
-                News blog = new News();
-                blog.setPost_id(rs.getInt("post_id"));
-                blog.setTitle(rs.getString("title"));
-                blog.setContent(rs.getString("content"));
+        // Step 3: Delete the post itself
+        String deletePostSql = "DELETE FROM Posts WHERE post_id = ?";
+        try (PreparedStatement deletePostStmt = connection.prepareStatement(deletePostSql)) {
+            deletePostStmt.setInt(1, postId);
+            int rowsAffected = deletePostStmt.executeUpdate();
 
-                Blob blob = rs.getBlob("image");
-                blog.setImage(blob != null ? "LoadBlogImage?postId=" + blog.getPost_id() : "default.jpg");
-
-                blog.setDetail(rs.getString("detail"));
-                blogs.add(blog);
+            if (rowsAffected == 0) {
+                throw new SQLException("No blog post was deleted. Please check the postId.");
             }
+            LOGGER.info("Blog post deleted successfully.");
         }
-    } catch (SQLException e) {
-        LOGGER.log(Level.SEVERE, "Error fetching paginated blogs", e);
     }
-    return blogs;
-}
 
-   
-   public int getTotalBlogCount() {
-    int count = 0;
-    String sql = "SELECT COUNT(*) FROM Posts";
+    public List<News> getBlogsByPage(int start, int total) {
+        List<News> blogs = new ArrayList<>();
+        String sql = "SELECT post_id, title, content, image, detail FROM Posts ORDER BY post_id DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
-    try (PreparedStatement st = connection.prepareStatement(sql);
-         ResultSet rs = st.executeQuery()) {
-        if (rs.next()) {
-            count = rs.getInt(1);
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, start);
+            st.setInt(2, total);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    News blog = new News();
+                    blog.setPost_id(rs.getInt("post_id"));
+                    blog.setTitle(rs.getString("title"));
+                    blog.setContent(rs.getString("content"));
+
+                    Blob blob = rs.getBlob("image");
+                    blog.setImage(blob != null ? "LoadBlogImage?postId=" + blog.getPost_id() : "default.jpg");
+
+                    blog.setDetail(rs.getString("detail"));
+                    blogs.add(blog);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error fetching paginated blogs", e);
         }
-    } catch (SQLException e) {
-        LOGGER.log(Level.SEVERE, "Error fetching total blog count", e);
+        return blogs;
     }
-    return count;
-}
 
+    public int getTotalBlogCount() {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM Posts";
 
+        try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error fetching total blog count", e);
+        }
+        return count;
+    }
 
+    public List<News> searchBlogs(String keyword) { 
+        List<News> blogs = new ArrayList<>();
+        String sql = "SELECT post_id, title, content, image, detail FROM Posts WHERE title LIKE ?";
 
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, "%" + keyword + "%");
+        
+            
 
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    News blog = new News();
+                    blog.setPost_id(rs.getInt("post_id"));
+                    blog.setTitle(rs.getString("title"));
+                    blog.setContent(rs.getString("content"));
 
+                    Blob blob = rs.getBlob("image");
+                    blog.setImage(blob != null ? "LoadBlogImage?postId=" + blog.getPost_id() : "default.jpg");
+
+                    blog.setDetail(rs.getString("detail"));
+                    blogs.add(blog);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error searching blogs", e);
+        }
+        return blogs;
+    }
     
-//    public static void main(String[] args) {
-//        BlogDAO blogDAO = new BlogDAO();
-//
-//        // Kiểm tra với postId thực tế trong cơ sở dữ liệu của bạn
-//        int postIdToDelete = 4;  // Thay thế với postId mà bạn muốn kiểm tra
-//
-//        try {
-//            // Gọi phương thức xóa bài viết
-//            blogDAO.deleteBlogPost(postIdToDelete);
-//            System.out.println("Blog post with ID " + postIdToDelete + " has been deleted successfully.");
-//        } catch (SQLException e) {
-//            // Xử lý lỗi khi xóa bài viết
-//            LOGGER.log(Level.SEVERE, "Error deleting blog post with ID " + postIdToDelete, e);
-//            System.err.println("Error deleting blog post: " + e.getMessage());
-//        }
-//    }
+    
 
+    public static void main(String[] args) {
+    
+    BlogDAO blogDAO = new BlogDAO();
 
+    // Tìm kiếm các bài blog chứa từ khóa "Health"
+    List<News>results = blogDAO.searchBlogs("Health");
 
+    // In kết quả ra màn hình
+    for (News blog : results) {
+        System.out.println("ID: " + blog.getPost_id());
+        System.out.println("Title: " + blog.getTitle());
+        System.out.println("Content: " + blog.getContent());
+        System.out.println("Image: " + blog.getImage());
+        System.out.println("Detail: " + blog.getDetail());
+        System.out.println("-----------------------------");
+    }
 }
+}
+
+
