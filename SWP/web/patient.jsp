@@ -164,7 +164,7 @@
                             <li class="submenu">
                                 <a href="#"><i class="fa fa-user"></i> <span> Employees </span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
-                                    <li><a href="employees.html">Employees List</a></li>
+                                    <li><a href="staff">Employees List</a></li>
                                     <li><a href="leaves.html">Leaves</a></li>
                                     <li><a href="holidays.html">Holidays</a></li>
                                     <li><a href="attendance.html">Attendance</a></li>
@@ -305,36 +305,39 @@
                 <div class="content">
                     <div class="row">
                         <div class="col-sm-4 col-3">
-                            <h4 class="page-title">Patient</h4>
+                            <h4 class="page-title font-weight-bold">Patient</h4>
                         </div>
                     </div>
 
-                    <form action="" method="">
+                    <form action="patient" method="get">
                         <div class="row filter-row">
                             <div class="col-sm-6 col-md-3">
                                 <div class="form-group form-focus">
                                     <label class="focus-label">Patient ID</label>
-                                    <input name="staffID"   type="text" class="form-control floating" <c:if test="${staffID != null}"> value="${staffID}"</c:if>>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="form-group form-focus">
-                                        <label class="focus-label">Patient Name</label>
-                                        <input name="name" type="text" class="form-control floating" <c:if test="${name != null}"> value="${name}"</c:if>>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="form-group form-focus">
-                                        <label class="focus-label">Patient Phone</label>
-                                        <input name="name" type="text" class="form-control floating" <c:if test="${name != null}"> value="${name}"</c:if>>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-3">
-
-                                    <input type="submit" value="Search" class="btn btn-success btn-block"/>
+                                    <input name="patientID" value="${patientID}" type="text" class="form-control floating" >
                                 </div>
                             </div>
-                        </form>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group form-focus">
+                                    <label class="focus-label">Patient Name</label>
+                                    <input name="patientName" value="${patientName}" type="text" class="form-control floating" >
+                                </div>
+                            </div>
+                            <!--                                <div class="col-sm-6 col-md-3">
+                                                                <div class="form-group form-focus">
+                                                                    <label class="focus-label">Patient Phone</label>
+                                                                    <input name="phone" type="text" class="form-control floating" >
+                                                                </div>
+                                                            </div>-->
+                            <div class="col-sm-6 col-md-3">
+                                <input type="submit" value="Search" class="btn btn-success btn-block"/>
+                            </div>
+                        </div>
+                    </form>
+                    <c:if test="${not empty error}">
+                        <div style="text-align: center" class="alert alert-danger">${error}</div>
+                    </c:if>
+                    <c:if test="${empty error}">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
@@ -343,7 +346,7 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Name</th>
-                                                <th>Date of Birth</th>
+                                                <!--<th>Date of Birth</th>-->
                                                 <th>Address</th>
                                                 <th>Gender</th>
                                                 <th>Status</th>
@@ -351,36 +354,37 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <c:forEach var="patient" items="${listPatient}">
-                                            <tr>
-                                                <td>${patient.customerID}</td>
-                                                <td><img width="28" height="28" src="assets/img/user.jpg" class="rounded-circle m-r-5" alt="">${patient.fullName}</td>
-                                                <td>${patient.dateOfBirth}</td>
-                                                <td>${patient.address}</td>
-                                                <td>${patient.gender}</td>
-                                                <td>
-                                                    <c:if test="${patient.accountStatus == 'Active'}">
-                                                        <span class="custom-badge status-green">${patient.accountStatus}</span>
-                                                    </c:if>
-                                                    <c:if test="${patient.accountStatus == 'Inactive'}">
-                                                        <span class="custom-badge status-red">${patient.accountStatus}</span>
-                                                    </c:if>
-                                                </td>
-                                                <td class="text-right">
-                                                    <div class="dropdown dropdown-action">
-                                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                            <a class="dropdown-item" href="patientDetail?patientId=${patient.customerID}"><i class="fa fa-eye m-r-5"></i>View</a>
+                                            <c:forEach var="patient" items="${listPatient}">
+                                                <tr>
+                                                    <td>${patient.customerID}</td>
+                                                    <td><img width="28" height="28" src="assets/img/user.jpg" class="rounded-circle m-r-5" alt="">${patient.fullName}</td>
+                                                    <!--<td>${patient.dateOfBirth}</td>-->
+                                                    <td>${patient.address}</td>
+                                                    <td>${patient.gender}</td>
+                                                    <td>
+                                                        <c:if test="${patient.accountStatus == 'Active'}">
+                                                            <span class="custom-badge status-green">${patient.accountStatus}</span>
+                                                        </c:if>
+                                                        <c:if test="${patient.accountStatus == 'Inactive'}">
+                                                            <span class="custom-badge status-red">${patient.accountStatus}</span>
+                                                        </c:if>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <div class="dropdown dropdown-action">
+                                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                <a class="dropdown-item" href="patientDetail?patientId=${patient.customerID}"><i class="fa fa-eye m-r-5"></i>View</a>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </div
+                    </c:if>
                 </div>
                 <div class="notification-box">
                     <div class="msg-sidebar notifications msg-noti">

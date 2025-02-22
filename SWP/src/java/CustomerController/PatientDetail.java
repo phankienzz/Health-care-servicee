@@ -68,7 +68,7 @@ public class PatientDetail extends HttpServlet {
         }
 
         request.setAttribute("customer", customer);
-        request.getRequestDispatcher("view-patient.jsp").forward(request, response);
+        request.getRequestDispatcher("view-patientDetail.jsp").forward(request, response);
 
     }
 

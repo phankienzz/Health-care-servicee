@@ -52,8 +52,38 @@ public class patient extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         CustomerDAO dao = new CustomerDAO();
-        List<Customer> list = dao.getAllCustomerAccount();
-        request.setAttribute("listPatient", list);
+        List<Customer> listPatient = dao.getAllCustomer();
+        String patientIdStr = request.getParameter("patientID");
+        String patientName = request.getParameter("patientName");
+
+        try {
+            if (patientIdStr != null && !patientIdStr.isEmpty()) {
+                // Tìm kiếm theo ID
+                int patientID = Integer.parseInt(patientIdStr);
+                Customer customer = dao.getCustomerByID(patientID);
+                if (customer != null) {
+                    listPatient.add(customer); // Thêm bệnh nhân vào danh sách để hiển thị
+                    request.setAttribute("patientID", patientIdStr);
+                } else {
+                    request.setAttribute("error", "Patient not found with ID: " + patientIdStr);
+                }
+            } else if (patientName != null && !patientName.isEmpty()) {
+                // Tìm kiếm theo tên
+                listPatient = dao.getCustomerByName(patientName);
+
+                if (listPatient.isEmpty()) {
+                    request.setAttribute("error", "No patients found with name: " + patientName);
+                }
+                request.setAttribute("patientName", patientName);
+            } else {
+                // Nếu không có tham số tìm kiếm, trả về danh sách tất cả bệnh nhân
+                listPatient = dao.getAllCustomer();
+            }
+        } catch (NumberFormatException e) {
+            request.setAttribute("error", "Invalid Patient ID format.");
+        }
+
+        request.setAttribute("listPatient", listPatient);
         request.getRequestDispatcher("patient.jsp").forward(request, response);
 
     }

@@ -144,7 +144,6 @@ public class StaffDAO extends DBContext {
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, "%" + name + "%");
-
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int staffID = rs.getInt("staffID");

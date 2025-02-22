@@ -50,7 +50,7 @@ public class CustomerDAO extends DBContext {
         return null;
     }
 
-    public List<Customer> getAllCustomerAccount() {
+    public List<Customer> getAllCustomer() {
         List<Customer> customers = new ArrayList<>();
         String sql = "SELECT * FROM Customer";
         try {
@@ -78,6 +78,38 @@ public class CustomerDAO extends DBContext {
         } catch (SQLException e) {
         }
         return customers; // Trả về danh sách khách hàng
+    }
+    
+    public List<Customer> getCustomerByName(String name) {
+        List<Customer> listCustomer = new ArrayList<>();
+        String sql = "select * from Customer where fullName like ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, "%" + name + "%");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int customerID = rs.getInt("customerID");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String fullName = rs.getString("fullName");
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                String accountStatus = rs.getString("accountStatus");
+                String registrationDate = rs.getString("registrationDate");
+                String dateOfBirth = rs.getString("dateOfBirth");
+                String gender = rs.getString("gender");
+                String profilePicture = rs.getString("profilePicture");
+
+                Customer customer = new Customer(customerID, username, password, fullName, email, phone, address,
+                        accountStatus, registrationDate, dateOfBirth, gender, profilePicture);
+                listCustomer.add(customer); // Thêm customer vào danh sách
+            }
+
+        } catch (SQLException e) {
+        }
+        return listCustomer; // Trả về danh sách khách hàng
+
     }
 
     public boolean isUsernameExist(String username) {
@@ -280,34 +312,11 @@ public class CustomerDAO extends DBContext {
         }
     }
 
-//    public static void main(String[] args) {
-//    CustomerDAO dao = new CustomerDAO();
-//
-//    // Simulating a customer login to retrieve customer details.
-//    Customer customer = dao.customerLogin("patient1", "hash111");
-//
-//    // Checking if customer exists
-//    if (customer != null) {
-//        System.out.println("Customer logged in: " + customer);
-//
-//        // You might want to update some details of the customer
-//        String newFullName = "John Doe Updated";
-//        String newEmail = "john.doe.updated@example.com";
-//        String newPhone = "123-456-7890";
-//        String newAddress = "123 Updated St, City, State, 12345";
-//        String newDateOfBirth = "1990-01-01"; // Format: yyyy-MM-dd
-//        String newGender = "Male";
-//        String newProfileImage = "new_image_path.jpg";
-//        int customerID = customer.getCustomerID(); // Assuming getCustomerID() gives the customer's ID
-//
-//        try {
-//            dao.updateCustomerProfile(newFullName, newEmail, newPhone, newAddress,
-//                    newDateOfBirth, newGender, newProfileImage, customerID);
-//        } catch (ParseException e) {
-//            System.err.println("Error parsing date: " + e.getMessage());
-//        }
-//    } else {
-//        System.out.println("Login failed: No customer found.");
-//    }
-//}
+    public static void main(String[] args) {
+        CustomerDAO dao = new CustomerDAO();
+        List<Customer> list = dao.getCustomerByName("Alice");
+        for (Customer customer : list) {
+            System.out.println(customer);
+        }
+    }
 }
