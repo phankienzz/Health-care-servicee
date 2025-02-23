@@ -49,28 +49,33 @@
 
     <body id="top">
         <jsp:include page="headerCustomer.jsp"></jsp:include>
-
-        <section class="page-title bg-1">
-            <div class="overlay"></div>
-            <div class="container text-center">
-                <span class="text-white">Our Services</span>
-                <h1 class="text-capitalize mb-5 text-lg">What We Do</h1>
-            </div>
-        </section>
-
-        <!-- Phần lọc và tìm kiếm -->
-        <section class="container mt-4">
-            <form action="loadservice" method="get" class="row align-items-center" onsubmit="return validateForm(event);">
-                <!-- Nhóm lọc -->
-                <div class="col-md-6">
-                    <div class="row g-2 align-items-center">
-                        <div class="col-auto">
-                            <label for="sortBy" class="fw-bold">Lọc dịch vụ:</label>
+            <section class="page-title bg-1">
+                <div class="overlay"></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="block text-center">
+                                <span class="text-white">Our Service</span>
+                                <h1 class="text-capitalize mb-5 text-lg">What we do</h1>
+                            </div>
                         </div>
-                        <div class="col-auto">
-                            <select name="sortBy" id="sortBy" class="form-select">
-                                <option value="reload">Chọn tiêu chí</option>
-                                <option value="price_asc" ${param.sortBy == 'price_asc' ? 'selected' : ''}>Giá tăng dần</option>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Phần lọc và tìm kiếm -->
+            <section class="container mt-4">
+                <form action="loadservice" method="get" class="row align-items-center" onsubmit="return validateForm(event);">
+                    <!-- Nhóm lọc -->
+                    <div class="col-md-6">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-auto">
+                                <label for="sortBy" class="fw-bold">Lọc dịch vụ:</label>
+                            </div>
+                            <div class="col-auto">
+                                <select name="sortBy" id="sortBy" class="form-select">
+                                    <option value="reload">Chọn tiêu chí</option>
+                                    <option value="price_asc" ${param.sortBy == 'price_asc' ? 'selected' : ''}>Giá tăng dần</option>
                                 <option value="price_desc" ${param.sortBy == 'price_desc' ? 'selected' : ''}>Giá giảm dần</option>
                                 <option value="vip" ${param.sortBy == 'vip' ? 'selected' : ''}>Loại VIP</option>
                                 <option value="basic" ${param.sortBy == 'basic' ? 'selected' : ''}>Loại cơ bản</option>
