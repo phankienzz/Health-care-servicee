@@ -13,14 +13,6 @@
         <servlet-class>blog.addBlog</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>RequestPassword</servlet-name>
-        <url-pattern>/requestPassword</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ResetPassword</servlet-name>
-        <url-pattern>/resetPassword</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>Add_Blog</servlet-name>
         <url-pattern>/add_Blog</url-pattern>
     </servlet-mapping>
