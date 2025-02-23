@@ -30,7 +30,7 @@
 
         <jsp:include page="editseting.jsp"></jsp:include>
 
-            <div class="page-wrapper">
+            <div class="page-wrapper-profile">
                 <div class="content">
                     <div class="row">
                         <div class="col-sm-12">
@@ -96,25 +96,13 @@
                                     <input type="text" class="form-control floating" name="address" value="${sessionScope.customerAccount.address}">
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group form-focus">
-                                    <label class="focus-label">State</label>
-                                    <input type="text" class="form-control floating" value="New York">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
+<!--                            <div class="col-md-6">
                                 <div class="form-group form-focus">
                                     <label class="focus-label">Country</label>
                                     <input type="text" class="form-control floating" value="United States">
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group form-focus">
-                                    <label class="focus-label">Pin Code</label>
-                                    <input type="text" class="form-control floating" value="10523">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
+                            </div>-->
+                            <div class="col-md-12">
                                 <div class="form-group form-focus">
                                     <label class="focus-label">Phone Number</label>
                                     <input type="text" class="form-control floating" name="phone" value="${sessionScope.customerAccount.phone}">
@@ -127,37 +115,6 @@
                         <button class="btn btn-primary submit-btn" type="submit">Save</button>
                     </div>
                 </form>
-
-                <!--                    <form action="editprofile" method="post">
-                                        <div class="form-group">
-                                            <label>Full Name</label>
-                                            <input type="text" name="fullName" value="${customerProfile.fullName}" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Email</label>
-                                            <input type="email" name="email" value="${customerProfile.email}" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Phone</label>
-                                            <input type="text" name="phone" value="${customerProfile.phone}" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Address</label>
-                                            <input type="text" name="address" value="${customerProfile.address}" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Date of Birth</label>
-                                            <input type="date" name="dateOfBirth" value="${customerProfile.dateOfBirth}" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Gender</label>
-                                            <select name="gender" class="form-control">
-                                                <option value="Male" ${customerProfile.gender == 'Male' ? 'selected' : ''}>Male</option>
-                                                <option value="Female" ${customerProfile.gender == 'Female' ? 'selected' : ''}>Female</option>
-                                            </select>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                                    </form>-->
             </div>
         </div>
 

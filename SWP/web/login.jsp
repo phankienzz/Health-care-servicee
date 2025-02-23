@@ -36,6 +36,12 @@
         <div class="container d-flex justify-content-center align-items-center vh-100">
             <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%;">
                 <div class="card-body">
+
+                    <% String savedUsername = (String) request.getAttribute("savedUsername");
+                           if (savedUsername == null) savedUsername = ""; %>
+                    <% String savedPassword = (String) request.getAttribute("savedPassword");
+                           if (savedPassword == null) savedPassword = ""; %>
+
                     <div class="text-center mb-4">
                         <a href="index-2.html">
                             <img src="assets/img/logo-dark.png" alt="Logo" class="mb-3" style="max-width: 120px;">
@@ -43,28 +49,22 @@
                         <h5 class="card-title">Welcome Back</h5>
                     </div>
 
-                    <div class="form-group">
-                        <label for="userType">Select User Type</label>
-                        <select class="form-control" id="userType" onchange="toggleForm()">
-                            <option value="user">User</option>
-                            <option value="staff">Staff</option>
-                        </select>
-                    </div>
-
                     <div id="userForm" style="display: block;">
-                        <% String savedUsername = (String) request.getAttribute("savedUsername");
-                           if (savedUsername == null) savedUsername = ""; %>
-                        <% String savedPassword = (String) request.getAttribute("savedPassword");
-                           if (savedPassword == null) savedPassword = ""; %>
-
                         <!-- User Login -->
                         <form action="login" method="post" class="form-signin">
                             <p class="text-danger text-center">${error}</p>
+                            <div class="form-group">
+                                <label for="userType">Select User Type</label>
+                                <select class="form-control" id="userType" name="userType" onchange="toggleForm()">
+                                    <option value="customer" <%= "customer".equals(request.getAttribute("userType")) ? "selected" : "" %>>Customer</option>
+                                    <option value="staff" <%= "staff".equals(request.getAttribute("userType")) ? "selected" : "" %>>Staff</option>
+                                </select>
+
+                            </div>
 
                             <div class="form-group">
-                                <label for="usernameOrEmail">Username or Email</label>
-                                <input type="text" name="usernameOrEmail" id="usernameOrEmail" value="<%= savedUsername %>" class="form-control" placeholder="Enter your username or email" autofocus>
-                            </div>
+                                <label id="userLabel" for="user">Username</label>
+                                <input type="text" name="user" id="user" value="<%= savedUsername %>" class="form-control" placeholder="Enter your username" autofocus>                            </div>
 
                             <div class="form-group">
                                 <label for="password">Password</label>
@@ -95,7 +95,7 @@
                             </div>
                         </form>
                     </div>
-                            
+
                     <!-- User Login -->
                     <div id="staffForm" style="display: none;">
                         <form action="login" method="post" class="form-signin">
@@ -142,5 +142,28 @@
         <script src="assets/js/popper.min.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/app.js"></script>
+        <script>
+                                            function toggleForm() {
+                                                var userType = document.getElementById("userType").value;
+                                                var userLabel = document.getElementById("userLabel");
+                                                var userInput = document.getElementById("user");
+                                                var googleLogin = document.getElementById("googleLoginBtn");
+
+                                                if (userType === "customer") {
+                                                    userLabel.innerText = "Username";
+                                                    userInput.placeholder = "Enter your username";
+                                                    userInput.type = "text";
+                                                    googleLogin.style.display = "block";
+                                                } else {
+                                                    userLabel.innerText = "Email";
+                                                    userInput.placeholder = "Enter your email";
+                                                    userInput.type = "email";
+                                                    googleLogin.style.display = "none";
+                                                }
+                                            }
+                                            window.onload = function () {
+                                                toggleForm();
+                                            };
+        </script>
     </body>
 </html>
