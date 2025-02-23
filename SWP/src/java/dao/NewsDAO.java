@@ -38,37 +38,6 @@ public class NewsDAO extends DBContext {
         return cate;
     }
 
-    public List<News> getNewsByCategory(String category_id) {
-        List<News> news = new ArrayList<>();
-        String sql = "select * from Posts where category_id = ? and status = 1";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, category_id);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
-                String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
-
-                News n = new News(rs.getInt("post_id"),
-                        rs.getString("title"),
-                        rs.getString("content"),
-                        rs.getInt("created_by"),
-                        rs.getInt("category_id"),
-                        rs.getInt("status"),
-                        rs.getString("image"),
-                        rs.getString("detail"),
-                        createdAt,
-                        updatedAt);
-//                        rs.getString("created_at"),
-//                        rs.getString("updated_at"));
-                news.add(n);
-            }
-        } catch (SQLException e) {
-        }
-        return news;
-    }
-
-    
     //dem
     public int getTotalNews() {
         String sql = "SELECT COUNT(*) FROM Posts WHERE status = 1";
@@ -212,6 +181,31 @@ public class NewsDAO extends DBContext {
         return list;
     }
 
+    public News getNewsByID(int newsID) {
+        String sql = "select * from Posts where post_id = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, newsID);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                return new News(
+                        rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getInt("created_by"),
+                        rs.getInt("category_id"),
+                        rs.getInt("status"),
+                        rs.getString("image"),
+                        rs.getString("detail"),
+                        rs.getString("created_at"),
+                        rs.getString("updated_at"));
+            }
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
+
     public void addBlogPost(String title, String content, int createdBy, int categoryId, boolean status, String detail, String imagePaths) {
         String sql = "INSERT INTO Posts (title, content, created_by, category_id, status, detail, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -271,12 +265,13 @@ public class NewsDAO extends DBContext {
 
     public static void main(String[] args) {
         NewsDAO dao = new NewsDAO();
-        List<News> newsList = dao.searchNewsByTitle("h", 1,3);
-        for (News news : newsList) {
-            System.out.println(news);
-        }
-//        int count = dao.getTotalNewsByCategory("1");
-//        System.out.println(count);
+//        List<News> newsList = dao.searchNewsByTitle("h", 1, 3);
+//        for (News news : newsList) {
+//            System.out.println(news);
+//        }
+//        int count = dao.getNewsByID(1);
+        News news = dao.getNewsByID(1);
+        System.out.println(news);
 
     }
 }

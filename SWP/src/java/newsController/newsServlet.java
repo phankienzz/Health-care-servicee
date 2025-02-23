@@ -22,7 +22,7 @@ import java.util.ArrayList;
  *
  * @author jaxbo
  */
-@WebServlet(name = "newsServlet", urlPatterns = {"/news"})
+@WebServlet(name = "newsServlet", urlPatterns = {"/allNews"})
 public class newsServlet extends HttpServlet {
 
     /**
