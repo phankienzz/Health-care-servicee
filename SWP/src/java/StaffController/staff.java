@@ -48,7 +48,9 @@ public class staff extends HttpServlet {
                 Staff s = new Staff();
                 s = staffDAO.getStaffByID(staffID);
                 request.setAttribute("staffID", staffID);
-                listStaff.add(s);
+                List<Staff> l = new ArrayList<>();
+                 l.add(s);
+                 listStaff = l;
             } catch (Exception e) {
                 response.sendRedirect("staff");
                 return;
@@ -90,15 +92,15 @@ public class staff extends HttpServlet {
         }
         int start = (page - 1) * recordsPerPage;
         List<Staff> staffs = new ArrayList<>();
-
-        staffs = staffDAO.getStaffs(start, recordsPerPage);
-
+        if (staffID_raw == null &&  name == null  && (roleID == null || roleID.equalsIgnoreCase("Select role"))){
+            staffs = staffDAO.getStaffs(start, recordsPerPage);
+        }
         if (staffID_raw != null && !staffID_raw.isEmpty()) {
             try {
                 int staffID = Integer.parseInt(staffID_raw);
                 Staff s = new Staff();
                 s = staffDAO.getStaffByID(staffID);
-                staffs = listStaff;
+                staffs.add(s);
             } catch (Exception e) {
                 response.sendRedirect("staff");
             }
