@@ -98,7 +98,7 @@
                             
                     <!-- User Login -->
                     <div id="staffForm" style="display: none;">
-                        <form action="staffLogin" method="post" class="form-signin">
+                        <form action="login" method="post" class="form-signin">
                             <p class="text-danger text-center">${error}</p>
 
                             <div class="form-group">
