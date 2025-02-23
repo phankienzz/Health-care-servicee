@@ -45,8 +45,8 @@
 
                     <div class="form-group">
                         <label for="userType">Select User Type</label>
-                        <select class="form-control" id="userType" onchange="toggleForm()">
-                            <option value="user">User</option>
+                        <select class="form-control" name="userType" id="userType" onchange="toggleForm()">
+                            <option value="customer">Customer</option>
                             <option value="staff">Staff</option>
                         </select>
                     </div>
