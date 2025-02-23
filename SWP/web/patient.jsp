@@ -391,7 +391,6 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Name</th>
-                                                <!--<th>Date of Birth</th>-->
                                                 <th>Address</th>
                                                 <th>Gender</th>
                                                 <th>Status</th>

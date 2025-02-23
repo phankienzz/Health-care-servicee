@@ -62,11 +62,11 @@
                                                 <span class="text-black text-capitalize mr-3"><i class="icofont-calendar mr-1"></i>${news.created_at}</span>
                                             </div> 
 
-                                            <h2 class="mt-3 mb-3"><a href="detailNews?newsID=${news.postId}">${news.title}</a></h2>
+                                            <h2 class="mt-3 mb-3"><a href="detailNews?newsID=${news.post_id}">${news.title}</a></h2>
 
                                             <p class="mb-4">${news.detail}</p>
 
-                                            <a href="detailNews?newsID=${news.postId}" target="_blank" class="btn btn-main btn-icon btn-round-full">Read More <i class="icofont-simple-right ml-2  "></i></a>
+                                            <a href="detailNews?newsID=${news.post_id}" target="_blank" class="btn btn-main btn-icon btn-round-full">Read More <i class="icofont-simple-right ml-2  "></i></a>
                                         </div>
                                     </div>
                                 </div>

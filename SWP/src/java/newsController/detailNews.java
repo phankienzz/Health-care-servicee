@@ -23,7 +23,7 @@ import model.News;
  *
  * @author Hoang
  */
-@WebServlet(name = "detailNews", urlPatterns = {"/detailNews"})
+@WebServlet(name ="detailNews", urlPatterns = {"/detailNews"})
 public class detailNews extends HttpServlet {
 
     /**

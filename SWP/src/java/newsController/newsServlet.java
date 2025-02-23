@@ -25,15 +25,7 @@ import java.util.ArrayList;
 @WebServlet(name = "newsServlet", urlPatterns = {"/allNews"})
 public class newsServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -88,7 +80,6 @@ public class newsServlet extends HttpServlet {
             endPage++;
         }
 
-        // Định dạng ngày sử dụng phương thức tiện ích
         for (News news : pagingPage) {
             news.setCreated_at(valid.formatDateNews(news.getCreated_at()));
             news.setUpdated_at(valid.formatDateNews(news.getUpdated_at()));
