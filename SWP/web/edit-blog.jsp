@@ -269,38 +269,11 @@
                                     <li><a href="blank-page.html"> Blank Page </a></li>
                                 </ul>
                             </li>
-                            <li class="submenu">
-                                <a href="javascript:void(0);"><i class="fa fa-share-alt"></i> <span>Multi Level</span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li class="submenu">
-                                        <a href="javascript:void(0);"><span>Level 1</span> <span class="menu-arrow"></span></a>
-                                        <ul style="display: none;">
-                                            <li><a href="javascript:void(0);"><span>Level 2</span></a></li>
-                                            <li class="submenu">
-                                                <a href="javascript:void(0);"> <span> Level 2</span> <span class="menu-arrow"></span></a>
-                                                <ul style="display: none;">
-                                                    <li><a href="javascript:void(0);">Level 3</a></li>
-                                                    <li><a href="javascript:void(0);">Level 3</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="javascript:void(0);"><span>Level 2</span></a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);"><span>Level 1</span></a>
-                                    </li>
-                                </ul>
-                            </li>
+                            
                         </ul>
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
 
 
 
@@ -314,7 +287,7 @@
 
                             <form action="deleteblog" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bài viết này?');">
                                 <input type="hidden" name="postId" value="${blog.post_id}">
-                                <button type="submit" class="btn btn-danger">🗑 Xóa</button>
+                                <button type="submit" class="btn btn-danger"> Xóa</button>
                             </form>
                             <h4 class="page-title">Edit Blog</h4>
                             <form method="post" action="editblog" enctype="multipart/form-data">
