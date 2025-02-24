@@ -29,6 +29,30 @@
 
     <body>
 
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const fileInput = document.getElementById("profileImage");
+
+                fileInput.addEventListener("change", function () {
+                    const file = fileInput.files[0];
+
+                    if (file) {
+                        const fileType = file.type;
+                        const allowedTypes = ["image/png", "image/jpeg", "image/gif"];
+
+                        if (!allowedTypes.includes(fileType)) {
+                            alert("Only PNG, JPEG, and GIF files are allowed!");
+                            fileInput.value = ''; // Clear the file input
+                        }
+                    }
+                });
+            });
+
+
+        </script>
+
+
         <jsp:include page="editseting.jsp"></jsp:include>
 
             <div class="page-wrapper-profile">
@@ -39,16 +63,16 @@
                         </div>
                     </div>
                 <c:if test="${sessionScope.customerAccount != null}">
-                    <form action="editprofile" method="post">
+                    <form action="editprofile" method="post" enctype="multipart/form-data">
                         <div class="card-box">
                             <h3 class="card-title">Basic Informations</h3>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="profile-img-wrap">
-                                        <img class="inline-block" src="assets/img/user.jpg" alt="user">
+                                        <img class="inline-block" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" >
                                         <div class="fileupload btn">
-                                            <span class="btn-text">edit</span>
-                                            <input class="upload" type="file">
+                                            <span class="btn-text">Edit</span>
+                                            <input class="upload" type="file" name="profileImage" id="profileImage">
                                         </div>
                                     </div>
                                     <div class="profile-basic">
@@ -60,11 +84,13 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
-                                                <div class="form-group form-focus">
-                                                    <label class="focus-label">Birth Date</label>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Birth Date <span class="text-danger">*</span></label>
                                                     <div class="cal-icon">
-                                                        <input class="form-control floating " type="text" name="dateOfBirth" placeholder="YYYY-MM-DD" value="${sessionScope.customerAccount.dateOfBirth}">
+                                                        <!-- Set the value of the input field dynamically -->
+                                                        <input name="dateOfBirth" class="form-control datetimepicker" type="text"
+                                                               value="${sessionScope.customerAccount.dateOfBirth != null ? sessionScope.customerAccount.dateOfBirth : ''}" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -81,7 +107,10 @@
                                             <div class="col-md-6">
                                                 <div class="form-group form-focus">
                                                     <label class="focus-label">Email</label>
-                                                    <input type="text" class="form-control floating" name="email" value="${sessionScope.customerAccount.email}">
+                                                    <input type="text" class="form-control floating" name="email" value="${sessionScope.customerAccount.email}" >
+
+                                                </div>
+                                                <div><p class="text-danger">${error}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -98,12 +127,7 @@
                                         <input type="text" class="form-control floating" name="address" value="${sessionScope.customerAccount.address}">
                                     </div>
                                 </div>
-                                <!--                            <div class="col-md-6">
-                                                                <div class="form-group form-focus">
-                                                                    <label class="focus-label">Country</label>
-                                                                    <input type="text" class="form-control floating" value="United States">
-                                                                </div>
-                                                            </div>-->
+
                                 <div class="col-md-12">
                                     <div class="form-group form-focus">
                                         <label class="focus-label">Phone Number</label>

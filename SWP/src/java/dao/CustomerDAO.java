@@ -184,26 +184,30 @@ public class CustomerDAO extends DBContext {
         }
     }
 
-    public void updateCustomerProfile(String fullName, String email, String phone, String address, String dateOfBirth, String gender, InputStream profilePicture, int customerID) throws ParseException {
-        String sql = "UPDATE Customer SET fullName = ?, email = ?, phone = ?, address = ?, dateOfBirth = ?, gender = ?, profilePicture = ? WHERE customerID = ?";
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            java.util.Date parsedDate = sdf.parse(dateOfBirth);
-            java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
+     public void updateCustomerProfile(String fullName, String email, String phone, String address, String dateOfBirth, String gender, InputStream profilePicture, int customerID) {
+        String sql;
 
+        if (profilePicture != null) {
+            sql = "UPDATE Customer SET fullName = ?, email = ?, phone = ?, address = ?, dateOfBirth = CONVERT(DATETIME, ?, 103), gender = ?, profilePicture = ? WHERE customerID = ?";
+        } else {
+            sql = "UPDATE Customer SET fullName = ?, email = ?, phone = ?, address = ?, dateOfBirth = CONVERT(DATETIME, ?, 103), gender = ? WHERE customerID = ?";
+        }
+
+        try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, fullName);
             st.setString(2, email);
             st.setString(3, phone);
             st.setString(4, address);
-            st.setDate(5, sqlDate);
+            st.setString(5, dateOfBirth);
             st.setString(6, gender);
+
             if (profilePicture != null) {
                 st.setBlob(7, profilePicture);
+                st.setInt(8, customerID);
             } else {
-                st.setNull(7, java.sql.Types.BLOB);
+                st.setInt(7, customerID);
             }
-            st.setInt(8, customerID);
 
             int rowsUpdated = st.executeUpdate();
             if (rowsUpdated > 0) {
@@ -211,7 +215,7 @@ public class CustomerDAO extends DBContext {
             } else {
                 System.out.println("No customer found with the provided ID.");
             }
-        } catch (SQLException | ParseException e) {
+        } catch (SQLException e) {
             System.err.println("Error: " + e.getMessage());
         }
     }

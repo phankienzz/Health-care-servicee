@@ -50,6 +50,8 @@ public class newsServlet extends HttpServlet {
             out.println("</html>");
         }
     }
+    
+    
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -72,16 +74,7 @@ public class newsServlet extends HttpServlet {
         int totalNews = 0;
         int pageSize = 3; //so bai viet tren 1 page
 
-        if (!search.isEmpty()) {
-            pagingPage = dao.searchNewsByTitle(search, page, pageSize);
-            totalNews = dao.getTotalNewsBySearch(search);
-        } else if (categoryID != null && !categoryID.isEmpty()) {
-            pagingPage = dao.pagingNewsByCategory(categoryID, page, pageSize);
-            totalNews = dao.getTotalNewsByCategory(categoryID);
-        } else {
-            pagingPage = dao.pagingAllNews(page, pageSize);
-            totalNews = dao.getTotalNews();
-        }
+        
 
         int endPage = totalNews / pageSize;
         if (totalNews % pageSize != 0) {

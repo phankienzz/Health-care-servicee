@@ -22,7 +22,7 @@
 
     <body>
         <div class="main-wrapper">
-            
+
             <jsp:include page="editseting.jsp"></jsp:include>
             <c:if test="${sessionScope.customerAccount != null}">
                 <div class="page-wrapper-profile">
@@ -42,9 +42,30 @@
                                     <div class="profile-view">
                                         <div class="profile-img-wrap">
                                             <div class="profile-img">
-                                                <a href="#"><img class="avatar" src="${sessionScope.customerAccount.customerID}" alt=""></a>
+                                                <a href="#" data-toggle="modal" data-target="#imageModal">
+                                                    <img class="avatar" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" alt="Profile Picture">
+                                                </a>
                                             </div>
                                         </div>
+
+                                        <!-- Modal Bootstrap -->
+                                        <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Profile Picture</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body text-center">
+                                                        <img id="modalImage" class="img-fluid enlarged-img" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" alt="Profile Picture">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                                         <div class="profile-basic">
                                             <div class="row">
                                                 <div class="col-md-5">
@@ -59,19 +80,19 @@
                                                     <ul class="personal-info">
                                                         <li>
                                                             <span class="title">Phone:</span>
-                                                            <span class="text"><a
-                                                                    href="#">${sessionScope.customerAccount.phone}</a></span>
+                                                            <span class="text"><a href="#">${sessionScope.customerAccount.phone}</a></span>
                                                         </li>
                                                         <li>
                                                             <span class="title">Email:</span>
-                                                            <span class="text"><a
-                                                                    href="#">${sessionScope.customerAccount.email}</a></span>
+                                                            <span class="text"><a href="#">${sessionScope.customerAccount.email}</a></span
                                                         </li>
+
                                                         <li>
                                                             <span class="title">Birthday:</span>
-                                                            <span
-                                                                class="text">${sessionScope.customerAccount.dateOfBirth}</span>
+                                                            <span class="text">${sessionScope.customerAccount.dateOfBirth}</span>
                                                         </li>
+
+
                                                         <li>
                                                             <span class="title">Address:</span>
                                                             <span class="text">${sessionScope.customerAccount.address}</span>
