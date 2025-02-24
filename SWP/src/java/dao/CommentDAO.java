@@ -45,6 +45,21 @@ public class CommentDAO extends DBContext {
         return comments;
     }
 
+    public int getCommentCountByPostId(int postId) {
+        String sql = "select count(*) as comment_count from Comments WHERE post_id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, postId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("comment_count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0; // Trả về 0 nếu có lỗi
+    }
+
     public boolean addComment(int postId, int customerId, String content, int parentCommentId) {
         String sql = "INSERT INTO Comments (post_id, customerID, content, status, created_at, parent_comment_id) "
                 + "VALUES (?, ?, ?, ?, GETDATE(), ?)";

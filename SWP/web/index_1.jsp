@@ -32,7 +32,8 @@
 
     <body id="top">
         <!-- Bỏ cái của nợ dòng 35 này đi là frontdend siêu đẹp -->
-        <jsp:include page="headerCustomer.jsp"></jsp:include> 
+        <%--<jsp:include page="headerCustomer.jsp"></jsp:include>--%> 
+        <jsp:include page="headerHome.jsp"></jsp:include>
         <!-- Slider Start -->
         <section class="banner">
             <div class="container">
