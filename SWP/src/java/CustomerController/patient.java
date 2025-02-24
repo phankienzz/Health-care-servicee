@@ -57,27 +57,38 @@ public class patient extends HttpServlet {
         String patientName = request.getParameter("patientName");
 
         try {
-            if (patientIdStr != null && !patientIdStr.isEmpty()) {
-                // Tìm kiếm theo ID
+            if (patientIdStr != null && !patientIdStr.isEmpty() && patientName != null && !patientName.isEmpty()) {// Tìm kiếm theo cả ID và Name
+                int patientID = Integer.parseInt(patientIdStr);
+                Customer customer = dao.getCustomerByIdAndName(patientID, patientName);
+                if (customer != null) {
+                    request.setAttribute("customer", customer);
+                    request.setAttribute("patientID", patientIdStr);
+                    request.setAttribute("patientName", patientName);
+                } else {
+                    request.setAttribute("error", "No patient found with ID: " + patientIdStr + " and name: " + patientName);
+                }
+            } else if (patientIdStr != null && !patientIdStr.isEmpty()) {// Tìm kiếm theo ID
+                
                 int patientID = Integer.parseInt(patientIdStr);
                 Customer customer = dao.getCustomerByID(patientID);
                 if (customer != null) {
-                    listPatient.add(customer); // Thêm bệnh nhân vào danh sách để hiển thị
+                    request.setAttribute("customer", customer); 
                     request.setAttribute("patientID", patientIdStr);
                 } else {
                     request.setAttribute("error", "Patient not found with ID: " + patientIdStr);
                 }
-            } else if (patientName != null && !patientName.isEmpty()) {
-                // Tìm kiếm theo tên
+            } else if (patientName != null && !patientName.isEmpty()) {// Tìm kiếm theo Name
                 listPatient = dao.getCustomerByName(patientName);
-
                 if (listPatient.isEmpty()) {
                     request.setAttribute("error", "No patients found with name: " + patientName);
+                } else {
+                    request.setAttribute("listPatient", listPatient); // Gửi danh sách bệnh nhân
                 }
                 request.setAttribute("patientName", patientName);
             } else {
                 // Nếu không có tham số tìm kiếm, trả về danh sách tất cả bệnh nhân
                 listPatient = dao.getAllCustomer();
+                request.setAttribute("listPatient", listPatient);
             }
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Invalid Patient ID format.");
