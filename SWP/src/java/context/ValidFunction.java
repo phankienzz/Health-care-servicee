@@ -12,11 +12,12 @@ import java.time.format.DateTimeFormatter;
  * @author Gigabyte
  */
 public class ValidFunction {
+
     public boolean containsDigitOrSpecialChar(String str) {
         return str.matches(".*[^a-zA-Z\\s].*"); // Kiểm tra nếu có ký tự không phải chữ cái hoặc khoảng trắng
     }
 
-    public  String normalizeName(String name) {
+    public String normalizeName(String name) {
         if (name == null || name.trim().isEmpty()) {
             return "";
         }
@@ -56,6 +57,7 @@ public class ValidFunction {
 
         return password.matches(regex);
     }
+
     public String formatDate(String input) {
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -63,7 +65,7 @@ public class ValidFunction {
         LocalDateTime dateTime = LocalDateTime.parse(input, inputFormatter);
         return dateTime.format(outputFormatter);
     }
-    
+
     public String formatDateNews(String date) {
         // Chuyển từ chuỗi ngày ban đầu (yyyy-MM-dd HH:mm:ss) sang Timestamp
         java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);

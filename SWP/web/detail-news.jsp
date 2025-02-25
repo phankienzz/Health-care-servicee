@@ -78,21 +78,21 @@
 
                                         <p>${newsDetail.content}</p>
 
-                                        <blockquote class="quote">
+<!--                                        <blockquote class="quote">
                                             A brand for a company is like a reputation for a person. You earn reputation by
                                             trying to do hard things well.
-                                        </blockquote>
+                                        </blockquote>-->
 
 
-                                        <p class="lead mb-4 font-weight-normal text-black">The same is true as we experience
+<!--                                        <p class="lead mb-4 font-weight-normal text-black">The same is true as we experience
                                             the emotional sensation of stress from our first instances of social rejection
-                                            ridicule. We quickly learn to fear and thus automatically.</p>
+                                            ridicule. We quickly learn to fear and thus automatically.</p>-->
 
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste, rerum beatae
+<!--                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste, rerum beatae
                                             repellat tenetur incidunt quisquam libero dolores laudantium. Nesciunt quis
-                                            itaque quidem, voluptatem autem eos animi laborum iusto expedita sapiente.</p>
+                                            itaque quidem, voluptatem autem eos animi laborum iusto expedita sapiente.</p>-->
 
-                                        <div class="mt-5 clearfix">
+<!--                                        <div class="mt-5 clearfix">
                                             <ul class="float-left list-inline tag-option">
                                                 <li class="list-inline-item"><a href="#">Advancher</a></li>
                                                 <li class="list-inline-item"><a href="#">Landscape</a></li>
@@ -110,7 +110,7 @@
                                                 <li class="list-inline-item"><a href="#" target="_blank"><i
                                                             class="icofont-linkedin" aria-hidden="true"></i></a></li>
                                             </ul>
-                                        </div>
+                                        </div>-->
                                     </div>
                                 </div>
                             </div>

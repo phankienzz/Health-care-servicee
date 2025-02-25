@@ -117,7 +117,7 @@ public class NewsDAO extends DBContext {
     //phan trang
     public List<News> pagingAllNews(int index, int pageSize) {
         List<News> list = new ArrayList<>();
-        String sql = "select * from Posts where status = 1 order by post_id offset ? rows  fetch  next ? rows only";
+        String sql = "select * from Posts where status = 1 order by post_id desc offset ? rows  fetch  next ? rows only";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             int offset = (index - 1) * pageSize;
@@ -149,7 +149,7 @@ public class NewsDAO extends DBContext {
 
     public List<News> pagingNewsByCategory(String categoryID, int index, int pageSize) {
         List<News> list = new ArrayList<>();
-        String sql = "select * from Posts where status = 1 and category_id = ? order by post_id OFFSET ? rows fetch next ? rows only";
+        String sql = "select * from Posts where status = 1 and category_id = ? order by post_id desc OFFSET ? rows fetch next ? rows only";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             int offset = (index - 1) * pageSize;
@@ -182,7 +182,7 @@ public class NewsDAO extends DBContext {
 
     public List<News> searchNewsByTitle(String title, int index, int pageSize) {
         List<News> list = new ArrayList<>();
-        String sql = "SELECT * FROM Posts WHERE status = 1 AND title LIKE ? ORDER BY post_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM Posts WHERE status = 1 AND title LIKE ? ORDER BY post_id desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             int offset = (index - 1) * pageSize;

@@ -28,7 +28,7 @@
     <body id="top">
 
         <%--<jsp:include page="headerCustomer.jsp"></jsp:include>--%>
-                <jsp:include page="headerHome.jsp"></jsp:include>
+        <jsp:include page="headerHome.jsp"></jsp:include>
 
 
             <section class="page-title bg-1">
@@ -56,7 +56,7 @@
                                 <div class="col-lg-12 col-md-12 mb-5">
                                     <div class="blog-item">
                                         <div class="blog-thumb">
-                                            <img src="images/blog/blog-1.jpg" alt="" class="img-fluid ">
+                                            <img src="https://th.bing.com/th/id/R.b36487219523001afe830b30caa66190?rik=4lto5%2faxY9hY%2fw&pid=ImgRaw&r=0" alt="" class="img-fluid ">
                                         </div>
                                         <div class="blog-item-content">
                                             <div class="blog-item-meta mb-3 mt-4">

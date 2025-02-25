@@ -65,7 +65,7 @@ public class newsServlet extends HttpServlet {
         int pageSize = 3; //so bai viet tren 1 page
 
         if (!search.isEmpty()) {
-            pagingPage = dao.searchNewsByTitle(search, page, pageSize);
+            pagingPage = dao.searchNewsByTitle(valid.normalizeName(search), page, pageSize);
             totalNews = dao.getTotalNewsBySearch(search);
         } else if (categoryID != null && !categoryID.isEmpty()) {
             pagingPage = dao.pagingNewsByCategory(categoryID, page, pageSize);
