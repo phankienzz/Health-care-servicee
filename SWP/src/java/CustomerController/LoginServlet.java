@@ -60,7 +60,6 @@ public class LoginServlet extends HttpServlet {
         if ("customer".equals(userType)) {
             CustomerDAO dao = new CustomerDAO();
             Customer customerAccount = dao.customerLogin(user, password);
-
             if (customerAccount == null) {
                 request.setAttribute("error", "Invalid username or password !");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -76,7 +75,7 @@ public class LoginServlet extends HttpServlet {
                     response.addCookie(cusUsername);
                     response.addCookie(cusPassword);
                 } else {
-                    // Nếu "Remember Me" không được chọn, xóa cookies
+                    //xoa cookie neu khong chon RemMe
                     Cookie usernameCookie = new Cookie("username", "");
                     Cookie passwordCookie = new Cookie("password", "");
                     usernameCookie.setMaxAge(0);
