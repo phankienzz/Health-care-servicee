@@ -14,11 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @WebServlet(name = "editBlog", urlPatterns = {"/editblog"})
-@MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-        maxFileSize = 1024 * 1024 * 10, // 10MB
-        maxRequestSize = 1024 * 1024 * 50 // 50MB
-)
+
 public class editBlog extends HttpServlet {
 
     @Override
@@ -65,6 +61,9 @@ public class editBlog extends HttpServlet {
             String description = request.getParameter("description").trim();
             String detail = request.getParameter("detail").trim();
             boolean status = "active".equalsIgnoreCase(request.getParameter("status"));
+
+//            Part filePart = request.getPart("image");
+//            InputStream imageStream = (filePart != null && filePart.getSize() > 0) ? filePart.getInputStream() : null;
 
             Part filePart = request.getPart("image");
             InputStream imageStream = null;

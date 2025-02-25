@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
 @WebServlet(name = "addBlog", urlPatterns = {"/addblog"})
-@MultipartConfig(maxFileSize = 50 * 1024 * 1024) // Giới hạn ảnh tối đa 50MB
+@MultipartConfig(maxFileSize = 50 * 1024 * 1024)
 public class addBlog extends HttpServlet {
 
     @Override

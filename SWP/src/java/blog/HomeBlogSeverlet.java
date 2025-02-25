@@ -37,7 +37,7 @@ public class HomeBlogSeverlet extends HttpServlet {
         NewsDAO dao = new NewsDAO();
 
         int page = 1;
-        int recordsPerPage = 6; // Hiển thị 6 bài viết trên mỗi trang
+        int recordsPerPage = 6; 
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }

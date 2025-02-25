@@ -12,7 +12,9 @@
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
 
-        <script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
+
+        
+        <script src="ckeditor/ckeditor.js"></script>
 
 
 
