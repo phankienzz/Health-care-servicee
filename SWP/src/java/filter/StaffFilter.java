@@ -122,9 +122,13 @@ public class StaffFilter implements Filter {
             boolean canAdd = false;
             boolean canEdit = false;
             boolean canDelete = false;
+            boolean canView = false;
             for(Permission p : list){
                 if(p.getPermissionID() == 23){
                     canAdd = true;
+                }
+                if(p.getPermissionID() == 24){
+                    canView = true;
                 }
                 if(p.getPermissionID() == 25){
                     canEdit = true;
@@ -133,7 +137,9 @@ public class StaffFilter implements Filter {
                     canDelete = true;
                 }
             }
-            
+            if((uri.contains("staff") || uri.contains("staff.jsp")) && !canView ){
+                res.sendRedirect("errorPermission.jsp");
+            }
             if((uri.contains("addStaff") || uri.contains("add-staff.jsp")) && !canAdd ){
                 res.sendRedirect("errorPermission.jsp");
             }
