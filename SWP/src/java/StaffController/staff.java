@@ -92,7 +92,7 @@ public class staff extends HttpServlet {
         }
         int start = (page - 1) * recordsPerPage;
         List<Staff> staffs = new ArrayList<>();
-        if (staffID_raw == null &&  name == null  && (roleID == null || roleID.equalsIgnoreCase("Select role"))){
+        if ((staffID_raw == null || staffID_raw.isEmpty()) &&  (name == null || name.isEmpty()) && (roleID == null || roleID.isEmpty() || roleID.equalsIgnoreCase("Select role"))){
             staffs = staffDAO.getStaffs(start, recordsPerPage);
         }
         if (staffID_raw != null && !staffID_raw.isEmpty()) {

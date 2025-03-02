@@ -4,8 +4,12 @@
  */
 package context;
 
+import dao.CustomerDAO;
+import org.mindrot.jbcrypt.BCrypt;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import model.Customer;
 
 /**
  *
@@ -72,5 +76,23 @@ public class ValidFunction {
         // Định dạng Timestamp thành chuỗi dd/MM/yyyy
         java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
         return dateFormat.format(timestamp);
+    }
+    
+    public static String hashPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt(12));
+    }
+    
+    public static boolean checkPassword(String password, String hashedPassword) {
+        return BCrypt.checkpw(password, hashedPassword);
+    }
+    
+    public static void main(String[] args) {
+        CustomerDAO dao = new CustomerDAO();
+        List<Customer> list = dao.getAllCustomer();
+        for(Customer cus : list){
+            System.out.println("Customer password: " + cus.getPassword());
+            System.out.println("Hash password: " + hashPassword(cus.getPassword()));
+        }
+        
     }
 }
