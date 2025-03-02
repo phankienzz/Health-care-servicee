@@ -52,6 +52,7 @@
                             <c:if test="${empty pagingPage}">
                                 <p>No news available.</p>
                             </c:if>
+
                             <c:forEach var="news" items="${pagingPage}">  
                                 <div class="col-lg-12 col-md-12 mb-5">
                                     <div class="blog-item">
@@ -82,6 +83,11 @@
                                 <form action="allNews" method="get" class="search-form">
                                     <input type="text" name="search" class="form-control" placeholder="search" value="${search}">
                                     <i class="ti-search"></i>
+                                    <select class="form-control">
+                                        <option>Mới nhất</option>
+                                        <option>Cũ Nhất</option>
+
+                                    </select>
                                 </form>
                             </div>
 
@@ -171,21 +177,39 @@
                         <nav class="pagination py-2 d-inline-block">
                             <div class="nav-links">
                                 <c:if test="${categoryID == null && search == ''}">
-                                    <c:forEach begin="1" end="${endPage}" var="i">
+                                    <c:if test="${page != 1}">
+                                        <a class="page-numbers" href="allNews?page=${page - 1}"><i class="icofont-thin-double-left"></i></a>
+                                        </c:if>
+                                        <c:forEach begin="1" end="${endPage}" var="i">
                                         <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="allNews?page=${i}">${i}</a>
                                     </c:forEach>
-                                </c:if>
+                                    <c:if test="${page != endPage}">
+                                        <a class="page-numbers" href="allNews?page=${page + 1}"><i class="icofont-thin-double-right"></i></a>
+                                        </c:if>
+                                    </c:if>
 
                                 <c:if test="${categoryID != null}">
-                                    <c:forEach begin="1" end="${endPage}" var="i">
+                                    <c:if test="${page != 1}">
+                                        <a class="page-numbers" href="allNews?categoryID=${categoryID}&page=${page - 1}"><i class="icofont-thin-double-left"></i></a>
+                                        </c:if>
+                                        <c:forEach begin="1" end="${endPage}" var="i">
                                         <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="allNews?categoryID=${categoryID}&page=${i}">${i}</a>
                                     </c:forEach>
-                                </c:if>
+                                    <c:if test="${page != endPage}">
+                                        <a class="page-numbers" href="allNews?categoryID=${categoryID}&page=${page + 1}"><i class="icofont-thin-double-right"></i></a>
+                                        </c:if>
+                                    </c:if>
 
                                 <c:if test="${search != ''}">
+                                    <c:if test="${page != 1}">
+                                        <a class="page-numbers" href="allNews?search=${search}&page=${page - 1}"><i class="icofont-thin-double-left"></i></a>
+                                        </c:if>
                                     <c:forEach begin="1" end="${endPage}" var="i">
                                         <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="allNews?search=${search}&page=${i}">${i}</a>
                                     </c:forEach>
+                                        <c:if test="${page != endPage}">
+                                        <a class="page-numbers" href="allNews?search=${search}&page=${page + 1}"><i class="icofont-thin-double-right"></i></a>
+                                        </c:if>
                                 </c:if>
                             </div>
                         </nav>

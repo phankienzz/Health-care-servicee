@@ -25,7 +25,6 @@ import java.util.ArrayList;
 @WebServlet(name = "newsServlet", urlPatterns = {"/allNews"})
 public class newsServlet extends HttpServlet {
 
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -44,57 +43,55 @@ public class newsServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        ValidFunction valid = new ValidFunction();
-        NewsDAO dao = new NewsDAO();
-        String indexPage = request.getParameter("page");
-        String categoryID = request.getParameter("categoryID");
-        String search = request.getParameter("search");
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    ValidFunction valid = new ValidFunction();
+    NewsDAO dao = new NewsDAO();
+    String indexPage = request.getParameter("page");
+    String categoryID = request.getParameter("categoryID");
+    String search = request.getParameter("search");
 
-        if (search == null) {
-            search = "";
-        }
-        if (indexPage == null) {
-            indexPage = "1";
-        }
-
-        int page = Integer.parseInt(indexPage);
-        List<News> pagingPage = new ArrayList<>();
-        int totalNews = 0;
-        int pageSize = 3; //so bai viet tren 1 page
-
-        if (!search.isEmpty()) {
-            pagingPage = dao.searchNewsByTitle(valid.normalizeName(search), page, pageSize);
-            totalNews = dao.getTotalNewsBySearch(search);
-        } else if (categoryID != null && !categoryID.isEmpty()) {
-            pagingPage = dao.pagingNewsByCategory(categoryID, page, pageSize);
-            totalNews = dao.getTotalNewsByCategory(categoryID);
-        } else {
-            pagingPage = dao.pagingAllNews(page, pageSize);
-            totalNews = dao.getTotalNews();
-        }
-
-        int endPage = totalNews / pageSize;
-        if (totalNews % pageSize != 0) {
-            endPage++;
-        }
-
-        for (News news : pagingPage) {
-            news.setCreated_at(valid.formatDateNews(news.getCreated_at()));
-            news.setUpdated_at(valid.formatDateNews(news.getUpdated_at()));
-        }
-
-        List<Category> listCate = dao.getAllCategoryNews();
-
-        request.setAttribute("pagingPage", pagingPage);
-        request.setAttribute("endPage", endPage);
-        request.setAttribute("listCate", listCate);
-        request.setAttribute("categoryID", categoryID);
-        request.setAttribute("search", search);
-        request.setAttribute("page", page);
-        request.getRequestDispatcher("blog-sidebar.jsp").forward(request, response);
+    if (search == null) {
+        search = "";
     }
+    if (indexPage == null) {
+        indexPage = "1";
+    }
+
+    int page = Integer.parseInt(indexPage);
+    List<News> pagingPage = new ArrayList<>();
+    int totalNews = 0;
+    int pageSize = 3;
+
+    if (!search.isEmpty()) {
+        pagingPage = dao.searchNewsByTitle(valid.normalizeName(search), page, pageSize);
+        totalNews = dao.getTotalNewsBySearch(search);
+    } else if (categoryID != null && !categoryID.isEmpty()) {
+        pagingPage = dao.pagingNewsByCategory(categoryID, page, pageSize);
+        totalNews = dao.getTotalNewsByCategory(categoryID);
+    } else {
+        pagingPage = dao.pagingAllNews(page, pageSize);
+        totalNews = dao.getTotalNews();
+    }
+
+    int endPage = (int) Math.ceil((double) totalNews / pageSize); 
+
+    for (News news : pagingPage) {
+        news.setCreated_at(valid.formatDateNews(news.getCreated_at()));
+        news.setUpdated_at(valid.formatDateNews(news.getUpdated_at()));
+    }
+
+    List<Category> listCate = dao.getAllCategoryNews();
+
+    request.setAttribute("pagingPage", pagingPage);
+    request.setAttribute("endPage", endPage);
+    request.setAttribute("listCate", listCate);
+    request.setAttribute("categoryID", categoryID);
+    request.setAttribute("search", search);
+    request.setAttribute("page", page);
+    request.getRequestDispatcher("blog-sidebar.jsp").forward(request, response);
+}
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
