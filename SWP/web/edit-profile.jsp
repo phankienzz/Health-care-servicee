@@ -82,24 +82,13 @@
                                             <div class="col-md-6">
                                                 <div class="form-group form-focus">
                                                     <label class="focus-label">Full Name</label>
-                                                    <input type="text" class="form-control floating" name="fullName" value="${sessionScope.customerAccount.fullName}">
+                                                    <input type="text" class="form-control floating" name="fullName" 
+                                                           value="${sessionScope.customerAccount.fullName}" 
+                                                           onblur="this.value = this.value.trim();">
+
                                                 </div>
                                             </div>
 
-
-
-<!--                                                    <div class="col-md-6">
-                                                        <div class="form-group form-focus">
-                                                            <label class="focus-label">Birth Date</label>
-                                                            <div class="cal-icon">
-                                                                <input class="form-control floating" type="text" name="dateOfBirth" placeholder="DD-MM-YYYY" 
-                                                                       value="${sessionScope.customerAccount.dateOfBirth}">
-                                                            </div>
-                                                        </div>
-                                                    </div>-->
-
-
-                                           
 
                                             <div class="col-sm-6">
                                                 <div class="form-group">
@@ -148,7 +137,7 @@
                                         <input type="text" class="form-control floating" name="address" value="${sessionScope.customerAccount.address}">
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-6">
                                     <div class="form-group form-focus">
                                         <label class="focus-label">Phone Number</label>

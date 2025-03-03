@@ -47,10 +47,10 @@ public class EditProfileServlet extends HttpServlet {
         }
 
         // Lấy dữ liệu từ form
-        String fullName = request.getParameter("fullName");
-        String email = request.getParameter("email");
-        String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
+        String fullName = request.getParameter("fullName").replaceAll("\\s+", " ").trim();
+        String email = request.getParameter("email").trim();
+        String phone = request.getParameter("phone").trim();
+        String address = request.getParameter("address").replaceAll("\\s+", " ").trim();
         String dateOfBirth = request.getParameter("dateOfBirth");
         String gender = request.getParameter("gender");
 
@@ -67,8 +67,6 @@ public class EditProfileServlet extends HttpServlet {
             request.getRequestDispatcher("edit-profile.jsp").forward(request, response);
             return;
         }
-
-        
 
         HttpSession session = request.getSession();
         Customer customerProfile = (Customer) session.getAttribute("customerAccount");
