@@ -64,7 +64,7 @@
 
                                             <h2 class="mt-3 mb-3"><a href="blog-single.jsp">${news.title}</a></h2>
 
-                                            <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis aliquid architecto facere commodi cupiditate omnis voluptatibus inventore atque velit cum rem id assumenda quam recusandae ipsam ea porro, dicta ad.</p>
+                                            <p class="mb-4">${news.detail}</p>
 
                                             <a href="blog-single.jsp" target="_blank" class="btn btn-main btn-icon btn-round-full">Read More <i class="icofont-simple-right ml-2  "></i></a>
                                         </div>

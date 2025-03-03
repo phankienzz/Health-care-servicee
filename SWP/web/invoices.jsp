@@ -1,22 +1,65 @@
+<%-- 
+    Document   : invoices
+    Created on : Feb 23, 2025, 11:06:29 PM
+    Author     : Gigabyte
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
 
-    <!-- create-invoice24:07-->
+    <!-- invoices23:24-->
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
         <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
         <title>Preclinic - Medical & Hospital - Bootstrap 4 Admin Template</title>
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/dataTables.bootstrap4.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <!--[if lt IE 9]>
                     <script src="assets/js/html5shiv.min.js"></script>
                     <script src="assets/js/respond.min.js"></script>
             <![endif]-->
+        <style>
+            .pagination {
+                float: right;
+                margin: 0 0 5px;
+            }
+            .pagination li a {
+                border: none;
+                font-size: 13px;
+                min-width: 30px;
+                min-height: 30px;
+                color: #999;
+                margin: 0 2px;
+                line-height: 30px;
+                border-radius: 2px !important;
+                text-align: center;
+                padding: 0 6px;
+            }
+            .pagination li a:hover {
+                color: #666;
+            }
+            .pagination li.active a, .pagination li.active a.page-link {
+                background: #03A9F4;
+            }
+            .pagination li.active a:hover {
+                background: #0397d6;
+            }
+            .pagination li.disabled i {
+                color: #ccc;
+            }
+            .pagination li i {
+                font-size: 16px;
+                padding-top: 6px
+            }
+        </style>
     </head>
 
     <body>
@@ -42,7 +85,7 @@
                                         <a href="activities.html">
                                             <div class="media">
                                                 <span class="avatar">
-                                                    <img alt="John Doe" src="assets/img/user.jpg" class="img-fluid rounded-circle">
+                                                    <img alt="John Doe" src="assets/img/user.jpg" class="img-fluid">
                                                 </span>
                                                 <div class="media-body">
                                                     <p class="noti-details"><span class="noti-title">John Doe</span> added new task <span class="noti-title">Patient appointment booking</span></p>
@@ -295,191 +338,113 @@
             <div class="page-wrapper">
                 <div class="content">
                     <div class="row">
-                        <div class="col-sm-12">
-                            <h4 class="page-title">Create Invoice</h4>
+                        <div class="col-sm-5 col-4">
+                            <h4 class="page-title">Invoices</h4>
+                        </div>
+                        <div class="col-sm-7 col-8 text-right m-b-30">
+                            <a href="create-invoice.html" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Create New Invoice</a>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <form>
-                                <div class="row">
-                                    <div class="col-sm-6 col-md-3">
-                                        <div class="form-group">
-                                            <label>Patient <span class="text-danger">*</span></label>
-                                            <select class="select">
-                                                <option>Please Select</option>
-                                                <option>Charles Ortega</option>
-                                                <option>Denise Stevens</option>
-                                                <option>Jennifer Robinson</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6 col-md-3">
-                                        <div class="form-group">
-                                            <label>Department <span class="text-danger">*</span></label>
-                                            <select class="select">
-                                                <option>Select Department</option>
-                                                <option>Dentists</option>
-                                                <option>Neurology</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-6 col-md-3">
-                                        <div class="form-group">
-                                            <label>Email</label>
-                                            <input class="form-control" type="email">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6 col-md-3">
-                                        <div class="form-group">
-                                            <label>Tax</label>
-                                            <select class="select">
-                                                <option>Select Tax</option>
-                                                <option>VAT</option>
-                                                <option>GST</option>
-                                                <option>No Tax</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6 col-md-3">
-                                        <div class="form-group">
-                                            <label>Patient Address</label>
-                                            <textarea class="form-control" rows="3"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6 col-md-3">
-                                        <div class="form-group">
-                                            <label>Billing Address</label>
-                                            <textarea class="form-control" rows="3"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6 col-md-3">
-                                        <div class="form-group">
-                                            <label>Invoice date <span class="text-danger">*</span></label>
-                                            <div class="cal-icon">
-                                                <input class="form-control datetimepicker" type="text">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6 col-md-3">
-                                        <div class="form-group">
-                                            <label>Due Date <span class="text-danger">*</span></label>
-                                            <div class="cal-icon">
-                                                <input class="form-control datetimepicker" type="text">
-                                            </div>
-                                        </div>
+                    
+                    <form action="invoice" method="get">
+                        <div class="row filter-row">
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group form-focus">
+                                    <label class="focus-label">From</label>
+                                    <div class="cal-icon">
+                                        <input name="from" class="form-control floating datetimepicker" type="text" <c:if test="${from != null}"> value ="${from}"</c:if>>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12 col-sm-12">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover table-white">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="width: 20px">#</th>
-                                                        <th class="col-sm-2">Item</th>
-                                                        <th class="col-md-6">Description</th>
-                                                        <th style="width:100px;">Unit Cost</th>
-                                                        <th style="width:80px;">Qty</th>
-                                                        <th>Amount</th>
-                                                        <th> </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>
-                                                            <input class="form-control" type="text" style="min-width:150px">
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control" type="text" style="min-width:150px">
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control" style="width:100px" type="text">
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control" style="width:80px" type="text">
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control form-amt" readonly="" style="width:120px" type="text">
-                                                        </td>
-                                                        <td><a href="javascript:void(0)" class="text-success font-18" title="Add"><i class="fa fa-plus"></i></a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2</td>
-                                                        <td>
-                                                            <input class="form-control" type="text" style="min-width:150px">
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control" type="text" style="min-width:150px">
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control" style="width:100px" type="text">
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control" style="width:80px" type="text">
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control form-amt" readonly="" style="width:120px" type="text">
-                                                        </td>
-                                                        <td><a href="javascript:void(0)" class="text-danger font-18" title="Remove"><i class="fa fa-trash-o"></i></a></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="table-responsive">
-                                            <table class="table table-hover table-white">
-                                                <tbody>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td class="text-right">Total</td>
-                                                        <td style="text-align: right; padding-right: 30px;width: 230px">0</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="5" class="text-right">Tax</td>
-                                                        <td style="text-align: right; padding-right: 30px;width: 230px">
-                                                            <input class="form-control text-right form-amt" value="0" readonly="" type="text">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="5" class="text-right">
-                                                            Discount %
-                                                        </td>
-                                                        <td style="text-align: right; padding-right: 30px;width: 230px">
-                                                            <input class="form-control text-right" type="text">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="5" style="text-align: right; font-weight: bold">
-                                                            Grand Total
-                                                        </td>
-                                                        <td style="text-align: right; padding-right: 30px; font-weight: bold; font-size: 16px;width: 230px">
-                                                            $ 0.00
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label>Other Information</label>
-                                                    <textarea class="form-control"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group form-focus">
+                                    <label class="focus-label">To</label>
+                                    <div class="cal-icon">
+                                        <input name="to" class="form-control floating datetimepicker" type="text" <c:if test="${to != null}"> value ="${to}"</c:if>>
                                     </div>
                                 </div>
-                                <div class="text-center m-t-20">
-                                    <button class="btn btn-grey submit-btn m-r-10">Save & Send</button>
-                                    <button class="btn btn-primary submit-btn">Save</button>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group form-focus select-focus">
+                                    <label class="focus-label">Status</label>
+                                    <select name="status" class="select floating">
+                                        <option value="">Select Status</option>
+                                        <option value="Pending" <c:if test="${status == 'Pending'}"> selected</c:if>>Pending</option>
+                                        <option value="Paid" <c:if test="${status == 'Paid'}"> selected</c:if>>Paid</option>
+                                    </select>
                                 </div>
-                            </form>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <input type="submit" class="btn btn-success btn-block" value="Search" />
+                            </div>
                         </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Invoice Number</th>
+                                            <th>Patient</th>
+                                            <th>Created Date</th>
+                                            <th>Payment Date</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th class="text-right">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:set var="i" value="${(currentPage-1)*5+1}"/>
+                                        <c:forEach var="invoice" items="${listInvoice}">
+                                            <tr>
+                                                <td>${i}</td>
+                                                <c:set var="i" value="${i + 1}"/>
+                                                <td><a href="invoice-view.html">${invoice.invoiceID}</a></td>
+                                                <td>${invoice.customerID.fullName}</td>
+                                                <td>${invoice.createdAt}</td>
+                                                <td>${invoice.paymentDate}</td>
+                                                <td>${invoice.totalAmount}</td>
+                                                <c:if test="${invoice.paymentStatus == 'Pending'}">
+                                                    <td><span class="custom-badge status-orange">${invoice.paymentStatus}</span></td>
+                                                    </c:if>
+                                                    <c:if test="${invoice.paymentStatus == 'Paid'}">
+                                                    <td><span class="custom-badge status-green">${invoice.paymentStatus}</span></td>
+                                                    </c:if>
+                                                <td class="text-right">
+                                                    <div class="dropdown dropdown-action">
+                                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            <a class="dropdown-item" href="edit-invoice.html"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                            <a class="dropdown-item" href="invoice-view.html"><i class="fa fa-eye m-r-5"></i> View</a>
+                                                            <a class="dropdown-item" href="#"><i class="fa fa-file-pdf-o m-r-5"></i> Download</a>
+                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_invoice"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="hint-text">Showing <b>${show}</b> out of <b>${size}</b> entries</div>
+                        <ul class="pagination">
+                            <c:if test="${currentPage != 1}">
+                                <li class="page-item page-item ${currentPage == 1 ? 'disabled' : ''}"><a href="invoice?page=${currentPage - 1}&from=${from}&to=${to}&status=${status}">Previous</a></li>
+                                </c:if>
+
+                            <c:forEach var="i" begin="1" end="${totalPages}">
+                                <li class="page-item ${i == currentPage ? 'active' : ''}" ><a href="invoice?page=${i}&from=${from}&to=${to}&status=${status}">${i}</a></li>
+                                </c:forEach>
+                                <c:if test="${currentPage != totalPages}">
+                                <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}"><a href="invoice?page=${currentPage + 1}&from=${from}&to=${to}&status=${status}">Next</a></li>
+                                </c:if>
+                        </ul>
                     </div>
                 </div>
                 <div class="notification-box">
@@ -692,18 +657,33 @@
                     </div>
                 </div>
             </div>
+            <div id="delete_invoice" class="modal fade delete-modal" role="dialog">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body text-center">
+                            <img src="assets/img/sent.png" alt="" width="50" height="46">
+                            <h3>Are you sure want to delete this Invoice?</h3>
+                            <div class="m-t-20"> <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="sidebar-overlay" data-reff=""></div>
         <script src="assets/js/jquery-3.2.1.min.js"></script>
         <script src="assets/js/popper.min.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.dataTables.min.js"></script>
+        <script src="assets/js/dataTables.bootstrap4.min.js"></script>
+        <script src="assets/js/select2.min.js"></script>
         <script src="assets/js/jquery.slimscroll.js"></script>
         <script src="assets/js/moment.min.js"></script>
-        <script src="assets/js/select2.min.js"></script>
         <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
         <script src="assets/js/app.js"></script>
     </body>
 
 
-    <!-- create-invoice24:07-->
+    <!-- invoices23:25-->
 </html>
