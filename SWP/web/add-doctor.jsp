@@ -1,8 +1,16 @@
+<%-- 
+    Document   : add-doctor.jsp
+    Created on : Mar 3, 2025, 9:12:02 PM
+    Author     : Phan Huu Kien
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en">
 
 
-    <!-- create-invoice24:07-->
+    <!-- add-doctor24:06-->
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -17,13 +25,18 @@
                     <script src="assets/js/html5shiv.min.js"></script>
                     <script src="assets/js/respond.min.js"></script>
             <![endif]-->
+        <style>
+            select.form-control {
+                width: 100%;
+                height: 38px; /* Điều chỉnh chiều cao để bằng với input */
+            }</style>
     </head>
 
     <body>
         <div class="main-wrapper">
             <div class="header">
                 <div class="header-left">
-                    <a href="index-2.html" class="logo">
+                    <a href="dashboard.html" class="logo">
                         <img src="assets/img/logo.png" width="35" height="35" alt=""> <span>Preclinic</span>
                     </a>
                 </div>
@@ -135,9 +148,9 @@
                         <ul>
                             <li class="menu-title">Main</li>
                             <li>
-                                <a href="index-2.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
+                                <a href="dashboard.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
                             </li>
-                            <li>
+                            <li class="active">
                                 <a href="doctors.html"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
                             </li>
                             <li>
@@ -164,7 +177,7 @@
                             <li class="submenu">
                                 <a href="#"><i class="fa fa-money"></i> <span> Accounts </span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
-                                    <li><a class="active" href="invoices.html">Invoices</a></li>
+                                    <li><a href="invoices.html">Invoices</a></li>
                                     <li><a href="payments.html">Payments</a></li>
                                     <li><a href="expenses.html">Expenses</a></li>
                                     <li><a href="taxes.html">Taxes</a></li>
@@ -295,193 +308,217 @@
             <div class="page-wrapper">
                 <div class="content">
                     <div class="row">
-                        <div class="col-sm-12">
-                            <h4 class="page-title">Create Invoice</h4>
+                        <div class="col-lg-8 offset-lg-2">
+                            <h4 class="page-title">Add Doctor</h4>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12">
-                            <form>
+                        <div class="col-lg-8 offset-lg-2">
+                            <form action="AddProfessionalServlet" method="POST" enctype="multipart/form-data">
                                 <div class="row">
-                                    <div class="col-sm-6 col-md-3">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Patient <span class="text-danger">*</span></label>
-                                            <select class="select">
-                                                <option>Please Select</option>
-                                                <option>Charles Ortega</option>
-                                                <option>Denise Stevens</option>
-                                                <option>Jennifer Robinson</option>
+                                            <label>Full Name <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text" name="fullName" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Email <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="email" name="email" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Password <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="password" name="password" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Confirm Password <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="password" name="confirmPassword" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Date of Birth</label>
+                                            <input type="date" id="dateOfBirth" class="form-control" name="dateOfBirth">
+                                            <input type="hidden" id="formattedDate" name="formattedDate">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Phone <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text" name="phone" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group gender-select">
+                                            <label class="gen-label">Gender:</label>
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input type="radio" name="gender" value="Male" class="form-check-input" required> Male
+                                                </label>
+                                            </div>
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input type="radio" name="gender" value="Female" class="form-check-input" required> Female
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Address</label>
+                                            <input type="text" class="form-control" name="address">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Specialization <span class="text-danger">*</span></label>
+                                            <select class="form-control" name="specialization" style="width: 100%;" required>
+                                                <option value="">Select Specialization</option>
+                                                <option value="Cardiology">Cardiology</option>
+                                                <option value="Pediatrics">Pediatrics</option>
+                                                <option value="General Medicine">General Medicine</option>
+                                                <option value="Neurology">Neurology</option>
+                                                <option value="Dermatology">Dermatology</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6 col-md-3">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Department <span class="text-danger">*</span></label>
-                                            <select class="select">
-                                                <option>Select Department</option>
-                                                <option>Dentists</option>
-                                                <option>Neurology</option>
+                                            <label>Office Hours</label>
+                                            <input class="form-control" type="text" name="officeHours">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group" >
+                                            <label>Qualification <span class="text-danger">*</span></label>
+                                            <select class="form-control" name="qualification" style="width: 100%;" required>
+                                                <option value="">Select Qualification</option>
+                                                <option value="MD, FACC">MD, FACC</option>
+                                                <option value="MD, FAAP">MD, FAAP</option>
+                                                <option value="MD">MD</option>
+                                                <option value="MD, PhD">MD, PhD</option>
+                                                <option value="MD, FAAD">MD, FAAD</option>
                                             </select>
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-6 col-md-3">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Email</label>
-                                            <input class="form-control" type="email">
+                                            <label>Short Biography</label>
+                                            <textarea class="form-control" rows="3" cols="30" name="biography"></textarea>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6 col-md-3">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Tax</label>
-                                            <select class="select">
-                                                <option>Select Tax</option>
-                                                <option>VAT</option>
-                                                <option>GST</option>
-                                                <option>No Tax</option>
-                                            </select>
+                                            <label>Avatar</label>
+                                            <input type="file" class="form-control" name="profilePicture" accept="image/*" id="profilePicture">
+                                            <small id="fileError" class="text-danger">
+                                                <% if (request.getAttribute("errorMessage") != null) {%>
+                                                <%= request.getAttribute("errorMessage")%>
+                                                <% }%>
+                                            </small>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6 col-md-3">
+
+
+<!--                                    <script>
+                                        document.getElementById("profilePicture").addEventListener("change", function () {
+                                            var file = this.files[0];
+                                            var errorMessage = document.getElementById("fileError");
+                                            if (file) {
+                                                var allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+                                                if (!allowedTypes.includes(file.type)) {
+                                                    errorMessage.textContent = "Chỉ được tải lên file ảnh (JPEG, PNG, GIF, WEBP)!";
+                                                    this.value = ""; // Xóa file nếu không hợp lệ
+                                                } else {
+                                                    errorMessage.textContent = ""; // Xóa thông báo lỗi nếu hợp lệ
+                                                }
+                                            }
+                                        });
+                                    </script>-->
+
+                                    <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Patient Address</label>
-                                            <textarea class="form-control" rows="3"></textarea>
+                                            <label>Hire Date</label>
+                                            <input type="date" id="hireDate" class="form-control" name="hireDate">
+                                            <input type="hidden" id="formattedDate2" name="formattedDate2">
                                         </div>
                                     </div>
-                                    <div class="col-sm-6 col-md-3">
-                                        <div class="form-group">
-                                            <label>Billing Address</label>
-                                            <textarea class="form-control" rows="3"></textarea>
+                                    <div class="form-group">
+                                        <label class="display-block">Status</label>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="status" value="Active" id="active" required>
+                                            <label class="form-check-label" for="active">Active</label>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-6 col-md-3">
-                                        <div class="form-group">
-                                            <label>Invoice date <span class="text-danger">*</span></label>
-                                            <div class="cal-icon">
-                                                <input class="form-control datetimepicker" type="text">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6 col-md-3">
-                                        <div class="form-group">
-                                            <label>Due Date <span class="text-danger">*</span></label>
-                                            <div class="cal-icon">
-                                                <input class="form-control datetimepicker" type="text">
-                                            </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="status" value="Inactive" id="inactive">
+                                            <label class="form-check-label" for="inactive">Inactive</label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12 col-sm-12">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover table-white">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="width: 20px">#</th>
-                                                        <th class="col-sm-2">Item</th>
-                                                        <th class="col-md-6">Description</th>
-                                                        <th style="width:100px;">Unit Cost</th>
-                                                        <th style="width:80px;">Qty</th>
-                                                        <th>Amount</th>
-                                                        <th> </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>
-                                                            <input class="form-control" type="text" style="min-width:150px">
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control" type="text" style="min-width:150px">
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control" style="width:100px" type="text">
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control" style="width:80px" type="text">
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control form-amt" readonly="" style="width:120px" type="text">
-                                                        </td>
-                                                        <td><a href="javascript:void(0)" class="text-success font-18" title="Add"><i class="fa fa-plus"></i></a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2</td>
-                                                        <td>
-                                                            <input class="form-control" type="text" style="min-width:150px">
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control" type="text" style="min-width:150px">
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control" style="width:100px" type="text">
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control" style="width:80px" type="text">
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control form-amt" readonly="" style="width:120px" type="text">
-                                                        </td>
-                                                        <td><a href="javascript:void(0)" class="text-danger font-18" title="Remove"><i class="fa fa-trash-o"></i></a></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="table-responsive">
-                                            <table class="table table-hover table-white">
-                                                <tbody>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td class="text-right">Total</td>
-                                                        <td style="text-align: right; padding-right: 30px;width: 230px">0</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="5" class="text-right">Tax</td>
-                                                        <td style="text-align: right; padding-right: 30px;width: 230px">
-                                                            <input class="form-control text-right form-amt" value="0" readonly="" type="text">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="5" class="text-right">
-                                                            Discount %
-                                                        </td>
-                                                        <td style="text-align: right; padding-right: 30px;width: 230px">
-                                                            <input class="form-control text-right" type="text">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="5" style="text-align: right; font-weight: bold">
-                                                            Grand Total
-                                                        </td>
-                                                        <td style="text-align: right; padding-right: 30px; font-weight: bold; font-size: 16px;width: 230px">
-                                                            $ 0.00
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label>Other Information</label>
-                                                    <textarea class="form-control"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="text-center m-t-20">
-                                    <button class="btn btn-grey submit-btn m-r-10">Save & Send</button>
-                                    <button class="btn btn-primary submit-btn">Save</button>
+                                <div class="m-t-20 text-center">
+                                    <button class="btn btn-primary submit-btn" type="submit">Create Professional</button>
                                 </div>
                             </form>
+                            <script>
+                                document.querySelector("form").addEventListener("submit", function () {
+                                    let dateInput = document.getElementById("dateOfBirth").value;
+                                    let hiredateInput = document.getElementById("hireDate").value;
+                                    if (dateInput) {
+                                        let [year, month, day] = dateInput.split("-");
+                                        document.getElementById("formattedDate").value = `${year}/${month}/${day}`; // Chuyển thành MM/dd/yyyy
+                                                }
+                                                if (hiredateInput) {
+                                                    let [year, month, day] = hiredateInput.split("-");
+                                                    document.getElementById("formattedDate2").value = `${year}/${month}/${day}`; // Chuyển thành MM/dd/yyyy
+                                                            }
+
+                                                        });
+
+                            </script>
+
                         </div>
                     </div>
                 </div>
+                <script>
+                    function validateForm() {
+                        let fullName = document.forms["professionalForm"]["fullName"].value;
+                        let email = document.forms["professionalForm"]["email"].value;
+                        let password = document.forms["professionalForm"]["password"].value;
+                        let phone = document.forms["professionalForm"]["phone"].value;
+                        let specialization = document.forms["professionalForm"]["specialization"].value;
+
+                        let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        let phonePattern = /^\d{10,12}$/;
+
+                        if (fullName.trim() === "") {
+                            alert("Full Name cannot be empty!");
+                            return false;
+                        }
+                        if (!email.match(emailPattern)) {
+                            alert("Invalid Email Format!");
+                            return false;
+                        }
+                        if (password.length < 6) {
+                            alert("Password must be at least 6 characters!");
+                            return false;
+                        }
+                        if (!phone.match(phonePattern)) {
+                            alert("Phone number must be 10-12 digits!");
+                            return false;
+                        }
+                        if (specialization.trim() === "") {
+                            alert("Specialization is required!");
+                            return false;
+                        }
+                        return true;
+                    }
+                </script>
                 <div class="notification-box">
                     <div class="msg-sidebar notifications msg-noti">
                         <div class="topnav-dropdown-header">
@@ -698,12 +735,13 @@
         <script src="assets/js/popper.min.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/jquery.slimscroll.js"></script>
-        <script src="assets/js/moment.min.js"></script>
         <script src="assets/js/select2.min.js"></script>
+        <script src="assets/js/moment.min.js"></script>
         <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
         <script src="assets/js/app.js"></script>
     </body>
 
 
-    <!-- create-invoice24:07-->
+    <!-- add-doctor24:06-->
 </html>
+

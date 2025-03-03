@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Customer;
 import model.Invoice;
+import model.MedicalExamination;
 
 /**
  *
@@ -22,6 +23,7 @@ public class InvoiceDAO extends DBContext {
     public List<Invoice> getAllInvoice() {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
+        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
         String sql = "SELECT * FROM invoice ";
 
         try {
@@ -32,12 +34,13 @@ public class InvoiceDAO extends DBContext {
                 int customerID = rs.getInt("customerID");
                 Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
+                MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
                 String paymentStatus = rs.getString("paymentStatus");
                 String paymentDate = rs.getString("paymentDate");
                 String paymentMethod = rs.getString("paymentMethod");
                 String createdAt = rs.getString("createdAt");
-                Invoice inv = new Invoice(invoiceID, customer, examinationID, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
+                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
                 invoiceList.add(inv);
             }
 
@@ -49,6 +52,7 @@ public class InvoiceDAO extends DBContext {
     public List<Invoice> getInvoices(int start, int total) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
+        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
         String sql = "SELECT * FROM invoice ORDER BY invoiceID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
@@ -61,12 +65,13 @@ public class InvoiceDAO extends DBContext {
                 int customerID = rs.getInt("customerID");
                 Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
+                MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
                 String paymentStatus = rs.getString("paymentStatus");
                 String paymentDate = rs.getString("paymentDate");
                 String paymentMethod = rs.getString("paymentMethod");
                 String createdAt = rs.getString("createdAt");
-                Invoice inv = new Invoice(invoiceID, customer, examinationID, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
+                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
                 invoiceList.add(inv);
             }
 
@@ -78,6 +83,7 @@ public class InvoiceDAO extends DBContext {
     public List<Invoice> getInvoiceByBetweenDate(String from, String to) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
+        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
         String sql = "SELECT * FROM [dbo].[Invoice] WHERE createdAt BETWEEN CONVERT(DATETIME, ?, 103) AND CONVERT(DATETIME, ?, 103)";
 
         try {
@@ -90,12 +96,13 @@ public class InvoiceDAO extends DBContext {
                 int customerID = rs.getInt("customerID");
                 Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
+                MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
                 String paymentStatus = rs.getString("paymentStatus");
                 String paymentDate = rs.getString("paymentDate");
                 String paymentMethod = rs.getString("paymentMethod");
                 String createdAt = rs.getString("createdAt");
-                Invoice inv = new Invoice(invoiceID, customer, examinationID, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
+                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
                 invoiceList.add(inv);
             }
 
@@ -106,6 +113,7 @@ public class InvoiceDAO extends DBContext {
     public List<Invoice> getInvoiceByBetweenDatePaging(String from, String to, int start, int total) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
+        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
         String sql = "SELECT * FROM [dbo].[Invoice] WHERE createdAt BETWEEN CONVERT(DATETIME, ?, 103) AND CONVERT(DATETIME, ?, 103) ORDER BY invoiceID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
@@ -120,12 +128,13 @@ public class InvoiceDAO extends DBContext {
                 int customerID = rs.getInt("customerID");
                 Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
+                MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
                 String paymentStatus = rs.getString("paymentStatus");
                 String paymentDate = rs.getString("paymentDate");
                 String paymentMethod = rs.getString("paymentMethod");
                 String createdAt = rs.getString("createdAt");
-                Invoice inv = new Invoice(invoiceID, customer, examinationID, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
+                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
                 invoiceList.add(inv);
             }
 
@@ -137,6 +146,7 @@ public class InvoiceDAO extends DBContext {
     public List<Invoice> getInvoiceByFromDate(String from) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
+        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
         String sql = "SELECT * FROM [dbo].[Invoice] WHERE createdAt >= CONVERT(DATETIME, ?, 103)";
 
         try {
@@ -148,12 +158,13 @@ public class InvoiceDAO extends DBContext {
                 int customerID = rs.getInt("customerID");
                 Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
+                MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
                 String paymentStatus = rs.getString("paymentStatus");
                 String paymentDate = rs.getString("paymentDate");
                 String paymentMethod = rs.getString("paymentMethod");
                 String createdAt = rs.getString("createdAt");
-                Invoice inv = new Invoice(invoiceID, customer, examinationID, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
+                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
                 invoiceList.add(inv);
             }
 
@@ -165,6 +176,7 @@ public class InvoiceDAO extends DBContext {
     public List<Invoice> getInvoiceByFromDatePaging(String from , int start, int total) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
+        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
         String sql = "SELECT * FROM [dbo].[Invoice] WHERE createdAt >= CONVERT(DATETIME, ?, 103) ORDER BY invoiceID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
@@ -178,12 +190,13 @@ public class InvoiceDAO extends DBContext {
                 int customerID = rs.getInt("customerID");
                 Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
+                MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
                 String paymentStatus = rs.getString("paymentStatus");
                 String paymentDate = rs.getString("paymentDate");
                 String paymentMethod = rs.getString("paymentMethod");
                 String createdAt = rs.getString("createdAt");
-                Invoice inv = new Invoice(invoiceID, customer, examinationID, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
+                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
                 invoiceList.add(inv);
             }
 
@@ -195,6 +208,7 @@ public class InvoiceDAO extends DBContext {
     public List<Invoice> getInvoiceByToDate(String to) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
+        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
         String sql = "SELECT * FROM [dbo].[Invoice] WHERE createdAt <= CONVERT(DATETIME, ?, 103)";
 
         try {
@@ -206,12 +220,13 @@ public class InvoiceDAO extends DBContext {
                 int customerID = rs.getInt("customerID");
                 Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
+                MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
                 String paymentStatus = rs.getString("paymentStatus");
                 String paymentDate = rs.getString("paymentDate");
                 String paymentMethod = rs.getString("paymentMethod");
                 String createdAt = rs.getString("createdAt");
-                Invoice inv = new Invoice(invoiceID, customer, examinationID, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
+                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
                 invoiceList.add(inv);
             }
 
@@ -223,6 +238,7 @@ public class InvoiceDAO extends DBContext {
     public List<Invoice> getInvoiceByToDatePaging(String to , int start, int total) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
+        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
         String sql = "SELECT * FROM [dbo].[Invoice] WHERE createdAt <= CONVERT(DATETIME, ?, 103) ORDER BY invoiceID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
@@ -236,12 +252,13 @@ public class InvoiceDAO extends DBContext {
                 int customerID = rs.getInt("customerID");
                 Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
+                MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
                 String paymentStatus = rs.getString("paymentStatus");
                 String paymentDate = rs.getString("paymentDate");
                 String paymentMethod = rs.getString("paymentMethod");
                 String createdAt = rs.getString("createdAt");
-                Invoice inv = new Invoice(invoiceID, customer, examinationID, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
+                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
                 invoiceList.add(inv);
             }
 
@@ -253,6 +270,7 @@ public class InvoiceDAO extends DBContext {
     public List<Invoice> getInvoiceByStatus(String status) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
+        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
         String sql = "SELECT * FROM [dbo].[Invoice] WHERE paymentStatus = ?";
 
         try {
@@ -264,12 +282,13 @@ public class InvoiceDAO extends DBContext {
                 int customerID = rs.getInt("customerID");
                 Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
+                MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
                 String paymentStatus = rs.getString("paymentStatus");
                 String paymentDate = rs.getString("paymentDate");
                 String paymentMethod = rs.getString("paymentMethod");
                 String createdAt = rs.getString("createdAt");
-                Invoice inv = new Invoice(invoiceID, customer, examinationID, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
+                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
                 invoiceList.add(inv);
             }
 
@@ -283,6 +302,7 @@ public class InvoiceDAO extends DBContext {
     public List<Invoice> getInvoiceByStatusPaging(String status , int start, int total) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
+        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
         String sql = "SELECT * FROM [dbo].[Invoice] WHERE paymentStatus = ? ORDER BY invoiceID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
@@ -296,12 +316,13 @@ public class InvoiceDAO extends DBContext {
                 int customerID = rs.getInt("customerID");
                 Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
+                MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
                 String paymentStatus = rs.getString("paymentStatus");
                 String paymentDate = rs.getString("paymentDate");
                 String paymentMethod = rs.getString("paymentMethod");
                 String createdAt = rs.getString("createdAt");
-                Invoice inv = new Invoice(invoiceID, customer, examinationID, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
+                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
                 invoiceList.add(inv);
             }
 
@@ -313,6 +334,7 @@ public class InvoiceDAO extends DBContext {
      public List<Invoice> getInvoiceByStatusandDate(String from, String to, String status) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
+        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
         String sql = "SELECT * FROM [dbo].[Invoice] WHERE createdAt BETWEEN CONVERT(DATETIME, ?, 103) AND CONVERT(DATETIME, ?, 103) and paymentStatus = ?";
 
         try {
@@ -326,12 +348,13 @@ public class InvoiceDAO extends DBContext {
                 int customerID = rs.getInt("customerID");
                 Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
+                MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
                 String paymentStatus = rs.getString("paymentStatus");
                 String paymentDate = rs.getString("paymentDate");
                 String paymentMethod = rs.getString("paymentMethod");
                 String createdAt = rs.getString("createdAt");
-                Invoice inv = new Invoice(invoiceID, customer, examinationID, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
+                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
                 invoiceList.add(inv);
             }
 
@@ -343,6 +366,7 @@ public class InvoiceDAO extends DBContext {
      public List<Invoice> getInvoiceByStatusandDatePaging(String from, String to,String status , int start, int total) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
+        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
         String sql = "SELECT * FROM [dbo].[Invoice] WHERE createdAt BETWEEN CONVERT(DATETIME, ?, 103) AND CONVERT(DATETIME, ?, 103) and paymentStatus = ? ORDER BY invoiceID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
@@ -358,12 +382,13 @@ public class InvoiceDAO extends DBContext {
                 int customerID = rs.getInt("customerID");
                 Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
+                MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
                 String paymentStatus = rs.getString("paymentStatus");
                 String paymentDate = rs.getString("paymentDate");
                 String paymentMethod = rs.getString("paymentMethod");
                 String createdAt = rs.getString("createdAt");
-                Invoice inv = new Invoice(invoiceID, customer, examinationID, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
+                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
                 invoiceList.add(inv);
             }
 
@@ -375,6 +400,7 @@ public class InvoiceDAO extends DBContext {
      public List<Invoice> getInvoiceByStatusandFromDate(String from, String status) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
+        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
         String sql = "SELECT * FROM [dbo].[Invoice] WHERE createdAt >= CONVERT(DATETIME, ?, 103) and paymentStatus = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -386,12 +412,13 @@ public class InvoiceDAO extends DBContext {
                 int customerID = rs.getInt("customerID");
                 Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
+                MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
                 String paymentStatus = rs.getString("paymentStatus");
                 String paymentDate = rs.getString("paymentDate");
                 String paymentMethod = rs.getString("paymentMethod");
                 String createdAt = rs.getString("createdAt");
-                Invoice inv = new Invoice(invoiceID, customer, examinationID, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
+                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
                 invoiceList.add(inv);
             }
 
@@ -403,6 +430,7 @@ public class InvoiceDAO extends DBContext {
       public List<Invoice> getInvoiceByStatusandFromDatePaging(String from,String status , int start, int total) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
+        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
         String sql = "SELECT * FROM [dbo].[Invoice] WHERE createdAt >= CONVERT(DATETIME, ?, 103) and paymentStatus = ? ORDER BY invoiceID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
@@ -417,12 +445,13 @@ public class InvoiceDAO extends DBContext {
                 int customerID = rs.getInt("customerID");
                 Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
+                MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
                 String paymentStatus = rs.getString("paymentStatus");
                 String paymentDate = rs.getString("paymentDate");
                 String paymentMethod = rs.getString("paymentMethod");
                 String createdAt = rs.getString("createdAt");
-                Invoice inv = new Invoice(invoiceID, customer, examinationID, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
+                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
                 invoiceList.add(inv);
             }
 
@@ -434,6 +463,7 @@ public class InvoiceDAO extends DBContext {
      public List<Invoice> getInvoiceByStatusandToDate(String to, String status) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
+        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
         String sql = "SELECT * FROM [dbo].[Invoice] WHERE createdAt <= CONVERT(DATETIME, ?, 103) and paymentStatus = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -445,12 +475,13 @@ public class InvoiceDAO extends DBContext {
                 int customerID = rs.getInt("customerID");
                 Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
+                MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
                 String paymentStatus = rs.getString("paymentStatus");
                 String paymentDate = rs.getString("paymentDate");
                 String paymentMethod = rs.getString("paymentMethod");
                 String createdAt = rs.getString("createdAt");
-                Invoice inv = new Invoice(invoiceID, customer, examinationID, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
+                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
                 invoiceList.add(inv);
             }
 
@@ -463,6 +494,7 @@ public class InvoiceDAO extends DBContext {
      public List<Invoice> getInvoiceByStatusandToDatePaging(String to,String status , int start, int total) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
+        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
         String sql = "SELECT * FROM [dbo].[Invoice] WHERE createdAt <= CONVERT(DATETIME, ?, 103) and paymentStatus = ? ORDER BY invoiceID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
@@ -477,12 +509,13 @@ public class InvoiceDAO extends DBContext {
                 int customerID = rs.getInt("customerID");
                 Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
+                MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
                 String paymentStatus = rs.getString("paymentStatus");
                 String paymentDate = rs.getString("paymentDate");
                 String paymentMethod = rs.getString("paymentMethod");
                 String createdAt = rs.getString("createdAt");
-                Invoice inv = new Invoice(invoiceID, customer, examinationID, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
+                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
                 invoiceList.add(inv);
             }
 

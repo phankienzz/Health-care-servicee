@@ -8,9 +8,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceDAO {
+public class ServiceDAO extends DBContext{
 
-    private Connection connection;
+
 
     public ServiceDAO() {
         try {
@@ -35,6 +35,34 @@ public class ServiceDAO {
         }
         return serviceList;
     }
+    
+    public List<Service> getServiceExaminationID(int examinationID) {
+        List<Service> serviceList = new ArrayList<>();
+        String sql = " select ServicePackage.packageID, packageName,description, service_image, type, price, duration, status, createdAt from ServicePackage join MedicalService on ServicePackage.packageID = MedicalService.packageID where examinationID = ?";
+
+        try  {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, examinationID);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+               serviceList.add(new Service(
+                rs.getInt("packageID"),
+                rs.getString("packageName"),
+                rs.getString("description"),
+                rs.getBytes("service_image"),
+                rs.getString("type"),
+                rs.getDouble("price"),
+                rs.getInt("duration"),
+                rs.getString("status"),
+                rs.getString("createdAt")
+        )) ;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return serviceList;
+    }
+    
 
     public List<Service> getAll_ON_Service() {
         List<Service> serviceList = new ArrayList<>();
@@ -323,7 +351,7 @@ public class ServiceDAO {
 
     public static void main(String[] args) {
         ServiceDAO dao = new ServiceDAO();
-        List<Service> list = dao.getAllService();
+        List<Service> list = dao.getServiceExaminationID(1);
         for (Service sv : list) {
             System.out.println(sv);
         }
