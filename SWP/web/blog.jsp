@@ -403,18 +403,49 @@
                     <div class="pagination">
                         <c:if test="${totalPages > 1}">
                             <ul class="pagination justify-content-center">
+                                <!-- Previous Link -->
                                 <c:if test="${currentPage > 1}">
                                     <li class="page-item">
                                         <a class="page-link" href="homeblogseverlet?page=${currentPage - 1}">Previous</a>
                                     </li>
                                 </c:if>
 
-                                <c:forEach begin="1" end="${totalPages}" var="i">
-                                    <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                        <a class="page-link" href="homeblogseverlet?page=${i}">${i}</a>
+                                <!-- First Page -->
+                                <li class="page-item ${currentPage == 1 ? 'active' : ''}">
+                                    <a class="page-link" href="homeblogseverlet?page=1">1</a>
+                                </li>
+
+                                <!-- Ellipsis and Middle Pages -->
+                                <c:if test="${currentPage > 3 && totalPages > 5}">
+                                    <li class="page-item disabled">
+                                        <span class="page-link">...</span>
                                     </li>
+                                </c:if>
+
+                                <!-- Pages Around Current Page -->
+                                <c:forEach begin="${currentPage - 1}" end="${currentPage + 1}" var="i">
+                                    <c:if test="${i > 1 && i < totalPages}">
+                                        <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                            <a class="page-link" href="homeblogseverlet?page=${i}">${i}</a>
+                                        </li>
+                                    </c:if>
                                 </c:forEach>
 
+                                <!-- Ellipsis Before Last Page -->
+                                <c:if test="${currentPage < totalPages - 2 && totalPages > 5}">
+                                    <li class="page-item disabled">
+                                        <span class="page-link">...</span>
+                                    </li>
+                                </c:if>
+
+                                <!-- Last Page (if more than 1 page) -->
+                                <c:if test="${totalPages > 1}">
+                                    <li class="page-item ${currentPage == totalPages ? 'active' : ''}">
+                                        <a class="page-link" href="homeblogseverlet?page=${totalPages}">${totalPages}</a>
+                                    </li>
+                                </c:if>
+
+                                <!-- Next Link -->
                                 <c:if test="${currentPage < totalPages}">
                                     <li class="page-item">
                                         <a class="page-link" href="homeblogseverlet?page=${currentPage + 1}">Next</a>

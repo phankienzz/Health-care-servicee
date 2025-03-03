@@ -18,7 +18,11 @@
                     <script src="assets/js/respond.min.js"></script>
             <![endif]-->
 
-        <script src="ckeditor/ckeditor.js"></script>
+
+
+
+        <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+
 
     </head>
 
@@ -269,11 +273,38 @@
                                     <li><a href="blank-page.html"> Blank Page </a></li>
                                 </ul>
                             </li>
-                            
+                            <li class="submenu">
+                                <a href="javascript:void(0);"><i class="fa fa-share-alt"></i> <span>Multi Level</span> <span class="menu-arrow"></span></a>
+                                <ul style="display: none;">
+                                    <li class="submenu">
+                                        <a href="javascript:void(0);"><span>Level 1</span> <span class="menu-arrow"></span></a>
+                                        <ul style="display: none;">
+                                            <li><a href="javascript:void(0);"><span>Level 2</span></a></li>
+                                            <li class="submenu">
+                                                <a href="javascript:void(0);"> <span> Level 2</span> <span class="menu-arrow"></span></a>
+                                                <ul style="display: none;">
+                                                    <li><a href="javascript:void(0);">Level 3</a></li>
+                                                    <li><a href="javascript:void(0);">Level 3</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="javascript:void(0);"><span>Level 2</span></a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);"><span>Level 1</span></a>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
+
+
+
+
+
+
 
 
 
@@ -287,7 +318,7 @@
 
                             <form action="deleteblog" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bài viết này?');">
                                 <input type="hidden" name="postId" value="${blog.post_id}">
-                                <button type="submit" class="btn btn-danger"> Xóa</button>
+                                <button type="submit" class="btn btn-danger">🗑 Xóa</button>
                             </form>
                             <h4 class="page-title">Edit Blog</h4>
                             <form method="post" action="editblog" enctype="multipart/form-data">
@@ -312,22 +343,7 @@
                                     </c:if>
                                 </div>
 
-                                <script>
-                                    document.addEventListener("DOMContentLoaded", function () {
-                                        document.getElementById("image").addEventListener("change", function () {
-                                            const file = this.files[0];
-                                            if (file) {
-                                                const allowedTypes = ["image/png", "image/jpeg", "image/gif", "image/jpg"];
-                                                if (!allowedTypes.includes(file.type) || file.size > 50 * 1024 * 1024) {
-                                                    alert("Only PNG, JPEG, JPG, GIF files are allowed and must be under 50MB.");
-                                                    this.value = ''; // Xóa file nếu không hợp lệ
-                                                }
-                                            }
-                                        });
-                                    });
 
-
-                                </script>
 
                                 <div class="form-group">
                                     <label>Blog content</label>
@@ -336,11 +352,13 @@
                                 <div class="form-group">
                                     <label class="display-block">Blog Status</label>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" value="active" ${blog.status ? 'checked' : ''}>
+                                       <input class="form-check-input" type="radio" name="status" value="1" ${blog.status == 1 ? 'checked' : ''}>
+
                                         <label class="form-check-label">Active</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" value="inactive" ${!blog.status ? 'checked' : ''}>
+                                        <input class="form-check-input" type="radio" name="status" value="2" ${blog.status == 2 ? 'checked' : ''}>
+
                                         <label class="form-check-label">Inactive</label>
                                     </div>
                                 </div>
@@ -349,13 +367,42 @@
                                 </div>
                             </form>
 
+
                             <script>
                                 document.addEventListener("DOMContentLoaded", function () {
-                                    if (typeof CKEDITOR !== "undefined") {
-                                        CKEDITOR.replace('detail');
-                                    }
+                                    ClassicEditor
+                                            .create(document.querySelector('#detail'), {
+                                                ckfinder: {
+                                                    uploadUrl: '/SWP/uploadckedittor' // Trỏ đến servlet xử lý upload
+                                                }
+                                            })
+                                            .catch(error => console.error(error));
                                 });
                             </script>
+                            
+                            
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    document.getElementById("image").addEventListener("change", function () {
+                                        const file = this.files[0];
+                                        if (file) {
+                                            const allowedTypes = ["image/png", "image/jpeg", "image/gif", "image/jpg"];
+                                            if (!allowedTypes.includes(file.type) || file.size > 50 * 1024 * 1024) {
+                                                alert("Only PNG, JPEG, JPG, GIF files are allowed and must be under 50MB.");
+                                                this.value = ''; // Xóa file n?u không h?p l?
+                                            }
+                                        }
+                                    });
+                                });
+
+                            </script>
+
+
+
+
+
+
+
 
 
                             <div class="notification-box">

@@ -41,8 +41,8 @@ public class NewsDAO extends DBContext {
                         rs.getInt("status"),
                         rs.getString("image"),
                         rs.getString("detail"),
-//                        createdAt,
-//                        updatedAt);
+                        //                        createdAt,
+                        //                        updatedAt);
                         rs.getString("created_at"),
                         rs.getString("updated_at"));
                 news.add(n);
@@ -239,9 +239,9 @@ public class NewsDAO extends DBContext {
         return list;
     }
 
-     private static final Logger LOGGER = Logger.getLogger(NewsDAO.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(NewsDAO.class.getName());
 
-    public void addBlogPost(String title, String content, int createdBy, int categoryId, boolean status, String detail, InputStream imageStream) {
+    public void addBlogPost(String title, String content, int createdBy, int categoryId, int status, String detail, InputStream imageStream) {
         String sql = "INSERT INTO Posts (title, content, created_by, category_id, status, detail, image, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, GETDATE())";
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
@@ -249,7 +249,7 @@ public class NewsDAO extends DBContext {
             st.setString(2, content);
             st.setInt(3, createdBy);
             st.setInt(4, categoryId);
-            st.setBoolean(5, status);
+            st.setInt(5, status); // Chuyển từ boolean sang int
             st.setString(6, detail);
 
             if (imageStream != null) {
@@ -269,17 +269,19 @@ public class NewsDAO extends DBContext {
         }
     }
 
-    public boolean updateBlogPost(int postId, String title, String content, boolean status, InputStream imageStream, String detail) {
-        String sql = "UPDATE Posts SET title = ?, content = ?, status = ?, detail = ?, updated_at = GETDATE()";
-        if (imageStream != null) {
-            sql += ", image = ?";
-        }
-        sql += " WHERE post_id = ?";
+    public boolean updateBlogPost(int postId, String title, String content, int status, InputStream imageStream, String detail) {
+        StringBuilder sql = new StringBuilder("UPDATE Posts SET title = ?, content = ?, status = ?, detail = ?, updated_at = GETDATE()");
 
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
+        if (imageStream != null) {
+            sql.append(", image = ?");
+        }
+
+        sql.append(" WHERE post_id = ?");
+
+        try (PreparedStatement st = connection.prepareStatement(sql.toString())) {
             st.setString(1, title);
             st.setString(2, content);
-            st.setBoolean(3, status);
+            st.setInt(3, status); // Chuyển từ boolean sang int
             st.setString(4, detail);
 
             int paramIndex = 5;
@@ -291,7 +293,7 @@ public class NewsDAO extends DBContext {
             int rowsAffected = st.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error updating blog post", e);
+            LOGGER.log(Level.SEVERE, "Error updating blog post with ID: " + postId, e);
             return false;
         }
     }
@@ -419,14 +421,12 @@ public class NewsDAO extends DBContext {
         return count;
     }
 
-    public List<News> searchBlogs(String keyword) { 
+    public List<News> searchBlogs(String keyword) {
         List<News> blogs = new ArrayList<>();
         String sql = "SELECT post_id, title, content, image, detail FROM Posts WHERE title LIKE ?";
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, "%" + keyword + "%");
-        
-            
 
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
@@ -447,7 +447,6 @@ public class NewsDAO extends DBContext {
         }
         return blogs;
     }
-    
 
     public static void main(String[] args) {
         NewsDAO dao = new NewsDAO();

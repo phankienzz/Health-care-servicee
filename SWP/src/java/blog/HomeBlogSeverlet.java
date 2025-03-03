@@ -37,20 +37,36 @@ public class HomeBlogSeverlet extends HttpServlet {
         NewsDAO dao = new NewsDAO();
 
         int page = 1;
-        int recordsPerPage = 6; 
-        if (request.getParameter("page") != null) {
-            page = Integer.parseInt(request.getParameter("page"));
+    int recordsPerPage = 1; 
+
+    // Validate page parameter
+    String pageParam = request.getParameter("page");
+    if (pageParam != null) {
+        try {
+            page = Integer.parseInt(pageParam);
+            if (page < 1) page = 1; // Minimum page is 1
+        } catch (NumberFormatException e) {
+            page = 1; // Default to page 1 if invalid
         }
-
-        List<News> blogs = dao.getBlogsByPage((page - 1) * recordsPerPage, recordsPerPage);
-        int totalRecords = dao.getTotalBlogCount();
-        int totalPages = (int) Math.ceil((double) totalRecords / recordsPerPage);
-
-        request.setAttribute("blogs", blogs);
-        request.setAttribute("currentPage", page);
-        request.setAttribute("totalPages", totalPages);
-        request.getRequestDispatcher("blog.jsp").forward(request, response);
     }
+
+    // Fetch blogs and total count
+    List<News> blogs = dao.getBlogsByPage((page - 1) * recordsPerPage, recordsPerPage);
+    int totalRecords = dao.getTotalBlogCount();
+    int totalPages = (int) Math.ceil((double) totalRecords / recordsPerPage);
+
+    // Ensure totalPages is at least 1 even if no records
+    if (totalRecords == 0) totalPages = 1;
+
+    // Validate page against totalPages
+    if (page > totalPages) page = totalPages;
+
+    // Set attributes for JSP
+    request.setAttribute("blogs", blogs);
+    request.setAttribute("currentPage", page);
+    request.setAttribute("totalPages", totalPages);
+    request.getRequestDispatcher("blog.jsp").forward(request, response);
+}
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

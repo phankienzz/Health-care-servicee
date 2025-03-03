@@ -12,10 +12,7 @@
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
 
-
-        
-        <script src="ckeditor/ckeditor.js"></script>
-
+        <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
 
 
 
@@ -64,7 +61,7 @@
                                 <div class="form-group">
                                     <label>Blog Images</label>
                                     <!-- Adding the 'accept' attribute to limit selection to PNG files -->
-                                   <input class="form-control" type="file" name="image" id="image" accept="image/png, image/jpeg, image/gif, image/jpg">
+                                    <input class="form-control" type="file" name="image" id="image" accept="image/png, image/jpeg, image/gif, image/jpg">
 
 
                                     <c:if test="${not empty blog.image}">
@@ -75,7 +72,7 @@
 
                                 <div class="form-group">
                                     <label>Blog content</label>
-                                    <textarea cols="30" rows="6" class="form-control" id="descriptiondetail" name="descriptiondetail" required></textarea>
+                                    <textarea cols="30" rows="6" class="form-control" id="descriptiondetail" name="descriptiondetail" ></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label class="display-block">Blog Status</label>
@@ -95,11 +92,18 @@
 
                             <script>
                                 document.addEventListener("DOMContentLoaded", function () {
-                                    if (typeof CKEDITOR !== "undefined") {
-                                        CKEDITOR.replace('descriptiondetail');
-                                    }
+                                    ClassicEditor
+                                            .create(document.querySelector('#descriptiondetail'), {
+                                                ckfinder: {
+                                                    uploadUrl: '/SWP/uploadckedittor' // Tr? ??n servlet x? lý upload
+                                                }
+                                            })
+                                            .catch(error => console.error(error));
                                 });
-
+                            </script>
+                            
+                            
+                            <script>
                                 document.addEventListener("DOMContentLoaded", function () {
                                     document.getElementById("image").addEventListener("change", function () {
                                         const file = this.files[0];
