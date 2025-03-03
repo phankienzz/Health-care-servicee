@@ -22,7 +22,7 @@ public class DBContext {
         try {
             //Change the username password and url to connect your own database
             String username = "sa";
-            String pass = "123";
+            String pass = "sa";
             String url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=MedicalSystem";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(url, username, pass);
