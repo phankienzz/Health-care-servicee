@@ -139,52 +139,54 @@
                             <p class="mb-4">Mollitia dicta commodi est recusandae iste, natus eum asperiores corrupti qui velit . Iste dolorum atque similique praesentium soluta.</p>
                             <form id="appointmentForm" class="appointment" method="post" action="appointment">
                                 <div class="row">
-                                    <!-- Chọn dịch vụ -->
+                                    <!-- Ch?n d?ch v? -->
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <select class="form-control" name="serviceId" required>
                                                 <option value="">Choose Service</option>
                                                 <c:forEach var="service" items="${services}">
-                                                    <option value="${service.id}">${service.serviceName}</option>
+                                                    <option value="${service.packageID}">${service.packageName}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
                                     </div>
 
-                                    <!-- Chọn bác sĩ -->
+                                    <!-- Ch?n b�c s? -->
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <select class="form-control" name="doctorId" required>
                                                 <option value="">Select Doctor</option>
-                                                <c:forEach var="doctor" items="${doctors}">
-                                                    <option value="${doctor.id}">${doctor.fullName}</option>
-                                                </c:forEach>
+                                                <c:if test="${not empty doctors}">
+                                                    <c:forEach var="doctor" items="${doctors}">
+                                                        <option value="${doctor.id}">${doctor.Staff.fullName}</option>
+                                                    </c:forEach>
+                                                </c:if>
                                             </select>
                                         </div>
                                     </div>
 
-                                    <!-- Chọn ngày -->
+                                    <!-- Ch?n ng�y -->
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <input name="date" type="date" class="form-control" required>
                                         </div>
                                     </div>
 
-                                    <!-- Chọn giờ -->
+                                    <!-- Ch?n gi? -->
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <input name="time" type="time" class="form-control" required>
                                         </div>
                                     </div>
 
-                                    <!-- Nhập tên -->
+                                    <!-- Nh?p t�n -->
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <input name="name" type="text" class="form-control" placeholder="Full Name" required>
                                         </div>
                                     </div>
 
-                                    <!-- Nhập số điện thoại -->
+                                    <!-- Nh?p s? ?i?n tho?i -->
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <input name="phone" type="tel" class="form-control" placeholder="Phone Number" required>
@@ -192,12 +194,12 @@
                                     </div>
                                 </div>
 
-                                <!-- Nhập tin nhắn -->
+                                <!-- Nh?p tin nh?n -->
                                 <div class="form-group-2 mb-4">
                                     <textarea name="message" class="form-control" rows="6" placeholder="Your Message"></textarea>
                                 </div>
 
-                                <!-- Nút gửi form -->
+                                <!-- N�t g?i form -->
                                 <button type="submit" class="btn btn-main btn-round-full">Make Appointment</button>
                             </form>
 
