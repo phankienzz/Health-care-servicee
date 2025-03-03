@@ -1,35 +1,31 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
-import java.time.LocalDateTime;
+import java.util.Arrays;
 
-/**
- *
- * @author laptop 368
- */
 public class Service {
 
     private int packageID;
     private String packageName;
     private String description;
+    private byte[] serviceImage;
     private String type;
     private double price;
     private int duration;
+    private String status;
     private String createdAt;
 
     public Service() {
     }
 
-    public Service(int packageID, String packageName, String description, String type, double price, int duration, String createdAt) {
+    public Service(int packageID, String packageName, String description, byte[] serviceImage, String type, double price, int duration, String status, String createdAt) {
         this.packageID = packageID;
         this.packageName = packageName;
         this.description = description;
+        this.serviceImage = serviceImage;
         this.type = type;
         this.price = price;
         this.duration = duration;
+        this.status = status;
         this.createdAt = createdAt;
     }
 
@@ -57,6 +53,14 @@ public class Service {
         this.description = description;
     }
 
+    public byte[] getServiceImage() {
+        return serviceImage;
+    }
+
+    public void setServiceImage(byte[] serviceImage) {
+        this.serviceImage = serviceImage;
+    }
+
     public String getType() {
         return type;
     }
@@ -81,6 +85,14 @@ public class Service {
         this.duration = duration;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getCreatedAt() {
         return createdAt;
     }
@@ -91,8 +103,8 @@ public class Service {
 
     @Override
     public String toString() {
-        return "Service{" + "packageID=" + packageID + ", packageName=" + packageName + ", description=" + description + ", type=" + type + ", price=" + price + ", duration=" + duration + ", createdAt=" + createdAt + '}';
+        return "Service{" + "packageID=" + packageID + ", packageName=" + packageName + ", description=" + description + ", serviceImage=" + serviceImage + ", type=" + type + ", price=" + price + ", duration=" + duration + ", status=" + status + ", createdAt=" + createdAt + '}';
     }
-
-   
+    
+    
 }

@@ -14,25 +14,29 @@ public class Staff {
     private String email;
     private String password;
     private String phone;
+    private String gender;
+    private String dateOfBirth;
+    private String address;
     private String hireDate;
     private int roleID;
     private String status;
-    private String department;
     private String profilePicture;
 
     public Staff() {
     }
 
-    public Staff(int staffID, String fullName, String email, String password, String phone, String hireDate, int roleID, String status, String department, String profilePicture) {
+    public Staff(int staffID, String fullName, String email, String password, String phone, String gender, String dateOfBirth, String address, String hireDate, int roleID, String status, String profilePicture) {
         this.staffID = staffID;
         this.fullName = fullName;
         this.email = email;
         this.password = password;
         this.phone = phone;
+        this.gender = gender;
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
         this.hireDate = hireDate;
         this.roleID = roleID;
         this.status = status;
-        this.department = department;
         this.profilePicture = profilePicture;
     }
 
@@ -76,6 +80,30 @@ public class Staff {
         this.phone = phone;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public String getHireDate() {
         return hireDate;
     }
@@ -100,14 +128,6 @@ public class Staff {
         this.status = status;
     }
 
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
     public String getProfilePicture() {
         return profilePicture;
     }
@@ -116,8 +136,5 @@ public class Staff {
         this.profilePicture = profilePicture;
     }
 
-    @Override
-    public String toString() {
-        return "Staff{" + "staffID=" + staffID + ", fullName=" + fullName + ", email=" + email + ", password=" + password + ", phone=" + phone + ", hireDate=" + hireDate + ", roleID=" + roleID + ", status=" + status + ", department=" + department + ", profilePicture=" + profilePicture + '}';
-    }
+    
 }

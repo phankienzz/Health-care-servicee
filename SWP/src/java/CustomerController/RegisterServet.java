@@ -59,9 +59,9 @@ public class RegisterServet extends HttpServlet {
         String dateOfBirthStr = request.getParameter("dateOfBirth");
         String gender = request.getParameter("gender");
         try {
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyy-MM-dd");
-            LocalDate dateOfBirth = LocalDate.parse(dateOfBirthStr, format);
-            LocalDate today = LocalDate.now(); // Lấy ngày hiện tại
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //dinh dang ngay thang theo yyyy-MM-dd
+            LocalDate dateOfBirth = LocalDate.parse(dateOfBirthStr, format); //chuyen doi tu Str sang LocalDate
+            LocalDate today = LocalDate.now(); // lay ngay hien tai
             if (dateOfBirth.isAfter(today)) {
                 request.setAttribute("error", "Date of Birth cannot be in the future!");
                 request.getRequestDispatcher("register.jsp").forward(request, response);
@@ -102,13 +102,12 @@ public class RegisterServet extends HttpServlet {
                     request.setAttribute("error", "Email already exists!");
                     request.getRequestDispatcher("register.jsp").forward(request, response);
                 } else {
-                    // Nếu cả hai đều chưa tồn tại, tiến hành đăng ký
                     dao.customerSignup(username, password, fullname, email, phone, address, dateOfBirthStr, gender);
                     response.sendRedirect("login.jsp");
                 }
             }
         } catch (DateTimeParseException e) {
-            request.setAttribute("error", "Nhap theo dinh dang YYYY-MM-DD.");
+            request.setAttribute("error", "Nhap ngay sinh theo dinh dang YYYY-MM-DD.");
             request.getRequestDispatcher("register.jsp").forward(request, response);
         }
     }

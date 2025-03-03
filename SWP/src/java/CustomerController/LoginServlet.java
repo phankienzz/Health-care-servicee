@@ -4,6 +4,7 @@
  */
 package CustomerController;
 
+import context.ValidFunction;
 import dao.CustomerDAO;
 import dao.StaffDAO;
 import java.io.IOException;
@@ -94,7 +95,17 @@ public class LoginServlet extends HttpServlet {
                 request.setAttribute("userType", "staff");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             } else {
-                session.setAttribute("user", staff);
+                ValidFunction valid = new ValidFunction();
+                String dob = null;
+                String hireDate = null;
+                if(staff.getDateOfBirth() != null){
+                    dob = valid.formatDate(staff.getDateOfBirth());
+                }
+                if(staff.getHireDate() != null){
+                   hireDate = valid.formatDate(staff.getHireDate());
+                }
+                Staff s = new Staff(staff.getStaffID(), staff.getFullName(), staff.getEmail(), staff.getPassword(), staff.getPhone(), staff.getGender(),dob, staff.getAddress(), hireDate, staff.getRoleID(), staff.getStatus(),staff.getProfilePicture());
+                session.setAttribute("staffAccount", s);
                 if (rememberMe != null) {
                     Cookie staffEmail = new Cookie("email", user);
                     Cookie staffPassword = new Cookie("password", password);

@@ -25,7 +25,7 @@
         <div class="main-wrapper">
             <div class="header">
                 <div class="header-left">
-                    <a href="index-2.html" class="logo">
+                    <a href="dashboard.html" class="logo">
                         <img src="assets/img/logo.png" width="35" height="35" alt=""> <span>Preclinic</span>
                     </a>
                 </div>
@@ -137,7 +137,7 @@
                         <ul>
                             <li class="menu-title">Main</li>
                             <li>
-                                <a href="index-2.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
+                                <a href="dashboard.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
                             </li>
                             <li>
                                 <a href="doctors.html"><i class="fa fa-user-md"></i> <span>Doctors</span></a>

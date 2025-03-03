@@ -1,6 +1,6 @@
 package blog;
 
-import dao.BlogDAO;
+import dao.NewsDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -69,7 +69,7 @@ public class addBlog extends HttpServlet {
         }
 
         // Gọi DAO để lưu bài viết vào DB
-        BlogDAO blogPostDAO = new BlogDAO();
+        NewsDAO blogPostDAO = new NewsDAO();
         blogPostDAO.addBlogPost(title, content, createdBy, categoryId, status, detail, imagePaths.toString());
 
         // Redirect sau khi đăng bài

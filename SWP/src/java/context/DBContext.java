@@ -22,22 +22,20 @@ public class DBContext {
         try {
             //Change the username password and url to connect your own database
             String username = "sa";
-            String password = "123";
-            String url = "jdbc:sqlserver://localhost:1433;databaseName=MedicalSystem";
+            String pass = "123";
+            String url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=MedicalSystem";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            connection = DriverManager.getConnection(url, username, password);
+            connection = DriverManager.getConnection(url, username, pass);
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public static void main(String[] args) {
         try {
             System.out.println(new DBContext().connection);
             System.out.println("*Hello");
-  
-            
-
+            System.out.println("Test branch Vinh");
         } catch (Exception e) {
         }
     }

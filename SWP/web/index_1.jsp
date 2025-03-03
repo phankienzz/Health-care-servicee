@@ -32,7 +32,6 @@
 
     <body id="top">
         <jsp:include page="headerCustomer.jsp"></jsp:include>
-
         <!-- Slider Start -->
         <section class="banner">
             <div class="container">
@@ -115,7 +114,7 @@
                             <h2 class="title-color" style="color: #009efb;">Personal care <br>& healthy living</h2>
                             <p class="mt-4 mb-5">We provide best leading medicle service Nulla perferendis veniam deleniti ipsum officia dolores repellat laudantium obcaecati neque.</p>
 
-                            <a href="service.html" class="btn btn-main-2 btn-round-full btn-icon">Services<i class="icofont-simple-right ml-3"></i></a>
+                            <a href="loadservice" class="btn btn-main-2 btn-round-full btn-icon">Services<i class="icofont-simple-right ml-3"></i></a>
                         </div>
                     </div>
                 </div>
