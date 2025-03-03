@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Customer;
 import model.Invoice;
+import model.MedicalExamination;
 
 /**
  *
@@ -22,6 +23,7 @@ public class InvoiceDAO extends DBContext {
     public List<Invoice> getAllInvoice() {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
+        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
         String sql = "SELECT * FROM invoice ";
 
         try {
@@ -32,12 +34,13 @@ public class InvoiceDAO extends DBContext {
                 int customerID = rs.getInt("customerID");
                 Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
+                MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
                 String paymentStatus = rs.getString("paymentStatus");
                 String paymentDate = rs.getString("paymentDate");
                 String paymentMethod = rs.getString("paymentMethod");
                 String createdAt = rs.getString("createdAt");
-                Invoice inv = new Invoice(invoiceID, customer, examinationID, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
+                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt);
                 invoiceList.add(inv);
             }
 
