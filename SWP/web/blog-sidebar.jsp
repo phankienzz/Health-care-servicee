@@ -62,11 +62,11 @@
                                                 <span class="text-black text-capitalize mr-3"><i class="icofont-calendar mr-1"></i>${news.created_at}</span>
                                             </div> 
 
-                                            <h2 class="mt-3 mb-3"><a href="blog-single.jsp">${news.title}</a></h2>
+                                            <h2 class="mt-3 mb-3"><a href="detailNews?newsID=${news.post_id}">${news.title}</a></h2>
 
-                                            <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis aliquid architecto facere commodi cupiditate omnis voluptatibus inventore atque velit cum rem id assumenda quam recusandae ipsam ea porro, dicta ad.</p>
+                                            <p class="mb-4">${news.detail}</p>
 
-                                            <a href="blog-single.jsp" target="_blank" class="btn btn-main btn-icon btn-round-full">Read More <i class="icofont-simple-right ml-2  "></i></a>
+                                            <a href="detailNews?newsID=${news.post_id}" target="_blank" class="btn btn-main btn-icon btn-round-full">Read More <i class="icofont-simple-right ml-2  "></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -77,7 +77,7 @@
                         <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0">
                             <div class="sidebar-widget search  mb-3 ">
                                 <h5>Search Here</h5>
-                                <form action="news" method="get" class="search-form">
+                                <form action="allNews" method="get" class="search-form">
                                     <input type="text" name="search" class="form-control" placeholder="search" value="${search}">
                                     <i class="ti-search"></i>
                                 </form>
@@ -108,12 +108,12 @@
 
                                 <ul class="list-unstyled">
                                     <li class="align-items-center">
-                                        <a href="news">All</a>
+                                        <a href="allNews">All</a>
                                         <!--<span>(14)</span>-->
                                     </li>
                                     <c:forEach var="cate" items="${listCate}">
                                         <li class="align-items-center">
-                                            <a href="news?categoryID=${cate.category_id}">${cate.name}</a>
+                                            <a href="allNews?categoryID=${cate.category_id}">${cate.name}</a>
                                             <!--<span>(14)</span>-->
                                         </li>
                                     </c:forEach>
@@ -170,19 +170,19 @@
                             <div class="nav-links">
                                 <c:if test="${categoryID == null && search == ''}">
                                     <c:forEach begin="1" end="${endPage}" var="i">
-                                        <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="news?page=${i}">${i}</a>
+                                        <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="allNews?page=${i}">${i}</a>
                                     </c:forEach>
                                 </c:if>
 
                                 <c:if test="${categoryID != null}">
                                     <c:forEach begin="1" end="${endPage}" var="i">
-                                        <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="news?categoryID=${categoryID}&page=${i}">${i}</a>
+                                        <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="allNews?categoryID=${categoryID}&page=${i}">${i}</a>
                                     </c:forEach>
                                 </c:if>
 
                                 <c:if test="${search != ''}">
                                     <c:forEach begin="1" end="${endPage}" var="i">
-                                        <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="news?search=${search}&page=${i}">${i}</a>
+                                        <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="allNews?search=${search}&page=${i}">${i}</a>
                                     </c:forEach>
                                 </c:if>
                             </div>

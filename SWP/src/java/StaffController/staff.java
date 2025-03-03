@@ -38,6 +38,39 @@ public class staff extends HttpServlet {
         RoleDAO roleDAO = new RoleDAO();
         List<Role> listRole = roleDAO.getAllRole();
         request.setAttribute("listRole", listRole);
+        String staffID_raw = request.getParameter("staffID");
+        String name = request.getParameter("name");
+        String roleID = request.getParameter("roleID");
+
+        if (staffID_raw != null && !staffID_raw.isEmpty()) {
+            try {
+                int staffID = Integer.parseInt(staffID_raw);
+                Staff s = new Staff();
+                s = staffDAO.getStaffByID(staffID);
+                request.setAttribute("staffID", staffID);
+                List<Staff> l = new ArrayList<>();
+                 l.add(s);
+                 listStaff = l;
+            } catch (Exception e) {
+                response.sendRedirect("staff");
+                return;
+            }
+        }
+        if (name != null && !name.isEmpty() && roleID != null && !roleID.isEmpty() && !roleID.equalsIgnoreCase("Select role")) {
+            request.setAttribute("name", name);
+            request.setAttribute("roleID", roleID);
+            listStaff = staffDAO.getStaffByNameandRole(Integer.parseInt(roleID), valid.normalizeName(name));
+        } else {
+            if (name != null && !name.isEmpty()) {
+                request.setAttribute("name", name);
+                listStaff = staffDAO.getStaffByName(valid.normalizeName(name));
+            }
+            if (roleID != null && !roleID.isEmpty() && !roleID.equalsIgnoreCase("Select role")) {
+                request.setAttribute("roleID", roleID);
+                listStaff = staffDAO.getStaffByRole(Integer.parseInt(roleID));
+            }
+        }
+
         int page = 1;
         int recordsPerPage = 5;
 
@@ -58,8 +91,30 @@ public class staff extends HttpServlet {
             }
         }
         int start = (page - 1) * recordsPerPage;
-        List<Staff> staffs = staffDAO.getStaffs(start, recordsPerPage);
-
+        List<Staff> staffs = new ArrayList<>();
+        if (staffID_raw == null &&  name == null  && (roleID == null || roleID.equalsIgnoreCase("Select role"))){
+            staffs = staffDAO.getStaffs(start, recordsPerPage);
+        }
+        if (staffID_raw != null && !staffID_raw.isEmpty()) {
+            try {
+                int staffID = Integer.parseInt(staffID_raw);
+                Staff s = new Staff();
+                s = staffDAO.getStaffByID(staffID);
+                staffs.add(s);
+            } catch (Exception e) {
+                response.sendRedirect("staff");
+            }
+        }
+        if (name != null && !name.isEmpty() && roleID != null && !roleID.isEmpty() && !roleID.equalsIgnoreCase("Select role")) {
+            staffs = staffDAO.getStaffByNameandRolePaging(Integer.parseInt(roleID), valid.normalizeName(name), start, recordsPerPage);
+        } else {
+            if (name != null && !name.isEmpty()) {
+                staffs = staffDAO.getStaffByNamePaging(valid.normalizeName(name), start, recordsPerPage);
+            }
+            if (roleID != null && !roleID.isEmpty() && !roleID.equalsIgnoreCase("Select role")) {
+                staffs = staffDAO.getStaffByRolePaging(Integer.parseInt(roleID), start, recordsPerPage);
+            }
+        }
         for (Staff s : staffs) {
             String dateBirth;
             if (s.getDateOfBirth() != null) {
@@ -77,7 +132,7 @@ public class staff extends HttpServlet {
             List<Permission> listPermission = role.getPermission();
             request.setAttribute("listPermission", listPermission);
         }
-        request.setAttribute("phanTrang", "cotontai");
+        request.setAttribute("show", list.size());
         request.setAttribute("size", listStaff.size());
         request.setAttribute("listStaff", list);
         request.setAttribute("currentPage", page);
@@ -91,15 +146,5 @@ public class staff extends HttpServlet {
             throws ServletException, IOException {
 
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }

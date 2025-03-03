@@ -3,9 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package patientController;
+package serviceController;
 
-import dao.CustomerDAO;
+import dao.ServiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,15 +13,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.Customer;
+import model.Service;
 
 /**
  *
- * @author Hoang
+ * @author laptop 368
  */
-@WebServlet(name="patient", urlPatterns={"/patient"})
-public class patient extends HttpServlet {
+@WebServlet(name="Load_Update", urlPatterns={"/loadupdate"})
+public class Load_Update extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -33,32 +32,36 @@ public class patient extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet patient</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet patient at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        ServiceDAO dao = new ServiceDAO();
+        Service service = new Service();
+        int packageID = Integer.parseInt(request.getParameter("packageID"));
+        service = dao.getServiceById(packageID);
+        request.setAttribute("service", service);
+        request.getRequestDispatcher("update_Service.jsp").forward(request, response);
     } 
 
-    
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /** 
+     * Handles the HTTP <code>GET</code> method.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        CustomerDAO dao = new CustomerDAO();
-        List<Customer> list = dao.getAllCustomerAccount();
-        request.setAttribute("listPatient", list);
-                request.getRequestDispatcher("patient.jsp").forward(request, response);
-
+        processRequest(request, response);
     } 
 
-        @Override
+    /** 
+     * Handles the HTTP <code>POST</code> method.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         processRequest(request, response);

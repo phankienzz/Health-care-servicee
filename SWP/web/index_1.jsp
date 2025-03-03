@@ -31,9 +31,8 @@
     </head>
 
     <body id="top">
-        <jsp:include page="headerCustomer.jsp"></jsp:include>
-
-        
+        <!-- Bỏ cái của nợ dòng 35 này đi là frontdend siêu đẹp -->
+        <jsp:include page="headerCustomer.jsp"></jsp:include> 
         <!-- Slider Start -->
         <section class="banner">
             <div class="container">
@@ -116,7 +115,7 @@
                             <h2 class="title-color" style="color: #009efb;">Personal care <br>& healthy living</h2>
                             <p class="mt-4 mb-5">We provide best leading medicle service Nulla perferendis veniam deleniti ipsum officia dolores repellat laudantium obcaecati neque.</p>
 
-                            <a href="service.html" class="btn btn-main-2 btn-round-full btn-icon">Services<i class="icofont-simple-right ml-3"></i></a>
+                            <a href="loadservice" class="btn btn-main-2 btn-round-full btn-icon">Services<i class="icofont-simple-right ml-3"></i></a>
                         </div>
                     </div>
                 </div>
@@ -538,6 +537,7 @@
                                 <li><a href="#">Privacy Policy</a></li>
                                 <li><a href="#">Company Support </a></li>
                                 <li><a href="#">FAQuestions</a></li>
+                                <li><a href="#">Company Licence</a></li>
                             </ul>
                         </div>
                     </div>
@@ -568,7 +568,19 @@
 
                 <div class="footer-btm py-4 mt-5">
                     <div class="row align-items-center justify-content-between">
-                        
+                        <div class="col-lg-6">
+                            <div class="copyright">
+                                &copy; Copyright Reserved to <span class="text-color">Novena</span> by <a href="https://themefisher.com/" target="_blank">Themefisher</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="subscribe-form text-lg-right mt-5 mt-lg-0">
+                                <form action="#" class="subscribe">
+                                    <input type="text" class="form-control" placeholder="Your Email address">
+                                    <a href="#" class="btn btn-main-2 btn-round-full">Subscribe</a>
+                                </form>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row">
