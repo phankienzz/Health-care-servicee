@@ -106,7 +106,7 @@ public class EditProfessionalServlet extends HttpServlet {
             if (filePart != null && filePart.getSize() > 0) {
                   // Kiểm tra định dạng file
             if (!isValidImageFile(extractFileName(filePart))) {
-                request.setAttribute("errorMessage", "Chỉ được tải lên file ảnh có định dạng JPG, JPEG, PNG, GIF, WEBP!");
+                    request.setAttribute("errorMessage", "Chỉ được tải lên file ảnh có định dạng JPG, JPEG, PNG, GIF, WEBP!");
                 request.getRequestDispatcher("edit-doctor.jsp").forward(request, response);
                 return;
             }
@@ -123,9 +123,9 @@ public class EditProfessionalServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("professionals", professionalDAO.getAllProfessionals());
                 response.getWriter().write("Upload thành công: " + imagePath);
-            } else {
-                response.getWriter().write("Vui lòng chọn ảnh!");
-            }
+                } else {
+                    response.getWriter().write("Vui lòng chọn ảnh!");
+                }
         } catch (Exception e) {
             e.printStackTrace();
             response.getWriter().write("Lỗi upload file: " + e.getMessage());

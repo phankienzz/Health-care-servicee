@@ -1,3 +1,10 @@
+<%-- 
+    Document   : errorPemission
+    Created on : Feb 28, 2025, 5:52:38 AM
+    Author     : Gigabyte
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,7 +30,7 @@
             <h1>Warning</h1>
             <h3><i class="fa fa-warning"></i> Oops! Something went wrong</h3>
             <p>You do not have permission to access this page</p>
-            <a href="index_1.html" class="btn btn-primary go-home">Go to Home</a>
+            <a href="index_1.jsp" class="btn btn-primary go-home">Go to Home</a>
         </div>
     </div>
     <script src="assets/js/jquery-3.2.1.min.js"></script>
