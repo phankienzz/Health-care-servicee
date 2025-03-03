@@ -17,8 +17,7 @@ public class Update_Service extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        
+    
     }
 
     @Override
@@ -45,7 +44,7 @@ public class Update_Service extends HttpServlet {
             dao.updateService(packageID, packageName, description, imageStream, type, price, duration);
 
             // Chuyển hướng về trang quản lý dịch vụ
-            request.getRequestDispatcher("loadmanage").forward(request, response);
+            response.sendRedirect("loadmanage");
 
         } catch (Exception e) {
             e.printStackTrace();
