@@ -1,5 +1,6 @@
 package serviceController;
 
+import context.ValidFunction;
 import dao.ServiceDAO;
 import model.Service;
 import jakarta.servlet.ServletException;
@@ -25,23 +26,20 @@ public class Load_Manage extends HttpServlet {
         List<Service> serviceList = new ArrayList<>();
         int pageNumber = 1;
         String action = request.getParameter("action");
+        ValidFunction val = new ValidFunction();
 
         // Xử lý phân trang
         if (request.getParameter("pageNumber") != null) {
             pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
         }
 
-        // Kiểm tra session có danh sách lọc không
-        List<Service> filteredServices = (List<Service>) request.getSession().getAttribute("filteredServices");
-
         if ("search".equalsIgnoreCase(action)) {
             String searchKeyword = request.getParameter("searchKeyword");
             if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
-                serviceList = serviceDao.getAllServicesWithSearch(searchKeyword.trim());
+                serviceList = serviceDao.getAllServicesWithSearch(val.normalizeName(searchKeyword));
             } else {
                 serviceList = serviceDao.getAllService();
             }
-            request.getSession().setAttribute("filteredServices", serviceList);
         } else if ("filter".equalsIgnoreCase(action)) {
             String sortBy = request.getParameter("sortBy");
             if (sortBy != null && !sortBy.isEmpty()) {
@@ -49,13 +47,8 @@ public class Load_Manage extends HttpServlet {
             } else {
                 serviceList = serviceDao.getAllService();
             }
-            request.getSession().setAttribute("filteredServices", serviceList);
         } else {
-            if (filteredServices != null) {
-                serviceList = filteredServices;
-            } else {
-                serviceList = serviceDao.getAllService();
-            }
+            serviceList = serviceDao.getAllService();
         }
 
         // Tính số lượng trang
@@ -87,11 +80,7 @@ public class Load_Manage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Thực hiện xong thao tác (add, update, etc.) và yêu cầu tải lại trang.
-        // Giả sử thao tác add hoặc update service đã xong tại đây
 
-        // Thực hiện redirect về trang loadmanage để tải lại dữ liệu mới
-        response.sendRedirect("loadmanage");
     }
 
     @Override
