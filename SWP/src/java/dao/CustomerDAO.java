@@ -79,7 +79,33 @@ public class CustomerDAO extends DBContext {
         }
         return customers; // Trả về danh sách khách hàng
     }
-    
+
+    public Customer getCustomerByID(int customerID) {
+        String sql = "select * from Customer where customerID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, customerID);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                return new Customer(
+                        rs.getInt("customerID"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("fullName"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getString("accountStatus"),
+                        rs.getString("registrationDate"),
+                        rs.getString("dateOfBirth"),
+                        rs.getString("gender"),
+                        rs.getString("profilePicture"));
+            }
+        } catch (SQLException e) {
+        }
+        return null;
+    }
+
     public List<Customer> getCustomerByName(String name) {
         List<Customer> listCustomer = new ArrayList<>();
         String sql = "select * from Customer where fullName like ?";
@@ -109,7 +135,34 @@ public class CustomerDAO extends DBContext {
         } catch (SQLException e) {
         }
         return listCustomer; // Trả về danh sách khách hàng
+    }
 
+    public Customer getCustomerByIdAndName(int id, String name) {
+        String sql = "select * FROM Customer WHERE customerID = ? and fullName like ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, id);
+            pre.setString(2, "%" + name + "%");
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                return new Customer(
+                        rs.getInt("customerID"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("fullName"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getString("accountStatus"),
+                        rs.getString("registrationDate"),
+                        rs.getString("dateOfBirth"),
+                        rs.getString("gender"),
+                        rs.getString("profilePicture"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public boolean isUsernameExist(String username) {
@@ -246,32 +299,6 @@ public class CustomerDAO extends DBContext {
         return null;
     }
 
-    public Customer getCustomerByID(int customerID) {
-        String sql = "select * from Customer where customerID = ?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, customerID);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                return new Customer(
-                        rs.getInt("customerID"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("fullName"),
-                        rs.getString("email"),
-                        rs.getString("phone"),
-                        rs.getString("address"),
-                        rs.getString("accountStatus"),
-                        rs.getString("registrationDate"),
-                        rs.getString("dateOfBirth"),
-                        rs.getString("gender"),
-                        rs.getString("profilePicture"));
-            }
-        } catch (SQLException e) {
-        }
-        return null;
-    }
-
     public void updatePassword(String email, String password) {
         String sql = "update Customer set password = ? where email = ?";
         try {
@@ -318,9 +345,12 @@ public class CustomerDAO extends DBContext {
 
     public static void main(String[] args) {
         CustomerDAO dao = new CustomerDAO();
-        List<Customer> list = dao.getCustomerByName("Alice");
-        for (Customer customer : list) {
-            System.out.println(customer);
-        }
+//        List<Customer> list = dao.getCustomerByName("Alice");
+//        for (Customer customer : list) {
+//            System.out.println(customer);
+//        }
+        Customer c = dao.getCustomerByIdAndName(2, "b");
+        System.out.println(c);
     }
+
 }

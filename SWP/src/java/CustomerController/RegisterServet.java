@@ -62,6 +62,7 @@ public class RegisterServet extends HttpServlet {
             DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //dinh dang ngay thang theo yyyy-MM-dd
             LocalDate dateOfBirth = LocalDate.parse(dateOfBirthStr, format); //chuyen doi tu Str sang LocalDate
             LocalDate today = LocalDate.now(); // lay ngay hien tai
+            
             if (dateOfBirth.isAfter(today)) {
                 request.setAttribute("error", "Date of Birth cannot be in the future!");
                 request.getRequestDispatcher("register.jsp").forward(request, response);
@@ -75,6 +76,7 @@ public class RegisterServet extends HttpServlet {
 //                request.getRequestDispatcher("register.jsp").forward(request, response);
 //                return;
 //            }
+
             //sdt bat dau tu so khong, bat buoc 10 so
 //            if (!phone.matches("^0\\d{9}$")) {
 //                request.setAttribute("error", "So dien thoai khong hop le");
