@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.util.List;
+
 /**
  *
  * @author Gigabyte
@@ -11,25 +13,25 @@ package model;
 public class MedicalExamination {
     private int examinationID;
     private String examinationDate;
-    private String consultationType;
     private Customer customerId;
     private String status;
     private Professional consultantId;
     private String note;
     private String createdAt;
+    private List<Service> list;
 
     public MedicalExamination() {
     }
 
-    public MedicalExamination(int examinationID, String examinationDate, String consultationType, Customer customerId, String status, Professional consultantId, String note, String createdAt) {
+    public MedicalExamination(int examinationID, String examinationDate, Customer customerId, String status, Professional consultantId, String note, String createdAt, List<Service> list) {
         this.examinationID = examinationID;
         this.examinationDate = examinationDate;
-        this.consultationType = consultationType;
         this.customerId = customerId;
         this.status = status;
         this.consultantId = consultantId;
         this.note = note;
         this.createdAt = createdAt;
+        this.list = list;
     }
 
     public int getExaminationID() {
@@ -46,14 +48,6 @@ public class MedicalExamination {
 
     public void setExaminationDate(String examinationDate) {
         this.examinationDate = examinationDate;
-    }
-
-    public String getConsultationType() {
-        return consultationType;
-    }
-
-    public void setConsultationType(String consultationType) {
-        this.consultationType = consultationType;
     }
 
     public Customer getCustomerId() {
@@ -95,6 +89,15 @@ public class MedicalExamination {
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
+
+    public List<Service> getList() {
+        return list;
+    }
+
+    public void setList(List<Service> list) {
+        this.list = list;
+    }
+
     
     
 }
