@@ -103,7 +103,7 @@
                             errorMsg += "Giờ làm cho ca " + shiftType + " chỉ từ " + minTime + " đến " + maxTime + ".\n";
                         } else if (startInput.value >= endInput.value) {
                             isValid = false;
-                            errorMsg += "Giờ bắt đầu phải nhỏ hơn giờ kết thúc.\n";
+                            errorMsg += "Giờ bắt đầu phải sớm hơn giờ kết thúc.\n";
                         }
                     });
 
