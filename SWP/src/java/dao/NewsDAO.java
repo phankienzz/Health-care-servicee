@@ -117,7 +117,7 @@ public class NewsDAO extends DBContext {
     //phan trang
     public List<News> pagingAllNews(int index, int pageSize) {
         List<News> list = new ArrayList<>();
-        String sql = "select * from Posts where status = 1 order by post_id desc offset ? rows  fetch  next ? rows only";
+        String sql = "select * from Posts where status = 1 order by post_id offset ? rows  fetch  next ? rows only";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             int offset = (index - 1) * pageSize;

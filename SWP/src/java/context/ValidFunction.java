@@ -5,11 +5,13 @@
 package context;
 
 import dao.CustomerDAO;
+import dao.StaffDAO;
 import org.mindrot.jbcrypt.BCrypt;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import model.Customer;
+import model.Staff;
 
 /**
  *
@@ -87,11 +89,13 @@ public class ValidFunction {
     }
     
     public static void main(String[] args) {
-        CustomerDAO dao = new CustomerDAO();
-        List<Customer> list = dao.getAllCustomer();
-        for(Customer cus : list){
-            System.out.println("Customer password: " + cus.getPassword());
-            System.out.println("Hash password: " + hashPassword(cus.getPassword()));
+//        CustomerDAO dao = new CustomerDAO();
+        StaffDAO dao = new StaffDAO();
+        List<Staff> list = dao.getAllStaff();
+        for(Staff st : list){
+            System.out.println("Staff password: " + st.getPassword());
+            System.out.println("Hash password: " + hashPassword(st.getPassword()));
+            System.out.println("");
         }
         
     }

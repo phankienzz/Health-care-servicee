@@ -51,19 +51,19 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        ValidFunction valid = new ValidFunction();
         String userType = request.getParameter("userType");
         String user = request.getParameter("user");
         String password = request.getParameter("password");
         String rememberMe = request.getParameter("rememberMe");
-
         HttpSession session = request.getSession();
+        
         if ("customer".equals(userType)) {
             CustomerDAO dao = new CustomerDAO();
-            Customer customerAccount = dao.customerLogin(user, password);
-            if (customerAccount == null) {
-                request.setAttribute("error", "Invalid username or password !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            } else {
+            String hashedPassword = dao.getPasswordByUsername(user);
+
+            if (hashedPassword != null && valid.checkPassword(password, hashedPassword)) {
+                Customer customerAccount = dao.getCustomerByUsername(user);
                 session.setAttribute("customerAccount", customerAccount);
                 if (rememberMe != null) {
                     Cookie cusUsername = new Cookie("username", user);
@@ -83,8 +83,11 @@ public class LoginServlet extends HttpServlet {
                     response.addCookie(usernameCookie);
                     response.addCookie(passwordCookie);
                 }
+                response.sendRedirect("index_1.jsp");
+            } else {
+                request.setAttribute("error", "Invalid username or password !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
-            response.sendRedirect("index_1.jsp");
         } else if ("staff".equals(userType)) {
             StaffDAO dao = new StaffDAO();
             Staff staff = dao.staffLogin(user, password);
@@ -94,16 +97,15 @@ public class LoginServlet extends HttpServlet {
                 request.setAttribute("userType", "staff");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             } else {
-                ValidFunction valid = new ValidFunction();
                 String dob = null;
                 String hireDate = null;
-                if(staff.getDateOfBirth() != null){
+                if (staff.getDateOfBirth() != null) {
                     dob = valid.formatDate(staff.getDateOfBirth());
                 }
-                if(staff.getHireDate() != null){
-                   hireDate = valid.formatDate(staff.getHireDate());
+                if (staff.getHireDate() != null) {
+                    hireDate = valid.formatDate(staff.getHireDate());
                 }
-                Staff s = new Staff(staff.getStaffID(), staff.getFullName(), staff.getEmail(), staff.getPassword(), staff.getPhone(), staff.getGender(),dob, staff.getAddress(), hireDate, staff.getRoleID(), staff.getStatus(),staff.getProfilePicture());
+                Staff s = new Staff(staff.getStaffID(), staff.getFullName(), staff.getEmail(), staff.getPassword(), staff.getPhone(), staff.getGender(), dob, staff.getAddress(), hireDate, staff.getRoleID(), staff.getStatus(), staff.getProfilePicture());
                 session.setAttribute("staffAccount", s);
                 if (rememberMe != null) {
                     Cookie staffEmail = new Cookie("email", user);

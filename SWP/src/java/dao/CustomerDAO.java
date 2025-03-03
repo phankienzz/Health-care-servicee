@@ -21,6 +21,50 @@ import model.Customer;
  */
 public class CustomerDAO extends DBContext {
 
+    public String getPasswordByUsername(String username) {
+        String sql = "select password from Customer where username = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getString("password");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return null;
+    }
+    
+    public Customer getCustomerByUsername(String username) {
+        String sql = "select * from Customer where username = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                return new Customer(
+                        rs.getInt("customerID"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("fullName"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getString("accountStatus"),
+                        rs.getString("registrationDate"),
+                        rs.getString("dateOfBirth"),
+                        rs.getString("gender"),
+                        rs.getString("profilePicture"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return null;
+    }
+
     public Customer getCustomerAccount(String username, String password) {
         String sql = "SELECT * FROM Customer WHERE username = ? AND password = ?";
         try {
@@ -188,36 +232,7 @@ public class CustomerDAO extends DBContext {
         }
         return false;
     }
-
-    //Đăng nhập
-    public Customer customerLogin(String username, String password) {
-        String sql = "select * from Customer where username = ? and password = ?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, username);
-            st.setString(2, password);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                return new Customer(
-                        rs.getInt("customerID"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("fullName"),
-                        rs.getString("email"),
-                        rs.getString("phone"),
-                        rs.getString("address"),
-                        rs.getString("accountStatus"),
-                        rs.getString("registrationDate"),
-                        rs.getString("dateOfBirth"),
-                        rs.getString("gender"),
-                        rs.getString("profilePicture"));
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return null;
-    }
-
+    
     //Đăng ký
     public void customerSignup(String username, String password, String fullname, String email, String phone, String address, String dateOfBirth, String gender) {
         String sql = "insert into Customer ([username], [password], [fullname],[email],[phone],[address],[accountStatus],[dateOfBirth],[gender]) values(?,?,?,?,?,?,'Active',?,?)";

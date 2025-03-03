@@ -176,41 +176,25 @@
                     <div class="col-lg-8">
                         <nav class="pagination py-2 d-inline-block">
                             <div class="nav-links">
-                                <c:if test="${categoryID == null && search == ''}">
-                                    <c:if test="${page != 1}">
-                                        <a class="page-numbers" href="allNews?page=${page - 1}"><i class="icofont-thin-double-left"></i></a>
-                                        </c:if>
-                                        <c:forEach begin="1" end="${endPage}" var="i">
-                                        <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="allNews?page=${i}">${i}</a>
-                                    </c:forEach>
-                                    <c:if test="${page != endPage}">
-                                        <a class="page-numbers" href="allNews?page=${page + 1}"><i class="icofont-thin-double-right"></i></a>
-                                        </c:if>
+                                <c:set var="range" value="2" /> <!-- Số trang hiển thị trước/sau trang hiện tại -->
+                                <c:set var="startPage" value="${page - range > 1 ? page - range : 1}" />
+                                <c:set var="endPage" value="${page + range < endPage ? page + range : endPage}" />
+                                <c:if test="${page != 1}">
+                                    <a class="page-numbers" href="allNews?page=${page - 1}"><i class="icofont-thin-double-left"></i></a>
                                     </c:if>
-
-                                <c:if test="${categoryID != null}">
-                                    <c:if test="${page != 1}">
-                                        <a class="page-numbers" href="allNews?categoryID=${categoryID}&page=${page - 1}"><i class="icofont-thin-double-left"></i></a>
-                                        </c:if>
-                                        <c:forEach begin="1" end="${endPage}" var="i">
-                                        <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="allNews?categoryID=${categoryID}&page=${i}">${i}</a>
-                                    </c:forEach>
-                                    <c:if test="${page != endPage}">
-                                        <a class="page-numbers" href="allNews?categoryID=${categoryID}&page=${page + 1}"><i class="icofont-thin-double-right"></i></a>
-                                        </c:if>
+                                    <c:forEach begin="${startPage}" end="${endPage}" var="i">
+                                    <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="allNews?page=${i}&categoryID=${categoryID}&search=${search}">${i}</a>
+                                </c:forEach>
+                                <c:if test="${page != endPage}">
+                                    <!--<span class="page-numbers">.....</span>-->
+                                    <a class="page-numbers" href="allNews?page=${page + 1}"><i class="icofont-thin-double-right"></i></a>
                                     </c:if>
-
-                                <c:if test="${search != ''}">
-                                    <c:if test="${page != 1}">
-                                        <a class="page-numbers" href="allNews?search=${search}&page=${page - 1}"><i class="icofont-thin-double-left"></i></a>
-                                        </c:if>
-                                    <c:forEach begin="1" end="${endPage}" var="i">
-                                        <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="allNews?search=${search}&page=${i}">${i}</a>
-                                    </c:forEach>
-                                        <c:if test="${page != endPage}">
-                                        <a class="page-numbers" href="allNews?search=${search}&page=${page + 1}"><i class="icofont-thin-double-right"></i></a>
-                                        </c:if>
-                                </c:if>
+                                <form action="allNews" method="get" style="display: inline;">
+                                    <input type="hidden" name="search" value="${search}" />
+                                    <input type="hidden" name="categoryID" value="${categoryID}" />
+                                    <input type="text" name="page" placeholder="Page" style="width: 40px;" />
+                                    <input type="submit" value="Go" />
+                                </form>
                             </div>
                         </nav>
                     </div>

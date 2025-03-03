@@ -22,7 +22,7 @@ public class CommentDAO extends DBContext {
     public List<Comment> getCommentsByPostId(int postId) {
         List<Comment> comments = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
-        String sql = "SELECT * FROM Comments WHERE post_id = ? AND status = 1 ORDER BY created_at ASC";
+        String sql = "SELECT * FROM Comments WHERE post_id = ? AND status = 1 ORDER BY created_at desc";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, postId);
@@ -45,33 +45,18 @@ public class CommentDAO extends DBContext {
         return comments;
     }
 
-    public int getCommentCountByPostId(int postId) {
-        String sql = "select count(*) as comment_count from Comments WHERE post_id = ?";
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1, postId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("comment_count");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0; // Trả về 0 nếu có lỗi
-    }
+    
 
-    public boolean addComment(int postId, int customerId, String content, int parentCommentId) {
-        String sql = "INSERT INTO Comments (post_id, customerID, content, status, created_at, parent_comment_id) "
-                + "VALUES (?, ?, ?, ?, GETDATE(), ?)";
-        try {
-            PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setInt(1, postId);
-            pre.setInt(2, customerId);
-            pre.setString(3, content);
-            pre.setInt(4, 1);
-            pre.setInt(5, parentCommentId);
-
-            return pre.executeUpdate() > 0;
+    public boolean addComment(Comment comment) {
+        String query = "INSERT INTO Comments (post_id, customerID, content,status, parent_comment_id) VALUES (?, ?,?, 1, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, comment.getPost_id());
+            ps.setInt(2, comment.getCustomerID().getCustomerID());
+            ps.setString(3, comment.getContent());
+            
+            ps.setObject(4, comment.getParent_comment_id() == 0 ? null : comment.getParent_comment_id());
+            ps.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -80,12 +65,14 @@ public class CommentDAO extends DBContext {
 
     public static void main(String[] args) {
         CommentDAO dao = new CommentDAO();
-        int postId = 1;
-        List<Comment> comments = dao.getCommentsByPostId(1);
-        for (Comment comment : comments) {
-            System.out.println(comment);
-        }
-//        System.out.println(dao.addComment(1, 1, "hahahahahahahahaha", 0));
+        Comment comment = new Comment();
+            comment.setPost_id(1); // ID bài viết 
+            comment.setCustomerID(new Customer(1)); // ID Customer
+            comment.setContent("mới phết.");
+            comment.setParent_comment_id(1); // Không có bình luận cha
+
+            // Gọi hàm addComment
+            boolean isAdded = dao.addComment(comment);
 
     }
 
