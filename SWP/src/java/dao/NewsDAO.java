@@ -22,7 +22,39 @@ import model.News;
  * @author Hoang
  */
 public class NewsDAO extends DBContext {
+    
+    
+    public News getNewsByID(int newsID) {
+    String sql = "SELECT * FROM Posts WHERE post_id = ? AND status = 1";
+    try {
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setInt(1, newsID);
+        ResultSet rs = st.executeQuery();
+        if (rs.next()) {
+            String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
+            String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
 
+            return new News(
+                rs.getInt("post_id"),
+                rs.getString("title"),
+                rs.getString("content"),
+                rs.getInt("created_by"),
+                rs.getInt("category_id"),
+                rs.getInt("status"),
+                rs.getString("image"),
+                rs.getString("detail"),
+                createdAt,
+                updatedAt
+            );
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null;
+}
+
+    
+    
     public List<Category> getAllCategoryNews() {
         List<Category> cate = new ArrayList<>();
         String sql = "select * from Categories where status = 1";
