@@ -73,30 +73,28 @@ public class ValidFunction {
     }
 
     public String formatDateNews(String date) {
-        // Chuyển từ chuỗi ngày ban đầu (yyyy-MM-dd HH:mm:ss) sang Timestamp
         java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
-        // Định dạng Timestamp thành chuỗi dd/MM/yyyy
         java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
         return dateFormat.format(timestamp);
     }
-    
-    public static String hashPassword(String password) {
+
+    public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
-    
-    public static boolean checkPassword(String password, String hashedPassword) {
+
+    public boolean checkPassword(String password, String hashedPassword) {
         return BCrypt.checkpw(password, hashedPassword);
     }
-    
+
     public static void main(String[] args) {
-//        CustomerDAO dao = new CustomerDAO();
+        ValidFunction valid = new ValidFunction();
         StaffDAO dao = new StaffDAO();
         List<Staff> list = dao.getAllStaff();
-        for(Staff st : list){
+        for (Staff st : list) {
             System.out.println("Staff password: " + st.getPassword());
-            System.out.println("Hash password: " + hashPassword(st.getPassword()));
+            System.out.println("Hash password: " + valid.hashPassword(st.getPassword()));
             System.out.println("");
         }
-        
+
     }
 }

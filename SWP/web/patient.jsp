@@ -22,10 +22,40 @@
         <link rel="stylesheet" type="text/css" href="assets/css/dataTables.bootstrap4.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-        <!--[if lt IE 9]>
-                    <script src="assets/js/html5shiv.min.js"></script>
-                    <script src="assets/js/respond.min.js"></script>
-            <![endif]-->
+        <style>
+            .pagination {
+                float: right;
+                margin: 0 0 5px;
+            }
+            .pagination li a {
+                border: none;
+                font-size: 13px;
+                min-width: 30px;
+                min-height: 30px;
+                color: #999;
+                margin: 0 2px;
+                line-height: 30px;
+                border-radius: 2px !important;
+                text-align: center;
+                padding: 0 6px;
+            }
+            .pagination li a:hover {
+                color: #666;
+            }
+            .pagination li.active a, .pagination li.active a.page-link {
+                background: #03A9F4;
+            }
+            .pagination li.active a:hover {
+                background: #0397d6;
+            }
+            .pagination li.disabled i {
+                color: #ccc;
+            }
+            .pagination li i {
+                font-size: 16px;
+                padding-top: 6px
+            }
+        </style>
     </head>
 
     <body>
@@ -428,7 +458,31 @@
                             </div>
                         </div>
                     </c:if>
+
+                    <div class="clearfix">
+                        <div class="hint-text">Showing <b>  </b> out of <b>  </b> entries</div>
+                        <ul class="pagination">
+                            <c:if test="${page > 1}">
+                                <li class="page-item">
+                                    <a class="page-link" href="patient?page=${page - 1}&patientID=${param.patientID}&patientName=${param.patientName}">Previous</a>
+                                </li>
+                            </c:if>
+
+                            <c:forEach var="i" begin="1" end="${endPage}">
+                                <li class="page-item ${i == page ? 'active' : ''}">
+                                    <a class="page-link" href="patient?page=${i}&patientID=${param.patientID}&patientName=${param.patientName}">${i}</a>
+                                </li>
+                            </c:forEach>
+
+                            <c:if test="${page < endPage}">
+                                <li class="page-item">
+                                    <a class="page-link" href="patient?page=${page + 1}&patientID=${param.patientID}&patientName=${param.patientName}">Next</a>
+                                </li>
+                            </c:if>
+                        </ul>
+                    </div>
                 </div>
+
                 <div class="notification-box">
                     <div class="msg-sidebar notifications msg-noti">
                         <div class="topnav-dropdown-header">

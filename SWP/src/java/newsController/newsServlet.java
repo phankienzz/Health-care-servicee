@@ -67,6 +67,7 @@ public class newsServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             page = 1;
         }
+        
         List<News> pagingPage = new ArrayList<>();
         int totalNews = 0;
         int pageSize = 3;

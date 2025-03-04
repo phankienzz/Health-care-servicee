@@ -4,6 +4,7 @@
  */
 package CustomerController;
 
+import context.ValidFunction;
 import dao.CustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import model.Customer;
 
@@ -51,13 +53,28 @@ public class patient extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ValidFunction valid = new ValidFunction();
         CustomerDAO dao = new CustomerDAO();
-        List<Customer> listPatient = dao.getAllCustomer();
+        String indexPage = request.getParameter("page");
+        int page;
+        int totalNews = 0;
+        int pageSize = 1;
+
+        try {
+            page = Integer.parseInt(indexPage);
+            if (page <= 0) {
+                page = 1;
+            }
+        } catch (NumberFormatException e) {
+            page = 1;
+        }
+
+        List<Customer> listPatient = new ArrayList<>();
         String patientIdStr = request.getParameter("patientID");
         String patientName = request.getParameter("patientName");
 
         try {
-            if (patientIdStr != null && !patientIdStr.isEmpty() && patientName != null && !patientName.isEmpty()) {// Tìm kiếm theo cả ID và Name
+            if (patientIdStr != null && !patientIdStr.isEmpty() && patientName != null && !patientName.isEmpty()) {// ID && Name
                 int patientID = Integer.parseInt(patientIdStr);
                 Customer customer = dao.getCustomerByIdAndName(patientID, patientName);
                 if (customer != null) {
@@ -67,29 +84,35 @@ public class patient extends HttpServlet {
                 } else {
                     request.setAttribute("error", "No patient found with ID: " + patientIdStr + " and name: " + patientName);
                 }
-            } else if (patientIdStr != null && !patientIdStr.isEmpty()) {// Tìm kiếm theo ID
-                
+            } else if (patientIdStr != null && !patientIdStr.isEmpty()) {//  ID
+
                 int patientID = Integer.parseInt(patientIdStr);
                 Customer customer = dao.getCustomerByID(patientID);
                 if (customer != null) {
-                    request.setAttribute("customer", customer); 
+                    request.setAttribute("customer", customer);
                     request.setAttribute("patientID", patientIdStr);
                 } else {
                     request.setAttribute("error", "Patient not found with ID: " + patientIdStr);
                 }
-            } else if (patientName != null && !patientName.isEmpty()) {// Tìm kiếm theo Name
-                listPatient = dao.getCustomerByName(patientName);
+                
+            } else if (patientName != null && !patientName.isEmpty()) {// Name
+                listPatient = dao.getCustomerByName(valid.normalizeName(patientName));
                 if (listPatient.isEmpty()) {
                     request.setAttribute("error", "No patients found with name: " + patientName);
                 } else {
-                    request.setAttribute("listPatient", listPatient); // Gửi danh sách bệnh nhân
+                    request.setAttribute("listPatient", listPatient);
                 }
                 request.setAttribute("patientName", patientName);
             } else {
-                // Nếu không có tham số tìm kiếm, trả về danh sách tất cả bệnh nhân
-                listPatient = dao.getAllCustomer();
+                listPatient = dao.getAllCustomer(page, pageSize);
+                totalNews = 5;
                 request.setAttribute("listPatient", listPatient);
             }
+
+            int endPage = (int) Math.ceil((double) totalNews / pageSize);
+            request.setAttribute("endPage", endPage);
+            request.setAttribute("page", page);
+
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Invalid Patient ID format.");
         }
