@@ -41,7 +41,7 @@ public class Appointment extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Appointment</title>");            
+            out.println("<title>Servlet Appointment</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet Appointment at " + request.getContextPath() + "</h1>");
@@ -59,17 +59,19 @@ public class Appointment extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     private ServiceDAO serviceDAO = new ServiceDAO();
+    private ProfessionalDAO professionalDAO = new ProfessionalDAO();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<Service> services = serviceDAO.getAllService();
+        List<Professional> doctors = professionalDAO.getAllDoctors(); // Lấy danh sách bác sĩ
+
         request.setAttribute("services", services);
-        request.getRequestDispatcher("/appointment.jsp").forward(request, response);
+        request.setAttribute("doctors", doctors); // Gửi danh sách bác sĩ
+
+        request.getRequestDispatcher("appointment.jsp").forward(request, response); // Chỉ gọi forward một lần
     }
-
-
 
     /**
      * Handles the HTTP <code>POST</code> method.

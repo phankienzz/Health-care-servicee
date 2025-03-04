@@ -158,7 +158,7 @@
                                                 <option value="">Select Doctor</option>
                                                 <c:if test="${not empty doctors}">
                                                     <c:forEach var="doctor" items="${doctors}">
-                                                        <option value="${doctor.id}">${doctor.Staff.fullName}</option>
+                                                        <option value="${doctor.staffID}">${doctor.fullName}</option>
                                                     </c:forEach>
                                                 </c:if>
                                             </select>
