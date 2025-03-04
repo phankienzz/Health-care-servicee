@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package Discount;
+package DiscountController;
 
 import dao.DiscountDAO;
 import java.io.IOException;

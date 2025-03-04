@@ -37,6 +37,25 @@ public class DiscountDAO extends DBContext{
         return discountList; // Trả về danh sách khách hàng
     }
     
+    public Discount getDiscountByID(int discountID) {
+        String sql = "select * from Discount where discountID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, discountID);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                return new Discount(
+                        rs.getInt("discountID"),
+                        rs.getString("discountName"),
+                        rs.getDouble("percentage"),
+                        rs.getString("status"));            
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+    
     public void addDiscount(String discountName, double percentage, String status) {
         String sql = "insert Discount(discountName,percentage,status) values (?,?,?)";
         try {
