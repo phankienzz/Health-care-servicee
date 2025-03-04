@@ -1,3 +1,11 @@
+<%-- 
+    Document   : discount
+    Created on : Mar 5, 2025, 1:12:52 AM
+    Author     : Gigabyte
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -295,10 +303,10 @@
                 <div class="content">
                     <div class="row">
                         <div class="col-sm-8 col-6">
-                            <h4 class="page-title">Taxes</h4>
+                            <h4 class="page-title">Discount</h4>
                         </div>
                         <div class="col-sm-4 col-6 text-right m-b-30">
-                            <a href="add-tax.html" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Add Tax</a>
+                            <a href="add-discount.jsp" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Add Discount</a>
                         </div>
                     </div>
                     <div class="row">
@@ -308,63 +316,43 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Tax Name </th>
-                                            <th>Tax Percentage (%) </th>
+                                            <th>Discount Name </th>
+                                            <th>Discount Percentage (%) </th>
                                             <th>Status</th>
                                             <th class="text-right">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>VAT</td>
-                                            <td>14%</td>
-                                            <td>
-                                                <div class="dropdown action-label">
-                                                    <a class="custom-badge status-red dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
-                                                        Inactive
-                                                    </a>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item" href="#">Active</a>
-                                                        <a class="dropdown-item" href="#">Inactive</a>
+                                        <c:forEach var="discount" items="${listDiscount}">
+                                            <tr>
+                                                <td>${discount.discountID}</td>
+                                                <td>${discount.discountName}</td>
+                                                <td>${discount.percentage}%</td>
+                                                <td>
+                                                    <div class="action-label">
+                                                        <c:if test="${discount.status == 'Active'}">
+                                                            <a class="custom-badge status-green " href="#" data-toggle="dropdown" aria-expanded="false">
+                                                                Active
+                                                            </a>
+                                                        </c:if>
+                                                        <c:if test="${discount.status == 'Inactive'}">
+                                                             <a class="custom-badge status-red " href="#" data-toggle="dropdown" aria-expanded="false">
+                                                                Inactive
+                                                            </a>
+                                                        </c:if>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-right">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="edit-tax.html"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_tax"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                </td>
+                                                <td class="text-right">
+                                                    <div class="dropdown dropdown-action">
+                                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            <a class="dropdown-item" href="edit-tax.html"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_tax"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>GST</td>
-                                            <td>30%</td>
-                                            <td>
-                                                <div class="dropdown action-label">
-                                                    <a class="custom-badge status-green dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
-                                                        Active
-                                                    </a>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item" href="#">Active</a>
-                                                        <a class="dropdown-item" href="#">Inactive</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-right">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="edit-tax.html"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_tax"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
