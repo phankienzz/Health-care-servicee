@@ -66,7 +66,8 @@ public class Appointment extends HttpServlet {
             throws ServletException, IOException {
         List<Service> services = serviceDAO.getAllService();
         List<Professional> doctors = professionalDAO.getAllDoctors(); // Lấy danh sách bác sĩ
-
+        MedicalExamination me = new MedicalExamination();
+        
         request.setAttribute("services", services);
         request.setAttribute("doctors", doctors); // Gửi danh sách bác sĩ
 

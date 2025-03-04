@@ -16,7 +16,7 @@ public class ImageServlet extends HttpServlet {
 
   
 
-   private static final String IMAGE_DIR = "C:\\Users\\trang\\Desktop\\SWP22_2\\SWP\\web\\images";
+   private static final String IMAGE_DIR = "D:\\Github\\Health-care-servicee\\SWP\\web\\images";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

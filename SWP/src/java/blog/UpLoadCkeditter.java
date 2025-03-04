@@ -28,7 +28,7 @@ public class UpLoadCkeditter extends HttpServlet {
     }
     
     
-   private static final String IMAGE_DIR = "C:\\Users\\trang\\Desktop\\SWP22_2\\SWP\\web\\images";
+   private static final String IMAGE_DIR = "D:\\Github\\Health-care-servicee\\SWP\\web\\images";
 
      protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

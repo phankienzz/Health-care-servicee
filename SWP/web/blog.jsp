@@ -359,15 +359,23 @@
                                         }
                                     });
                                 } else {
-                                    $("#searchResults").html("");
+                                    // Hiển thị lại danh sách gốc nếu không có từ khóa tìm kiếm
+                                    $.ajax({
+                                        url: "homeblogseverlet",
+                                        method: "GET",
+                                        success: function (response) {
+                                            $("#searchResults").html($(response).find("#searchResults").html());
+                                        }
+                                    });
                                 }
                             });
                         });
+
                     </script>
 
 
 
-                    <div class="row">
+                    <div id="searchResults" class="row">
                         <c:if test="${empty blogs}">
                             <div class="col-12">
                                 <p style="color: red;">⚠️ No blogs available!</p>
@@ -391,7 +399,7 @@
                                             <i class="fa fa-long-arrow-right"></i> Read More
                                         </a>
                                     </div>
-                                    <a href="editblog?postId=${blog.post_id}" class="btn-update">
+                                    <a href="editblog?postId=${blog.post_id}" class="btn btn-warning">
                                         Update
                                     </a>
                                 </div>
