@@ -9,6 +9,7 @@ import dao.RoleDAO;
 import dao.StaffDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import org.mindrot.jbcrypt.BCrypt;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -96,7 +97,7 @@ public class addStaff extends HttpServlet {
             request.setAttribute("mess", "Please check your email");
             request.getRequestDispatcher("add-staff.jsp").forward(request, response);
         } else {
-            staffDAO.createStaff(fullName, email, rand, phone, hireDate, Integer.parseInt(roleID), status);
+            staffDAO.createStaff(fullName, email, valid.hashPassword(rand), phone, hireDate, Integer.parseInt(roleID), status);
             request.setAttribute("mess", "Add staff succesfully");
             request.removeAttribute("firstName");
             request.removeAttribute("lastName");

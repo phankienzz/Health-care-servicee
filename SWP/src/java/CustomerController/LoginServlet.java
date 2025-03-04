@@ -90,9 +90,9 @@ public class LoginServlet extends HttpServlet {
             }
         } else if ("staff".equals(userType)) {
             StaffDAO dao = new StaffDAO();
-            Staff staff = dao.staffLogin(user, password);
-
-            if (staff == null) {
+            Staff staff = dao.staffLogin(user);
+            
+            if (staff == null || !valid.checkPassword(password, staff.getPassword()) ) {
                 request.setAttribute("error", "Invalid email or password!");
                 request.setAttribute("userType", "staff");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
