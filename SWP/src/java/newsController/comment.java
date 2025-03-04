@@ -87,7 +87,6 @@ public class comment extends HttpServlet {
 
                 CommentDAO dao = new CommentDAO();
 
-                // 🔹 Nếu có parent_comment_id, tìm tên của người bình luận gốc
                 if (parentCommentId != 0) {
                     Comment parentComment = dao.getCommentById(parentCommentId);
                     if (parentComment != null) {

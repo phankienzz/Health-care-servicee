@@ -85,7 +85,6 @@ public class detailNews extends HttpServlet {
         news.setCreated_at(valid.formatDateNews(news.getCreated_at()));
         news.setUpdated_at(valid.formatDateNews(news.getUpdated_at()));
 
-        // 🔹 Nếu có parent_comment_id, tìm tên của người bình luận gốc
         if (parentCommentIdStr != null && !parentCommentIdStr.isEmpty()) {
             int parentCommentId = Integer.parseInt(parentCommentIdStr);
             Comment parentComment = commentDAO.getCommentById(parentCommentId);

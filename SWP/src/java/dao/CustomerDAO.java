@@ -96,6 +96,37 @@ public class CustomerDAO extends DBContext {
         }
         return null;
     }
+    
+    public List<Customer> getAllCustomer() {
+        List<Customer> customers = new ArrayList<>();
+        String sql = "SELECT * FROM Customer";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int customerID = rs.getInt("customerID");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String fullName = rs.getString("fullName");
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                String accountStatus = rs.getString("accountStatus");
+                String registrationDate = rs.getString("registrationDate");
+                String dateOfBirth = rs.getString("dateOfBirth");
+                String gender = rs.getString("gender");
+                String profilePicture = rs.getString("profilePicture");
+
+                Customer customer = new Customer(customerID, username, password, fullName, email, phone, address,
+                        accountStatus, registrationDate, dateOfBirth, gender, profilePicture);
+                customers.add(customer); // Thêm customer vào danh sách
+            }
+
+        } catch (SQLException e) {
+        }
+        return customers; // Trả về danh sách khách hàng
+    }
+    
 
     public List<Customer> getAllCustomer(int index, int pageSize) {
         List<Customer> customers = new ArrayList<>();

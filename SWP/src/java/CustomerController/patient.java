@@ -57,8 +57,8 @@ public class patient extends HttpServlet {
         CustomerDAO dao = new CustomerDAO();
         String indexPage = request.getParameter("page");
         int page;
-        int totalNews = 0;
-        int pageSize = 1;
+        int totalPatient = 0; 
+        int pageSize = 2;
 
         try {
             page = Integer.parseInt(indexPage);
@@ -74,52 +74,47 @@ public class patient extends HttpServlet {
         String patientName = request.getParameter("patientName");
 
         try {
-            if (patientIdStr != null && !patientIdStr.isEmpty() && patientName != null && !patientName.isEmpty()) {// ID && Name
+            if (patientIdStr != null && !patientIdStr.isEmpty() && patientName != null && !patientName.isEmpty()) {
+                // Tìm theo ID và Tên
                 int patientID = Integer.parseInt(patientIdStr);
                 Customer customer = dao.getCustomerByIdAndName(patientID, patientName);
                 if (customer != null) {
-                    request.setAttribute("customer", customer);
-                    request.setAttribute("patientID", patientIdStr);
-                    request.setAttribute("patientName", patientName);
+                    listPatient.add(customer);
+                    totalPatient = 1;
                 } else {
                     request.setAttribute("error", "No patient found with ID: " + patientIdStr + " and name: " + patientName);
                 }
-            } else if (patientIdStr != null && !patientIdStr.isEmpty()) {//  ID
-
-                int patientID = Integer.parseInt(patientIdStr);
+            } else if (patientIdStr != null && !patientIdStr.isEmpty()) {
+                int patientID = Integer.parseInt(valid.normalizeName(patientIdStr));
                 Customer customer = dao.getCustomerByID(patientID);
                 if (customer != null) {
-                    request.setAttribute("customer", customer);
-                    request.setAttribute("patientID", patientIdStr);
+                    listPatient.add(customer);
+                    totalPatient = 1;
                 } else {
                     request.setAttribute("error", "Patient not found with ID: " + patientIdStr);
                 }
-                
-            } else if (patientName != null && !patientName.isEmpty()) {// Name
-                listPatient = dao.getCustomerByName(valid.normalizeName(patientName));
+            } else if (patientName != null && !patientName.isEmpty()) {
+                listPatient = dao.getCustomerByName(valid.normalizeName(patientName), page, pageSize);
+                totalPatient = dao.getCustomerByName(valid.normalizeName(patientName)).size();
                 if (listPatient.isEmpty()) {
                     request.setAttribute("error", "No patients found with name: " + patientName);
-                } else {
-                    request.setAttribute("listPatient", listPatient);
                 }
-                request.setAttribute("patientName", patientName);
             } else {
                 listPatient = dao.getAllCustomer(page, pageSize);
-                totalNews = 5;
-                request.setAttribute("listPatient", listPatient);
+                totalPatient = dao.getAllCustomer().size();
             }
 
-            int endPage = (int) Math.ceil((double) totalNews / pageSize);
+            int endPage = (int) Math.ceil((double) totalPatient / pageSize);
+            request.setAttribute("listPatient", listPatient);
+            request.setAttribute("totalPatient", totalPatient);
+            request.setAttribute("currentEntries", listPatient.size());
             request.setAttribute("endPage", endPage);
             request.setAttribute("page", page);
-
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Invalid Patient ID format.");
         }
 
-        request.setAttribute("listPatient", listPatient);
         request.getRequestDispatcher("patient.jsp").forward(request, response);
-
     }
 
     @Override

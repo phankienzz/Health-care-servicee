@@ -460,7 +460,7 @@
                     </c:if>
 
                     <div class="clearfix">
-                        <div class="hint-text">Showing <b>  </b> out of <b>  </b> entries</div>
+                        <div class="hint-text">Showing <b>${currentEntries}</b> out of <b>${totalPatient}  </b> entries</div>
                         <ul class="pagination">
                             <c:if test="${page > 1}">
                                 <li class="page-item">
