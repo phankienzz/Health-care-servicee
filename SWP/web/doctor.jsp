@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import=" java.util.List, model.Professional" %>
 <!DOCTYPE html>
 <html lang="zxx">
     <head>

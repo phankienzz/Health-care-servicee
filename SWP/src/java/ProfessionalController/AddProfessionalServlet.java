@@ -153,6 +153,8 @@ public class AddProfessionalServlet extends HttpServlet {
         if (success) {
              session.setAttribute("specializations", dbHelper.getallSpecialization());
             session.setAttribute("professionals", list);
+            request.setAttribute("professional", list);
+           
             response.sendRedirect("manage-doctor.jsp");
         } else {
             request.setAttribute("errorMessage", "Update failed!");
