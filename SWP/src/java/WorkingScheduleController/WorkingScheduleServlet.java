@@ -19,10 +19,12 @@ public class WorkingScheduleServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         try {
-            int professionalID = Integer.parseInt(request.getParameter("professionalID"));
+            WorkingScheduleDAO workingDAO = new WorkingScheduleDAO();
+            String professionalInfor = request.getParameter("professionalID"); 
             List<WorkingSchedule> schedules = new ArrayList<>();
 
             // Các ngày trong tuần tương ứng với form JSP
+            int ID = workingDAO.extractID_FromString(professionalInfor);
             int[] dayValues = {2, 3, 4, 5, 6, 7, 1};
             String[] shifts = {"MORNING", "AFTERNOON", "EVENING"};
 
@@ -35,7 +37,7 @@ public class WorkingScheduleServlet extends HttpServlet {
                         Time startTime = Time.valueOf(startParam + ":00");
                         Time endTime = Time.valueOf(endParam + ":00");
                         
-                        WorkingSchedule schedule = new WorkingSchedule(professionalID, day, startTime, endTime, shift);
+                        WorkingSchedule schedule = new WorkingSchedule(ID, day, startTime, endTime, shift);
                         schedules.add(schedule);
                     }
                 }
@@ -44,10 +46,10 @@ public class WorkingScheduleServlet extends HttpServlet {
             // Lưu vào database
             WorkingScheduleDAO scheduleDAO = new WorkingScheduleDAO();
             for (WorkingSchedule schedule : schedules) {
-                scheduleDAO.addWorkingSchedule(schedule);
+                scheduleDAO.addSchedule(schedule);
             }
-
-            response.sendRedirect("schedule_success.jsp");
+              
+            response.sendRedirect("loadmanage");
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("error.jsp");

@@ -13,17 +13,17 @@
     <body>
         <div class="container mt-4">
             <h2 class="text-center">Tạo Lịch Làm Việc Cho Bác Sĩ</h2>
-            <form id="scheduleForm" action="save_schedule.jsp" method="POST">
+            <form id="scheduleForm" action="saveSchedule" method="POST">
                 <div class="mb-3">
                     <label class="form-label">Chọn bác sĩ:</label>
                     <select name="professionalID" class="form-select" required>
-                        <option value="1">Bác sĩ Nguyễn Văn A</option>
-                        <option value="2">Bác sĩ Trần Thị B</option>
-                        <option value="3">Bác sĩ Lê Văn C</option>
-                        <option value="4">Bác sĩ Hoàng Thị D</option>
-                        <option value="5">Bác sĩ Phạm Văn E</option>
+                        <c:forEach var="infor" items="${professional_infor_List}">
+                            <option value="${infor}">${infor}</option>
+                        </c:forEach>
                     </select>
                 </div>
+
+
                 <div class="mb-3">
                     <label class="form-label">Chọn lịch làm việc:</label>
                     <c:set var="days" value="Thứ Hai,Thứ Ba,Thứ Tư,Thứ Năm,Thứ Sáu,Thứ Bảy,Chủ Nhật"/>

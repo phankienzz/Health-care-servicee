@@ -1,5 +1,6 @@
 package dao;
 
+import context.DBContext;
 import model.WorkingSchedule;
 import java.sql.*;
 import java.util.ArrayList;
@@ -7,136 +8,77 @@ import java.util.List;
 
 public class WorkingScheduleDAO {
 
-    private final String JDBC_URL = "jdbc:mysql://localhost:3306/hospital_db";
-    private final String JDBC_USER = "root";
-    private final String JDBC_PASSWORD = "yourpassword";
+    private Connection connection;
 
-    public List<WorkingSchedule> getAllWorkingSchedules() {
-        List<WorkingSchedule> schedules = new ArrayList<>();
+    public WorkingScheduleDAO() {
+        try {
+            DBContext db = new DBContext();
+            this.connection = db.connection;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Lấy tất cả lịch làm việc
+    public List<WorkingSchedule> getAllSchedules() {
+        List<WorkingSchedule> scheduleList = new ArrayList<>();
         String sql = "SELECT * FROM WorkingSchedule";
 
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
-
+        try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
             while (rs.next()) {
-                schedules.add(mapResultSetToSchedule(rs));
+                scheduleList.add(mapResultSetToSchedule(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return schedules;
+        return scheduleList;
     }
 
-    public WorkingSchedule getScheduleByID(int scheduleID) {
-        String sql = "SELECT * FROM WorkingSchedule WHERE scheduleID = ?";
-
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, scheduleID);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return mapResultSetToSchedule(rs);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public List<WorkingSchedule> getSchedulesByProfessionalID(int professionalID) {
-        return getSchedulesByField("professionalID", professionalID);
-    }
-
-    public List<WorkingSchedule> getSchedulesByDayOfWeek(int dayOfWeek) {
-        return getSchedulesByField("dayOfWeek", dayOfWeek);
-    }
-
-    public List<WorkingSchedule> getSchedulesByShift(String shift) {
-        List<WorkingSchedule> schedules = new ArrayList<>();
-        String sql = "SELECT * FROM WorkingSchedule WHERE shift = ?";
-
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, shift);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    schedules.add(mapResultSetToSchedule(rs));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return schedules;
-    }
-
-    public boolean addWorkingSchedule(WorkingSchedule schedule) {
+    // Thêm lịch làm việc mới
+    public void addSchedule(WorkingSchedule schedule) {
         String sql = "INSERT INTO WorkingSchedule (professionalID, dayOfWeek, startTime, endTime, shift) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, schedule.getProfessionalID());
-            stmt.setInt(2, schedule.getDayOfWeek());
-            stmt.setTime(3, schedule.getStartTime());
-            stmt.setTime(4, schedule.getEndTime());
-            stmt.setString(5, schedule.getShift());
-
-            return stmt.executeUpdate() > 0;
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, schedule.getProfessionalID());
+            st.setInt(2, schedule.getDayOfWeek());
+            st.setTime(3, schedule.getStartTime());
+            st.setTime(4, schedule.getEndTime());
+            st.setString(5, schedule.getShift());
+            st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
-    public boolean updateWorkingSchedule(WorkingSchedule schedule) {
-        String sql = "UPDATE WorkingSchedule SET professionalID=?, dayOfWeek=?, startTime=?, endTime=?, shift=? WHERE scheduleID=?";
+    // Cập nhật lịch làm việc
+    public void updateSchedule(WorkingSchedule schedule) {
+        String sql = "UPDATE WorkingSchedule SET dayOfWeek = ?, startTime = ?, endTime = ?, shift = ? WHERE scheduleID = ?";
 
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, schedule.getProfessionalID());
-            stmt.setInt(2, schedule.getDayOfWeek());
-            stmt.setTime(3, schedule.getStartTime());
-            stmt.setTime(4, schedule.getEndTime());
-            stmt.setString(5, schedule.getShift());
-            stmt.setInt(6, schedule.getScheduleID());
-
-            return stmt.executeUpdate() > 0;
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, schedule.getDayOfWeek());
+            st.setTime(2, schedule.getStartTime());
+            st.setTime(3, schedule.getEndTime());
+            st.setString(4, schedule.getShift());
+            st.setInt(5, schedule.getScheduleID());
+            st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
-    public boolean deleteWorkingSchedule(int scheduleID) {
-        String sql = "DELETE FROM WorkingSchedule WHERE scheduleID=?";
+    // Xóa lịch làm việc
+    public void deleteSchedule(int scheduleID) {
+        String sql = "DELETE FROM WorkingSchedule WHERE scheduleID = ?";
 
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, scheduleID);
-            return stmt.executeUpdate() > 0;
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, scheduleID);
+            st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
-    private List<WorkingSchedule> getSchedulesByField(String field, int value) {
-        List<WorkingSchedule> schedules = new ArrayList<>();
-        String sql = "SELECT * FROM WorkingSchedule WHERE " + field + " = ?";
-
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, value);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    schedules.add(mapResultSetToSchedule(rs));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return schedules;
-    }
-
+    // Chuyển đổi ResultSet thành WorkingSchedule
     private WorkingSchedule mapResultSetToSchedule(ResultSet rs) throws SQLException {
         return new WorkingSchedule(
                 rs.getInt("scheduleID"),
@@ -147,13 +89,92 @@ public class WorkingScheduleDAO {
                 rs.getString("shift")
         );
     }
+
+    // Lấy danh sách chuyên gia theo roleID
+    public List<String> getProfessionalsByRole(List<Integer> roleIds) {
+        List<String> result = new ArrayList<>();
+        String sql = "SELECT p.professionalID, s.staffID, s.fullName AS staffName, s.roleID "
+                + "FROM MedicalSystem.dbo.Professional p "
+                + "JOIN MedicalSystem.dbo.Staff s ON p.staffID = s.staffID "
+                + "WHERE s.roleID IN (" + roleIds.toString().replace("[", "").replace("]", "") + ")";
+
+        try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+            while (rs.next()) {
+                result.add("ProfessionalID: " + rs.getInt("professionalID") + ", "
+                        + "StaffID: " + rs.getInt("staffID") + ", "
+                        + "Staff Name: " + rs.getString("staffName") + ", "
+                        + "RoleID: " + rs.getInt("roleID"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+//    public static List<String> extractProfessionalIDs(List<String> professionalData) {
+//        List<String> professionalIDs = new ArrayList<>();
+//
+//        for (String data : professionalData) {
+//            try {
+//                // Tìm vị trí của "ProfessionalID: "
+//                int startIndex = data.indexOf("ProfessionalID: ") + "ProfessionalID: ".length();
+//                int endIndex = data.indexOf(",", startIndex);
+//
+//                // Cắt chuỗi để lấy ID dưới dạng String
+//                if (startIndex != -1 && endIndex != -1) {
+//                    String idStr = data.substring(startIndex, endIndex).trim();
+//                    professionalIDs.add(idStr);
+//                }
+//            } catch (IndexOutOfBoundsException e) {
+//                System.err.println("Lỗi khi phân tích ID từ chuỗi: " + data);
+//            }
+//        }
+//
+//        return professionalIDs;
+//    }
+    public static List<String> extractProfessionalInfo(List<String> professionalData) {
+        List<String> professionalInfoList = new ArrayList<>();
+
+        for (String data : professionalData) {
+            try {
+                // Tách ProfessionalID
+                int idStart = data.indexOf("ProfessionalID: ") + "ProfessionalID: ".length();
+                int idEnd = data.indexOf(", StaffID:", idStart);
+                String professionalID = data.substring(idStart, idEnd).trim();
+
+                // Tách Staff Name
+                int nameStart = data.indexOf("Staff Name: ") + "Staff Name: ".length();
+                int nameEnd = data.indexOf(", RoleID:", nameStart);
+                String staffName = data.substring(nameStart, nameEnd).trim();
+
+                // Gộp lại dưới dạng "ID - Name"
+                professionalInfoList.add(professionalID + " - " + staffName);
+            } catch (IndexOutOfBoundsException e) {
+                System.err.println("Lỗi khi phân tích dữ liệu: " + data);
+            }
+        }
+        return professionalInfoList;
+    }
+
+    public static int extractID_FromString(String professionalInfo) {
+        try {
+            // Tách phần ID trước dấu "-"
+            String idPart = professionalInfo.split("-")[0].trim();
+            return Integer.parseInt(idPart);
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            System.err.println("Lỗi khi tách ID từ chuỗi: " + professionalInfo);
+            return -1; // Trả về -1 nếu lỗi
+        }
+    }
+
     public static void main(String[] args) {
         WorkingScheduleDAO dao = new WorkingScheduleDAO();
-        Time startTime = Time.valueOf("08:00:00");
-        Time endTime = Time.valueOf("12:00:00");
-        WorkingSchedule schedule = new WorkingSchedule(5, 6, startTime, endTime, "MORNING");
-        dao.addWorkingSchedule(schedule);
-        
-        
+        List<Integer> roles = new ArrayList<>();
+        roles.add(4);
+        roles.add(5);
+        List<String> list = dao.getProfessionalsByRole(roles);
+        for (String ws : list) {
+            System.out.println(ws);
+        }
     }
 }
