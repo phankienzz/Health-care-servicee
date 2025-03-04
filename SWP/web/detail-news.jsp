@@ -66,7 +66,15 @@
                 padding: 15px;
                 border-radius: 5px;
             }
+            .comment-content p {
+                word-wrap: break-word;  /* Ngắt từ khi quá dài */
+                overflow-wrap: break-word;  /* Hỗ trợ xuống dòng trên mọi trình duyệt */
+                max-width: 100%; /* Giới hạn nội dung không tràn ra ngoài */
+            }
+            html{
+                scroll-behavior: smooth;
 
+            }
         </style>
 
     </head>
@@ -158,9 +166,10 @@
                                 <div class="comment-area mt-4 mb-5">
                                     <h4 class="mb-4">${comments.size()} Comments on ${newsDetail.title}</h4>
                                     <ul class="comment-tree list-unstyled">
+                                        <%-- Hàm hiển thị bình luận theo cấp độ --%>
                                         <c:forEach var="comment" items="${comments}">
                                             <c:if test="${comment.parent_comment_id == 0}">
-                                                <li class="mb-5">
+                                                <li class="mb-4">
                                                     <div class="comment-area-box">
                                                         <div class="comment-thumb float-left">
                                                             <img alt="" src="assets2/images/blog/testimonial1.jpg" class="img-fluid">
@@ -178,37 +187,18 @@
                                                             <p>${comment.content}</p>
                                                         </div>
                                                     </div>
+
+                                                    <%-- Gọi đệ quy để hiển thị bình luận con --%>
                                                     <ul class="child-comments list-unstyled ml-5">
-                                                        <c:forEach var="reply" items="${comments}">
-                                                            <c:if test="${reply.parent_comment_id == comment.comment_id}">
-                                                                <li class="mb-3">
-                                                                    <div class="comment-area-box">
-                                                                        <div class="comment-thumb float-left">
-                                                                            <img alt="" src="assets2/images/blog/testimonial2.jpg" class="img-fluid">
-                                                                        </div>
-                                                                        <div class="comment-info">
-                                                                            <h5 class="mb-1">${reply.customerID.fullName}</h5>
-                                                                            <span>${reply.create_at}</span>
-                                                                        </div>
-                                                                        <div class="comment-meta mt-2">
-                                                                            <a href="?newsID=${newsDetail.post_id}&parent_comment_id=${comment.comment_id}#comment-form">
-                                                                                <i class="icofont-reply mr-2 text-muted"></i>Reply
-                                                                            </a>
-                                                                        </div>
-                                                                        <div class="comment-content mt-3">
-                                                                            <p>
-                                                                                <strong>Reply to ${comment.customerID.fullName}:</strong>
-                                                                                ${reply.content}
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                            </c:if>
-                                                        </c:forEach>
+                                                        <jsp:include page="comment-reply.jsp">
+                                                            <jsp:param name="parentId" value="${comment.comment_id}" />
+                                                        </jsp:include>
                                                     </ul>
                                                 </li>
                                             </c:if>
                                         </c:forEach>
+
+
                                     </ul>
                                 </div>
                             </div>
@@ -223,6 +213,7 @@
                                             <c:choose>
                                                 <c:when test="${not empty requestScope.parent_comment_name}">
                                                     Reply to <b>${requestScope.parent_comment_name}</b>
+                                                    <a href="detailNews?newsID=${newsDetail.post_id}" class="text-danger ml-2">Cancel Reply</a>
                                                 </c:when>
                                                 <c:otherwise>
                                                     Write a comment

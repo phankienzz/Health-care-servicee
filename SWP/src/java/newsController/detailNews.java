@@ -85,12 +85,17 @@ public class detailNews extends HttpServlet {
         news.setCreated_at(valid.formatDateNews(news.getCreated_at()));
         news.setUpdated_at(valid.formatDateNews(news.getUpdated_at()));
 
+        int parentCommentId = 0;
         if (parentCommentIdStr != null && !parentCommentIdStr.isEmpty()) {
-            int parentCommentId = Integer.parseInt(parentCommentIdStr);
-            Comment parentComment = commentDAO.getCommentById(parentCommentId);
-
-            if (parentComment != null) {
-                request.setAttribute("parent_comment_name", parentComment.getCustomerID().getFullName());
+            try {
+                parentCommentId = Integer.parseInt(parentCommentIdStr);
+                Comment parentComment = commentDAO.getCommentById(parentCommentId);
+                if (parentComment != null) {
+                    request.setAttribute("parent_comment_name", parentComment.getCustomerID().getFullName());
+                    request.setAttribute("parent_comment_id", parentCommentId); 
+                }
+            } catch (NumberFormatException e) {
+                parentCommentId = 0; 
             }
         }
 
