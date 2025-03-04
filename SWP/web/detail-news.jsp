@@ -30,32 +30,44 @@
         <!-- Main Stylesheet -->
         <link rel="stylesheet" href="assets2/css/style.css">
         <script>
-    function showReplyForm(commentId) {
-        // Tìm tất cả các form trả lời và ẩn chúng
-        document.querySelectorAll("#replyForm").forEach(form => {
-            form.style.display = "none";
-        });
+            function showReplyForm(commentId) {
+                // Tìm tất cả các form trả lời và ẩn chúng
+                document.querySelectorAll("#replyForm").forEach(form => {
+                    form.style.display = "none";
+                });
 
-        // Cập nhật giá trị parentCommentId
-        const parentCommentIdField = document.getElementById("parentCommentId");
-        if (parentCommentIdField) {
-            parentCommentIdField.value = commentId;
-        }
+                // Cập nhật giá trị parentCommentId
+                const parentCommentIdField = document.getElementById("parentCommentId");
+                if (parentCommentIdField) {
+                    parentCommentIdField.value = commentId;
+                }
 
-        // Hiển thị form trả lời dưới bình luận được chọn
-        const replyForm = document.getElementById("replyForm");
-        if (replyForm) {
-            replyForm.style.display = "block";
+                // Hiển thị form trả lời dưới bình luận được chọn
+                const replyForm = document.getElementById("replyForm");
+                if (replyForm) {
+                    replyForm.style.display = "block";
 
-            // Gắn form vào đúng vị trí dưới bình luận
-            const commentBox = document.querySelector(`[onclick="showReplyForm(${commentId});"]`).closest("li");
-            if (commentBox) {
-                commentBox.appendChild(replyForm);
+                    // Gắn form vào đúng vị trí dưới bình luận
+                    const commentBox = document.querySelector(`[onclick="showReplyForm(${commentId});"]`).closest("li");
+                    if (commentBox) {
+                        commentBox.appendChild(replyForm);
+                    }
+                }
             }
-        }
-    }
-</script>
+        </script>
+        <style>
+            .child-comments {
+                margin-left: 50px; /* Thụt vào */
+                border-left: 2px solid #ddd;
+                padding-left: 15px;
+            }
+            .comment-area-box {
+                background: #f9f9f9;
+                padding: 15px;
+                border-radius: 5px;
+            }
 
+        </style>
 
     </head>
 
@@ -146,11 +158,9 @@
                                 <div class="comment-area mt-4 mb-5">
                                     <h4 class="mb-4">${comments.size()} Comments on ${newsDetail.title}</h4>
                                     <ul class="comment-tree list-unstyled">
-                                        <!-- Gọi hàm hiển thị bình luận đệ quy -->
                                         <c:forEach var="comment" items="${comments}">
                                             <c:if test="${comment.parent_comment_id == 0}">
                                                 <li class="mb-5">
-                                                    <!-- Hiển thị bình luận gốc -->
                                                     <div class="comment-area-box">
                                                         <div class="comment-thumb float-left">
                                                             <img alt="" src="assets2/images/blog/testimonial1.jpg" class="img-fluid">
@@ -160,7 +170,7 @@
                                                             <span>${comment.create_at}</span>
                                                         </div>
                                                         <div class="comment-meta mt-2">
-                                                            <a href="javascript:void(0);" onclick="showReplyForm(${comment.comment_id});">
+                                                            <a href="?newsID=${newsDetail.post_id}&parent_comment_id=${comment.comment_id}#comment-form">
                                                                 <i class="icofont-reply mr-2 text-muted"></i>Reply
                                                             </a>
                                                         </div>
@@ -168,72 +178,30 @@
                                                             <p>${comment.content}</p>
                                                         </div>
                                                     </div>
-
-
-                                                    <form method="post" action="comment" id="replyForm" style="display: none; margin-top: 10px;" >
-                                                        <h4 class="mb-4">Reply a comment</h4>
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <input class="form-control" type="text" name="name" value="${sessionScope.customerAccount.fullName}" id="name" placeholder="Name:" required readonly>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <input class="form-control" type="email" name="mail" value="${sessionScope.customerAccount.email}" id="mail" placeholder="Email:" required readonly>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <textarea class="form-control mb-4" name="content" id="comment" cols="30" rows="5" placeholder="Write your comment here..." required></textarea>
-                                                        <input type="hidden" name="newsID" value="${newsDetail.post_id}">
-                                                        <input type="hidden" name="customerId" value="${sessionScope.customerAccount.customerID}">
-                                                        <input type="hidden" name="parentCommentId" id="parentCommentId" value="">
-
-                                                        <input class="btn btn-main-2 btn-round-full" type="submit" name="submit-comment" id="submit_comment" value="Submit Comment">
-                                                    </form>
-
-
-                                                    <ul class="list-unstyled ml-5">
-                                                        <c:forEach var="childComment" items="${comments}">
-                                                            <c:if test="${childComment.parent_comment_id == comment.comment_id}">
-                                                                <li class="mb-4">
+                                                    <ul class="child-comments list-unstyled ml-5">
+                                                        <c:forEach var="reply" items="${comments}">
+                                                            <c:if test="${reply.parent_comment_id == comment.comment_id}">
+                                                                <li class="mb-3">
                                                                     <div class="comment-area-box">
                                                                         <div class="comment-thumb float-left">
                                                                             <img alt="" src="assets2/images/blog/testimonial2.jpg" class="img-fluid">
                                                                         </div>
                                                                         <div class="comment-info">
-                                                                            <h5 class="mb-1">${childComment.customerID.fullName}</h5>
-                                                                            <span>${childComment.create_at}</span>
+                                                                            <h5 class="mb-1">${reply.customerID.fullName}</h5>
+                                                                            <span>${reply.create_at}</span>
                                                                         </div>
                                                                         <div class="comment-meta mt-2">
-                                                                            <a href="javascript:void(0);" onclick="showReplyForm(${childComment.comment_id});">
+                                                                            <a href="?newsID=${newsDetail.post_id}&parent_comment_id=${comment.comment_id}#comment-form">
                                                                                 <i class="icofont-reply mr-2 text-muted"></i>Reply
                                                                             </a>
                                                                         </div>
                                                                         <div class="comment-content mt-3">
-                                                                            <p>${childComment.content}</p>
+                                                                            <p>
+                                                                                <strong>Reply to ${comment.customerID.fullName}:</strong>
+                                                                                ${reply.content}
+                                                                            </p>
                                                                         </div>
                                                                     </div>
-                                                                    <ul class="list-unstyled ml-5">
-                                                                        <c:forEach var="nestedComment" items="${comments}">
-                                                                            <c:if test="${nestedComment.parent_comment_id == childComment.comment_id}">
-                                                                                <li class="mb-4">
-                                                                                    <div class="comment-area-box">
-                                                                                        <div class="comment-thumb float-left">
-                                                                                            <img alt="" src="assets2/images/blog/testimonial3.jpg" class="img-fluid">
-                                                                                        </div>
-                                                                                        <div class="comment-info">
-                                                                                            <h5 class="mb-1">${nestedComment.customerID.fullName}</h5>
-                                                                                            <span>${nestedComment.create_at}</span>
-                                                                                        </div>
-                                                                                        <div class="comment-content mt-3">
-                                                                                            <p>${nestedComment.content}</p>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </li>
-                                                                            </c:if>
-                                                                        </c:forEach>
-                                                                    </ul>
                                                                 </li>
                                                             </c:if>
                                                         </c:forEach>
@@ -251,7 +219,17 @@
                             <div class="col-lg-12">                                    
                                 <c:if test="${sessionScope.customerAccount != null}">
                                     <form action="comment" method="post" class="comment-form my-5" id="comment-form">
-                                        <h4 class="mb-4">${param.parent_comment_id != null ? "Reply to a comment" : "Write a comment"}</h4>
+                                        <h4 class="mb-4">
+                                            <c:choose>
+                                                <c:when test="${not empty requestScope.parent_comment_name}">
+                                                    Reply to <b>${requestScope.parent_comment_name}</b>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    Write a comment
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </h4>
+
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -267,7 +245,7 @@
                                         <textarea class="form-control mb-4" name="content" id="comment" cols="30" rows="5" placeholder="Write your comment here..." required></textarea>
                                         <input type="hidden" name="newsID" value="${newsDetail.post_id}">
                                         <input type="hidden" name="customerId" value="${sessionScope.customerAccount.customerID}">
-                                        <input type="hidden" name="parent_comment_id" value="${param.parent_comment_id != null ? param.parent_comment_id : 0}">
+                                        <input type="hidden" name="parent_comment_id" value="${requestScope.parent_comment_id != null ? requestScope.parent_comment_id : 0}">
 
                                         <input class="btn btn-main-2 btn-round-full" type="submit" name="submit-comment" id="submit_comment" value="Submit">
                                     </form>
@@ -280,6 +258,28 @@
                         </div>
                     </div>
 
+
+                    <form method="post" action="comment" id="replyForm" style="display: none; margin-top: 10px;" >
+                        <h4 class="mb-4">Reply a comment</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="name" value="${sessionScope.customerAccount.fullName}" id="name" placeholder="Name:" required readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input class="form-control" type="email" name="mail" value="${sessionScope.customerAccount.email}" id="mail" placeholder="Email:" required readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <textarea class="form-control mb-4" name="content" id="comment" cols="30" rows="5" placeholder="Write your comment here..." required></textarea>
+                        <input type="hidden" name="newsID" value="${newsDetail.post_id}">
+                        <input type="hidden" name="customerId" value="${sessionScope.customerAccount.customerID}">
+                        <input type="hidden" name="parentCommentId" id="parentCommentId" value="">
+
+                        <input class="btn btn-main-2 btn-round-full" type="submit" name="submit-comment" id="submit_comment" value="Submit Comment">
+                    </form>
 
                     <div class="col-lg-4">
                         <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0">

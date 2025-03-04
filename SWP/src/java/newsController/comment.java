@@ -72,7 +72,9 @@ public class comment extends HttpServlet {
 
             int postId = Integer.parseInt(postIdParam);
             int customerId = Integer.parseInt(customerIdParam);
-            int parentCommentId = parentCommentIdParam != null && !parentCommentIdParam.isEmpty() ? Integer.parseInt(parentCommentIdParam) : 0; // Nếu không có parent_comment_id, coi là comment gốc.
+            int parentCommentId = parentCommentIdParam != null && !parentCommentIdParam.isEmpty()
+                    ? Integer.parseInt(parentCommentIdParam) : 0; // Nếu không có parent_comment_id, coi là comment gốc.
+
             CustomerDAO customerDAO = new CustomerDAO();
             Customer customer = customerDAO.getCustomerByID(customerId);
 
@@ -84,10 +86,19 @@ public class comment extends HttpServlet {
                 comment.setParent_comment_id(parentCommentId);
 
                 CommentDAO dao = new CommentDAO();
+
+                // 🔹 Nếu có parent_comment_id, tìm tên của người bình luận gốc
+                if (parentCommentId != 0) {
+                    Comment parentComment = dao.getCommentById(parentCommentId);
+                    if (parentComment != null) {
+                        request.setAttribute("parent_comment_name", parentComment.getCustomerID().getFullName());
+                    }
+                }
+
                 boolean isAdded = dao.addComment(comment);
 
                 if (isAdded) {
-                    response.sendRedirect("detailNews?newsID=" + postId + "&commentSuccess=true");
+                    response.sendRedirect("detailNews?newsID=" + postId + "&commentSuccess=true&parent_comment_id=" + parentCommentId);
                 } else {
                     request.setAttribute("errorMessage", "Unable to add your comment. Please try again.");
                     request.getRequestDispatcher("detailNews?newsID=" + postId).forward(request, response);
@@ -99,7 +110,7 @@ public class comment extends HttpServlet {
         } catch (NumberFormatException e) {
             request.setAttribute("errorMessage", "Invalid input: Post ID or Customer ID is not valid.");
             request.getRequestDispatcher("error-page.jsp").forward(request, response);
-        } 
+        }
     }
 
     /**
