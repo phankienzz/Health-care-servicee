@@ -1,9 +1,3 @@
-<%-- 
-    Document   : add-doctor.jsp
-    Created on : Mar 3, 2025, 9:12:02 PM
-    Author     : Phan Huu Kien
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <!DOCTYPE html>
@@ -426,7 +420,7 @@
                                     </div>
 
 
-                                    <script>
+<!--                                    <script>
                                         document.getElementById("profilePicture").addEventListener("change", function () {
                                             var file = this.files[0];
                                             var errorMessage = document.getElementById("fileError");
@@ -440,7 +434,7 @@
                                                 }
                                             }
                                         });
-                                    </script>
+                                    </script>-->
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
