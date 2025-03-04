@@ -76,21 +76,15 @@ public class ValidFunction {
         return dateFormat.format(timestamp);
     }
     
-    public static String hashPassword(String password) {
+    public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
     
-    public static boolean checkPassword(String password, String hashedPassword) {
+    public boolean checkPassword(String password, String hashedPassword) {
         return BCrypt.checkpw(password, hashedPassword);
     }
     
     public static void main(String[] args) {
-        CustomerDAO dao = new CustomerDAO();
-        List<Customer> list = dao.getAllCustomer();
-        for(Customer cus : list){
-            System.out.println("Customer password: " + cus.getPassword());
-            System.out.println("Hash password: " + hashPassword(cus.getPassword()));
-        }
         
     }
 }

@@ -55,7 +55,7 @@ public class LoginServlet extends HttpServlet {
         String user = request.getParameter("user");
         String password = request.getParameter("password");
         String rememberMe = request.getParameter("rememberMe");
-
+        ValidFunction valid = new ValidFunction();
         HttpSession session = request.getSession();
         if ("customer".equals(userType)) {
             CustomerDAO dao = new CustomerDAO();
@@ -88,14 +88,13 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect("index_1.jsp");
         } else if ("staff".equals(userType)) {
             StaffDAO dao = new StaffDAO();
-            Staff staff = dao.staffLogin(user, password);
-
-            if (staff == null) {
+            Staff staff = dao.staffLogin(user);
+            
+            if (staff == null || !valid.checkPassword(password, staff.getPassword()) ) {
                 request.setAttribute("error", "Invalid email or password!");
                 request.setAttribute("userType", "staff");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             } else {
-                ValidFunction valid = new ValidFunction();
                 String dob = null;
                 String hireDate = null;
                 if(staff.getDateOfBirth() != null){
