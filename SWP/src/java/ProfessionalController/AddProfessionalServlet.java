@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package ProfessionalController;
 
 import context.DBContext;
@@ -153,8 +149,6 @@ public class AddProfessionalServlet extends HttpServlet {
         if (success) {
              session.setAttribute("specializations", dbHelper.getallSpecialization());
             session.setAttribute("professionals", list);
-            request.setAttribute("professional", list);
-           
             response.sendRedirect("manage-doctor.jsp");
         } else {
             request.setAttribute("errorMessage", "Update failed!");
