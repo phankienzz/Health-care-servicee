@@ -1,7 +1,8 @@
 
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import=" java.util.List, model.Professional" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="zxx">
     <head>
@@ -21,10 +22,298 @@
         <!-- Slick Slider  CSS -->
         <link rel="stylesheet" href="plugins/slick-carousel/slick/slick.css">
         <link rel="stylesheet" href="plugins/slick-carousel/slick/slick-theme.css">
-
+        <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <!-- Main Stylesheet -->
         <link rel="stylesheet" href="css/style.css">
+        <style>
+            /* Ẩn checkbox gốc */
+            .filter-checkbox {
+                display: none;
+            }
 
+            .filter-buttons {
+                display: flex;
+                gap: 10px; /* Khoảng cách giữa các nút */
+            }
+
+            /* Ẩn checkbox gốc */
+            .filter-checkbox {
+                display: none;
+            }
+
+            /* Tạo button từ label */
+            .filter-buttons label {
+                background-color: #f0f0f0;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                padding: 10px 15px;
+                font-size: 16px;
+                font-weight: bold;
+                color: #333;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: inline-block;
+                text-align: center;
+            }
+
+            /* Khi checkbox được chọn, đổi màu label */
+            .filter-checkbox:checked + label {
+                background-color: #007bff;
+                color: white;
+                border-color: #007bff;
+            }
+
+            /* Hiệu ứng hover */
+            .filter-buttons label:hover {
+                background-color: #e0e0e0;
+            }
+            /* Đảm bảo các nút radio có kích thước cố định */
+            /* Tùy chỉnh checkbox vuông vắn */
+            .filter-options input[type="checkbox"] {
+                appearance: none; /* Ẩn checkbox mặc định */
+                width: 18px;
+                height: 18px;
+                border: 2px solid #004a99; /* Viền xanh đậm */
+                border-radius: 4px; /* Giữ vuông hoặc bo góc nhẹ */
+                cursor: pointer;
+                display: inline-block;
+                position: relative;
+                vertical-align: middle;
+                background-color: white;
+                transition: all 0.3s ease;
+            }
+
+            /* Khi được chọn */
+            .filter-options input[type="checkbox"]:checked {
+                background-color: #004a99;
+                border-color: #004a99;
+            }
+
+            /* Dấu check (✔) */
+            .filter-options input[type="checkbox"]::after {
+                content: "✔";
+                font-size: 14px;
+                color: white;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: none;
+            }
+            .filter-buttons {
+                display: flex;
+                gap: 10px; /* Khoảng cách giữa các nút */
+            }
+
+
+
+            /* Tạo button từ label */
+            .filter-buttons label {
+                background-color: #f0f0f0;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                padding: 10px 15px;
+                font-size: 16px;
+                font-weight: bold;
+                color: #333;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: inline-block;
+                text-align: center;
+            }
+
+            /* Khi checkbox được chọn, đổi màu label */
+            .filter-checkbox:checked + label {
+                background-color: #007bff;
+                color: white;
+                border-color: #007bff;
+            }
+
+            /* Hiệu ứng hover */
+            .filter-buttons label:hover {
+                background-color: #e0e0e0;
+            }
+
+            .filter-options input[type="checkbox"]:checked::after {
+                display: block;
+            }
+
+            /* Định dạng tổng quan */
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f8f9fa;
+                margin: 0;
+                padding: 0;
+            }
+
+            /* Header */
+            .page-header {
+                background-color: #004a99; /* Xanh đậm */
+                color: white;
+                padding: 15px 20px;
+                text-align: center;
+                font-size: 24px;
+                font-weight: bold;
+            }
+
+            /* Container chính */
+            .content {
+                max-width: 1200px;
+                margin: auto;
+                padding: 20px;
+            }
+
+            /* Thanh tìm kiếm và bộ lọc */
+            .row {
+                display: flex;
+                flex-wrap: wrap;
+                margin-bottom: 15px;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .filter-options {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                align-items: center;
+            }
+
+            .filter-options label {
+                font-size: 14px;
+                font-weight: bold;
+            }
+
+            .filter-options input[type="checkbox"] {
+                margin-right: 5px;
+            }
+
+            /* Ô nhập tìm kiếm */
+            #searchName {
+                width: 100%;
+                max-width: 400px;
+                padding: 8px 10px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+            }
+
+            /* Ảnh bác sĩ lớn hơn */
+            .doctor-img {
+                width: 100%;
+                height: 160px; /* Tăng chiều cao lên */
+                overflow: hidden;
+            }
+
+            .doctor-img img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover; /* Giữ ảnh không méo */
+                border-bottom: 2px solid #004a99;
+            }
+
+            /* Giảm kích thước thông tin bác sĩ */
+            .profile-widget {
+                padding: 10px;
+                font-size: 13px; /* Nhỏ hơn */
+            }
+
+            .doctor-name {
+                font-size: 16px; /* Nhỏ hơn */
+                font-weight: bold;
+                color: #004a99;
+                margin: 5px 0;
+            }
+
+            .doc-prof {
+                font-size: 12px; /* Nhỏ hơn */
+                font-style: italic;
+                color: #666;
+            }
+
+            .user-country {
+                font-size: 11px; /* Nhỏ hơn */
+                color: #777;
+                margin-top: 3px;
+                word-wrap: break-word; /* Ngăn chữ tràn ra */
+            }
+
+            /* Giới hạn chiều cao nội dung để không làm thẻ bị phình to */
+            .doctor-item {
+                width: 250px;
+                height: 370px; /* Định chiều cao cố định */
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                overflow: hidden;
+            }
+
+
+            /* Nút hành động */
+            .dropdown.profile-action {
+                position: relative;
+                text-align: right;
+                margin-bottom: 5px;
+            }
+
+            .action-icon {
+                color: #004a99;
+                font-size: 18px;
+                cursor: pointer;
+            }
+
+            /* Menu hành động */
+            .dropdown-menu {
+                position: absolute;
+                top: 30px;
+                right: 0;
+                background: white;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                border-radius: 5px;
+                display: none;
+            }
+
+            .dropdown-menu a {
+                display: block;
+                padding: 8px 15px;
+                color: black;
+                text-decoration: none;
+                transition: background 0.3s ease;
+            }
+
+            .dropdown-menu a:hover {
+                background: #f1f1f1;
+            }
+
+            /* Hiển thị menu khi click */
+            .profile-action:hover .dropdown-menu {
+                display: block;
+            }
+
+            /* Nút hành động */
+            button {
+                padding: 8px 12px;
+                border-radius: 5px;
+                border: none;
+                font-size: 14px;
+                cursor: pointer;
+            }
+
+            button.schedule {
+                background: #004a99;
+                color: white;
+            }
+
+            button.view-detail {
+                background: #28a745;
+                color: white;
+            }
+
+
+        </style>
     </head>
 
     <body id="top">
@@ -124,201 +413,116 @@
 
 
         <!-- portfolio -->
-        <section class="section doctors">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-6 text-center">
-                        <div class="section-title">
-                            <h2>Doctors</h2>
-                            <div class="divider mx-auto my-4"></div>
-                            <p>We provide a wide range of creative services adipisicing elit. Autem maxime rem modi eaque, voluptate. Beatae officiis neque </p>
+        <div class="page-wrapper">
+            <div class="content">
+
+
+                <!-- Search & Filter -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <input type="text" id="searchName" class="form-control" placeholder="Search by name...">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="filter-options filter-buttons">
+
+                            <c:forEach var="specialization" items="${sessionScope.specializations}">
+                                <label class="mr-3">
+                                    <input  type="checkbox" display="none" class="filter-specialization filter-checkbox" value="${specialization}"> 
+                                    ${specialization}
+                                </label>
+                            </c:forEach>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-12 text-center  mb-5">
-                    <div class="btn-group btn-group-toggle " data-toggle="buttons">
-                        <label class="btn active ">
-                            <input type="radio" name="shuffle-filter" value="all" checked="checked" />All Department
-                        </label>
-                        <label class="btn ">
-                            <input type="radio" name="shuffle-filter" value="cat1" />Cardiology
-                        </label>
-                        <label class="btn">
-                            <input type="radio" name="shuffle-filter" value="cat2" />Dental
-                        </label>
-                        <label class="btn">
-                            <input type="radio" name="shuffle-filter" value="cat3" />Neurology
-                        </label>
-                        <label class="btn">
-                            <input type="radio" name="shuffle-filter" value="cat4" />Medicine
-                        </label>
-                        <label class="btn">
-                            <input type="radio" name="shuffle-filter" value="cat5" />Pediatric
-                        </label>
-                        <label class="btn">
-                            <input type="radio" name="shuffle-filter" value="cat6" />Traumatology
-                        </label>
-                    </div>
+                <!-- Doctor Grid -->
+                <div class="row doctor-grid" id="doctorList">
+                    <c:forEach var="professional" items="${sessionScope.professionals}">
+                        <div class="col-md-4 col-sm-4 col-lg-3 doctor-item" data-name="${professional.getName().toLowerCase()}" data-specialization="${professional.getSpecialization()}">
+                            <div class="profile-widget">
+                                <div class="doctor-img">
+                                    <a class="" href="DetailDoctorServlet?id=${professional.getStaffID()}">
+                                        <img alt="" src="${professional.getProfilePicture()}">
+                                    </a>
+                                </div>
+                                <c:if test="${sessionScope.role eq 'admin'}">
+                                    <div class="dropdown profile-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-ellipsis-v"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" href="EditProfessionalServlet?id=${professional.getStaffID()}">
+                                                <i class="fa fa-pencil m-r-5"></i> Edit
+                                            </a>
+                                            <a class="dropdown-item" href="DeleteProfessionalServlet?id=${professional.getStaffID()}" 
+                                               onclick="return confirm('Are you sure you want to delete this professional?');">
+                                                <i class="fa fa-trash-o m-r-5"></i> Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </c:if>
+                                <h4 class="doctor-name text-ellipsis">
+                                    <a href="profile.html">${professional.getName()}</a>
+                                </h4>
+                                <div class="doc-prof">${professional.getSpecialization()}</div>
+                                <div class="user-country">
+                                    <i class="fa fa-map-marker"></i>
+                                    ${professional.getAddress()}, ${professional.getBiography()}
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
                 </div>
 
-                <div class="row shuffle-wrapper portfolio-gallery">
-                    <div class="col-lg-3 col-sm-6 col-md-6 mb-4 shuffle-item" data-groups="[&quot;cat1&quot;,&quot;cat2&quot;]">
-                        <div class="position-relative doctor-inner-box">
-                            <div class="doctor-profile">
-                                <div class="doctor-img">
-                                    <img src="images/team/1.jpg" alt="doctor-image" class="img-fluid w-100">
-                                </div>
-                            </div>
-                            <div class="content mt-3">
-                                <h4 class="mb-0"><a href="doctor-single.html">Thomas Henry</a></h4>
-                                <p>Cardiology</p>
-                            </div> 
-                        </div>
-                    </div>
 
-                    <div class="col-lg-3 col-sm-6 col-md-6 mb-4 shuffle-item" data-groups="[&quot;cat2&quot;]">
-                        <div class="position-relative doctor-inner-box">
-                            <div class="doctor-profile">
-                                <div class="doctor-img">
-                                    <img src="images/team/2.jpg" alt="doctor-image" class="img-fluid w-100">
-                                </div>
-                            </div>
-                            <div class="content mt-3">
-                                <h4 class="mb-0"><a href="doctor-single.html">Harrision Samuel</a></h4>
-                                <p>Radiology</p>
-                            </div> 
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-6 col-md-6 mb-4 shuffle-item" data-groups="[&quot;cat3&quot;]">
-                        <div class="position-relative doctor-inner-box">
-                            <div class="doctor-profile">
-                                <div class="doctor-img">
-                                    <img src="images/team/3.jpg" alt="doctor-image" class="img-fluid w-100">
-                                </div>
-                            </div>
-                            <div class="content mt-3">
-                                <h4 class="mb-0"><a href="doctor-single.html">Alexandar James</a></h4>
-                                <p>Dental</p>
-                            </div> 
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-6 col-md-6 mb-4 shuffle-item" data-groups="[&quot;cat3&quot;,&quot;cat4&quot;]">
-                        <div class="position-relative doctor-inner-box">
-                            <div class="doctor-profile">
-                                <div class="doctor-img">
-                                    <img src="images/team/4.jpg" alt="doctor-image" class="img-fluid w-100">
-                                </div>
-                            </div>
-                            <div class="content mt-3">
-                                <h4 class="mb-0"><a href="doctor-single.html">Edward john</a></h4>
-                                <p>Pediatry</p>
-                            </div> 
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-6 col-md-6 mb-4 shuffle-item" data-groups="[&quot;cat5&quot;]">
-                        <div class="position-relative doctor-inner-box">
-                            <div class="doctor-profile">
-                                <div class="doctor-img">
-                                    <img src="images/team/1.jpg" alt="doctor-image" class="img-fluid w-100">
-                                </div>
-                            </div>
-                            <div class="content mt-3">
-                                <h4 class="mb-0"><a href="doctor-single.html">Thomas Henry</a></h4>
-                                <p>Neurology</p>
-                            </div> 
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-6 col-md-6 mb-4 shuffle-item" data-groups="[&quot;cat6&quot;]">
-                        <div class="position-relative doctor-inner-box">
-                            <div class="doctor-profile">
-                                <div class="doctor-img">
-                                    <img src="images/team/3.jpg" alt="doctor-image" class="img-fluid w-100">
-                                </div>
-                            </div>
-                            <div class="content mt-3">
-                                <h4 class="mb-0"><a href="doctor-single.html">Henry samuel</a></h4>
-                                <p>Palmology</p>
-                            </div> 
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-6 col-md-6 mb-4 shuffle-item" data-groups="[&quot;cat4&quot;]">
-                        <div class="position-relative doctor-inner-box">
-                            <div class="doctor-profile">
-                                <div class="doctor-img">
-                                    <img src="images/team/1.jpg" alt="doctor-image" class="img-fluid w-100">
-                                </div>
-                            </div>
-                            <div class="content mt-3">
-                                <h4 class="mb-0"><a href="doctor-single.html">Thomas alexandar</a></h4>
-                                <p>Cardiology</p>
-                            </div> 
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-6 col-md-6 mb-4 shuffle-item" data-groups="[&quot;cat5&quot;,&quot;cat6&quot;,&quot;cat1&quot;]">
-                        <div class="position-relative doctor-inner-box">
-                            <div class="doctor-profile">
-                                <div class="doctor-img">
-                                    <img src="images/team/3.jpg" alt="doctor-image" class="img-fluid w-100">
-                                </div>
-                            </div>
-                            <div class="content mt-3">
-                                <h4 class="mb-0"><a href="doctor-single.html">HarissonThomas </a></h4>
-                                <p>Traumatology</p>
-                            </div> 
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-6 col-md-6 mb-4 shuffle-item illustration" data-groups="[&quot;cat2&quot;]">
-                        <div class="position-relative doctor-inner-box">
-                            <div class="doctor-profile">
-                                <div class="doctor-img">
-                                    <img src="images/team/4.jpg" alt="doctor-image" class="img-fluid w-100">
-                                </div>
-                            </div>
-                            <div class="content mt-3">
-                                <h4 class="mb-0"><a href="doctor-single.html">Jonas Thomson</a></h4>
-                                <p>Cardiology</p>
-                            </div> 
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-6 col-md-6 mb-4 shuffle-item" data-groups="[&quot;cat5&quot;,&quot;cat6&quot;,&quot;cat1&quot;]">
-                        <div class="position-relative doctor-inner-box">
-                            <div class="doctor-profile">
-                                <div class="doctor-img">
-                                    <img src="images/team/3.jpg" alt="doctor-image" class="img-fluid w-100">
-                                </div>
-                            </div>
-                            <div class="content mt-3">
-                                <h4 class="mb-0"><a href="doctor-single.html">Henry Forth</a></h4>
-                                <p>hematology</p>
-                            </div> 
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-6 col-md-6 mb-4 shuffle-item illustration" data-groups="[&quot;cat2&quot;]">
-                        <div class="position-relative doctor-inner-box">
-                            <div class="doctor-profile">
-                                <div class="doctor-img">
-                                    <img src="images/team/4.jpg" alt="doctor-image" class="img-fluid w-100">
-                                </div>
-                            </div>
-                            <div class="content mt-3">
-                                <h4 class="mb-0"><a href="doctor-single.html">Thomas Henry</a></h4>
-                                <p>Dental</p>
-                            </div> 
-                        </div>
-                    </div>
-                </div>
             </div>
-        </section>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const searchInput = document.getElementById("searchName");
+                const specializationFilters = document.querySelectorAll(".filter-specialization");
+                const doctorItems = document.querySelectorAll(".doctor-item");
+
+                function filterDoctors() {
+                    const searchText = searchInput.value.toLowerCase();
+                    const selectedSpecializations = Array.from(specializationFilters)
+                            .filter(checkbox => checkbox.checked)
+                            .map(checkbox => checkbox.value);
+
+                    doctorItems.forEach(item => {
+                        const name = item.getAttribute("data-name");
+                        const specialization = item.getAttribute("data-specialization");
+
+                        const matchesName = name.includes(searchText);
+                        const matchesSpecialization = selectedSpecializations.length === 0 || selectedSpecializations.includes(specialization);
+
+                        item.style.display = (matchesName && matchesSpecialization) ? "block" : "none";
+                    });
+                }
+
+                searchInput.addEventListener("input", filterDoctors);
+                specializationFilters.forEach(checkbox => checkbox.addEventListener("change", filterDoctors));
+            });
+            function getCookie(name) {
+                let cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    let cookie = cookies[i].trim();
+                    if (cookie.startsWith(name + "=")) {
+                        return cookie.substring(name.length + 1);
+                    }
+                }
+                return "";
+            }
+
+            // Lấy giá trị role từ cookie
+            let role = getCookie("role");
+
+            // Nếu không phải admin, ẩn các phần admin-only
+            if (role !== "admin") {
+                document.querySelectorAll(".admin-only").forEach(el => el.style.display = "none");
+            }
+
+        </script>
         <!-- /portfolio -->
         <section class="section cta-page">
             <div class="container">
@@ -460,6 +664,14 @@
 
         <script src="js/script.js"></script>
         <script src="js/contact.js"></script>
-
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="assets/js/jquery-3.2.1.min.js"></script>
+        <script src="assets/js/popper.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.slimscroll.js"></script>
+        <script src="assets/js/select2.min.js"></script>
+        <script src="assets/js/moment.min.js"></script>
+        <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+        <script src="assets/js/app.js"></script>
     </body>
 </html>
