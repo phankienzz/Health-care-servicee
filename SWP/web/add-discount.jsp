@@ -1,8 +1,15 @@
+<%-- 
+    Document   : add-discount
+    Created on : Mar 5, 2025, 2:46:29 AM
+    Author     : Gigabyte
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
 
-    <!-- taxes23:26-->
+    <!-- add-tax24:07-->
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -41,7 +48,7 @@
                                         <a href="activities.html">
                                             <div class="media">
                                                 <span class="avatar">
-                                                    <img alt="John Doe" src="assets/img/user.jpg" class="img-fluid">
+                                                    <img alt="John Doe" src="assets/img/user.jpg" class="img-fluid rounded-circle">
                                                 </span>
                                                 <div class="media-body">
                                                     <p class="noti-details"><span class="noti-title">John Doe</span> added new task <span class="noti-title">Patient appointment booking</span></p>
@@ -294,80 +301,38 @@
             <div class="page-wrapper">
                 <div class="content">
                     <div class="row">
-                        <div class="col-sm-8 col-6">
-                            <h4 class="page-title">Taxes</h4>
-                        </div>
-                        <div class="col-sm-4 col-6 text-right m-b-30">
-                            <a href="add-tax.html" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Add Tax</a>
+                        <div class="col-lg-8 offset-lg-2">
+                            <h4 class="page-title">Add Discount</h4>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="table-responsive">
-                                <table class="table table-striped custom-table mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Tax Name </th>
-                                            <th>Tax Percentage (%) </th>
-                                            <th>Status</th>
-                                            <th class="text-right">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>VAT</td>
-                                            <td>14%</td>
-                                            <td>
-                                                <div class="dropdown action-label">
-                                                    <a class="custom-badge status-red dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
-                                                        Inactive
-                                                    </a>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item" href="#">Active</a>
-                                                        <a class="dropdown-item" href="#">Inactive</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-right">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="edit-tax.html"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_tax"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>GST</td>
-                                            <td>30%</td>
-                                            <td>
-                                                <div class="dropdown action-label">
-                                                    <a class="custom-badge status-green dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
-                                                        Active
-                                                    </a>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item" href="#">Active</a>
-                                                        <a class="dropdown-item" href="#">Inactive</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-right">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="edit-tax.html"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_tax"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div class="col-lg-8 offset-lg-2">
+                            <form action="addDiscount" method="Post">
+                                <div class="form-group">
+                                    <label>Discount Name <span class="text-danger">*</span></label>
+                                    <input name="discountName" class="form-control" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label>Discount Percentage (%) <span class="text-danger">*</span></label>
+                                    <input name="percentage" class="form-control" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label>Status <span class="text-danger">*</span></label>
+                                    <select class="select" name="status">
+                                        <option value="Active">Active</option>
+                                        <option value="Inactive">Inactive</option>
+                                    </select>
+                                </div>
+                                <c:if test="${error != null}">
+                                    <h4><i style="color: red">${error}</i></h4>
+                                </c:if>
+                                <c:if test="${mess != null}">
+                                    <h4><i style="color: green">${mess}</i></h4>
+                                </c:if>
+                                <div class="m-t-20 text-center">
+                                    <button class="btn btn-primary submit-btn">Create Discount</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -581,19 +546,6 @@
                     </div>
                 </div>
             </div>
-            <div id="delete_tax" class="modal fade delete-modal" role="dialog">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-body text-center">
-                            <img src="assets/img/sent.png" alt="" width="50" height="46">
-                            <h3>Are you sure want to delete this Tax?</h3>
-                            <div class="m-t-20"> <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="sidebar-overlay" data-reff=""></div>
         <script src="assets/js/jquery-3.2.1.min.js"></script>
@@ -605,5 +557,6 @@
     </body>
 
 
-    <!-- taxes23:27-->
+    <!-- add-tax24:07-->
 </html>
+

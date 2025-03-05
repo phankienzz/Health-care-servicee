@@ -74,7 +74,7 @@ public class MedicalExaminationDAO extends DBContext {
 
         } catch (SQLException e) {
         }
-        return medicalExaminationList; // Trả về danh sách khách hàng
+        return medicalExaminationList; 
     }
 
   
