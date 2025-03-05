@@ -31,6 +31,18 @@
         <servlet-name>addBlog</servlet-name>
         <servlet-class>blog.addBlog</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Appointment</servlet-name>
+        <servlet-class>Appointment.Appointment</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RequestPassword</servlet-name>
+        <url-pattern>/requestPassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ResetPassword</servlet-name>
+        <url-pattern>/resetPassword</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RequestPassword</servlet-name>
         <url-pattern>/requestPassword</url-pattern>
@@ -46,6 +58,10 @@
     <servlet-mapping>
         <servlet-name>addBlog</servlet-name>
         <url-pattern>/addblog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Appointment</servlet-name>
+        <url-pattern>/appointment</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index_1.jsp</welcome-file>

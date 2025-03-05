@@ -36,6 +36,23 @@ public class ServiceDAO extends DBContext{
         return serviceList;
     }
     
+    
+    
+    public void insertMedicalService(int examinationID, int packageID) {
+    String sql = "INSERT INTO MedicalService (examinationID, packageID) VALUES (?, ?)";
+    
+    try {
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setInt(1, examinationID);
+        st.setInt(2, packageID);
+        st.executeUpdate();
+    } catch (SQLException e) {
+        System.out.println(e);
+    }
+}
+
+    
+    
     public List<Service> getServiceExaminationID(int examinationID) {
         List<Service> serviceList = new ArrayList<>();
         String sql = " select ServicePackage.packageID, packageName,description, service_image, type, price, duration, status, createdAt from ServicePackage join MedicalService on ServicePackage.packageID = MedicalService.packageID where examinationID = ?";

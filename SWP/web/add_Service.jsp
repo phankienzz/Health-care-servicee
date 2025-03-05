@@ -80,12 +80,12 @@
                     <!-- Price: Giữ lại giá trị đã nhập -->
                     <div class="mb-3">
                         <label class="form-label">Price ($)</label>
-                        <input type="number" class="form-control" name="price" step="0.01" value="${param.price}" required>
+                        <input type="number" class="form-control" name="price" step="0.01" min="0.01" value="${param.price}" required>
                 </div>
                 <!-- Duration: Giữ lại giá trị đã nhập -->
                 <div class="mb-3">
                     <label class="form-label">Duration (minutes)</label>
-                    <input type="number" class="form-control" name="duration" value="${param.duration}" required>
+                    <input type="number" class="form-control" name="duration" step="1" min="1" value="${param.duration}" required>
                 </div>
                 <!-- Status: Giữ nguyên (read only) -->
                 <div class="mb-3">

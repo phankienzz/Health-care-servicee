@@ -47,7 +47,7 @@
 
                             <p class="mb-4 pr-5">A repudiandae ipsam labore ipsa voluptatum quidem quae laudantium quisquam aperiam maiores sunt fugit, deserunt rem suscipit placeat.</p>
                             <div class="btn-container ">
-                                <a href="appoinment.html" target="_blank" class="btn btn-main-2 btn-icon btn-round-full">Make appoinment <i class="icofont-simple-right ml-2  "></i></a>
+                                <a href="appointment" target="_blank" class="btn btn-main-2 btn-icon btn-round-full">Make appoinment <i class="icofont-simple-right ml-2  "></i></a>
                             </div>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                                 <span>24 Hours Service</span>
                                 <h4 class="mb-3" >Online Appoinment</h4>
                                 <p class="mb-4">Get ALl time support for emergency.We have introduced the principle of family medicine.</p>
-                                <a href="appoinment.html" class="btn btn-main btn-round-full">Make a appoinment</a>
+                                <a href="appointment" class="btn btn-main btn-round-full">Make a appoinment</a>
                             </div>
 
                             <div class="feature-item mb-5 mb-lg-0">
@@ -322,7 +322,7 @@
                                     <textarea name="message" id="message" class="form-control" rows="6" placeholder="Your Message"></textarea>
                                 </div>
 
-                                <a class="btn btn-main btn-round-full" href="appoinment.html" >Make Appoinment <i class="icofont-simple-right ml-2  "></i></a>
+                                <a class="btn btn-main btn-round-full" href="appointment" >Make Appoinment <i class="icofont-simple-right ml-2  "></i></a>
                             </form>
                         </div>
                     </div>
