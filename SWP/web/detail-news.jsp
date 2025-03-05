@@ -57,7 +57,6 @@
     </head>
 
     <body id="top">
-        <%--<jsp:include page="headerCustomer.jsp"></jsp:include>--%>
         <jsp:include page="headerHome.jsp"></jsp:include>
 
 

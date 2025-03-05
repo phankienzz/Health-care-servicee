@@ -41,7 +41,7 @@ public class CustomerDAO extends DBContext {
     }
 
     public Customer customerLogin(String username) {
-        String sql = "select * from Customer where username = ?";
+        String sql = "select * from Customer where username = ? where accountStatus = 'Active'";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, username);
