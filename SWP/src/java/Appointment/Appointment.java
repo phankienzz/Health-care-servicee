@@ -109,7 +109,7 @@ public class Appointment extends HttpServlet {
 
         if (success) {
             // Redirect to a success page or show a success message
-            response.sendRedirect("appointment-success.jsp");
+            response.sendRedirect("confirmation.jsp");
         } else {
             // Handle failure (e.g., show error message)
             request.setAttribute("error", "Failed to book appointment. Please try again.");
