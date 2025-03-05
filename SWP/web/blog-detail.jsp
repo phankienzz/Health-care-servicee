@@ -311,16 +311,30 @@
                                         </div>
                                         <div class="post-right"><i class="fa fa-comment-o"></i>1 Comment</div>
                                     </div>
-                                    <div class="blog-image">
-                                        <img alt="${blogdetail.title}" src="${blogdetail.image}" class="img-fluid">
+                                    <div class="blog-image text-center">
+                                        <img alt="${blogdetail.title}" src="${blogdetail.image}" class="img-fluid" style="max-width: 100%; height: auto;">
                                     </div>
-                                    <div class="blog-content">
-                                        ${blogdetail.detail}
+                                    <div class="blog-content" style="max-width: 800px;max-height: 500px; margin: 0 auto; text-align: justify; padding: 15px;">
+                                        <div class="blog-detail-content">
+                                            ${blogdetail.detail}
+                                        </div>
                                     </div>
+
+                                    <style>
+                                        .blog-detail-content img {
+                                            max-width: 100% !important; /* ??m b?o ?nh không tràn ra ngoài */
+                                            height: auto !important; /* Gi? nguyên t? l? ?nh */
+                                            display: block; /* ??m b?o ?nh không b? ?nh h??ng b?i inline spacing */
+                                            margin: 10px auto; /* C?n gi?a ?nh */
+                                        }
+                                    </style>
+
                                 </article>
                             </div>
                         </div>
                     </div>
+
+
                 </div>
             </div>
 

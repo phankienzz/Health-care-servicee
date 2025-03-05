@@ -139,17 +139,30 @@
                             <p class="mb-4">Mollitia dicta commodi est recusandae iste, natus eum asperiores corrupti qui velit . Iste dolorum atque similique praesentium soluta.</p>
                             <form id="appointmentForm" class="appointment" method="post" action="appointment">
                                 <div class="row">
-                                    <!-- Ch?n d?ch v? -->
+
+
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <select class="form-control" name="serviceId" required>
-                                                <option value="">Choose Service</option>
-                                                <c:forEach var="service" items="${services}">
-                                                    <option value="${service.packageID}">${service.packageName}</option>
-                                                </c:forEach>
-                                            </select>
+                                            <div style="border: 1px solid #ced4da;">
+                                                <div class="dropdown" style=" margin-bottom: 8px ">
+                                                    <button  class="btn btn-outline-secondary dropdown-toggle form-control" type="button" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">
+                                                        Select Services
+                                                    </button>
+                                                    <div class="dropdown-menu p-2" style="max-height: 150px; overflow-y: auto; width: 100%;">
+                                                        <c:forEach var="service" items="${services}">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" name="serviceIds[]" value="${service.packageID}" id="service_${service.packageID}">
+                                                                <label class="form-check-label" for="service_${service.packageID}">
+                                                                    ${service.packageName}
+                                                                </label>
+                                                            </div>
+                                                        </c:forEach>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+
 
                                     <!-- Ch?n bác s? -->
                                     <div class="col-lg-6">
@@ -182,14 +195,14 @@
                                     <!-- Nh?p tên -->
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <input name="name" type="text" class="form-control" placeholder="Full Name" required>
+                                            <input name="name" type="text" class="form-control" placeholder="Full Name" value="${customerAccount.fullName}" required>
                                         </div>
                                     </div>
 
                                     <!-- Nh?p s? ?i?n tho?i -->
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <input name="phone" type="tel" class="form-control" placeholder="Phone Number" required>
+                                            <input name="phone" type="tel" class="form-control" placeholder="Phone Number"  value="${customerAccount.phone}" required>
                                         </div>
                                     </div>
                                 </div>

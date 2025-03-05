@@ -17,9 +17,9 @@ import java.util.List;
 
 @WebServlet(name = "editBlog", urlPatterns = {"/editblog"})
 @MultipartConfig(
-        fileSizeThreshold = 2 * 1024 * 1024,  // 2MB
-        maxFileSize = 10 * 1024 * 1024,      // 10MB
-        maxRequestSize = 50 * 1024 * 1024    // 50MB
+        fileSizeThreshold = 2 * 1024 * 1024, // 2MB
+        maxFileSize = 10 * 1024 * 1024, // 10MB
+        maxRequestSize = 50 * 1024 * 1024 // 50MB
 )
 public class editBlog extends HttpServlet {
 
@@ -66,11 +66,11 @@ public class editBlog extends HttpServlet {
             String title = request.getParameter("title");
             String description = request.getParameter("description");
             String detail = request.getParameter("detail");
-             int status = "1".equals(request.getParameter("status")) ? 1 : 2;
+            int status = "1".equals(request.getParameter("status")) ? 1 : 2;
 
-            if (title == null || title.trim().isEmpty() ||
-                description == null || description.trim().isEmpty() ||
-                detail == null || detail.trim().isEmpty()) {
+            if (title == null || title.trim().isEmpty()
+                    || description == null || description.trim().isEmpty()
+                    || detail == null || detail.trim().isEmpty()) {
                 response.sendRedirect("edit-blog.jsp?error=Title,+description,+and+detail+cannot+be+empty");
                 return;
             }
@@ -83,22 +83,16 @@ public class editBlog extends HttpServlet {
             InputStream imageStream = null;
 
             if (filePart != null && filePart.getSize() > 0) {
-                List<String> allowedTypes = Arrays.asList("image/png", "image/jpeg", "image/gif", "image/jpg");
-
-                if (!allowedTypes.contains(filePart.getContentType())) {
+                String contentType = filePart.getContentType();
+                // Kiểm tra loại file cho phép: PNG, JPEG, GIF, JPG
+                if (!contentType.equals("image/png") && !contentType.equals("image/jpeg")
+                        && !contentType.equals("image/gif") && !contentType.equals("image/jpg")) {
                     response.sendRedirect("edit-blog.jsp?error=Only+PNG,+JPEG,+JPG,+and+GIF+files+are+allowed");
                     return;
                 }
-
-                if (filePart.getSize() > 10 * 1024 * 1024) { // 10MB giới hạn
-                    response.sendRedirect("edit-blog.jsp?error=File+too+large,+max+size+10MB");
-                    return;
-                }
-
                 imageStream = filePart.getInputStream();
             }
 
-            // Cập nhật blog vào cơ sở dữ liệu
             NewsDAO dao = new NewsDAO();
             boolean success = dao.updateBlogPost(postId, title, description, status, imageStream, detail);
 
