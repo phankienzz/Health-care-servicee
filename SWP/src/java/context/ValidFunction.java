@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import model.Customer;
+import java.util.Locale;
 
 /**
  *
@@ -66,6 +67,14 @@ public class ValidFunction {
 
         LocalDateTime dateTime = LocalDateTime.parse(input, inputFormatter);
         return dateTime.format(outputFormatter);
+    }
+    
+    public String formatDateInvoice(String date) {
+        // Chuyển từ chuỗi ngày ban đầu (yyyy-MM-dd HH:mm:ss) sang Timestamp
+        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
+        // Định dạng Timestamp thành chuỗi dd/MM/yyyy
+        java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy, MMMM dd", Locale.ENGLISH);
+        return dateFormat.format(timestamp);
     }
     
     public String formatDateNews(String date) {

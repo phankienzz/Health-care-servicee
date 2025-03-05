@@ -33,8 +33,6 @@ public class InvoiceDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int invoiceID = rs.getInt("invoiceID");
-                int customerID = rs.getInt("customerID");
-                Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
                 MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
@@ -44,13 +42,52 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
                 invoiceList.add(inv);
             }
 
         } catch (SQLException e) {
         }
         return invoiceList; // Trả về danh sách khách hàng
+    }
+    public Invoice getInvoiceByID(int invoiceID) {
+        String sql = "select * from Invoice where invoiceID = ?";
+        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
+        DiscountDAO disDAO = new DiscountDAO();
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, invoiceID);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                return new Invoice(
+                        rs.getInt("invoiceID"),
+                        medDAO.getMedicalExaminationByID(rs.getInt("examinationID")),
+                        rs.getDouble("totalAmount"),
+                        rs.getString("paymentStatus"),
+                        rs.getString("paymentDate"),
+                        rs.getString("paymentMethod"),
+                        rs.getString("createdAt"),
+                        disDAO.getDiscountByID(rs.getInt("discountID")));
+                        
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+    
+    public void createInvoice(int examinationID, double totalAmount, String discountID ) {
+        String sql = "insert Invoice(examinationID, totalAmount, paymentStatus,createdAt, discountID)\n" +
+                    "values (?,?,N'Pending',CURRENT_TIMESTAMP,?)  update MedicalExamination set status = N'Payment' where examinationID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, examinationID);
+            st.setDouble(2, totalAmount);
+            st.setString(3, discountID);
+             st.setInt(4, examinationID);
+            st.executeUpdate();
+        } catch (SQLException e) {
+        }
     }
 
     public List<Invoice> getInvoices(int start, int total) {
@@ -67,8 +104,6 @@ public class InvoiceDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int invoiceID = rs.getInt("invoiceID");
-                int customerID = rs.getInt("customerID");
-                Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
                 MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
@@ -78,7 +113,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
                 invoiceList.add(inv);
             }
 
@@ -101,8 +136,6 @@ public class InvoiceDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int invoiceID = rs.getInt("invoiceID");
-                int customerID = rs.getInt("customerID");
-                Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
                 MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
@@ -112,7 +145,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
                 invoiceList.add(inv);
             }
 
@@ -136,8 +169,6 @@ public class InvoiceDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int invoiceID = rs.getInt("invoiceID");
-                int customerID = rs.getInt("customerID");
-                Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
                 MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
@@ -147,7 +178,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
                 invoiceList.add(inv);
             }
 
@@ -169,8 +200,6 @@ public class InvoiceDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int invoiceID = rs.getInt("invoiceID");
-                int customerID = rs.getInt("customerID");
-                Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
                 MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
@@ -180,7 +209,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
                 invoiceList.add(inv);
             }
 
@@ -204,8 +233,6 @@ public class InvoiceDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int invoiceID = rs.getInt("invoiceID");
-                int customerID = rs.getInt("customerID");
-                Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
                 MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
@@ -215,7 +242,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
                 invoiceList.add(inv);
             }
 
@@ -237,8 +264,6 @@ public class InvoiceDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int invoiceID = rs.getInt("invoiceID");
-                int customerID = rs.getInt("customerID");
-                Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
                 MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
@@ -248,7 +273,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
                 invoiceList.add(inv);
             }
 
@@ -272,8 +297,6 @@ public class InvoiceDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int invoiceID = rs.getInt("invoiceID");
-                int customerID = rs.getInt("customerID");
-                Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
                 MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
@@ -283,7 +306,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
                 invoiceList.add(inv);
             }
 
@@ -305,8 +328,6 @@ public class InvoiceDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int invoiceID = rs.getInt("invoiceID");
-                int customerID = rs.getInt("customerID");
-                Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
                 MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
@@ -316,7 +337,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
                 invoiceList.add(inv);
             }
 
@@ -342,8 +363,6 @@ public class InvoiceDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int invoiceID = rs.getInt("invoiceID");
-                int customerID = rs.getInt("customerID");
-                Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
                 MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
@@ -353,7 +372,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
                 invoiceList.add(inv);
             }
 
@@ -377,8 +396,6 @@ public class InvoiceDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int invoiceID = rs.getInt("invoiceID");
-                int customerID = rs.getInt("customerID");
-                Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
                 MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
@@ -388,7 +405,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
                 invoiceList.add(inv);
             }
 
@@ -414,8 +431,6 @@ public class InvoiceDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int invoiceID = rs.getInt("invoiceID");
-                int customerID = rs.getInt("customerID");
-                Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
                 MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
@@ -425,7 +440,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
                 invoiceList.add(inv);
             }
 
@@ -447,8 +462,6 @@ public class InvoiceDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int invoiceID = rs.getInt("invoiceID");
-                int customerID = rs.getInt("customerID");
-                Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
                 MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
@@ -458,7 +471,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
                 invoiceList.add(inv);
             }
 
@@ -483,8 +496,6 @@ public class InvoiceDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int invoiceID = rs.getInt("invoiceID");
-                int customerID = rs.getInt("customerID");
-                Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
                 MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
@@ -494,7 +505,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
                 invoiceList.add(inv);
             }
 
@@ -516,8 +527,6 @@ public class InvoiceDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int invoiceID = rs.getInt("invoiceID");
-                int customerID = rs.getInt("customerID");
-                Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
                 MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
@@ -527,7 +536,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
                 invoiceList.add(inv);
             }
 
@@ -553,8 +562,6 @@ public class InvoiceDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int invoiceID = rs.getInt("invoiceID");
-                int customerID = rs.getInt("customerID");
-                Customer customer = customerDAO.getCustomerByID(customerID);
                 int examinationID = rs.getInt("examinationID");
                 MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
                 double totalAmount = rs.getDouble("totalAmount");
@@ -564,7 +571,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, customer, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
                 invoiceList.add(inv);
             }
 
