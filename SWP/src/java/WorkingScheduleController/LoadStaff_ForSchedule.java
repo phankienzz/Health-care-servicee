@@ -28,7 +28,7 @@ public class LoadStaff_ForSchedule extends HttpServlet {
         List<String> professional_infor_List = workingDAO.extractProfessionalInfo(professionalList);
         request.setAttribute("professional_infor_List", professional_infor_List);
         
-        request.getRequestDispatcher("createWorkingSchedule.jsp").forward(request, response);
+        request.getRequestDispatcher("listDoctor-demo.jsp").forward(request, response);
     } 
 
     @Override

@@ -50,6 +50,23 @@ public class WorkingScheduleDAO {
         }
     }
 
+    public void updateScheduleByKey(WorkingSchedule schedule) {
+        String sql = "UPDATE WorkingSchedule "
+                + "SET startTime = ?, endTime = ? "
+                + "WHERE professionalID = ? AND dayOfWeek = ? AND shift = ?";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setTime(1, schedule.getStartTime());
+            st.setTime(2, schedule.getEndTime());
+            st.setInt(3, schedule.getProfessionalID());
+            st.setInt(4, schedule.getDayOfWeek());
+            st.setString(5, schedule.getShift());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     // Cập nhật lịch làm việc
     public void updateSchedule(WorkingSchedule schedule) {
         String sql = "UPDATE WorkingSchedule SET dayOfWeek = ?, startTime = ?, endTime = ?, shift = ? WHERE scheduleID = ?";
@@ -66,6 +83,19 @@ public class WorkingScheduleDAO {
         }
     }
 
+    public void disableSchedule(int professionalID, int dayOfWeek, String shift) {
+        String sql = "UPDATE WorkingSchedule SET status = 'Off' WHERE professionalID = ? AND dayOfWeek = ? AND shift = ?";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, professionalID);
+            st.setInt(2, dayOfWeek);
+            st.setString(3, shift);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     // Xóa lịch làm việc
     public void deleteSchedule(int scheduleID) {
         String sql = "DELETE FROM WorkingSchedule WHERE scheduleID = ?";
@@ -76,18 +106,6 @@ public class WorkingScheduleDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    // Chuyển đổi ResultSet thành WorkingSchedule
-    private WorkingSchedule mapResultSetToSchedule(ResultSet rs) throws SQLException {
-        return new WorkingSchedule(
-                rs.getInt("scheduleID"),
-                rs.getInt("professionalID"),
-                rs.getInt("dayOfWeek"),
-                rs.getTime("startTime"),
-                rs.getTime("endTime"),
-                rs.getString("shift")
-        );
     }
 
     // Lấy danh sách chuyên gia theo roleID
@@ -165,6 +183,37 @@ public class WorkingScheduleDAO {
             System.err.println("Lỗi khi tách ID từ chuỗi: " + professionalInfo);
             return -1; // Trả về -1 nếu lỗi
         }
+    }
+
+    public boolean isScheduleExists(int professionalID, int dayOfWeek, String shift) {
+        String sql = "SELECT COUNT(*) FROM WorkingSchedule WHERE professionalID = ? AND dayOfWeek = ? AND shift = ?";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, professionalID);
+            st.setInt(2, dayOfWeek);
+            st.setString(3, shift);
+
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Nếu count > 0, lịch đã tồn tại
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Chuyển đổi ResultSet thành WorkingSchedule ------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------------------------------
+    private WorkingSchedule mapResultSetToSchedule(ResultSet rs) throws SQLException {
+        return new WorkingSchedule(
+                rs.getInt("scheduleID"),
+                rs.getInt("professionalID"),
+                rs.getInt("dayOfWeek"),
+                rs.getTime("startTime"),
+                rs.getTime("endTime"),
+                rs.getString("shift")
+        );
     }
 
     public static void main(String[] args) {

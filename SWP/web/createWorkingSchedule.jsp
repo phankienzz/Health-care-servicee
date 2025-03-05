@@ -16,11 +16,7 @@
             <form id="scheduleForm" action="saveSchedule" method="POST">
                 <div class="mb-3">
                     <label class="form-label">Chọn bác sĩ:</label>
-                    <select name="professionalID" class="form-select" required>
-                        <c:forEach var="infor" items="${professional_infor_List}">
-                            <option value="${infor}">${infor}</option>
-                        </c:forEach>
-                    </select>
+                    ${ID}
                 </div>
 
 
