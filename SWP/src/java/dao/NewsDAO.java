@@ -310,30 +310,30 @@ public class NewsDAO extends DBContext {
         }
     }
     
-    public News getNewsByID(int newsID) {
-        String sql = "select * from Posts where post_id = ?";
-        try {
-            PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setInt(1, newsID);
-            ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
-                return new News(
-                        rs.getInt("post_id"),
-                        rs.getString("title"),
-                        rs.getString("content"),
-                        rs.getInt("created_by"),
-                        rs.getInt("category_id"),
-                        rs.getInt("status"),
-                        rs.getString("image"),
-                        rs.getString("detail"),
-                        rs.getString("created_at"),
-                        rs.getString("updated_at"));
-            }
-        } catch (Exception e) {
-
-        }
-        return null;
-    }
+//    public News getNewsByID(int newsID) {
+//        String sql = "select * from Posts where post_id = ?";
+//        try {
+//            PreparedStatement pre = connection.prepareStatement(sql);
+//            pre.setInt(1, newsID);
+//            ResultSet rs = pre.executeQuery();
+//            while (rs.next()) {
+//                return new News(
+//                        rs.getInt("post_id"),
+//                        rs.getString("title"),
+//                        rs.getString("content"),
+//                        rs.getInt("created_by"),
+//                        rs.getInt("category_id"),
+//                        rs.getInt("status"),
+//                        rs.getString("image"),
+//                        rs.getString("detail"),
+//                        rs.getString("created_at"),
+//                        rs.getString("updated_at"));
+//            }
+//        } catch (Exception e) {
+//
+//        }
+//        return null;
+//    }
 
 
     public List<News> getAllBlogs() {
