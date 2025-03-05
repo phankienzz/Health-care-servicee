@@ -59,8 +59,8 @@ public class WorkingScheduleServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         WorkingScheduleDAO workingDAO = new WorkingScheduleDAO();
-        String professionalInfor = request.getParameter("professionalID");
-        int ID = workingDAO.extractID_FromString(professionalInfor);
+        String idStr = request.getParameter("professionalID");
+        int ID = Integer.parseInt(idStr);
         request.getSession().setAttribute("ID", ID);
         request.setAttribute("ID", ID);
         request.getRequestDispatcher("createWorkingSchedule.jsp").forward(request, response);

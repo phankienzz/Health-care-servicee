@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import model.WorkingSchedule;
 
 @WebServlet(name = "LoadStaff_ForSchedule", urlPatterns = {"/loadstaffforschedule"})
 public class LoadStaff_ForSchedule extends HttpServlet {
@@ -16,17 +17,10 @@ public class LoadStaff_ForSchedule extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
         WorkingScheduleDAO workingDAO = new WorkingScheduleDAO();
-        List<Integer> roles = new ArrayList<>();
-        roles.add(4);
-        roles.add(5);
 
-        List<String> professionalList = workingDAO.getProfessionalsByRole(roles);
+        List<WorkingSchedule> professionalList = workingDAO.getProfessionalSchedules_haveName();
         request.setAttribute("professionalList", professionalList);
-        
-        List<String> professional_infor_List = workingDAO.extractProfessionalInfo(professionalList);
-        request.setAttribute("professional_infor_List", professional_infor_List);
         
         request.getRequestDispatcher("listDoctor-demo.jsp").forward(request, response);
     } 

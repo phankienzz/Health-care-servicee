@@ -34,6 +34,34 @@ public class WorkingScheduleDAO {
         return scheduleList;
     }
 
+    public List<WorkingSchedule> getProfessionalSchedules_haveName() {
+        List<WorkingSchedule> schedules = new ArrayList<>();
+        String sql = """
+            SELECT ws.scheduleID, ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime
+            FROM WorkingSchedule ws
+            INNER JOIN Professional p ON ws.professionalID = p.professionalID
+            INNER JOIN Staff s ON p.staffID = s.staffID
+            ORDER BY ws.professionalID, ws.dayOfWeek, ws.startTime
+            """;
+
+        try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+
+            while (rs.next()) {
+                schedules.add(new WorkingSchedule(
+                        rs.getInt("professionalID"),
+                        rs.getString("fullName"),
+                        rs.getInt("dayOfWeek"),
+                        rs.getString("shift"),
+                        rs.getTime("startTime"),
+                        rs.getTime("endTime")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return schedules;
+    }
+
     // Thêm lịch làm việc mới
     public void addSchedule(WorkingSchedule schedule) {
         String sql = "INSERT INTO WorkingSchedule (professionalID, dayOfWeek, startTime, endTime, shift) VALUES (?, ?, ?, ?, ?)";
@@ -109,25 +137,25 @@ public class WorkingScheduleDAO {
     }
 
     // Lấy danh sách chuyên gia theo roleID
-    public List<String> getProfessionalsByRole(List<Integer> roleIds) {
-        List<String> result = new ArrayList<>();
-        String sql = "SELECT p.professionalID, s.staffID, s.fullName AS staffName, s.roleID "
-                + "FROM MedicalSystem.dbo.Professional p "
-                + "JOIN MedicalSystem.dbo.Staff s ON p.staffID = s.staffID "
-                + "WHERE s.roleID IN (" + roleIds.toString().replace("[", "").replace("]", "") + ")";
-
-        try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
-            while (rs.next()) {
-                result.add("ProfessionalID: " + rs.getInt("professionalID") + ", "
-                        + "StaffID: " + rs.getInt("staffID") + ", "
-                        + "Staff Name: " + rs.getString("staffName") + ", "
-                        + "RoleID: " + rs.getInt("roleID"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
+//    public List<String> getProfessionalsByRole(List<Integer> roleIds) {
+//        List<String> result = new ArrayList<>();
+//        String sql = "SELECT p.professionalID, s.staffID, s.fullName AS staffName, s.roleID "
+//                + "FROM MedicalSystem.dbo.Professional p "
+//                + "JOIN MedicalSystem.dbo.Staff s ON p.staffID = s.staffID "
+//                + "WHERE s.roleID IN (" + roleIds.toString().replace("[", "").replace("]", "") + ")";
+//
+//        try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+//            while (rs.next()) {
+//                result.add("ProfessionalID: " + rs.getInt("professionalID") + ", "
+//                        + "StaffID: " + rs.getInt("staffID") + ", "
+//                        + "Staff Name: " + rs.getString("staffName") + ", "
+//                        + "RoleID: " + rs.getInt("roleID"));
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return result;
+//    }
 
 //    public static List<String> extractProfessionalIDs(List<String> professionalData) {
 //        List<String> professionalIDs = new ArrayList<>();
@@ -221,8 +249,8 @@ public class WorkingScheduleDAO {
         List<Integer> roles = new ArrayList<>();
         roles.add(4);
         roles.add(5);
-        List<String> list = dao.getProfessionalsByRole(roles);
-        for (String ws : list) {
+        List<WorkingSchedule> list = dao.getProfessionalSchedules_haveName();
+        for (WorkingSchedule ws : list) {
             System.out.println(ws);
         }
     }

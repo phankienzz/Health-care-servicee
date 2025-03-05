@@ -6,6 +6,7 @@ public class WorkingSchedule {
 
     private int scheduleID;
     private int professionalID;
+    private String fullName;
     private int dayOfWeek;
     private Time startTime;
     private Time endTime;
@@ -28,6 +29,16 @@ public class WorkingSchedule {
         this.startTime = startTime;
         this.endTime = endTime;
         this.shift = shift;
+    }
+
+    // không scheduleID, thêm fullName để hiển thị danh sách lịch làm việc
+    public WorkingSchedule(int professionalID, String fullName, int dayOfWeek, String shift, Time startTime, Time endTime) {
+        this.professionalID = professionalID;
+        this.fullName = fullName;
+        this.dayOfWeek = dayOfWeek;
+        this.shift = shift;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     // Constructor mặc định
@@ -83,22 +94,30 @@ public class WorkingSchedule {
         this.shift = shift;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     // Phương thức chuyển đổi dayOfWeek thành tên ngày
     public String getDayName() {
         switch (dayOfWeek) {
-            case 0:
-                return "Chủ nhật";
             case 1:
-                return "Thứ hai";
+                return "Chủ nhật";
             case 2:
-                return "Thứ ba";
+                return "Thứ hai";
             case 3:
-                return "Thứ tư";
+                return "Thứ ba";
             case 4:
-                return "Thứ năm";
+                return "Thứ tư";
             case 5:
-                return "Thứ sáu";
+                return "Thứ năm";
             case 6:
+                return "Thứ sáu";
+            case 7:
                 return "Thứ bảy";
             default:
                 return "Không xác định";
@@ -107,7 +126,7 @@ public class WorkingSchedule {
 
     @Override
     public String toString() {
-        return "WorkingSchedule{" + "scheduleID=" + scheduleID + ", professionalID=" + professionalID
+        return "WorkingSchedule{" + "scheduleID=" + scheduleID + ", professionalID=" + professionalID + ", fullName=" + fullName
                 + ", dayOfWeek=" + dayOfWeek + ", startTime=" + startTime
                 + ", endTime=" + endTime + ", shift=" + shift + '}';
     }
