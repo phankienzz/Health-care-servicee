@@ -49,7 +49,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarmain">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
+                        <li class="nav-item">
                             <a class="nav-link" href="index_1.jsp">Home</a>
                         </li>
                         <li class="nav-item"><a class="nav-link" href="about.jsp">About</a></li>
@@ -70,10 +70,12 @@
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="blog-sidebar.html" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">News<i class="icofont-thin-down"></i></a>
+                            <a class="nav-link dropdown-toggle" href="" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">News<i class="icofont-thin-down"></i></a>
                             <ul class="dropdown-menu" aria-labelledby="dropdown05">
                                 <li><a class="dropdown-item" href="allNews">All News</a></li>
-                                <li><a class="dropdown-item" href="blog-single.html">Blog Single</a></li>
+                                    <%--<c:forEach var="cate" items="${listCate}">--%> 
+                                    <!--<li><a class="dropdown-item" href="allNews?categoryID=${cate.category_id}">${cate.name}</a></li>-->
+                                    <%--</c:forEach>--%>
                             </ul>
                         </li>
                         <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>

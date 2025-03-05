@@ -6,6 +6,7 @@ package context;
 
 import dao.CustomerDAO;
 import dao.StaffDAO;
+import java.text.SimpleDateFormat;
 import org.mindrot.jbcrypt.BCrypt;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -76,6 +77,13 @@ public class ValidFunction {
         java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
         java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
         return dateFormat.format(timestamp);
+    }
+
+    public String formatDateTime(String date, String pattern) {
+        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+        return dateFormat.format(timestamp);
+
     }
 
     public String hashPassword(String password) {

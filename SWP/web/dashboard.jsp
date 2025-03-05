@@ -1,3 +1,10 @@
+<%-- 
+    Document   : dashboard
+    Created on : Mar 5, 2025, 11:47:26 PM
+    Author     : Hoang
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 

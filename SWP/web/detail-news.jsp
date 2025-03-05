@@ -30,7 +30,7 @@
         <!-- Main Stylesheet -->
         <link rel="stylesheet" href="assets2/css/style.css">
         <script>
-            
+
         </script>
         <style>
             .child-comments {
@@ -84,15 +84,13 @@
                             <div class="row">
                                 <div class="col-lg-12 mb-5">
                                     <div class="single-blog-item">
-                                        <img src="assets2/images/blog/blog-1.jpg" alt="" class="img-fluid">
+                                        <img style="width:730px; height: 485px;" src="LoadBlogImage?postId=${newsDetail.post_id}" alt="" class="img-fluid">
                                         <div class="blog-item-content mt-5">
                                             <div class="blog-item-meta mb-3">
-                                                <span class="text-color-2 text-capitalize mr-3"><i
-                                                        class="icofont-book-mark mr-2"></i> Equipment</span>
-                                                <span class="text-muted text-capitalize mr-3"><i
-                                                        class="icofont-comment mr-2"></i>${comments.size()} Comments</span>
-                                            <span class="text-black text-capitalize mr-3"><i
-                                                    class="icofont-calendar mr-2"></i>${newsDetail.created_at}</span>
+                                                <!--<span class="text-color-2 text-capitalize mr-3"><i class="icofont-book-mark mr-2"></i> Equipment</span>-->
+                                                <span class="text-muted text-capitalize mr-3"><i class="icofont-comment mr-2"></i>${comments.size()} Comments</span>
+                                            <span class="text-black text-capitalize mr-3"><i class="icofont-calendar mr-2"></i>${newsDetail.created_at}</span>
+                                            <span class="text-black text-capitalize mr-3"><i class="mr-1"></i>Updated last: ${newsDetail.updated_at}</span>
                                         </div>
 
                                         <h2 style="color:#009efb " class="mb-4 text-md">${newsDetail.title}</h2>

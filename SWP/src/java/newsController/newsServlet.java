@@ -91,7 +91,7 @@ public class newsServlet extends HttpServlet {
 
         for (News news : pagingPage) {
             news.setCreated_at(valid.formatDateNews(news.getCreated_at()));
-            news.setUpdated_at(valid.formatDateNews(news.getUpdated_at()));
+        news.setUpdated_at(valid.formatDateTime(news.getUpdated_at(), "dd/MM/yyyy HH:mm"));
         }
 
         List<Category> listCate = dao.getAllCategoryNews();
