@@ -25,7 +25,7 @@ public class CustomerDAO extends DBContext {
     ValidFunction valid = new ValidFunction();
 
     public Customer customerLogin(String username) {
-        String sql = "select * from Customer where username = ? where accountStatus = 'Active'";
+        String sql = "select * from Customer where username = ? and accountStatus = 'Active'";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, username);

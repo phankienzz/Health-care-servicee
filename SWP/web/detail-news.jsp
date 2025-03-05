@@ -84,10 +84,10 @@
                                 <div class="col-lg-12 mb-5">
                                     <div class="single-blog-item">
                                         <img style="width:730px; height: 485px;" src="LoadBlogImage?postId=${newsDetail.post_id}" alt="" class="img-fluid">
-                                        <div class="blog-item-content mt-5">
-                                            <div class="blog-item-meta mb-3">
-                                                <!--<span class="text-color-2 text-capitalize mr-3"><i class="icofont-book-mark mr-2"></i> Equipment</span>-->
-                                                <span class="text-muted text-capitalize mr-3"><i class="icofont-comment mr-2"></i>${comments.size()} Comments</span>
+                                    <div class="blog-item-content mt-5">
+                                        <div class="blog-item-meta mb-3">
+                                            <!--<span class="text-color-2 text-capitalize mr-3"><i class="icofont-book-mark mr-2"></i> Equipment</span>-->
+                                            <span class="text-muted text-capitalize mr-3"><i class="icofont-comment mr-2"></i>${comments.size()} Comments</span>
                                             <span class="text-black text-capitalize mr-3"><i class="icofont-calendar mr-2"></i>${newsDetail.created_at}</span>
                                             <span class="text-black text-capitalize mr-3"><i class="mr-1"></i>Updated last: ${newsDetail.updated_at}</span>
                                         </div>
@@ -153,9 +153,17 @@
                                                             <span>${comment.create_at}</span>
                                                         </div>
                                                         <div class="comment-meta mt-2">
+                                                            <c:if test="${sessionScope.customerAccount == null}">
+                                                                <a href="login.jsp?newsID=${newsDetail.post_id}&parent_comment_id=${comment.comment_id}#comment-form"
+                                                                   onclick="return confirm('Bạn cần đăng nhập để trả lời bình luận!');">
+                                                                    <i class="icofont-reply mr-2 text-muted"></i>Reply
+                                                                </a>
+                                                            </c:if>
+                                                            <c:if test="${sessionScope.customerAccount != null}">
                                                             <a href="?newsID=${newsDetail.post_id}&parent_comment_id=${comment.comment_id}#comment-form">
                                                                 <i class="icofont-reply mr-2 text-muted"></i>Reply
                                                             </a>
+                                                                </c:if>
                                                         </div>
                                                         <div class="comment-content mt-3">
                                                             <p>${comment.content}</p>

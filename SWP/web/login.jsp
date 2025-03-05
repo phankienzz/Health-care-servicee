@@ -25,7 +25,7 @@
             }
         </script>
     </head>
-    
+
     <body class="bg-light">
         <%
             Cookie[] cookies = request.getCookies();
@@ -127,7 +127,7 @@
                                                     googleLogin.style.display = "block";
                                                     registerLink.style.display = "block";
                                                     rememberMeChkBox.style.display = "block";
-                                                    
+
                                                 } else {
                                                     userLabel.innerText = "Email";
                                                     userInput.placeholder = "Enter your email";
