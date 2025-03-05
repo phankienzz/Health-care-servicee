@@ -12,7 +12,7 @@
         <li class="mb-3">
             <div class="comment-area-box">
                 <div class="comment-thumb float-left">
-                    <img alt="" src="assets2/images/blog/testimonial2.jpg" class="img-fluid">
+                    <img style="width: 50px; height: 50px; border-radius: 50%;" alt="" src="pictureprofile?customerID=${reply.customerID.customerID}" class="img-fluid">
                 </div>
                 <div class="comment-info">
                     <h5 class="mb-1">${reply.customerID.fullName}</h5>

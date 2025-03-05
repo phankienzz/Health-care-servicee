@@ -22,39 +22,36 @@ import model.News;
  * @author Hoang
  */
 public class NewsDAO extends DBContext {
-    
-    
+
     public News getNewsByID(int newsID) {
-    String sql = "SELECT * FROM Posts WHERE post_id = ? AND status = 1";
-    try {
-        PreparedStatement st = connection.prepareStatement(sql);
-        st.setInt(1, newsID);
-        ResultSet rs = st.executeQuery();
-        if (rs.next()) {
-            String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
-            String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
+        String sql = "SELECT * FROM Posts WHERE post_id = ? AND status = 1";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, newsID);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
+                String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
 
-            return new News(
-                rs.getInt("post_id"),
-                rs.getString("title"),
-                rs.getString("content"),
-                rs.getInt("created_by"),
-                rs.getInt("category_id"),
-                rs.getInt("status"),
-                rs.getString("image"),
-                rs.getString("detail"),
-                createdAt,
-                updatedAt
-            );
+                return new News(
+                        rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getInt("created_by"),
+                        rs.getInt("category_id"),
+                        rs.getInt("status"),
+                        rs.getString("image"),
+                        rs.getString("detail"),
+                        createdAt,
+                        updatedAt
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return null;
     }
-    return null;
-}
 
-    
-    
     public List<Category> getAllCategoryNews() {
         List<Category> cate = new ArrayList<>();
         String sql = "select * from Categories where status = 1";
@@ -104,7 +101,6 @@ public class NewsDAO extends DBContext {
         return news;
     }
 
-    
     //dem
     public int getTotalNews() {
         String sql = "SELECT COUNT(*) FROM Posts WHERE status = 1";
@@ -151,9 +147,41 @@ public class NewsDAO extends DBContext {
     }
 
     //phan trang
-    public List<News> pagingAllNews(int index, int pageSize) {
+    public List<News> getAllNewsNewest(int index, int pageSize) {
         List<News> list = new ArrayList<>();
-        String sql = "select * from Posts where status = 1 order by post_id offset ? rows  fetch  next ? rows only";
+        String sql = "select * from Posts where status = 1 order by created_at desc offset ? rows  fetch  next ? rows only";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            int offset = (index - 1) * pageSize;
+            pre.setInt(1, offset);
+            pre.setInt(2, pageSize);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                String createdAt = (rs.getTimestamp("created_at") != null) ? rs.getTimestamp("created_at").toString() : null;
+                String updatedAt = (rs.getTimestamp("updated_at") != null) ? rs.getTimestamp("updated_at").toString() : null;
+
+                News n = new News(rs.getInt("post_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getInt("created_by"),
+                        rs.getInt("category_id"),
+                        rs.getInt("status"),
+                        rs.getString("image"),
+                        rs.getString("detail"),
+                        createdAt,
+                        updatedAt);
+//                        rs.getString("created_at"),
+//                        rs.getString("updated_at"));
+                list.add(n);
+            }
+        } catch (SQLException e) {
+        }
+        return list;
+    }
+    
+    public List<News> getAllNewsOldest(int index, int pageSize) {
+        List<News> list = new ArrayList<>();
+        String sql = "select * from Posts where status = 1 order by created_at offset ? rows  fetch  next ? rows only";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             int offset = (index - 1) * pageSize;
@@ -183,9 +211,9 @@ public class NewsDAO extends DBContext {
         return list;
     }
 
-    public List<News> pagingNewsByCategory(String categoryID, int index, int pageSize) {
+    public List<News> getNewsByCategory(String categoryID, int index, int pageSize) {
         List<News> list = new ArrayList<>();
-        String sql = "select * from Posts where status = 1 and category_id = ? order by post_id desc OFFSET ? rows fetch next ? rows only";
+        String sql = "select * from Posts where status = 1 and category_id = ? order by created_at desc offset ? rows fetch next ? rows only";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             int offset = (index - 1) * pageSize;
@@ -218,7 +246,7 @@ public class NewsDAO extends DBContext {
 
     public List<News> searchNewsByTitle(String title, int index, int pageSize) {
         List<News> list = new ArrayList<>();
-        String sql = "SELECT * FROM Posts WHERE status = 1 AND title LIKE ? ORDER BY post_id desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "select * from Posts where status = 1 and title LIKE ? order by created_at desc offset ? rows fetch next ? rows only";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             int offset = (index - 1) * pageSize;
@@ -247,11 +275,8 @@ public class NewsDAO extends DBContext {
         }
         return list;
     }
-    
-    
-    
 
-  private static final Logger LOGGER = Logger.getLogger(NewsDAO.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(NewsDAO.class.getName());
 
     public void addBlogPost(String title, String content, int createdBy, int categoryId, int status, String detail, InputStream imageStream) {
         String sql = "INSERT INTO Posts (title, content, created_by, category_id, status, detail, image, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, GETDATE())";
@@ -309,9 +334,6 @@ public class NewsDAO extends DBContext {
             return false;
         }
     }
-    
-    
-
 
     public List<News> getAllBlogs() {
         List<News> blogs = new ArrayList<>();

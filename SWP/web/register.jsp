@@ -27,7 +27,7 @@
                     <div class="account-box">
                         <form action="register" method="post" class="form-signin">
                             <div class="account-logo">
-                                <a href="index-2.html"><img src="assets/img/logo-dark.png" alt=""></a>
+                                <a href="dashboard.html"><img src="assets/img/logo-dark.png" alt=""></a>
                             </div>
                             <p class="center text-danger">${error}</p>
                             <div class="form-group">

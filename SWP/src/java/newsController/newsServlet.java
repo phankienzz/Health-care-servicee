@@ -50,17 +50,21 @@ public class newsServlet extends HttpServlet {
         String indexPage = request.getParameter("page");
         String categoryID = request.getParameter("categoryID");
         String search = request.getParameter("search");
-
+        String sort = request.getParameter("sort");
+        
+        if(sort == null || sort.isEmpty()){
+            sort = "new";
+        }
         if (search == null) {
             search = "";
         }
-        if (indexPage == null) {
+        if (indexPage == null || indexPage.trim().isEmpty()) {
             indexPage = "1";
         }
 
         int page;
         try {
-            page = Integer.parseInt(indexPage);
+            page = Integer.parseInt(indexPage.trim());
             if (page <= 0) {
                 page = 1;
             }
@@ -68,7 +72,7 @@ public class newsServlet extends HttpServlet {
             page = 1;
         }
         
-        List<News> pagingPage = new ArrayList<>();
+        List<News> pagingPage ;
         int totalNews = 0;
         int pageSize = 3;
 
@@ -76,10 +80,10 @@ public class newsServlet extends HttpServlet {
             pagingPage = dao.searchNewsByTitle(valid.normalizeName(search), page, pageSize);
             totalNews = dao.getTotalNewsBySearch(search);
         } else if (categoryID != null && !categoryID.isEmpty()) {
-            pagingPage = dao.pagingNewsByCategory(categoryID, page, pageSize);
+            pagingPage = dao.getNewsByCategory(categoryID, page, pageSize);
             totalNews = dao.getTotalNewsByCategory(categoryID);
         } else {
-            pagingPage = dao.pagingAllNews(page, pageSize);
+            pagingPage = (sort.equals("new")) ? dao.getAllNewsNewest(page, pageSize) : dao.getAllNewsOldest(page, pageSize);
             totalNews = dao.getTotalNews();
         }
 
@@ -98,8 +102,7 @@ public class newsServlet extends HttpServlet {
         request.setAttribute("categoryID", categoryID);
         request.setAttribute("search", search);
         request.setAttribute("page", page);
-        
-        
+        request.setAttribute("sort", sort);
         request.getRequestDispatcher("blog-sidebar.jsp").forward(request, response);
     }
 

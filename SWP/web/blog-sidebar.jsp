@@ -23,14 +23,14 @@
         <!-- Main Stylesheet -->
         <link rel="stylesheet" href="css/style.css">
 
+        <style>
+
+        </style>
     </head>
 
     <body id="top">
 
-        <%--<jsp:include page="headerCustomer.jsp"></jsp:include>--%>
         <jsp:include page="headerHome.jsp"></jsp:include>
-
-
             <section class="page-title bg-1">
                 <div class="overlay"></div>
                 <div class="container">
@@ -57,7 +57,7 @@
                                 <div class="col-lg-12 col-md-12 mb-5">
                                     <div class="blog-item">
                                         <div class="blog-thumb">
-                                            <img src="https://th.bing.com/th/id/R.b36487219523001afe830b30caa66190?rik=4lto5%2faxY9hY%2fw&pid=ImgRaw&r=0" alt="" class="img-fluid ">
+                                            <img style="width:730px; height: 485px; " src="LoadBlogImage?postId=${news.post_id}" alt="" class="img-fluid ">
                                         </div>
                                         <div class="blog-item-content">
                                             <div class="blog-item-meta mb-3 mt-4">
@@ -78,18 +78,20 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0">
-                            <div class="sidebar-widget search  mb-3 ">
+                            <div class="sidebar-widget search mb-3">
                                 <h5>Search Here</h5>
+                                <form action="allNews" method="get" class="search-form" style="display: flex; gap: 5px;">
+                                    <input type="text" name="search" class="form-control" placeholder="Search" value="${search}" style="flex: 1;">
+                                    <button type="submit" class="btn btn-primary"><i class="ti-search"></i>Search</button>
+                                </form>
                                 <form action="allNews" method="get" class="search-form">
-                                    <input type="text" name="search" class="form-control" placeholder="search" value="${search}">
-                                    <i class="ti-search"></i>
-                                    <select class="form-control">
-                                        <option>Mới nhất</option>
-                                        <option>Cũ Nhất</option>
-
+                                    <select name="sort" class="form-control mt-2" onchange="this.form.submit()">
+                                        <option value="new" ${empty sort or sort == 'new' ? 'selected' : ''}>Mới nhất</option>
+                                        <option value="old" ${sort == 'old' ? 'selected' : ''}>Cũ nhất</option>
                                     </select>
                                 </form>
                             </div>
+
 
 
                             <div class="sidebar-widget latest-post mb-3">
@@ -176,14 +178,14 @@
                     <div class="col-lg-8">
                         <nav class="pagination py-2 d-inline-block">
                             <div class="nav-links">
-                                <c:set var="range" value="2" /> <!-- Số trang hiển thị trước/sau trang hiện tại -->
+                                <c:set var="range" value="2" /> 
                                 <c:set var="startPage" value="${page - range > 1 ? page - range : 1}" />
                                 <c:set var="endPage" value="${page + range < endPage ? page + range : endPage}" />
                                 <c:if test="${page != 1}">
                                     <a class="page-numbers" href="allNews?page=${page - 1}"><i class="icofont-thin-double-left"></i></a>
                                     </c:if>
                                     <c:forEach begin="${startPage}" end="${endPage}" var="i">
-                                    <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="allNews?page=${i}&categoryID=${categoryID}&search=${search}">${i}</a>
+                                    <a class="page-numbers ${page == i ? 'page-numbers current' : ''}" href="allNews?page=${i}&categoryID=${categoryID}&search=${search}&sort=${sort}">${i}</a>
                                 </c:forEach>
                                 <c:if test="${page != endPage}">
                                     <!--<span class="page-numbers">.....</span>-->
@@ -192,6 +194,7 @@
                                 <form action="allNews" method="get" style="display: inline;">
                                     <input type="hidden" name="search" value="${search}" />
                                     <input type="hidden" name="categoryID" value="${categoryID}" />
+                                    <input type="hidden" name="sort" value="${sort}" />
                                     <input type="text" name="page" placeholder="Page" style="width: 40px;" />
                                     <input type="submit" value="Go" />
                                 </form>

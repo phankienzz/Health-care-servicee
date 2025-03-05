@@ -30,30 +30,7 @@
         <!-- Main Stylesheet -->
         <link rel="stylesheet" href="assets2/css/style.css">
         <script>
-            function showReplyForm(commentId) {
-                // Tìm tất cả các form trả lời và ẩn chúng
-                document.querySelectorAll("#replyForm").forEach(form => {
-                    form.style.display = "none";
-                });
-
-                // Cập nhật giá trị parentCommentId
-                const parentCommentIdField = document.getElementById("parentCommentId");
-                if (parentCommentIdField) {
-                    parentCommentIdField.value = commentId;
-                }
-
-                // Hiển thị form trả lời dưới bình luận được chọn
-                const replyForm = document.getElementById("replyForm");
-                if (replyForm) {
-                    replyForm.style.display = "block";
-
-                    // Gắn form vào đúng vị trí dưới bình luận
-                    const commentBox = document.querySelector(`[onclick="showReplyForm(${commentId});"]`).closest("li");
-                    if (commentBox) {
-                        commentBox.appendChild(replyForm);
-                    }
-                }
-            }
+            
         </script>
         <style>
             .child-comments {
@@ -172,7 +149,7 @@
                                                 <li class="mb-4">
                                                     <div class="comment-area-box">
                                                         <div class="comment-thumb float-left">
-                                                            <img alt="" src="assets2/images/blog/testimonial1.jpg" class="img-fluid">
+                                                            <img style="width: 50px; height: 50px; border-radius: 50%;" alt="" src="pictureprofile?customerID=${comment.customerID.customerID}" class="img-fluid">
                                                         </div>
                                                         <div class="comment-info">
                                                             <h5 class="mb-1">${comment.customerID.fullName}</h5>
@@ -276,9 +253,9 @@
                         <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0">
                             <div class="sidebar-widget search  mb-3 ">
                                 <h5>Search Here</h5>
-                                <form action="allNews" method="get" class="search-form">
-                                    <input type="text" name="search" class="form-control" placeholder="search" value="${search}">
-                                    <i class="ti-search"></i>
+                                <form action="allNews" method="get" class="search-form" style="display: flex; gap: 5px;">
+                                    <input type="text" name="search" class="form-control" placeholder="Search" value="${search}" style="flex: 1;">
+                                    <button type="submit" class="btn btn-primary"><i class="ti-search"></i>Search</button>
                                 </form>
                             </div>
 
