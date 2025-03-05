@@ -58,7 +58,7 @@ public class patient extends HttpServlet {
         String indexPage = request.getParameter("page");
         int page;
         int totalPatient = 0; 
-        int pageSize = 2;
+        int pageSize = 5;
 
         try {
             page = Integer.parseInt(indexPage);

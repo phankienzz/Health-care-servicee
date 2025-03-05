@@ -73,7 +73,7 @@ public class comment extends HttpServlet {
             int postId = Integer.parseInt(postIdParam);
             int customerId = Integer.parseInt(customerIdParam);
             int parentCommentId = parentCommentIdParam != null && !parentCommentIdParam.isEmpty()
-                    ? Integer.parseInt(parentCommentIdParam) : 0; // Nếu không có parent_comment_id, coi là comment gốc.
+                    ? Integer.parseInt(parentCommentIdParam) : 0;
 
             CustomerDAO customerDAO = new CustomerDAO();
             Customer customer = customerDAO.getCustomerByID(customerId);
@@ -112,11 +112,6 @@ public class comment extends HttpServlet {
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

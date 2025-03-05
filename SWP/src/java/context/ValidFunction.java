@@ -77,16 +77,24 @@ public class ValidFunction {
         java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
         return dateFormat.format(timestamp);
     }
-    
+
     public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
-    
+
     public boolean checkPassword(String password, String hashedPassword) {
         return BCrypt.checkpw(password, hashedPassword);
     }
 
     public static void main(String[] args) {
-        
+        ValidFunction valid = new ValidFunction();
+        CustomerDAO dao = new CustomerDAO();
+        List<Customer> list = dao.getAllCustomer();
+        for (Customer cs : list) {
+            System.out.println("Staff password: " + cs.getPassword());
+            System.out.println("Hash password: " + valid.hashPassword(cs.getPassword()));
+            System.out.println("");
+        }
+
     }
 }

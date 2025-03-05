@@ -40,7 +40,7 @@ public class CustomerDAO extends DBContext {
         return null;
     }
 
-    public Customer getCustomerByUsername(String username) {
+    public Customer customerLogin(String username) {
         String sql = "select * from Customer where username = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
