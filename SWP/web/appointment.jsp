@@ -125,27 +125,27 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="mt-3">
-                            <div class="feature-icon mb-3">
-                                <i class="icofont-support text-lg"></i>
+                            <div class="appoinment-content">
+                                <img id="doctorImage" src="images/about/img-3.jpg" alt="Doctor Image" class="img-fluid">
+                                <div class="emergency">
+                                    <p id="doctorSpecialization" class="mb-4">Specialization</p>
+                                </div>
                             </div>
-                            <span class="h3">Call for an Emergency Service!</span>
-                            <h2 class="text-color mt-3">+84 789 1256 </h2>
                         </div>
                     </div>
 
                     <div class="col-lg-8">
                         <div class="appoinment-wrap mt-5 mt-lg-0 pl-lg-5">
-                            <h2 class="mb-2 title-color">Book an appoinment</h2>
-                            <p class="mb-4">Mollitia dicta commodi est recusandae iste, natus eum asperiores corrupti qui velit . Iste dolorum atque similique praesentium soluta.</p>
+                            <h2 class="mb-2 title-color">Book an appointment</h2>
+                            <p class="mb-4">Mollitia dicta commodi est recusandae iste, natus eum asperiores corrupti qui velit. Iste dolorum atque similique praesentium soluta.</p>
                             <form id="appointmentForm" class="appointment" method="post" action="appointment">
                                 <div class="row">
-
 
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <div style="border: 1px solid #ced4da;">
-                                                <div class="dropdown" style=" margin-bottom: 8px ">
-                                                    <button  class="btn btn-outline-secondary dropdown-toggle form-control" type="button" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">
+                                                <div class="dropdown" style="margin-bottom: 8px;">
+                                                    <button class="btn btn-outline-secondary dropdown-toggle form-control" type="button" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">
                                                         Select Services
                                                     </button>
                                                     <div class="dropdown-menu p-2" style="max-height: 150px; overflow-y: auto; width: 100%;">
@@ -163,65 +163,66 @@
                                         </div>
                                     </div>
 
-
-                                    <!-- Ch?n bác s? -->
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <select class="form-control" name="doctorId" required>
+                                            <select class="form-control" name="doctorId" id="doctorSelect" required>
                                                 <option value="">Select Doctor</option>
                                                 <c:if test="${not empty doctors}">
                                                     <c:forEach var="doctor" items="${doctors}">
-                                                        <option value="${doctor.staffID}">${doctor.fullName}</option>
+                                                        <option value="${doctor.staffID}" data-image="${doctor.profilePicture}" data-specialization="${doctor.specialization}">${doctor.fullName}</option>
                                                     </c:forEach>
                                                 </c:if>
                                             </select>
                                         </div>
                                     </div>
 
-                                    <!-- Ch?n ngày -->
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <input name="date" type="date" class="form-control" required>
                                         </div>
                                     </div>
 
-                                    <!-- Ch?n gi? -->
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <input name="time" type="time" class="form-control" required>
                                         </div>
                                     </div>
 
-                                    <!-- Nh?p tên -->
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <input name="name" type="text" class="form-control" placeholder="Full Name" value="${customerAccount.fullName}" required>
                                         </div>
                                     </div>
 
-                                    <!-- Nh?p s? ?i?n tho?i -->
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <input name="phone" type="tel" class="form-control" placeholder="Phone Number"  value="${customerAccount.phone}" required>
+                                            <input name="phone" type="tel" class="form-control" placeholder="Phone Number" value="${customerAccount.phone}" required>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Nh?p tin nh?n -->
                                 <div class="form-group-2 mb-4">
                                     <textarea name="message" class="form-control" rows="6" placeholder="Your Message"></textarea>
                                 </div>
 
-                                <!-- Nút g?i form -->
                                 <button type="submit" class="btn btn-main btn-round-full">Make Appointment</button>
                             </form>
-
                         </div>
                     </div>
                 </div>
             </div>
-
         </section>
+
+        <script>
+            document.getElementById("doctorSelect").addEventListener("change", function () {
+                var selectedOption = this.options[this.selectedIndex];
+                var doctorImage = selectedOption.getAttribute("data-image");
+                var doctorSpecialization = selectedOption.getAttribute("data-specialization");
+
+                document.getElementById("doctorImage").src = doctorImage;
+                document.getElementById("doctorSpecialization").textContent = doctorSpecialization;
+            });
+        </script>
 
 
         <!-- footer Start -->
