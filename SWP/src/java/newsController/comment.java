@@ -72,8 +72,7 @@ public class comment extends HttpServlet {
 
             int postId = Integer.parseInt(postIdParam);
             int customerId = Integer.parseInt(customerIdParam);
-            int parentCommentId = parentCommentIdParam != null && !parentCommentIdParam.isEmpty()
-                    ? Integer.parseInt(parentCommentIdParam) : 0;
+            int parentCommentId = parentCommentIdParam != null && !parentCommentIdParam.isEmpty() ? Integer.parseInt(parentCommentIdParam) : 0;
 
             CustomerDAO customerDAO = new CustomerDAO();
             Customer customer = customerDAO.getCustomerByID(customerId);
