@@ -84,7 +84,7 @@ public class editBlog extends HttpServlet {
 
             if (filePart != null && filePart.getSize() > 0) {
                 String contentType = filePart.getContentType();
-                // Kiểm tra loại file cho phép: PNG, JPEG, GIF, JPG
+               
                 if (!contentType.equals("image/png") && !contentType.equals("image/jpeg")
                         && !contentType.equals("image/gif") && !contentType.equals("image/jpg")) {
                     response.sendRedirect("edit-blog.jsp?error=Only+PNG,+JPEG,+JPG,+and+GIF+files+are+allowed");

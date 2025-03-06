@@ -17,9 +17,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import context.DBContext; // Import DBContext để lấy kết nối
+import dao.NewsDAO;
 import java.io.PrintWriter;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -63,50 +65,36 @@ public class LoadBlogImage extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    String postIdParam = request.getParameter("postId");
-    
-    if (postIdParam == null || postIdParam.isEmpty()) {
-        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing postId parameter.");
-        return;
-    }
+   protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String postIdParam = request.getParameter("postId");
 
-    try {
-        int postId = Integer.parseInt(postIdParam);
-        DBContext dbContext = new DBContext();
-        Connection conn = dbContext.connection; 
-
-        String sql = "SELECT image FROM Posts WHERE post_id = ?";
-        try (PreparedStatement st = conn.prepareStatement(sql)) {
-            st.setInt(1, postId);
-            try (ResultSet rs = st.executeQuery()) {
-                if (rs.next()) {
-                    Blob blob = rs.getBlob("image");
-                    if (blob != null && blob.length() > 0) {
-                        response.setContentType("image/jpeg");
-                        try (OutputStream out = response.getOutputStream()) {
-                            out.write(blob.getBytes(1, (int) blob.length()));
-                        }
-                    } else {
-                        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Image not found.");
-                    }
-                } else {
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Post not found.");
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(LoadBlogImage.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            conn.close();
+        if (postIdParam == null || postIdParam.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing postId parameter.");
+            return;
         }
-    } catch (NumberFormatException e) {
-        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid postId parameter.");
-    } catch (SQLException e) {
-        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error.");
-        e.printStackTrace();
+
+        try {
+            int postId = Integer.parseInt(postIdParam);
+            NewsDAO dao = new NewsDAO();
+            Optional<Blob> imageBlob = dao.getBlogImageById(postId);
+
+            if (imageBlob.isPresent()) {
+                response.setContentType("image/jpeg");
+                try (OutputStream out = response.getOutputStream()) {
+                    out.write(imageBlob.get().getBytes(1, (int) imageBlob.get().length()));
+                }
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Image not found.");
+            }
+
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid postId parameter.");
+        } catch (SQLException e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error.");
+           
+        }
     }
-}
 
 
     /** 

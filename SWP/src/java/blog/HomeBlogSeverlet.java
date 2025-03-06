@@ -37,7 +37,7 @@ public class HomeBlogSeverlet extends HttpServlet {
         NewsDAO dao = new NewsDAO();
 
         int page = 1;
-    int recordsPerPage = 3; 
+    int recordsPerPage = 8; 
 
     // Validate page parameter
     String pageParam = request.getParameter("page");

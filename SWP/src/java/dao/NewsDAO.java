@@ -4,6 +4,7 @@
  */
 package dao;
 
+import com.sun.jdi.connect.spi.Connection;
 import context.DBContext;
 import java.io.InputStream;
 import java.sql.Blob;
@@ -12,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Category;
@@ -485,5 +487,23 @@ public class NewsDAO extends DBContext {
         }
         return blogs;
     }
+    
+    
+     public Optional<Blob> getBlogImageById(int postId) {
+        String sql = "SELECT image FROM Posts WHERE post_id = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, postId);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.ofNullable(rs.getBlob("image"));
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error fetching blog image", e);
+        }
+        return Optional.empty();
+    }
+
+    
 
 }
