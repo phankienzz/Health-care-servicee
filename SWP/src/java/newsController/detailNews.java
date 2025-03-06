@@ -24,7 +24,7 @@ import model.News;
  *
  * @author Hoang
  */
-@WebServlet(name ="detailNews", urlPatterns = {"/detailNews"})
+@WebServlet(name = "detailNews", urlPatterns = {"/detailNews"})
 public class detailNews extends HttpServlet {
 
     /**
@@ -59,8 +59,8 @@ public class detailNews extends HttpServlet {
         ValidFunction valid = new ValidFunction();
         NewsDAO dao = new NewsDAO();
         CommentDAO commentDAO = new CommentDAO();
-
         String newsIdStr = request.getParameter("newsID");
+        String parentCommentIdStr = request.getParameter("parent_comment_id");
 
         if (newsIdStr == null || newsIdStr.isEmpty()) {
             response.sendRedirect("allNews");
@@ -74,18 +74,31 @@ public class detailNews extends HttpServlet {
             response.sendRedirect("allNews");
             return;
         }
-        
+
         List<Comment> comments = commentDAO.getCommentsByPostId(newsID);
         List<Category> listCate = dao.getAllCategoryNews();
-        
-        for (Comment cm : comments) {
-            cm.setCreate_at(valid.formatDateNews(cm.getCreate_at()));
-        }
+
+//        for (Comment cm : comments) {
+//            cm.setCreate_at(valid.formatDateNews(cm.getCreate_at()));
+//        }
 
         news.setCreated_at(valid.formatDateNews(news.getCreated_at()));
-        news.setUpdated_at(valid.formatDateNews(news.getUpdated_at()));
-        
-        
+//        news.setUpdated_at(valid.formatDateNews(news.getUpdated_at()));
+        news.setUpdated_at(valid.formatDateTime(news.getUpdated_at(), "dd/MM/yyyy HH:mm"));
+
+        int parentCommentId = 0;
+        if (parentCommentIdStr != null && !parentCommentIdStr.isEmpty()) {
+            try {
+                parentCommentId = Integer.parseInt(parentCommentIdStr);
+                Comment parentComment = commentDAO.getCommentById(parentCommentId);
+                if (parentComment != null) {
+                    request.setAttribute("parent_comment_name", parentComment.getCustomerID().getFullName());
+                    request.setAttribute("parent_comment_id", parentCommentId);
+                }
+            } catch (NumberFormatException e) {
+                parentCommentId = 0;
+            }
+        }
 
         request.setAttribute("newsDetail", news);
         request.setAttribute("listCate", listCate);

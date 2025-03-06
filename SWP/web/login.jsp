@@ -25,7 +25,7 @@
             }
         </script>
     </head>
-    
+
     <body class="bg-light">
         <%
             Cookie[] cookies = request.getCookies();
@@ -47,7 +47,7 @@
             <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%;">
                 <div class="card-body">
                     <div class="text-center mb-4">
-                        <a href="index-2.html">
+                        <a href="dashboard.html">
                             <img src="assets/img/logo-dark.png" alt="Logo" class="mb-3" style="max-width: 120px;">
                         </a>
                         <h5 class="card-title">Welcome Back</h5>
@@ -127,7 +127,7 @@
                                                     googleLogin.style.display = "block";
                                                     registerLink.style.display = "block";
                                                     rememberMeChkBox.style.display = "block";
-                                                    
+
                                                 } else {
                                                     userLabel.innerText = "Email";
                                                     userInput.placeholder = "Enter your email";

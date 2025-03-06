@@ -54,14 +54,12 @@ public class EditProfileServlet extends HttpServlet {
         String dateOfBirth = request.getParameter("dateOfBirth");
         String gender = request.getParameter("gender");
 
-        // Kiểm tra định dạng email
         if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")) {
             request.setAttribute("error", "Invalid email format! (ex: example@gmail.com)");
             request.getRequestDispatcher("edit-profile.jsp").forward(request, response);
             return;
         }
 
-        // Kiểm tra số điện thoại (10 số, bắt đầu bằng 0)
         if (!phone.matches("^0[0-9]{9}$")) {
             request.setAttribute("error", "Invalid phone number! Must be 10 digits and start with 0.");
             request.getRequestDispatcher("edit-profile.jsp").forward(request, response);

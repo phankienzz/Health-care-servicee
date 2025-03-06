@@ -5,6 +5,7 @@
 package dao;
 
 import context.DBContext;
+import context.ValidFunction;
 import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,12 +22,13 @@ import model.Customer;
  */
 public class CustomerDAO extends DBContext {
 
-    public Customer getCustomerAccount(String username, String password) {
-        String sql = "SELECT * FROM Customer WHERE username = ? AND password = ?";
+    ValidFunction valid = new ValidFunction();
+
+    public Customer customerLogin(String username) {
+        String sql = "select * from Customer where username = ? and accountStatus = 'Active'";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, username);
-            st.setString(2, password);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 return new Customer(
@@ -43,18 +45,52 @@ public class CustomerDAO extends DBContext {
                         rs.getString("gender"),
                         rs.getString("profilePicture"));
             }
-
         } catch (SQLException e) {
+            e.printStackTrace();
 
         }
         return null;
     }
-
+    
     public List<Customer> getAllCustomer() {
         List<Customer> customers = new ArrayList<>();
         String sql = "SELECT * FROM Customer";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int customerID = rs.getInt("customerID");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String fullName = rs.getString("fullName");
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                String accountStatus = rs.getString("accountStatus");
+                String registrationDate = rs.getString("registrationDate");
+                String dateOfBirth = rs.getString("dateOfBirth");
+                String gender = rs.getString("gender");
+                String profilePicture = rs.getString("profilePicture");
+
+                Customer customer = new Customer(customerID, username, password, fullName, email, phone, address,
+                        accountStatus, registrationDate, dateOfBirth, gender, profilePicture);
+                customers.add(customer); // Thêm customer vào danh sách
+            }
+
+        } catch (SQLException e) {
+        }
+        return customers; // Trả về danh sách khách hàng
+    }
+    
+
+    public List<Customer> getAllCustomer(int index, int pageSize) {
+        List<Customer> customers = new ArrayList<>();
+        String sql = "select * from Customer order by customerID offset ? rows  fetch  next ? rows only";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            int offset = (index - 1) * pageSize;
+            st.setInt(1, offset);
+            st.setInt(2, pageSize);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int customerID = rs.getInt("customerID");
@@ -137,6 +173,40 @@ public class CustomerDAO extends DBContext {
         return listCustomer; // Trả về danh sách khách hàng
     }
 
+    public List<Customer> getCustomerByName(String name, int index, int pageSize) {
+        List<Customer> listCustomer = new ArrayList<>();
+        String sql = "select * from Customer where fullName like ? order by customerID offset ? rows fetch next ? rows only";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            int offset = (index - 1) * pageSize;
+            st.setString(1, "%" + name + "%");
+            st.setInt(2, offset);
+            st.setInt(3, pageSize);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int customerID = rs.getInt("customerID");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String fullName = rs.getString("fullName");
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                String accountStatus = rs.getString("accountStatus");
+                String registrationDate = rs.getString("registrationDate");
+                String dateOfBirth = rs.getString("dateOfBirth");
+                String gender = rs.getString("gender");
+                String profilePicture = rs.getString("profilePicture");
+
+                Customer customer = new Customer(customerID, username, password, fullName, email, phone, address,
+                        accountStatus, registrationDate, dateOfBirth, gender, profilePicture);
+                listCustomer.add(customer); // Thêm customer vào danh sách
+            }
+
+        } catch (SQLException e) {
+        }
+        return listCustomer; // Trả về danh sách khách hàng
+    }
+
     public Customer getCustomerByIdAndName(int id, String name) {
         String sql = "select * FROM Customer WHERE customerID = ? and fullName like ?";
         try {
@@ -187,35 +257,6 @@ public class CustomerDAO extends DBContext {
             e.printStackTrace();
         }
         return false;
-    }
-
-    //Đăng nhập
-    public Customer customerLogin(String username, String password) {
-        String sql = "select * from Customer where username = ? and password = ?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, username);
-            st.setString(2, password);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                return new Customer(
-                        rs.getInt("customerID"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("fullName"),
-                        rs.getString("email"),
-                        rs.getString("phone"),
-                        rs.getString("address"),
-                        rs.getString("accountStatus"),
-                        rs.getString("registrationDate"),
-                        rs.getString("dateOfBirth"),
-                        rs.getString("gender"),
-                        rs.getString("profilePicture"));
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return null;
     }
 
     //Đăng ký

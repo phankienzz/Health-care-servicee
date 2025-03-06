@@ -41,18 +41,21 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         HttpSession session = request.getSession();
         session.invalidate();
-        response.sendRedirect("index_1.jsp");
+
+        String referer = request.getHeader("referer"); // Lấy URL trang trước đó
+        if (referer != null && !referer.isEmpty()) {
+            response.sendRedirect(referer);
+        } else {
+            response.sendRedirect("index_1.jsp");
+        }
     }
 
-    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-   
 }

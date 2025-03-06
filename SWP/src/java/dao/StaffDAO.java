@@ -5,6 +5,7 @@
 package dao;
 
 import context.DBContext;
+import context.ValidFunction;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,12 +19,12 @@ import model.Staff;
  */
 public class StaffDAO extends DBContext {
 
-    public Staff staffLogin(String email, String password) {
-        String sql = "select * from Staff where email = ? and password = ?";
+    public Staff staffLogin(String email) {
+        String sql = "select * from Staff where email = ?";
+        ValidFunction valid = new ValidFunction();
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, email);
-            st.setString(2, password);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 return new Staff(
@@ -383,7 +384,7 @@ public class StaffDAO extends DBContext {
 
     public boolean checkOldPassword(int staffID, String oldPassword) {
         String sql = "SELECT password FROM Staff WHERE staffID = ?";
-
+        ValidFunction valid = new ValidFunction();
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, staffID);
             try (ResultSet rs = st.executeQuery()) {
@@ -391,7 +392,7 @@ public class StaffDAO extends DBContext {
                     String storedPassword = rs.getString("password");
                     // Here you may want to hash 'oldPassword' and compare with 'storedPassword'.
                     // Assuming passwords are stored as plain text (not recommended), we directly compare.
-                    return storedPassword.equals(oldPassword);
+                    return valid.checkPassword(oldPassword, storedPassword);
                 }
             }
         } catch (SQLException e) {
@@ -403,9 +404,9 @@ public class StaffDAO extends DBContext {
 
     public void changeStaffPassword(int staffID, String password) {
         String sql = "UPDATE Staff SET password = ? WHERE staffID = ?";
-
+        ValidFunction valid = new ValidFunction();
         try (PreparedStatement st = connection.prepareStatement(sql)) {
-            st.setString(1, password);
+            st.setString(1, valid.hashPassword(password));
             st.setInt(2, staffID);
             st.executeUpdate();
         } catch (SQLException e) {
@@ -414,8 +415,6 @@ public class StaffDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        StaffDAO dao = new StaffDAO();
-        Staff s = dao.staffLogin("john.smith@medical.com", "Thang@2303");
-        System.out.println(s.getFullName());
+       
     }
 }

@@ -17,11 +17,12 @@ public class Invoice {
     private String paymentDate;
     private String paymentMethod;
     private String createdAt;
+    private Discount discountID;
 
     public Invoice() {
     }
 
-    public Invoice(int invoiceID, Customer customerID, MedicalExamination examinationID, double totalAmount, String paymentStatus, String paymentDate, String paymentMethod, String createdAt) {
+    public Invoice(int invoiceID, Customer customerID, MedicalExamination examinationID, double totalAmount, String paymentStatus, String paymentDate, String paymentMethod, String createdAt, Discount discountID) {
         this.invoiceID = invoiceID;
         this.customerID = customerID;
         this.examinationID = examinationID;
@@ -30,6 +31,7 @@ public class Invoice {
         this.paymentDate = paymentDate;
         this.paymentMethod = paymentMethod;
         this.createdAt = createdAt;
+        this.discountID = discountID;
     }
 
     public int getInvoiceID() {
@@ -95,6 +97,16 @@ public class Invoice {
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
+
+    public Discount getDiscountID() {
+        return discountID;
+    }
+
+    public void setDiscountID(Discount discountID) {
+        this.discountID = discountID;
+    }
+
+    
 
     
     

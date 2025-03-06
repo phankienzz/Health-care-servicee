@@ -36,7 +36,7 @@
                 }
             </style>
 
-            <div class="page-wrapper">
+            <div class="page-wrapper-profile">
                 <div class="content">
                     <div class="row">
                         <div class="col-sm-7 col-6">
