@@ -246,6 +246,15 @@
                                     <input name="patientName" value="${patientName}" type="text" class="form-control floating" >
                                 </div>
                             </div>
+<!--                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group form-focus select-focus">
+                                    <label class="focus-label">Role</label>
+                                    <select name="roleID" class="select floating">
+                                        <option value ="">1</option>
+                                        <option value="">2</option>
+                                    </select>
+                                </div>
+                            </div>-->
                             <div class="col-sm-6 col-md-3">
                                 <input type="submit" value="Search" class="btn btn-success btn-block"/>
                             </div>
@@ -276,7 +285,7 @@
                                             <c:forEach var="patient" items="${listPatient}">
                                                 <tr>
                                                     <td>${patient.customerID}</td>
-                                                    <td><img width="28" height="28" src="assets/img/user.jpg" class="rounded-circle m-r-5" alt="">${patient.fullName}</td>
+                                                    <td><img width="35" height="35" src="pictureprofile?customerID=${patient.customerID}" class="rounded-circle m-r-5" alt="">${patient.fullName}</td>
                                                     <!--<td>${patient.dateOfBirth}</td>-->
                                                     <td>${patient.address}</td>
                                                     <td>${patient.gender}</td>
@@ -360,6 +369,8 @@
                                     <a class="page-link" href="patient?page=${page - 1}&patientID=${param.patientID}&patientName=${param.patientName}">Previous</a>
                                 </li>
                             </c:if>
+                                
+                                
 
                             <c:forEach var="i" begin="1" end="${endPage}">
                                 <li class="page-item ${i == page ? 'active' : ''}">

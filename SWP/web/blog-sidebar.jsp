@@ -23,31 +23,39 @@
         <!-- Main Stylesheet -->
         <link rel="stylesheet" href="assets2/css/style.css">
 
+        <style>
+            li.active a {
+                color: red !important;  /* Màu chữ khi được chọn */
+                font-weight: bold;      /* In đậm */
+                text-decoration: underline; /* Gạch chân */
+            }
+
+        </style>
     </head>
 
     <body id="top">
 
         <jsp:include page="headerHome.jsp"></jsp:include>
 
-        <section class="page-title bg-1">
-            <div class="overlay"></div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="block text-center">
-                            <span class="text-white">Our News</span>
-                            <h1 class="text-capitalize mb-5 text-lg">News articles</h1>
+            <section class="page-title bg-1">
+                <div class="overlay"></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="block text-center">
+                                <span class="text-white">Our News</span>
+                                <h1 class="text-capitalize mb-5 text-lg">News articles</h1>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section class="section blog-wrap">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div class="row">
+            <section class="section blog-wrap">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="row">
                             <c:if test="${empty pagingPage}">
                                 <p>No news available.</p>
                             </c:if>
@@ -94,7 +102,7 @@
 
 
 
-                            <div class="sidebar-widget latest-post mb-3">
+<!--                            <div class="sidebar-widget latest-post mb-3">
                                 <h5>Popular Posts</h5>
 
                                 <div class="py-2">
@@ -111,7 +119,7 @@
                                     <span class="text-sm text-muted">03 Mar 2018</span>
                                     <h6 class="my-2"><a href="#">Fusce lobortis lorem at ipsum semper sagittis</a></h6>
                                 </div>
-                            </div>
+                            </div>-->
 
                             <div class="sidebar-widget category mb-3">
                                 <h5 class="mb-4">Categories</h5>
@@ -125,13 +133,15 @@
                                             <a href="allNews?categoryID=${cate.category_id}">${cate.name}</a>
                                             <!--<span>(14)</span>-->
                                         </li>
+
+
                                     </c:forEach>
 
                                 </ul>
                             </div>
 
 
-                            <div class="sidebar-widget tags mb-3">
+<!--                            <div class="sidebar-widget tags mb-3">
                                 <h5 class="mb-4">Tags</h5>
 
                                 <a href="#">Doctors</a>
@@ -143,7 +153,7 @@
                                 <a href="#">Social Media</a>
                                 <a href="#">Branding</a>
                                 <a href="#">Laboratory</a>
-                            </div>
+                            </div>-->
 
 
                             <div class="sidebar-widget schedule-widget mb-3">
@@ -206,34 +216,34 @@
         </section>
 
         <!-- footer Start -->
-    <jsp:include page="footer.jsp"></jsp:include>
+        <jsp:include page="footer.jsp"></jsp:include>
 
 
 
-    <!-- 
-    Essential Scripts
-    =====================================-->
+        <!-- 
+        Essential Scripts
+        =====================================-->
 
 
-    <!-- Main jQuery -->
-    <script src="assets2/plugins/jquery/jquery.js"></script>
-    <!-- Bootstrap 4.3.2 -->
-    <script src="assets2/plugins/bootstrap/js/popper.js"></script>
-    <script src="assets2/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets2/plugins/counterup/jquery.easing.js"></script>
-    <!-- Slick Slider -->
-    <script src="assets2/plugins/slick-carousel/slick/slick.min.js"></script>
-    <!-- Counterup -->
-    <script src="assets2/plugins/counterup/jquery.waypoints.min.js"></script>
+        <!-- Main jQuery -->
+        <script src="assets2/plugins/jquery/jquery.js"></script>
+        <!-- Bootstrap 4.3.2 -->
+        <script src="assets2/plugins/bootstrap/js/popper.js"></script>
+        <script src="assets2/plugins/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets2/plugins/counterup/jquery.easing.js"></script>
+        <!-- Slick Slider -->
+        <script src="assets2/plugins/slick-carousel/slick/slick.min.js"></script>
+        <!-- Counterup -->
+        <script src="assets2/plugins/counterup/jquery.waypoints.min.js"></script>
 
-    <script src="assets2/plugins/shuffle/shuffle.min.js"></script>
-    <script src="assets2/plugins/counterup/jquery.counterup.min.js"></script>
-    <!-- Google Map -->
-    <script src="assets2/plugins/google-map/map.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkeLMlsiwzp6b3Gnaxd86lvakimwGA6UA&callback=initMap"></script>    
+        <script src="assets2/plugins/shuffle/shuffle.min.js"></script>
+        <script src="assets2/plugins/counterup/jquery.counterup.min.js"></script>
+        <!-- Google Map -->
+        <script src="assets2/plugins/google-map/map.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkeLMlsiwzp6b3Gnaxd86lvakimwGA6UA&callback=initMap"></script>    
 
-    <script src="assets2/js/script.js"></script>
-    <script src="assets2/js/contact.js"></script>
+        <script src="assets2/js/script.js"></script>
+        <script src="assets2/js/contact.js"></script>
 
-</body>
+    </body>
 </html>

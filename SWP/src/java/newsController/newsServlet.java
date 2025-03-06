@@ -51,8 +51,8 @@ public class newsServlet extends HttpServlet {
         String categoryID = request.getParameter("categoryID");
         String search = request.getParameter("search");
         String sort = request.getParameter("sort");
-        
-        if(sort == null || sort.isEmpty()){
+
+        if (sort == null || sort.isEmpty()) {
             sort = "new";
         }
         if (search == null) {
@@ -71,8 +71,8 @@ public class newsServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             page = 1;
         }
-        
-        List<News> pagingPage ;
+
+        List<News> pagingPage;
         int totalNews = 0;
         int pageSize = 3;
 
@@ -88,10 +88,14 @@ public class newsServlet extends HttpServlet {
         }
 
         int endPage = (int) Math.ceil((double) totalNews / pageSize);
+        if (page > endPage && endPage > 0) {
+            response.sendRedirect("allNews?page=" + endPage + "&search=" + search + "&categoryID=" + categoryID + "&sort=" + sort);
+            return;
+        }
 
         for (News news : pagingPage) {
             news.setCreated_at(valid.formatDateNews(news.getCreated_at()));
-        news.setUpdated_at(valid.formatDateTime(news.getUpdated_at(), "dd/MM/yyyy HH:mm"));
+            news.setUpdated_at(valid.formatDateTime(news.getUpdated_at(), "dd/MM/yyyy HH:mm"));
         }
 
         List<Category> listCate = dao.getAllCategoryNews();

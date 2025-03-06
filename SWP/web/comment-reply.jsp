@@ -19,9 +19,17 @@
                     <span>${reply.create_at}</span>
                 </div>
                 <div class="comment-meta mt-2">
-                    <a href="?newsID=${newsDetail.post_id}&parent_comment_id=${reply.comment_id}#comment-form">
-                        <i class="icofont-reply mr-2 text-muted"></i>Reply
-                    </a>
+                    <c:if test="${sessionScope.customerAccount == null}">
+                        <a href="login.jsp?newsID=${newsDetail.post_id}&parent_comment_id=${comment.comment_id}#comment-form"
+                           onclick="return confirm('Bạn cần đăng nhập để trả lời bình luận!');">
+                            <i class="icofont-reply mr-2 text-muted"></i>Reply
+                        </a>
+                    </c:if>
+                    <c:if test="${sessionScope.customerAccount != null}">
+                        <a href="?newsID=${newsDetail.post_id}&parent_comment_id=${comment.comment_id}#comment-form">
+                            <i class="icofont-reply mr-2 text-muted"></i>Reply
+                        </a>
+                    </c:if>
                 </div>
                 <div class="comment-content mt-3">
                     <p>

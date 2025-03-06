@@ -52,7 +52,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Date of Birth</label>
-                                <input type="text" name="dateOfBirth" value="${requestScope.dateOfBirth}" class="form-control" placeholder="YYYY-MM-DD" pattern="\d{4}-\d{2}-\d{2}" required>
+                                <input type="date" name="dateOfBirth" value="${requestScope.dateOfBirth}" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="gender">Gender</label>

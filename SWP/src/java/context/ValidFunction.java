@@ -6,10 +6,12 @@ package context;
 
 import dao.CustomerDAO;
 import dao.StaffDAO;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import org.mindrot.jbcrypt.BCrypt;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import model.Customer;
 import model.Staff;
@@ -58,7 +60,6 @@ public class ValidFunction {
         if (password.length() < 8) {
             return false;
         }
-
         // Biểu thức chính quy kiểm tra điều kiện
         String regex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$";
 
@@ -68,11 +69,11 @@ public class ValidFunction {
     public String formatDate(String input) {
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
         LocalDateTime dateTime = LocalDateTime.parse(input, inputFormatter);
         return dateTime.format(outputFormatter);
     }
 
+    //2 cái dưới này chuyển từ yyyy-MM-dd HH:mm:ss.S sang dd/MM/yyyy
     public String formatDateNews(String date) {
         java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
         java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
@@ -83,7 +84,22 @@ public class ValidFunction {
         java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
         return dateFormat.format(timestamp);
-
+    }
+    
+    //chuyển ngày sinh thành dd/mm/yyy
+    public String convertDateString(String inputDate, String outputPattern) {
+        if (inputDate == null || inputDate.isEmpty()) {
+            return "";
+        }
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = inputFormat.parse(inputDate);
+            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     public String hashPassword(String password) {

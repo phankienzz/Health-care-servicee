@@ -67,6 +67,7 @@ public class RegisterServet extends HttpServlet {
 
             if (dateOfBirth.isAfter(today)) {
                 request.setAttribute("error", "Date of Birth cannot be in the future!");
+                setFormAttributes(request, username, fullname, email, phone, address, dateOfBirthStr, gender);
                 request.getRequestDispatcher("register.jsp").forward(request, response);
                 return;
             }

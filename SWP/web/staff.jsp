@@ -233,7 +233,7 @@
                         <c:forEach var="permission" items="${listPermission}">
                             <c:if test="${permission.permissionID == 23}">
                                 <div class="col-sm-8 col-9 text-right m-b-20">
-                                    <a href="addStaff" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Add Staff</a>
+                                    <a href="addStaff" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i>Add Staff</a>
                                 </div>
                             </c:if>
                         </c:forEach>

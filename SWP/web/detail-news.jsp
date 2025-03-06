@@ -160,10 +160,10 @@
                                                                 </a>
                                                             </c:if>
                                                             <c:if test="${sessionScope.customerAccount != null}">
-                                                            <a href="?newsID=${newsDetail.post_id}&parent_comment_id=${comment.comment_id}#comment-form">
-                                                                <i class="icofont-reply mr-2 text-muted"></i>Reply
-                                                            </a>
-                                                                </c:if>
+                                                                <a href="?newsID=${newsDetail.post_id}&parent_comment_id=${comment.comment_id}#comment-form">
+                                                                    <i class="icofont-reply mr-2 text-muted"></i>Reply
+                                                                </a>
+                                                            </c:if>
                                                         </div>
                                                         <div class="comment-content mt-3">
                                                             <p>${comment.content}</p>
@@ -226,33 +226,9 @@
                                 <c:if test="${sessionScope.customerAccount == null}">
                                     <p>Please <a href="login.jsp">login</a> to write a comment.</p>
                                 </c:if>
-
                             </div>
                         </div>
                     </div>
-
-
-                    <form method="post" action="comment" id="replyForm" style="display: none; margin-top: 10px;" >
-                        <h4 class="mb-4">Reply a comment</h4>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <input class="form-control" type="text" name="name" value="${sessionScope.customerAccount.fullName}" id="name" placeholder="Name:" required readonly>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <input class="form-control" type="email" name="mail" value="${sessionScope.customerAccount.email}" id="mail" placeholder="Email:" required readonly>
-                                </div>
-                            </div>
-                        </div>
-                        <textarea class="form-control mb-4" name="content" id="comment" cols="30" rows="5" placeholder="Write your comment here..." required></textarea>
-                        <input type="hidden" name="newsID" value="${newsDetail.post_id}">
-                        <input type="hidden" name="customerId" value="${sessionScope.customerAccount.customerID}">
-                        <input type="hidden" name="parentCommentId" id="parentCommentId" value="">
-
-                        <input class="btn btn-main-2 btn-round-full" type="submit" name="submit-comment" id="submit_comment" value="Submit Comment">
-                    </form>
 
                     <div class="col-lg-4">
                         <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0">
@@ -265,24 +241,24 @@
                             </div>
 
 
-                            <div class="sidebar-widget latest-post mb-3">
-                                <h5>Popular Posts</h5>
-
-                                <div class="py-2">
-                                    <span class="text-sm text-muted">03 Mar 2018</span>
-                                    <h6 class="my-2"><a href="#">Thoughtful living in los Angeles</a></h6>
-                                </div>
-
-                                <div class="py-2">
-                                    <span class="text-sm text-muted">03 Mar 2018</span>
-                                    <h6 class="my-2"><a href="#">Vivamus molestie gravida turpis.</a></h6>
-                                </div>
-
-                                <div class="py-2">
-                                    <span class="text-sm text-muted">03 Mar 2018</span>
-                                    <h6 class="my-2"><a href="#">Fusce lobortis lorem at ipsum semper sagittis</a></h6>
-                                </div>
-                            </div>
+                            <!--                            <div class="sidebar-widget latest-post mb-3">
+                                                            <h5>Popular Posts</h5>
+                            
+                                                            <div class="py-2">
+                                                                <span class="text-sm text-muted">03 Mar 2018</span>
+                                                                <h6 class="my-2"><a href="#">Thoughtful living in los Angeles</a></h6>
+                                                            </div>
+                            
+                                                            <div class="py-2">
+                                                                <span class="text-sm text-muted">03 Mar 2018</span>
+                                                                <h6 class="my-2"><a href="#">Vivamus molestie gravida turpis.</a></h6>
+                                                            </div>
+                            
+                                                            <div class="py-2">
+                                                                <span class="text-sm text-muted">03 Mar 2018</span>
+                                                                <h6 class="my-2"><a href="#">Fusce lobortis lorem at ipsum semper sagittis</a></h6>
+                                                            </div>
+                                                        </div>-->
 
                             <div class="sidebar-widget category mb-3">
                                 <h5 class="mb-4">Categories</h5>
@@ -302,19 +278,19 @@
                             </div>
 
 
-                            <div class="sidebar-widget tags mb-3">
-                                <h5 class="mb-4">Tags</h5>
-
-                                <a href="#">Doctors</a>
-                                <a href="#">agency</a>
-                                <a href="#">company</a>
-                                <a href="#">medicine</a>
-                                <a href="#">surgery</a>
-                                <a href="#">Marketing</a>
-                                <a href="#">Social Media</a>
-                                <a href="#">Branding</a>
-                                <a href="#">Laboratory</a>
-                            </div>
+                            <!--                            <div class="sidebar-widget tags mb-3">
+                                                            <h5 class="mb-4">Tags</h5>
+                            
+                                                            <a href="#">Doctors</a>
+                                                            <a href="#">agency</a>
+                                                            <a href="#">company</a>
+                                                            <a href="#">medicine</a>
+                                                            <a href="#">surgery</a>
+                                                            <a href="#">Marketing</a>
+                                                            <a href="#">Social Media</a>
+                                                            <a href="#">Branding</a>
+                                                            <a href="#">Laboratory</a>
+                                                        </div>-->
 
 
                             <div class="sidebar-widget schedule-widget mb-3">

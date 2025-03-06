@@ -24,15 +24,6 @@ import model.Customer;
 @WebServlet(name = "patient", urlPatterns = {"/patient"})
 public class patient extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -57,8 +48,8 @@ public class patient extends HttpServlet {
         CustomerDAO dao = new CustomerDAO();
         String indexPage = request.getParameter("page");
         int page;
-        int totalPatient = 0; 
-        int pageSize = 5;
+        int totalPatient = 0;
+        int pageSize = 10;
 
         try {
             page = Integer.parseInt(indexPage);
@@ -75,7 +66,7 @@ public class patient extends HttpServlet {
 
         try {
             if (patientIdStr != null && !patientIdStr.isEmpty() && patientName != null && !patientName.isEmpty()) {
-                // Tìm theo ID và Tên
+                // ID và Tên
                 int patientID = Integer.parseInt(patientIdStr);
                 Customer customer = dao.getCustomerByIdAndName(patientID, patientName);
                 if (customer != null) {
@@ -85,6 +76,7 @@ public class patient extends HttpServlet {
                     request.setAttribute("error", "No patient found with ID: " + patientIdStr + " and name: " + patientName);
                 }
             } else if (patientIdStr != null && !patientIdStr.isEmpty()) {
+                //ID
                 int patientID = Integer.parseInt(valid.normalizeName(patientIdStr));
                 Customer customer = dao.getCustomerByID(patientID);
                 if (customer != null) {
@@ -94,6 +86,7 @@ public class patient extends HttpServlet {
                     request.setAttribute("error", "Patient not found with ID: " + patientIdStr);
                 }
             } else if (patientName != null && !patientName.isEmpty()) {
+                //Name
                 listPatient = dao.getCustomerByName(valid.normalizeName(patientName), page, pageSize);
                 totalPatient = dao.getCustomerByName(valid.normalizeName(patientName)).size();
                 if (listPatient.isEmpty()) {
@@ -103,6 +96,10 @@ public class patient extends HttpServlet {
                 listPatient = dao.getAllCustomer(page, pageSize);
                 totalPatient = dao.getAllCustomer().size();
             }
+
+//            for (Customer cus : listPatient) {
+//                cus.setRegistrationDate(valid.formatDateTime(cus.getRegistrationDate(), "dd/MM/yyyy"));
+//            }
 
             int endPage = (int) Math.ceil((double) totalPatient / pageSize);
             request.setAttribute("listPatient", listPatient);
