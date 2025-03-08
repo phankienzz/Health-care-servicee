@@ -58,35 +58,39 @@ public class LoginServlet extends HttpServlet {
         ValidFunction valid = new ValidFunction();
         HttpSession session = request.getSession();
         if ("customer".equals(userType)) {
-            CustomerDAO dao = new CustomerDAO();
-            Customer customerAccount = dao.customerLogin(user, password);
+                CustomerDAO dao = new CustomerDAO();
+                Customer customerAccount = dao.customerLogin(user);
+                try {
+                    if (customerAccount != null && valid.checkPassword(password, customerAccount.getPassword())) {
+                        session.setAttribute("customerAccount", customerAccount);
+                        if (rememberMe != null) {
+                            Cookie cusUsername = new Cookie("username", user);
+                            Cookie cusPassword = new Cookie("password", password);
 
-            if (customerAccount == null) {
-                request.setAttribute("error", "Invalid username or password !");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            } else {
-                session.setAttribute("customerAccount", customerAccount);
-                if (rememberMe != null) {
-                    Cookie cusUsername = new Cookie("username", user);
-                    Cookie cusPassword = new Cookie("password", password);
+                            cusUsername.setMaxAge(30 * 24 * 60 * 60);
+                            cusPassword.setMaxAge(30 * 24 * 60 * 60);
 
-                    cusUsername.setMaxAge(30 * 24 * 60 * 60);
-                    cusPassword.setMaxAge(30 * 24 * 60 * 60);
-
-                    response.addCookie(cusUsername);
-                    response.addCookie(cusPassword);
-                } else {
-                    // Nếu "Remember Me" không được chọn, xóa cookies
-                    Cookie usernameCookie = new Cookie("username", "");
-                    Cookie passwordCookie = new Cookie("password", "");
-                    usernameCookie.setMaxAge(0);
-                    passwordCookie.setMaxAge(0);
-                    response.addCookie(usernameCookie);
-                    response.addCookie(passwordCookie);
+                            response.addCookie(cusUsername);
+                            response.addCookie(cusPassword);
+                        } else {
+                            //xoa cookie neu khong chon RemMe
+                            Cookie usernameCookie = new Cookie("username", "");
+                            Cookie passwordCookie = new Cookie("password", "");
+                            usernameCookie.setMaxAge(0);
+                            passwordCookie.setMaxAge(0);
+                            response.addCookie(usernameCookie);
+                            response.addCookie(passwordCookie);
+                        }
+                        response.sendRedirect("index_1.jsp");
+                    } else {
+                        request.setAttribute("error", "Invalid username or password !");
+                        request.getRequestDispatcher("login.jsp").forward(request, response);
+                    }
+                } catch (IllegalArgumentException e) {
+                    request.setAttribute("error", "Password format is invalid. Please contact support!");
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
                 }
-            }
-            response.sendRedirect("index_1.jsp");
-        } else if ("staff".equals(userType)) {
+            }else if ("staff".equals(userType)) {
             StaffDAO dao = new StaffDAO();
             Staff staff = dao.staffLogin(user);
             
@@ -113,7 +117,7 @@ public class LoginServlet extends HttpServlet {
                     response.addCookie(staffEmail);
                     response.addCookie(staffPassword);
                 }
-                response.sendRedirect("index_1.jsp");
+                response.sendRedirect("roleStaff");
             }
         } else {
             request.setAttribute("error", "Invalid User Type");

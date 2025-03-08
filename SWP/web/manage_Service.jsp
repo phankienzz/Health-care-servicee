@@ -39,6 +39,8 @@
         </style>
     </head>
     <body>
+        <jsp:include page="headerStaff.jsp"></jsp:include>
+            <jsp:include page="sidebar.jsp"></jsp:include>
         <div class="container mt-5">
             <h2 class="text-center">Service Management</h2>
 

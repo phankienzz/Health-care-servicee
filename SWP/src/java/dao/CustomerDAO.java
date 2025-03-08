@@ -50,6 +50,35 @@ public class CustomerDAO extends DBContext {
         return null;
     }
 
+    public Customer customerLogin(String username) {
+        String sql = "select * from Customer where username = ? and accountStatus = 'Active'";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                return new Customer(
+                        rs.getInt("customerID"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("fullName"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getString("accountStatus"),
+                        rs.getString("registrationDate"),
+                        rs.getString("dateOfBirth"),
+                        rs.getString("gender"),
+                        rs.getString("profilePicture"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return null;
+    }
+
+    
     public List<Customer> getAllCustomer() {
         List<Customer> customers = new ArrayList<>();
         String sql = "SELECT * FROM Customer";
