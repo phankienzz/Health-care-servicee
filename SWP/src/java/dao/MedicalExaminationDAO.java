@@ -124,6 +124,71 @@ public class MedicalExaminationDAO extends DBContext {
     }
 
     
+  public List<MedicalExamination> getAllExamination() {
+        List<MedicalExamination> medicalExaminationList = new ArrayList<>();
+        String sql = "SELECT m.*, c.fullName AS customerName, s.fullName AS staffName " +
+                     "FROM MedicalExamination m " +
+                     "JOIN Customer c ON m.customerID = c.customerID " +
+                     "JOIN Staff s ON m.consultantID = s.staffID";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Customer customer = new Customer();
+                customer.setCustomerID(rs.getInt("customerID"));
+                customer.setFullName(rs.getString("customerName"));
+
+                Professional professional = new Professional();
+                professional.setStaffID(rs.getInt("consultantID"));
+                professional.setFullName(rs.getString("staffName"));
+
+                MedicalExamination exam = new MedicalExamination();
+                exam.setExaminationID(rs.getInt("examinationID"));
+                exam.setExaminationDate(rs.getString("examinationDate"));
+                exam.setCustomerId(customer);
+                exam.setStatus(rs.getString("status"));
+                exam.setConsultantId(professional);
+                exam.setNote(rs.getString("notes"));
+                exam.setCreatedAt(rs.getString("createdAt"));
+
+                // Lấy danh sách dịch vụ của cuộc khám
+                exam.setList(getServicesByExaminationId(rs.getInt("examinationID")));
+
+                medicalExaminationList.add(exam);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return medicalExaminationList;
+    }
+
+    public List<Service> getServicesByExaminationId(int examinationID) {
+        List<Service> services = new ArrayList<>();
+        String query = "SELECT ms.packageID, sp.packageName " +
+                       "FROM MedicalService ms " +
+                       "JOIN ServicePackage sp ON ms.packageID = sp.packageID " +
+                       "WHERE ms.examinationID = ?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, examinationID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Service service = new Service();
+                service.setPackageID(rs.getInt("packageID"));
+                service.setPackageName(rs.getString("packageName"));
+                services.add(service);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return services;
+    }
+    
+    
+    
+    
 
    public static void main(String[] args) {
         MedicalExaminationDAO dao = new MedicalExaminationDAO();
@@ -197,4 +262,7 @@ public class MedicalExaminationDAO extends DBContext {
         }
         return -1;
     }
+    
+    
+    
 }

@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package blog;
 
 import dao.NewsDAO;
@@ -13,53 +12,64 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import model.News;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name="SearchByAjax", urlPatterns={"/SearchByAjax"})
+@WebServlet(name = "SearchByAjax", urlPatterns = {"/SearchByAjax"})
 public class SearchByAjax extends HttpServlet {
-   
- 
 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
 
+        String keyword = request.getParameter("keyword");
+        if (keyword == null || keyword.trim().isEmpty()) {
+            response.getWriter().write("");
+            return;
+        }
 
-   @Override
-protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    request.setCharacterEncoding("UTF-8");
-    response.setContentType("text/html;charset=UTF-8");
+        NewsDAO dao = new NewsDAO();
+        List<News> list = dao.searchBlogs(keyword);
 
-    String keyword = request.getParameter("keyword");
-    if (keyword == null || keyword.trim().isEmpty()) {
-        response.getWriter().write("");
-        return;
+        PrintWriter out = response.getWriter();
+        if (list.isEmpty()) {
+            out.println("<div class=\"col-12\">");
+            out.println("    <p style=\"color: red;\">⚠️ No blogs found matching your search!</p>");
+            out.println("</div>");
+        } else {
+            for (News o : list) {
+                out.println("<div class=\"col-12\">");
+                out.println("    <div class=\"blog-list-item\">");
+                out.println("        <a href=\"blogdetail?postId=" + o.getPost_id() + "\">");
+                out.println("            <img src=\"" + o.getImage() + "\" alt=\"" + o.getTitle() + "\">");
+                out.println("        </a>");
+                out.println("        <div class=\"blog-content\">");
+                out.println("            <h3 class=\"blog-title\">");
+                out.println("                <a href=\"blogdetail?postId=" + o.getPost_id() + "\">" + o.getTitle() + "</a>");
+                out.println("            </h3>");
+                out.println("            <p>" + o.getContent() + "</p>");
+                out.println("            <a href=\"blogdetail?postId=" + o.getPost_id() + "\" class=\"read-more\">");
+                out.println("                <i class=\"fa fa-long-arrow-right\"></i> Read More");
+                out.println("            </a>");
+                out.println("            <a href=\"editblog?postId=" + o.getPost_id() + "\" class=\"btn btn-warning btn-sm\">");
+                out.println("                Update");
+                out.println("            </a>");
+                out.println("            <form action=\"deleteblog\" method=\"post\" style=\"display: inline;\" onsubmit=\"return confirm('Bạn có chắc chắn muốn xóa bài viết này?');\">");
+                out.println("                <input type=\"hidden\" name=\"postId\" value=\"" + o.getPost_id() + "\">");
+                out.println("                <button type=\"submit\" class=\"btn btn-danger btn-sm\">🗑 Xóa</button>");
+                out.println("            </form>");
+                out.println("        </div>");
+                out.println("    </div>");
+                out.println("</div>");
+            }
+        }
     }
-
-    NewsDAO dao = new NewsDAO();
-    List<News> list = dao.searchBlogs(keyword);
-
-    PrintWriter out = response.getWriter();
-    for (News o : list) {
-        out.println("<div class=\"blog-item col-12 col-md-6 col-lg-4\">");
-        out.println("    <div class=\"card h-100 shadow-sm\">");
-        out.println("        <img class=\"card-img-top img-fluid\" src=\"" + o.getImage() + "\" alt=\"" + o.getTitle() + "\">");
-        out.println("        <div class=\"card-body d-flex flex-column\">");
-        out.println("            <h4 class=\"card-title text-truncate\"><a href=\"blogdetail?postId=" + o.getPost_id() + "\" class=\"text-decoration-none text-dark\" title=\"View Blog\">" + o.getTitle() + "</a></h4>");
-        out.println("            <p class=\"card-text text-muted\">" + o.getContent() + "</p>");
-        out.println("            <div class=\"mt-auto\">");
-        out.println("                <a href=\"blogdetail?postId=" + o.getPost_id() + "\" class=\"btn btn-primary w-100\">Read More</a>");
-        out.println("            </div>");
-        out.println("        </div>");
-        // Thêm nút Update vào mỗi blog
-        out.println("        <div class=\"card-footer\">");
-        out.println("            <a href=\"editblog?postId=" + o.getPost_id() + "\" class=\"btn btn-warning w-100\">Update</a>");
-        out.println("        </div>");
-        out.println("    </div>");
-        out.println("</div>");
-    }
-}
 }

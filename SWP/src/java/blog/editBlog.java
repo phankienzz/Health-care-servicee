@@ -12,8 +12,6 @@ import jakarta.servlet.http.Part;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
 
 @WebServlet(name = "editBlog", urlPatterns = {"/editblog"})
 @MultipartConfig(
@@ -26,7 +24,6 @@ public class editBlog extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         String postIdStr = request.getParameter("postId");
         if (postIdStr == null || postIdStr.trim().isEmpty()) {
             response.sendRedirect("edit-blog.jsp?error=Missing+post+ID");
@@ -54,7 +51,6 @@ public class editBlog extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         String postIdStr = request.getParameter("postId");
         if (postIdStr == null || postIdStr.trim().isEmpty()) {
             response.sendRedirect("edit-blog.jsp?error=Missing+post+ID");
@@ -66,14 +62,20 @@ public class editBlog extends HttpServlet {
             String title = request.getParameter("title");
             String description = request.getParameter("description");
             String detail = request.getParameter("detail");
-            int status = "1".equals(request.getParameter("status")) ? 1 : 2;
+            String statusStr = request.getParameter("status");
+            String categoryIdStr = request.getParameter("categoryId");
 
-            if (title == null || title.trim().isEmpty()
-                    || description == null || description.trim().isEmpty()
-                    || detail == null || detail.trim().isEmpty()) {
-                response.sendRedirect("edit-blog.jsp?error=Title,+description,+and+detail+cannot+be+empty");
+            // Validate inputs
+            if (title == null || title.trim().isEmpty() ||
+                description == null || description.trim().isEmpty() ||
+                detail == null || detail.trim().isEmpty() ||
+                statusStr == null || categoryIdStr == null || categoryIdStr.trim().isEmpty()) {
+                response.sendRedirect("edit-blog.jsp?error=All+fields+are+required");
                 return;
             }
+
+            int status = Integer.parseInt(statusStr); 
+            int categoryId = Integer.parseInt(categoryIdStr);
 
             title = title.trim();
             description = description.trim();
@@ -84,9 +86,8 @@ public class editBlog extends HttpServlet {
 
             if (filePart != null && filePart.getSize() > 0) {
                 String contentType = filePart.getContentType();
-               
-                if (!contentType.equals("image/png") && !contentType.equals("image/jpeg")
-                        && !contentType.equals("image/gif") && !contentType.equals("image/jpg")) {
+                if (!contentType.equals("image/png") && !contentType.equals("image/jpeg") &&
+                    !contentType.equals("image/gif") && !contentType.equals("image/jpg")) {
                     response.sendRedirect("edit-blog.jsp?error=Only+PNG,+JPEG,+JPG,+and+GIF+files+are+allowed");
                     return;
                 }
@@ -94,7 +95,7 @@ public class editBlog extends HttpServlet {
             }
 
             NewsDAO dao = new NewsDAO();
-            boolean success = dao.updateBlogPost(postId, title, description, status, imageStream, detail);
+            boolean success = dao.updateBlogPost(postId, title, description, status, imageStream, detail, categoryId);
 
             if (success) {
                 response.sendRedirect("homeblogseverlet?success=Blog+updated");
@@ -103,7 +104,9 @@ public class editBlog extends HttpServlet {
             }
 
         } catch (NumberFormatException e) {
-            response.sendRedirect("edit-blog.jsp?error=Invalid+post+ID");
+            response.sendRedirect("edit-blog.jsp?error=Invalid+post+ID+or+category+ID");
+        } catch (Exception e) {
+            response.sendRedirect("edit-blog.jsp?error=An+error+occurred");
         }
     }
 }

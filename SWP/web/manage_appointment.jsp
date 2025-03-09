@@ -2,7 +2,7 @@
 <html lang="en">
 
 
-    <!-- edit-blog23:57-->
+    <!-- appointments23:19-->
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -11,19 +11,11 @@
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
-        <link rel="stylesheet" type="text/css" href="assets/css/tagsinput.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <!--[if lt IE 9]>
                     <script src="assets/js/html5shiv.min.js"></script>
                     <script src="assets/js/respond.min.js"></script>
             <![endif]-->
-
-
-
-
-        <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
-
-
     </head>
 
     <body>
@@ -49,7 +41,7 @@
                                         <a href="activities.html">
                                             <div class="media">
                                                 <span class="avatar">
-                                                    <img alt="John Doe" src="assets/img/user.jpg" class="img-fluid rounded-circle">
+                                                    <img alt="John Doe" src="assets/img/user.jpg" class="img-fluid">
                                                 </span>
                                                 <div class="media-body">
                                                     <p class="noti-details"><span class="noti-title">John Doe</span> added new task <span class="noti-title">Patient appointment booking</span></p>
@@ -150,7 +142,7 @@
                             <li>
                                 <a href="patients.html"><i class="fa fa-wheelchair"></i> <span>Patients</span></a>
                             </li>
-                            <li>
+                            <li class="active">
                                 <a href="appointments.html"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
                             </li>
                             <li>
@@ -207,10 +199,10 @@
                             <li class="submenu">
                                 <a href="#"><i class="fa fa-commenting-o"></i> <span> Blog</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
-                                    <li><a href="homeblogseverlet">Blog</a></li>
-                                    <li><a href="blog-details.jsp">Blog View</a></li>
-                                    <li><a href="add-blog.jsp">Add Blog</a></li>
-                                    <li><a class="active" href="edit-blog.jsp">Edit Blog</a></li>
+                                    <li><a href="blog.html">Blog</a></li>
+                                    <li><a href="blog-details.html">Blog View</a></li>
+                                    <li><a href="add-blog.html">Add Blog</a></li>
+                                    <li><a href="edit-blog.html">Edit Blog</a></li>
                                 </ul>
                             </li>
                             <li>
@@ -299,118 +291,88 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
-
-
-
-            <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-            <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
             <div class="page-wrapper">
                 <div class="content">
                     <div class="row">
-                        <div class="col-lg-8 offset-lg-2">
+                        <div class="col-sm-4 col-3">
+                            <h4 class="page-title">Appointments</h4>
+                        </div>
+                        <div class="col-sm-8 col-9 text-right m-b-20">
+                            <a href="add-appointment.html" class="btn btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Add Appointment</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Appointment ID</th>
+                                            <th>Patient Name</th>
+                                            <th>Age</th>
+                                            <th>Doctor Name</th>
+                                            <th>Department</th>
+                                            <th>Appointment Date</th>
+                                            <th>Appointment Time</th>
+                                            <th>Status</th>
+                                            <th class="text-right">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
-                            <h4 class="page-title">Edit Blog</h4>
 
-                            <form method="post" action="editblog" enctype="multipart/form-data">
-                                <input type="hidden" name="postId" value="${blog.post_id}">
+                                    <tbody>
+                                        <c:forEach var="exam" items="${list}">
+                                            <tr>
+                                                <td>${exam.examinationID}</td>
+                                                <td>${exam.customerId.fullName}</td>
+                                                <td>${exam.examinationDate}</td>
+                                                
+                                                <td>${exam.status}</td>
+                                                <td>${exam.consultantId.fullName}</td>
+                                                <td>${exam.note}</td>
+                                                <td>${exam.createdAt}</td>
+                                                <td>
+                                                    <c:forEach var="service" items="${exam.list}">
+                                                        <span>${service.packageID}</span><br>
+                                                    </c:forEach>
+                                                </td>
+                                                <td class="text-right">
+                                                    <div class="dropdown dropdown-action">
+                                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                            <i class="fa fa-ellipsis-v"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            <a class="dropdown-item" href="edit-appointment.html">
+                                                                <i class="fa fa-pencil m-r-5"></i> Edit
+                                                            </a>
+                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_appointment">
+                                                                <i class="fa fa-trash-o m-r-5"></i> Delete
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
 
-                                <div class="form-group">
-                                    <label>Blog Name</label>
-                                    <input class="form-control" type="text" name="title" required value="${blog.title}">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="delete_appointment" class="modal fade delete-modal" role="dialog">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <img src="assets/img/sent.png" alt="" width="50" height="46">
+                                <h3>Are you sure want to delete this Appointment?</h3>
+                                <div class="m-t-20"> <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
                                 </div>
-                                <div class="form-group">
-                                    <label>Description</label>
-                                    <textarea cols="30" rows="2" class="form-control" name="description" required>${blog.content}</textarea>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Category</label>
-                                    <select class="form-control" name="categoryId" required>
-                                        <option value="">Select Category</option>
-                                        <option value="1" ${blog.category_id == 1 ? 'selected' : ''}>General Health</option>
-                                        <option value="2" ${blog.category_id == 2 ? 'selected' : ''}>Cardiology</option>
-                                        <option value="3" ${blog.category_id == 3 ? 'selected' : ''}>Pediatrics</option>
-                                        <option value="4" ${blog.category_id == 4 ? 'selected' : ''}>Nutrition</option>
-                                        <option value="5" ${blog.category_id == 5 ? 'selected' : ''}>Mental Health</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Blog Images</label>
-                                    <input class="form-control" type="file" name="image" id="image" accept="image/png, image/jpeg, image/gif, image/jpg">
-                                    <c:if test="${not empty blog.image}">
-                                        <img src="${blog.image}" width="100">
-                                    </c:if>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Blog Content</label>
-                                    <textarea cols="30" rows="6" class="form-control" name="detail" id="detail" required>${blog.detail}</textarea>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="display-block">Blog Status</label>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" value="1" ${blog.status == 1 ? 'checked' : ''}>
-                                        <label class="form-check-label">Active</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" value="2" ${blog.status == 2 ? 'checked' : ''}>
-                                        <label class="form-check-label">Inactive</label>
-                                    </div>
-                                </div>
-
-                                <div class="m-t-20 text-center">
-                                    <button class="btn btn-primary submit-btn">Update</button>
-                                </div>
-                            </form>
-
-                            <script>
-                                document.addEventListener("DOMContentLoaded", function () {
-                                    ClassicEditor
-                                            .create(document.querySelector('#detail'), {
-                                                ckfinder: {
-                                                    uploadUrl: '/SWP/uploadckedittor' // Trỏ đến servlet xử lý upload
-                                                }
-                                            })
-                                            .catch(error => console.error(error));
-                                });
-
-
-
-                            </script>
-
-
-                            <script>
-                                document.addEventListener("DOMContentLoaded", function () {
-                                    document.getElementById("image").addEventListener("change", function () {
-                                        const file = this.files[0];
-                                        if (file) {
-                                            const allowedTypes = ["image/png", "image/jpeg", "image/gif", "image/jpg"];
-                                            if (!allowedTypes.includes(file.type) || file.size > 50 * 1024 * 1024) {
-                                                alert("Only PNG, JPEG, JPG, GIF files are allowed and must be under 50MB.");
-                                                this.value = ''; // Xóa file n?u không h?p l?
-                                            }
-                                        }
-                                    });
-                                });
-
-                            </script>
-
-
-
-
-
-
-
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -422,10 +384,19 @@
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/jquery.slimscroll.js"></script>
         <script src="assets/js/select2.min.js"></script>
-        <script src="assets/js/tagsinput.js"></script>
         <script src="assets/js/app.js"></script>
+        <script>
+            $(function () {
+                $('#datetimepicker3').datetimepicker({
+                    format: 'LT'
+                });
+                $('#datetimepicker4').datetimepicker({
+                    format: 'LT'
+                });
+            });
+        </script>
     </body>
 
 
-    <!-- edit-blog23:57-->
+    <!-- appointments23:20-->
 </html>
