@@ -246,15 +246,16 @@
                                     <input name="patientName" value="${patientName}" type="text" class="form-control floating" >
                                 </div>
                             </div>
-<!--                            <div class="col-sm-6 col-md-3">
+                            <div class="col-sm-6 col-md-3">
                                 <div class="form-group form-focus select-focus">
-                                    <label class="focus-label">Role</label>
-                                    <select name="roleID" class="select floating">
-                                        <option value ="">1</option>
-                                        <option value="">2</option>
+                                    <label class="focus-label">Status</label>
+                                    <select name="status" class="select floating">
+                                        <option value="" ${status == '' ? 'selected' : ''}>All</option>
+                                        <option value="active" ${ status == 'active' ? 'selected' : ''}>Active</option>
+                                        <option value="inactive" ${status == 'inactive' ? 'selected' : ''}>Inactive</option>
                                     </select>
                                 </div>
-                            </div>-->
+                            </div>
                             <div class="col-sm-6 col-md-3">
                                 <input type="submit" value="Search" class="btn btn-success btn-block"/>
                             </div>
@@ -366,21 +367,21 @@
                         <ul class="pagination">
                             <c:if test="${page > 1}">
                                 <li class="page-item">
-                                    <a class="page-link" href="patient?page=${page - 1}&patientID=${param.patientID}&patientName=${param.patientName}">Previous</a>
+                                    <a class="page-link" href="patient?page=${page - 1}&patientID=${param.patientID}&patientName=${param.patientName}&status=${param.status}">Previous</a>
                                 </li>
                             </c:if>
-                                
-                                
+
+
 
                             <c:forEach var="i" begin="1" end="${endPage}">
                                 <li class="page-item ${i == page ? 'active' : ''}">
-                                    <a class="page-link" href="patient?page=${i}&patientID=${param.patientID}&patientName=${param.patientName}">${i}</a>
+                                    <a class="page-link" href="patient?page=${i}&patientID=${param.patientID}&patientName=${param.patientName}&status=${param.status}">${i}</a>
                                 </li>
                             </c:forEach>
 
                             <c:if test="${page < endPage}">
                                 <li class="page-item">
-                                    <a class="page-link" href="patient?page=${page + 1}&patientID=${param.patientID}&patientName=${param.patientName}">Next</a>
+                                    <a class="page-link" href="patient?page=${page + 1}&patientID=${param.patientID}&patientName=${param.patientName}&status=${param.status}">Next</a>
                                 </li>
                             </c:if>
                         </ul>
