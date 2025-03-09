@@ -48,13 +48,16 @@ public class patient extends HttpServlet {
         CustomerDAO dao = new CustomerDAO();
         String indexPage = request.getParameter("page");
         String status = request.getParameter("status");
-
-        if (status == null || status.isEmpty()) {
-            status = "active";
-        }
+        String patientIdStr = request.getParameter("patientID");
+        String patientName = request.getParameter("patientName");
         int page;
         int totalPatient = 0;
-        int pageSize = 10;
+        int pageSize = 5;
+        List<Customer> listPatient = new ArrayList<>();
+
+        if (status == null || status.isEmpty()) {
+            status = "";
+        }
 
         try {
             page = Integer.parseInt(indexPage);
@@ -64,10 +67,6 @@ public class patient extends HttpServlet {
         } catch (NumberFormatException e) {
             page = 1;
         }
-
-        List<Customer> listPatient = new ArrayList<>();
-        String patientIdStr = request.getParameter("patientID");
-        String patientName = request.getParameter("patientName");
 
         try {
             if (patientIdStr != null && !patientIdStr.isEmpty() && patientName != null && !patientName.isEmpty()) {
@@ -99,25 +98,26 @@ public class patient extends HttpServlet {
                 }
             } else if (!status.isEmpty()) {
                 if (status.equals("active")) {
-                    listPatient = dao.getAllCustomerActive();
-
+                    listPatient = dao.getAllCustomerActive(page, pageSize);
+                    totalPatient = dao.getAllCustomerActive().size();
                 } else {
-                    listPatient = dao.getAllCustomerInactive();
+                    listPatient = dao.getAllCustomerInactive(page, pageSize);
+                    totalPatient = dao.getAllCustomerInactive().size();
                 }
             } else {
                 listPatient = dao.getAllCustomer(page, pageSize);
                 totalPatient = dao.getAllCustomer().size();
             }
 
-//            for (Customer cus : listPatient) {
-//                cus.setRegistrationDate(valid.formatDateTime(cus.getRegistrationDate(), "dd/MM/yyyy"));
-//            }
             int endPage = (int) Math.ceil((double) totalPatient / pageSize);
+            
             request.setAttribute("listPatient", listPatient);
             request.setAttribute("totalPatient", totalPatient);
             request.setAttribute("currentEntries", listPatient.size());
             request.setAttribute("endPage", endPage);
             request.setAttribute("page", page);
+            request.setAttribute("patientID", patientIdStr);
+            request.setAttribute("patientName", patientName);
             request.setAttribute("status", status);
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Invalid Patient ID format.");

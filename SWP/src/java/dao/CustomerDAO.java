@@ -22,7 +22,7 @@ import model.Customer;
  */
 public class CustomerDAO extends DBContext {
 
-    ValidFunction valid = new ValidFunction();
+//    ValidFunction valid = new ValidFunction();
 
     public Customer customerLogin(String username) {
         String sql = "select * from Customer where username = ? and accountStatus = 'Active'";
@@ -82,11 +82,80 @@ public class CustomerDAO extends DBContext {
         return customers; // Trả về danh sách khách hàng
     }
     
-    public List<Customer> getAllCustomerActive() {
+    //cai nay de phan trang
+    public List<Customer> getAllCustomerActive(int index, int pageSize) {
         List<Customer> customers = new ArrayList<>();
-        String sql = "SELECT * FROM Customer where accountStatus = 'Active'";
+        String sql = "SELECT * FROM Customer where accountStatus = 'Active' order by customerID offset ? rows  fetch  next ? rows only";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
+            int offset = (index - 1) * pageSize;
+            st.setInt(1, offset);
+            st.setInt(2, pageSize);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int customerID = rs.getInt("customerID");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String fullName = rs.getString("fullName");
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                String accountStatus = rs.getString("accountStatus");
+                String registrationDate = rs.getString("registrationDate");
+                String dateOfBirth = rs.getString("dateOfBirth");
+                String gender = rs.getString("gender");
+                String profilePicture = rs.getString("profilePicture");
+
+                Customer customer = new Customer(customerID, username, password, fullName, email, phone, address,
+                        accountStatus, registrationDate, dateOfBirth, gender, profilePicture);
+                customers.add(customer); // Thêm customer vào danh sách
+            }
+
+        } catch (SQLException e) {
+        }
+        return customers; // Trả về danh sách khách hàng
+    }
+    
+    //cai nay de lay so luong
+    public List<Customer> getAllCustomerActive() {
+        List<Customer> customers = new ArrayList<>();
+        String sql = "select * from Customer where accountStatus = 'Active'";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int customerID = rs.getInt("customerID");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String fullName = rs.getString("fullName");
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                String accountStatus = rs.getString("accountStatus");
+                String registrationDate = rs.getString("registrationDate");
+                String dateOfBirth = rs.getString("dateOfBirth");
+                String gender = rs.getString("gender");
+                String profilePicture = rs.getString("profilePicture");
+
+                Customer customer = new Customer(customerID, username, password, fullName, email, phone, address,
+                        accountStatus, registrationDate, dateOfBirth, gender, profilePicture);
+                customers.add(customer); // Thêm customer vào danh sách
+            }
+
+        } catch (SQLException e) {
+        }
+        return customers; // Trả về danh sách khách hàng
+    }
+    
+    
+    public List<Customer> getAllCustomerInactive(int index, int pageSize) {
+        List<Customer> customers = new ArrayList<>();
+        String sql = "select * from Customer where accountStatus = 'Inactive' order by customerID offset ? rows  fetch  next ? rows only";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            int offset = (index - 1) * pageSize;
+            st.setInt(1, offset);
+            st.setInt(2, pageSize);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 int customerID = rs.getInt("customerID");
