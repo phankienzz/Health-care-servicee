@@ -47,6 +47,11 @@ public class patient extends HttpServlet {
         ValidFunction valid = new ValidFunction();
         CustomerDAO dao = new CustomerDAO();
         String indexPage = request.getParameter("page");
+        String status = request.getParameter("status");
+
+        if (status == null || status.isEmpty()) {
+            status = "active";
+        }
         int page;
         int totalPatient = 0;
         int pageSize = 10;
@@ -92,6 +97,13 @@ public class patient extends HttpServlet {
                 if (listPatient.isEmpty()) {
                     request.setAttribute("error", "No patients found with name: " + patientName);
                 }
+            } else if (!status.isEmpty()) {
+                if (status.equals("active")) {
+                    listPatient = dao.getAllCustomerActive();
+
+                } else {
+                    listPatient = dao.getAllCustomerInactive();
+                }
             } else {
                 listPatient = dao.getAllCustomer(page, pageSize);
                 totalPatient = dao.getAllCustomer().size();
@@ -100,13 +112,13 @@ public class patient extends HttpServlet {
 //            for (Customer cus : listPatient) {
 //                cus.setRegistrationDate(valid.formatDateTime(cus.getRegistrationDate(), "dd/MM/yyyy"));
 //            }
-
             int endPage = (int) Math.ceil((double) totalPatient / pageSize);
             request.setAttribute("listPatient", listPatient);
             request.setAttribute("totalPatient", totalPatient);
             request.setAttribute("currentEntries", listPatient.size());
             request.setAttribute("endPage", endPage);
             request.setAttribute("page", page);
+            request.setAttribute("status", status);
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Invalid Patient ID format.");
         }

@@ -140,7 +140,6 @@
                                 <div class="comment-area mt-4 mb-5">
                                     <h4 class="mb-4">${comments.size()} Comments on ${newsDetail.title}</h4>
                                     <ul class="comment-tree list-unstyled">
-                                        <%-- Hàm hiển thị bình luận theo cấp độ --%>
                                         <c:forEach var="comment" items="${comments}">
                                             <c:if test="${comment.parent_comment_id == 0}">
                                                 <li class="mb-4">
@@ -169,8 +168,6 @@
                                                             <p>${comment.content}</p>
                                                         </div>
                                                     </div>
-
-                                                    <%-- Gọi đệ quy để hiển thị bình luận con --%>
                                                     <ul class="child-comments list-unstyled ml-5">
                                                         <jsp:include page="comment-reply.jsp">
                                                             <jsp:param name="parentId" value="${comment.comment_id}" />
