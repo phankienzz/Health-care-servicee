@@ -10,6 +10,12 @@
         <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/tagsinput.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+
+        <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+
+
+
     </head>
     <body>
         <div class="main-wrapper">
@@ -26,16 +32,19 @@
                     <li class="submenu">
                         <a href="#"><i class="fa fa-commenting-o"></i> <span> Blog</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
-                            <li><a href="blog.html">Blog</a></li>
-                            <li><a href="blog-details.html">Blog View</a></li>
-                            <li><a class="active" href="add-blog.html">Add Blog</a></li>
+                            <li><a href="homeblogseverlet">Blog</a></li>
+                            <li><a href="blog-details.jsp">Blog View</a></li>
+                            <li><a class="active" href="add-blog.jsp">Add Blog</a></li>
                             <li><a href="edit-blog.html">Edit Blog</a></li>
                         </ul>
                     </li>
                 </ul>
             </div>
 
-            <div class="page-wrapper">
+
+
+
+            <div class="page-wrapper-profile">
                 <div class="content">
                     <div class="row">
                         <div class="col-lg-8 offset-lg-2">
@@ -51,21 +60,28 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Blog Images</label>
-                                    <input class="form-control" type="file" name="images" multiple required>
-                                    <small class="form-text text-muted">Max. file size: 50 MB. Allowed images: jpg, gif, png. Maximum 10 images only.</small>
+                                    <!-- Adding the 'accept' attribute to limit selection to PNG files -->
+                                    <input class="form-control" type="file" name="image" id="image" accept="image/png, image/jpeg, image/gif, image/jpg">
+
+
+                                    <c:if test="${not empty blog.image}">
+                                        <img src="${blog.image}" width="100">
+                                    </c:if>
                                 </div>
+
+
                                 <div class="form-group">
                                     <label>Blog content</label>
-                                    <textarea cols="30" rows="6" class="form-control" name="descriptiondetail" required></textarea>
+                                    <textarea cols="30" rows="6" class="form-control" id="descriptiondetail" name="descriptiondetail" ></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label class="display-block">Blog Status</label>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" id="blog_active" value="on" checked>
+                                        <input class="form-check-input" type="radio" name="status" id="blog_active" value="true" checked>
                                         <label class="form-check-label" for="blog_active">Active</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" id="blog_inactive" value="off">
+                                        <input class="form-check-input" type="radio" name="status" id="blog_inactive" value="false">
                                         <label class="form-check-label" for="blog_inactive">Inactive</label>
                                     </div>
                                 </div>
@@ -74,30 +90,53 @@
                                 </div>
                             </form>
 
-
                             <script>
-                                document.querySelector('form').addEventListener('submit', function (event) {
-                                    const files = document.querySelector('input[type="file"]').files;
-                                    for (let i = 0; i < files.length; i++) {
-                                        if (files[i].size > 50 * 1024 * 1024) { // 50 MB
-                                            alert('File size exceeds 50 MB');
-                                            event.preventDefault();
-                                            return;
-                                        }
-                                    }
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    ClassicEditor
+                                            .create(document.querySelector('#descriptiondetail'), {
+                                                ckfinder: {
+                                                    uploadUrl: '/SWP/uploadckedittor' // Tr? ??n servlet x? lý upload
+                                                }
+                                            })
+                                            .catch(error => console.error(error));
                                 });
+                            </script>
+                            
+                            
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    document.getElementById("image").addEventListener("change", function () {
+                                        const file = this.files[0];
+                                        if (file) {
+                                            const allowedTypes = ["image/png", "image/jpeg", "image/gif", "image/jpg"];
+                                            if (!allowedTypes.includes(file.type) || file.size > 50 * 1024 * 1024) {
+                                                alert("Only PNG, JPEG, JPG, GIF files are allowed and must be under 50MB.");
+                                                this.value = ''; // Xóa file n?u không h?p l?
+                                            }
+                                        }
+                                    });
+                                });
+
                             </script>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="sidebar-overlay" data-reff=""></div>
-            <script src="assets/js/jquery-3.2.1.min.js"></script>
-            <script src="assets/js/popper.min.js"></script>
-            <script src="assets/js/bootstrap.min.js"></script>
-            <script src="assets/js/jquery.slimscroll.js"></script>
-            <script src="assets/js/select2.min.js"></script>
-            <script src="assets/js/tagsinput.js"></script>
-            <script src="assets/js/app.js"></script>
-    </body>
+
+
+
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="sidebar-overlay" data-reff=""></div>
+<script src="assets/js/jquery-3.2.1.min.js"></script>
+<script src="assets/js/popper.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/jquery.slimscroll.js"></script>
+<script src="assets/js/select2.min.js"></script>
+<script src="assets/js/tagsinput.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
 </html>

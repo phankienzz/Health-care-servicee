@@ -2,82 +2,53 @@ package blog;
 
 import dao.NewsDAO;
 import java.io.IOException;
+import java.io.InputStream;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import java.io.File;
-import java.nio.file.Paths;
-import java.util.Collection;
 
-/**
- * Servlet implementation for adding blog posts.
- */
-@MultipartConfig(
-    fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-    maxFileSize = 1024 * 1024 * 50,      // 50MB
-    maxRequestSize = 1024 * 1024 * 100   // 100MB
-)
+@WebServlet(name = "addBlog", urlPatterns = {"/addblog"})
+@MultipartConfig(maxFileSize = 50 * 1024 * 1024) // Giới hạn ảnh tối đa 50MB
 public class addBlog extends HttpServlet {
 
-    private static final String IMAGE_UPLOAD_DIR = "uploads"; // Directory for uploaded images
-
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Lấy thông tin từ form
+
+        // Lấy dữ liệu từ form
         String title = request.getParameter("name");
-        String content = request.getParameter("description");
-        int createdBy = 2; // Thay thế bằng logic lấy user thực tế
-        int categoryId = 1; // Xác định dựa trên logic ứng dụng
-        String statusParam = request.getParameter("status");
+        String description = request.getParameter("description");
         String detail = request.getParameter("descriptiondetail");
+        int status = "active".equalsIgnoreCase(request.getParameter("status")) ? 1 : 2;
 
-        // Chuyển đổi status thành boolean (nếu database dùng BIT)
-        boolean status = "Published".equalsIgnoreCase(statusParam) || "true".equalsIgnoreCase(statusParam);
+        // Giả định người dùng ID = 1, category ID = 1 (có thể thay đổi)
+        int createdBy = 1;
+        int categoryId = 1;
 
-        // Validate required fields
-        if (title == null || title.isEmpty() || content == null || content.isEmpty()) {
-            request.setAttribute("errorMessage", "Title and content are required.");
-            request.getRequestDispatcher("add-blog.jsp").forward(request, response);
-            return;
-        }
+        // Lấy file ảnh từ form
+        Part filePart = request.getPart("image");
+        InputStream imageStream = null;
 
-        // Xử lý upload ảnh
-        String uploadPath = getServletContext().getRealPath("") + File.separator + IMAGE_UPLOAD_DIR;
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdir();
-        }
-
-        StringBuilder imagePaths = new StringBuilder();
-        Collection<Part> fileParts = request.getParts();
-        for (Part filePart : fileParts) {
-            if (filePart.getName().equals("images") && filePart.getSize() > 0) {
-                String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-                String filePath = uploadPath + File.separator + fileName;
-                filePart.write(filePath);
-
-                // Lưu đường dẫn ảnh vào database (nếu nhiều ảnh, dùng dấu phẩy để ngăn cách)
-                if (imagePaths.length() > 0) {
-                    imagePaths.append(",");
-                }
-                imagePaths.append(IMAGE_UPLOAD_DIR).append("/").append(fileName);
+        if (filePart != null && filePart.getSize() > 0) {
+            String contentType = filePart.getContentType();
+            // Kiểm tra loại file cho phép: PNG, JPEG, GIF, JPG
+            if (!contentType.equals("image/png") && !contentType.equals("image/jpeg") &&
+                !contentType.equals("image/gif") && !contentType.equals("image/jpg")) {
+                response.sendRedirect("edit-blog.jsp?error=Only+PNG,+JPEG,+JPG,+and+GIF+files+are+allowed");
+                return;
             }
+            imageStream = filePart.getInputStream();
         }
 
-        // Gọi DAO để lưu bài viết vào DB
-        NewsDAO blogPostDAO = new NewsDAO();
-        blogPostDAO.addBlogPost(title, content, createdBy, categoryId, status, detail, imagePaths.toString());
+        // Gọi DAO để thêm blog vào database
+        NewsDAO blogDAO = new NewsDAO();
+        blogDAO.addBlogPost(title, description, createdBy, categoryId, status, detail, imageStream);
 
-        // Redirect sau khi đăng bài
-        response.sendRedirect("blog.jsp");
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "Servlet for adding blog posts.";
+        // Chuyển hướng sau khi thêm blog thành công
+        response.sendRedirect("homeblogseverlet?success=Blog+added");
     }
 }

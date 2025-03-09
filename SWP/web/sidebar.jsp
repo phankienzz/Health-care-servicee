@@ -25,7 +25,7 @@
                     </c:forEach>
                     <li class="menu-title">Main</li>
                     <li>
-                        <a href="index-2.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
+                        <a href="dashboard.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
                     </li>
                     <li>
                         <a href="doctors.html"><i class="fa fa-user-md"></i> <span>Doctors</span></a>

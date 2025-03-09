@@ -27,40 +27,40 @@
                     <div class="account-box">
                         <form action="register" method="post" class="form-signin">
                             <div class="account-logo">
-                                <a href="index-2.html"><img src="assets/img/logo-dark.png" alt=""></a>
+                                <a href="dashboard.html"><img src="assets/img/logo-dark.png" alt=""></a>
                             </div>
-                            <p class="text-danger">${error}</p>
+                            <p class="center text-danger">${error}</p>
                             <div class="form-group">
                                 <label>Username</label>
-                                <input type="text" name="username" class="form-control">
+                                <input type="text" name="username" value="${requestScope.username}" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label>FullName</label>
-                                <input type="text" name="fullname" class="form-control">
+                                <input type="text" name="fullname" value="${requestScope.fullname}" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label>Email Address</label>
-                                <input type="email" name="email" class="form-control">
+                                <input type="email" name="email" value="${requestScope.email}" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label>Mobile Number</label>
-                                <input type="text" name="phone" class="form-control" pattern="0\d{9}" title="Số điện thoại phải có 10 số và bắt đầu bằng 0">
+                                <input type="text" name="phone" value="${requestScope.phone}" class="form-control" pattern="0\d{9}" title="Số điện thoại phải có 10 số và bắt đầu bằng 0">
                             </div>
                             <div class="form-group">
                                 <label>Address</label>
-                                <input type="text" name="address" class="form-control" >
+                                <input type="text" name="address" value="${requestScope.address}" class="form-control" >
                             </div>
                             <div class="form-group">
                                 <label>Date of Birth</label>
-                                <input type="text" name="dateOfBirth" class="form-control" placeholder="YYYY-MM-DD" pattern="\d{4}-\d{2}-\d{2}" required>
+                                <input type="date" name="dateOfBirth" value="${requestScope.dateOfBirth}" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="gender">Gender</label>
-                                <select name="gender" id="gender" class="form-control" required>
-                                    <option value="" disabled selected>Select your gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                    <option value="Other">Other</option>
+                                <select name="gender" id="gender" class="form-control">
+                                    <option value="" disabled ${requestScope.gender == null ? 'selected' : ''}>Select your gender</option>
+                                    <option value="Male" ${requestScope.gender == 'Male' ? 'selected' : ''}>Male</option>
+                                    <option value="Female" ${requestScope.gender == 'Female' ? 'selected' : ''}>Female</option>
+                                    <option value="Other" ${requestScope.gender == 'Other' ? 'selected' : ''}>Other</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -71,11 +71,11 @@
                                 <label>Confirm Password</label>
                                 <input type="password" name="confirm_password" class="form-control">
                             </div>
-<!--                            <div class="form-group checkbox">
-                                <label>
-                                    <input type="checkbox"> I have read and agree the Terms & Conditions
-                                </label>
-                            </div>-->
+                            <!--                            <div class="form-group checkbox">
+                                                            <label>
+                                                                <input type="checkbox"> I have read and agree the Terms & Conditions
+                                                            </label>
+                                                        </div>-->
                             <div class="form-group text-center">
                                 <button class="btn btn-primary account-btn" type="submit">Signup</button>
                             </div>

@@ -5,7 +5,6 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,6 +28,8 @@
 
     <body>
 
+        <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
         <jsp:include page="editseting.jsp"></jsp:include>
 
             <div class="page-wrapper-profile">
@@ -38,36 +39,71 @@
                             <h4 class="page-title">Edit Profile</h4>
                         </div>
                     </div>
-                <c:if test="${sessionScope.customerAccount != null}">
-                    <form action="editprofile" method="post">
+
+
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const fileInput = document.getElementById("profileImage");
+
+                            fileInput.addEventListener("change", function () {
+                                const file = fileInput.files[0];
+
+                                if (file) {
+                                    const fileType = file.type;
+                                    const allowedTypes = ["image/png", "image/jpeg", "image/gif"];
+
+                                    if (!allowedTypes.includes(fileType)) {
+                                        alert("Only PNG, JPEG, and GIF files are allowed!");
+                                        fileInput.value = ''; // Clear the file input
+                                    }
+                                }
+                            });
+                        });
+
+
+                    </script>
+                    <form action="editprofile" method="post" enctype="multipart/form-data">
                         <div class="card-box">
                             <h3 class="card-title">Basic Informations</h3>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="profile-img-wrap">
-                                        <img class="inline-block" src="assets/img/user.jpg" alt="user">
+                                    <div class="col-md-12">
+                                        <div class="profile-img-wrap">
+                                            <img class="inline-block" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" >
                                         <div class="fileupload btn">
-                                            <span class="btn-text">edit</span>
-                                            <input class="upload" type="file">
+                                            <span class="btn-text">Edit</span>
+                                            <input class="upload" type="file" name="profileImage" id="profileImage">
                                         </div>
                                     </div>
+
                                     <div class="profile-basic">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group form-focus">
                                                     <label class="focus-label">Full Name</label>
-                                                    <input type="text" class="form-control floating" name="fullName" value="${sessionScope.customerAccount.fullName}">
+                                                    <input type="text" class="form-control floating" name="fullName" 
+                                                           value="${sessionScope.customerAccount.fullName}" 
+                                                           onblur="this.value = this.value.trim();">
+
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
-                                                <div class="form-group form-focus">
-                                                    <label class="focus-label">Birth Date</label>
+
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Birth Date <span class="text-danger">*</span></label>
                                                     <div class="cal-icon">
-                                                        <input class="form-control floating " type="text" name="dateOfBirth" placeholder="YYYY-MM-DD" value="${sessionScope.customerAccount.dateOfBirth}">
+                                                        <!-- Set the value of the input field dynamically -->
+                                                        <input name="dateOfBirth" class="form-control datetimepicker" type="text"
+                                                               value="${sessionScope.customerAccount.dateOfBirth != null ? sessionScope.customerAccount.dateOfBirth : ''}" />
                                                     </div>
                                                 </div>
                                             </div>
+
+
+
+
 
                                             <div class="col-md-6">
                                                 <div class="form-group form-focus select-focus">
@@ -81,7 +117,10 @@
                                             <div class="col-md-6">
                                                 <div class="form-group form-focus">
                                                     <label class="focus-label">Email</label>
-                                                    <input type="text" class="form-control floating" name="email" value="${sessionScope.customerAccount.email}">
+                                                    <input type="text" class="form-control floating" name="email" value="${sessionScope.customerAccount.email}" >
+
+                                                </div>
+                                                <div><p class="text-danger">${error}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -98,13 +137,8 @@
                                         <input type="text" class="form-control floating" name="address" value="${sessionScope.customerAccount.address}">
                                     </div>
                                 </div>
-                                <!--                            <div class="col-md-6">
-                                                                <div class="form-group form-focus">
-                                                                    <label class="focus-label">Country</label>
-                                                                    <input type="text" class="form-control floating" value="United States">
-                                                                </div>
-                                                            </div>-->
-                                <div class="col-md-12">
+
+                                <div class="col-md-6">
                                     <div class="form-group form-focus">
                                         <label class="focus-label">Phone Number</label>
                                         <input type="text" class="form-control floating" name="phone" value="${sessionScope.customerAccount.phone}">
@@ -116,94 +150,40 @@
                         <div class="text-center m-t-20">
                             <button class="btn btn-primary submit-btn" type="submit">Save</button>
                         </div>
-                    </form>
-                </c:if>
-                <c:if test="${sessionScope.staffAccount != null}">
-                    <form action="profileStaff" method="post">
-                        <div class="card-box">
-                            <h3 class="card-title">Basic Informations</h3>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="profile-img-wrap">
-                                        <img class="inline-block" src="assets/img/user.jpg" alt="user">
-                                        <div class="fileupload btn">
-                                            <span class="btn-text">edit</span>
-                                            <input class="upload" type="file">
+                    </div>
+                </form>
+
+
+                <!--                    <form action="editprofile" method="post">
+                                        <div class="form-group">
+                                            <label>Full Name</label>
+                                            <input type="text" name="fullName" value="${customerProfile.fullName}" class="form-control">
                                         </div>
-                                    </div>
-                                    <div class="profile-basic">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group form-focus">
-                                                    <label class="focus-label">Full Name</label>
-                                                    <input type="text" class="form-control floating" name="fullName" value="${sessionScope.staffAccount.fullName}">
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-group form-focus">
-                                                    <label class="focus-label">Birth Date</label>
-                                                    <div class="cal-icon">
-                                                        <input class="form-control floating datetimepicker" type="text" name="dateOfBirth"  value="${sessionScope.staffAccount.dateOfBirth}">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-group form-focus select-focus">
-                                                    <label class="focus-label">Gender</label>
-                                                    <select class="select form-control floating" name="gender">
-                                                        <option value="Male" ${sessionScope.staffAccount.gender == "Male" ? "selected" : ""}>Male</option>
-                                                        <option value="Female" ${sessionScope.staffAccount.gender == "Female" ? "selected" : ""}>Female</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group form-focus">
-                                                    <label class="focus-label">Email</label>
-                                                    <input type="text" class="form-control floating" name="email" value="${sessionScope.staffAccount.email}">
-                                                </div>
-                                            </div>
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input type="email" name="email" value="${customerProfile.email}" class="form-control">
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-box">
-                            <h3 class="card-title">Contact Informations</h3>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group form-focus">
-                                        <label class="focus-label">Address</label>
-                                        <input type="text" class="form-control floating" name="address" value="${sessionScope.staffAccount.address}">
-                                    </div>
-                                </div>
-                                <!--                            <div class="col-md-6">
-                                                                <div class="form-group form-focus">
-                                                                    <label class="focus-label">Country</label>
-                                                                    <input type="text" class="form-control floating" value="United States">
-                                                                </div>
-                                                            </div>-->
-                                <div class="col-md-12">
-                                    <div class="form-group form-focus">
-                                        <label class="focus-label">Phone Number</label>
-                                        <input type="text" class="form-control floating" name="phone" value="${sessionScope.staffAccount.phone}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <c:if test="${error != null}">
-                            <h4><i style="color: red">${error}</i></h4>
-                            </c:if>
-                            <c:if test="${mess != null}">
-                            <h4><i style="color: green">${mess}</i></h4>
-                            </c:if>
-                        <div class="text-center m-t-20">
-                            <button class="btn btn-primary submit-btn" type="submit">Save</button>
-                        </div>
-                    </form>
-
-                </c:if>
+                                        <div class="form-group">
+                                            <label>Phone</label>
+                                            <input type="text" name="phone" value="${customerProfile.phone}" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Address</label>
+                                            <input type="text" name="address" value="${customerProfile.address}" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Date of Birth</label>
+                                            <input type="date" name="dateOfBirth" value="${customerProfile.dateOfBirth}" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Gender</label>
+                                            <select name="gender" class="form-control">
+                                                <option value="Male" ${customerProfile.gender == 'Male' ? 'selected' : ''}>Male</option>
+                                                <option value="Female" ${customerProfile.gender == 'Female' ? 'selected' : ''}>Female</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    </form>-->
             </div>
         </div>
 
