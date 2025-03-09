@@ -74,10 +74,8 @@ public class MedicalExaminationDAO extends DBContext {
 
         } catch (SQLException e) {
         }
-        return medicalExaminationList; 
+        return medicalExaminationList;
     }
-
-  
 
     // Lưu MedicalExamination mới
     public boolean saveMedicalExamination(MedicalExamination examination) {
@@ -123,19 +121,19 @@ public class MedicalExaminationDAO extends DBContext {
         }
     }
 
-    
-  public List<MedicalExamination> getAllExamination() {
+    public List<MedicalExamination> getAllExamination() {
         List<MedicalExamination> medicalExaminationList = new ArrayList<>();
-        String sql = "SELECT m.*, c.fullName AS customerName, s.fullName AS staffName " +
-                     "FROM MedicalExamination m " +
-                     "JOIN Customer c ON m.customerID = c.customerID " +
-                     "JOIN Staff s ON m.consultantID = s.staffID";
+        String sql = "SELECT m.*, c.fullName AS customerName, c.dateOfBirth, s.fullName AS staffName "
+                + "FROM MedicalExamination m "
+                + "JOIN Customer c ON m.customerID = c.customerID "
+                + "JOIN Staff s ON m.consultantID = s.staffID";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Customer customer = new Customer();
+                customer.setDateOfBirth(rs.getString("dateOfBirth"));
                 customer.setCustomerID(rs.getInt("customerID"));
                 customer.setFullName(rs.getString("customerName"));
 
@@ -165,10 +163,10 @@ public class MedicalExaminationDAO extends DBContext {
 
     public List<Service> getServicesByExaminationId(int examinationID) {
         List<Service> services = new ArrayList<>();
-        String query = "SELECT ms.packageID, sp.packageName " +
-                       "FROM MedicalService ms " +
-                       "JOIN ServicePackage sp ON ms.packageID = sp.packageID " +
-                       "WHERE ms.examinationID = ?";
+        String query = "SELECT ms.packageID, sp.packageName "
+                + "FROM MedicalService ms "
+                + "JOIN ServicePackage sp ON ms.packageID = sp.packageID "
+                + "WHERE ms.examinationID = ?";
 
         try {
             PreparedStatement ps = connection.prepareStatement(query);
@@ -185,12 +183,8 @@ public class MedicalExaminationDAO extends DBContext {
         }
         return services;
     }
-    
-    
-    
-    
 
-   public static void main(String[] args) {
+    public static void main(String[] args) {
         MedicalExaminationDAO dao = new MedicalExaminationDAO();
 
         // Tạo dữ liệu mẫu
@@ -262,7 +256,5 @@ public class MedicalExaminationDAO extends DBContext {
         }
         return -1;
     }
-    
-    
-    
+
 }

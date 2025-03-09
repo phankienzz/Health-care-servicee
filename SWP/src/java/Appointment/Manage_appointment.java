@@ -63,7 +63,7 @@ public class Manage_appointment extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Lấy danh sách MedicalExamination từ DAO
-        List<MedicalExamination> list = medicalExaminationDAO.getAllMedicalExamination();
+        List<MedicalExamination> list = medicalExaminationDAO.getAllExamination();
 
         // Đưa danh sách vào request attribute với key "list"
         request.setAttribute("list", list);

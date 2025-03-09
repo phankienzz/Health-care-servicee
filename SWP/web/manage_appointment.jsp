@@ -327,17 +327,22 @@
                                             <tr>
                                                 <td>${exam.examinationID}</td>
                                                 <td>${exam.customerId.fullName}</td>
-                                                <td>${exam.examinationDate}</td>
-                                                
-                                                <td>${exam.status}</td>
+                                                <td>${exam.customerId.dateOfBirth}</td>
                                                 <td>${exam.consultantId.fullName}</td>
-                                                <td>${exam.note}</td>
-                                                <td>${exam.createdAt}</td>
                                                 <td>
                                                     <c:forEach var="service" items="${exam.list}">
-                                                        <span>${service.packageID}</span><br>
+                                                        <span>${service.packageName}</span><br>
                                                     </c:forEach>
                                                 </td>
+
+                                                <td>${exam.createdAt}</td>
+
+                                                <td>${exam.examinationDate}</td>
+
+                                                <td>${exam.status}</td>
+
+
+
                                                 <td class="text-right">
                                                     <div class="dropdown dropdown-action">
                                                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
