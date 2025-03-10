@@ -5,7 +5,6 @@
 package context;
 
 import dao.CustomerDAO;
-import dao.StaffDAO;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import org.mindrot.jbcrypt.BCrypt;
@@ -14,19 +13,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import model.Customer;
-import model.Staff;
+import java.util.Locale;
 
 /**
  *
  * @author Gigabyte
  */
 public class ValidFunction {
-
     public boolean containsDigitOrSpecialChar(String str) {
         return str.matches(".*[^a-zA-Z\\s].*"); // Kiểm tra nếu có ký tự không phải chữ cái hoặc khoảng trắng
     }
 
-    public String normalizeName(String name) {
+    public  String normalizeName(String name) {
         if (name == null || name.trim().isEmpty()) {
             return "";
         }
@@ -60,26 +58,28 @@ public class ValidFunction {
         if (password.length() < 8) {
             return false;
         }
+
         // Biểu thức chính quy kiểm tra điều kiện
         String regex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$";
 
         return password.matches(regex);
     }
-
     public String formatDate(String input) {
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
         LocalDateTime dateTime = LocalDateTime.parse(input, inputFormatter);
         return dateTime.format(outputFormatter);
     }
-
-    //2 cái dưới này chuyển từ yyyy-MM-dd HH:mm:ss.S sang dd/MM/yyyy
-    public String formatDateNews(String date) {
+    
+    public String formatDateInvoice(String date) {
+        // Chuyển từ chuỗi ngày ban đầu (yyyy-MM-dd HH:mm:ss) sang Timestamp
         java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
-        java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
+        // Định dạng Timestamp thành chuỗi dd/MM/yyyy
+        java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy, MMMM dd", Locale.ENGLISH);
         return dateFormat.format(timestamp);
     }
-
+    
     public String formatDateTime(String date, String pattern) {
         java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
@@ -101,24 +101,23 @@ public class ValidFunction {
             return "";
         }
     }
-
+    public String formatDateNews(String date) {
+        // Chuyển từ chuỗi ngày ban đầu (yyyy-MM-dd HH:mm:ss) sang Timestamp
+        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
+        // Định dạng Timestamp thành chuỗi dd/MM/yyyy
+        java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
+        return dateFormat.format(timestamp);
+    }
+    
     public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
-
+    
     public boolean checkPassword(String password, String hashedPassword) {
         return BCrypt.checkpw(password, hashedPassword);
     }
-
+    
     public static void main(String[] args) {
-        ValidFunction valid = new ValidFunction();
-        CustomerDAO dao = new CustomerDAO();
-        List<Customer> list = dao.getAllCustomer();
-        for (Customer cs : list) {
-            System.out.println("Staff password: " + cs.getPassword());
-            System.out.println("Hash password: " + valid.hashPassword(cs.getPassword()));
-            System.out.println("");
-        }
-
+        
     }
 }

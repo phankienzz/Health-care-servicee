@@ -1,72 +1,35 @@
 <%-- 
-    Document   : invoices
-    Created on : Feb 23, 2025, 11:06:29 PM
+    Document   : invoice-view
+    Created on : Mar 6, 2025, 3:12:42 AM
     Author     : Gigabyte
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
 
-    <!-- invoices23:24-->
+    <!-- invoice-view24:07-->
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
         <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
         <title>Preclinic - Medical & Hospital - Bootstrap 4 Admin Template</title>
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="assets/css/dataTables.bootstrap4.min.css">
-        <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <!--[if lt IE 9]>
                     <script src="assets/js/html5shiv.min.js"></script>
                     <script src="assets/js/respond.min.js"></script>
             <![endif]-->
-        <style>
-            .pagination {
-                float: right;
-                margin: 0 0 5px;
-            }
-            .pagination li a {
-                border: none;
-                font-size: 13px;
-                min-width: 30px;
-                min-height: 30px;
-                color: #999;
-                margin: 0 2px;
-                line-height: 30px;
-                border-radius: 2px !important;
-                text-align: center;
-                padding: 0 6px;
-            }
-            .pagination li a:hover {
-                color: #666;
-            }
-            .pagination li.active a, .pagination li.active a.page-link {
-                background: #03A9F4;
-            }
-            .pagination li.active a:hover {
-                background: #0397d6;
-            }
-            .pagination li.disabled i {
-                color: #ccc;
-            }
-            .pagination li i {
-                font-size: 16px;
-                padding-top: 6px
-            }
-        </style>
     </head>
 
     <body>
         <div class="main-wrapper">
             <div class="header">
                 <div class="header-left">
-                    <a href="dashboard.html" class="logo">
+                    <a href="index-2.html" class="logo">
                         <img src="assets/img/logo.png" width="35" height="35" alt=""> <span>Preclinic</span>
                     </a>
                 </div>
@@ -178,7 +141,7 @@
                         <ul>
                             <li class="menu-title">Main</li>
                             <li>
-                                <a href="dashboard.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
+                                <a href="index-2.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
                             </li>
                             <li>
                                 <a href="doctors.html"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
@@ -339,112 +302,128 @@
                 <div class="content">
                     <div class="row">
                         <div class="col-sm-5 col-4">
-                            <h4 class="page-title">Invoices</h4>
+                            <h4 class="page-title">Invoice</h4>
                         </div>
                         <div class="col-sm-7 col-8 text-right m-b-30">
-                            <a href="createInvoice" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Create New Invoice</a>
+                            <div class="btn-group btn-group-sm">
+                                <button class="btn btn-white">PDF</button>
+                                <button class="btn btn-white"><i class="fa fa-print fa-lg"></i> Print</button>
+                            </div>
                         </div>
                     </div>
-                    
-                    <form action="invoice" method="get">
-                        <div class="row filter-row">
-                            <div class="col-sm-6 col-md-3">
-                                <div class="form-group form-focus">
-                                    <label class="focus-label">From</label>
-                                    <div class="cal-icon">
-                                        <input name="from" class="form-control floating datetimepicker" type="text" <c:if test="${from != null}"> value ="${from}"</c:if>>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <div class="form-group form-focus">
-                                    <label class="focus-label">To</label>
-                                    <div class="cal-icon">
-                                        <input name="to" class="form-control floating datetimepicker" type="text" <c:if test="${to != null}"> value ="${to}"</c:if>>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <div class="form-group form-focus select-focus">
-                                    <label class="focus-label">Status</label>
-                                    <select name="status" class="select floating">
-                                        <option value="">Select Status</option>
-                                        <option value="Pending" <c:if test="${status == 'Pending'}"> selected</c:if>>Pending</option>
-                                        <option value="Paid" <c:if test="${status == 'Paid'}"> selected</c:if>>Paid</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <input type="submit" class="btn btn-success btn-block" value="Search" />
-                            </div>
-                        </div>
-                    </form>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="table-responsive">
-                                <table class="table table-striped custom-table mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Invoice Number</th>
-                                            <th>Patient</th>
-                                            <th>Created Date</th>
-                                            <th>Payment Date</th>
-                                            <th>Amount</th>
-                                            <th>Status</th>
-                                            <th class="text-right">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:set var="i" value="${(currentPage-1)*5+1}"/>
-                                        <c:forEach var="invoice" items="${listInvoice}">
-                                            <tr>
-                                                <td>${i}</td>
-                                                <c:set var="i" value="${i + 1}"/>
-                                                <td><a href="invoice-view.html">${invoice.invoiceID}</a></td>
-                                                <td>${invoice.examinationID.customerId.fullName}</td>
-                                                <td>${invoice.createdAt}</td>
-                                                <td>${invoice.paymentDate}</td>
-                                                <td>${invoice.totalAmount}</td>
-                                                <c:if test="${invoice.paymentStatus == 'Pending'}">
-                                                    <td><span class="custom-badge status-orange">${invoice.paymentStatus}</span></td>
-                                                    </c:if>
-                                                    <c:if test="${invoice.paymentStatus == 'Paid'}">
-                                                    <td><span class="custom-badge status-green">${invoice.paymentStatus}</span></td>
-                                                    </c:if>
-                                                <td class="text-right">
-                                                    <div class="dropdown dropdown-action">
-                                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                            <a class="dropdown-item" href="edit-invoice.html"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                            <a class="dropdown-item" href="viewInvoice?invoiceID=${invoice.invoiceID}"><i class="fa fa-eye m-r-5"></i> View</a>
-                                                            <a class="dropdown-item" href="#"><i class="fa fa-file-pdf-o m-r-5"></i> Download</a>
-                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_invoice"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row custom-invoice">
+                                        <div class="col-6 col-sm-6 m-b-20">
+                                            <img src="assets/img/logo-dark.png" class="inv-logo" alt="">
+                                            <ul class="list-unstyled">
+                                                <li>PreClinic</li>
+                                                <li>FPT Univercity,</li>
+                                                <li>Hòa Lạc, Hà Nội, Việt Nam</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-6 col-sm-6 m-b-20">
+                                            <div class="invoice-details">
+                                                <h3 class="text-uppercase">Invoice #${invoice.invoiceID}</h3>
+                                                <ul class="list-unstyled">
+                                                    <li>Created Date: <span>${createdDate}</span></li>
+                                                    
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 col-lg-6 m-b-20">
 
-                                    </tbody>
-                                </table>
+                                            <h5>Invoice to:</h5>
+                                            <ul class="list-unstyled">
+                                                <li>
+                                                    <h5><strong>${invoice.examinationID.customerId.fullName}</strong></h5>
+                                                </li>
+                                                <li><span>Việt Nam</span></li>
+                                                <li>${invoice.examinationID.customerId.address}</li>
+                                                
+                                                <li>${invoice.examinationID.customerId.phone}</li>
+                                                <li><a href="#">${invoice.examinationID.customerId.email}</a></li>
+                                            </ul>
+
+                                        </div>
+                                        <div class="col-sm-6 col-lg-6 m-b-20">
+                                            <div class="invoices-view">
+                                                <span class="text-muted">Payment Details:</span>
+                                                <ul class="list-unstyled invoice-payment-details">
+                                                    <li>
+                                                        <h5>Total Due: <span class="text-right">${invoice.totalAmount}</span></h5>
+                                                    </li>
+                                                    <li>Country: <span>Việt Nam</span></li>
+                                                    <li>City: <span>Hà Nội</span></li>
+                                                    <li>Address: <span>Hòa Lạc, FPT University</span></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Service</th>
+                                                    <th>DESCRIPTION</th>
+                                                    <th>TOTAL</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:set var="i" value="1"/>
+                                                <c:forEach var="service" items="${invoice.examinationID.list}">
+                                                <tr>
+                                                    <td>${i}</td>
+                                                    <c:set var="i" value="${i + 1}"/>
+                                                    <td>${service.packageName}</td>
+                                                    <td>${service.description}</td>
+                                                    <td>${service.price}</td>
+                                                </tr>
+                                                </c:forEach>
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div>
+                                        <div class="row invoice-payment">
+                                            <div class="col-sm-7">
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="m-b-20">
+                                                    <h6>Total due</h6>
+                                                    <div class="table-responsive no-border">
+                                                        <table class="table mb-0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th>Subtotal:</th>
+                                                                    <td class="text-right">${subtotal}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Discount: <span class="text-regular">(${invoice.discountID.percentage}%)</span></th>
+                                                                    <td class="text-right">${discount}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Total:</th>
+                                                                    <td class="text-right text-primary">
+                                                                        <h5>${invoice.totalAmount}</h5>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="clearfix">
-                        <div class="hint-text">Showing <b>${show}</b> out of <b>${size}</b> entries</div>
-                        <ul class="pagination">
-                            <c:if test="${currentPage != 1}">
-                                <li class="page-item page-item ${currentPage == 1 ? 'disabled' : ''}"><a href="invoice?page=${currentPage - 1}&from=${from}&to=${to}&status=${status}">Previous</a></li>
-                                </c:if>
-
-                            <c:forEach var="i" begin="1" end="${totalPages}">
-                                <li class="page-item ${i == currentPage ? 'active' : ''}" ><a href="invoice?page=${i}&from=${from}&to=${to}&status=${status}">${i}</a></li>
-                                </c:forEach>
-                                <c:if test="${currentPage != totalPages}">
-                                <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}"><a href="invoice?page=${currentPage + 1}&from=${from}&to=${to}&status=${status}">Next</a></li>
-                                </c:if>
-                        </ul>
                     </div>
                 </div>
                 <div class="notification-box">
@@ -657,33 +636,15 @@
                     </div>
                 </div>
             </div>
-            <div id="delete_invoice" class="modal fade delete-modal" role="dialog">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-body text-center">
-                            <img src="assets/img/sent.png" alt="" width="50" height="46">
-                            <h3>Are you sure want to delete this Invoice?</h3>
-                            <div class="m-t-20"> <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="sidebar-overlay" data-reff=""></div>
         <script src="assets/js/jquery-3.2.1.min.js"></script>
         <script src="assets/js/popper.min.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
-        <script src="assets/js/jquery.dataTables.min.js"></script>
-        <script src="assets/js/dataTables.bootstrap4.min.js"></script>
-        <script src="assets/js/select2.min.js"></script>
         <script src="assets/js/jquery.slimscroll.js"></script>
-        <script src="assets/js/moment.min.js"></script>
-        <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
         <script src="assets/js/app.js"></script>
     </body>
 
 
-    <!-- invoices23:25-->
+    <!-- invoice-view24:07-->
 </html>

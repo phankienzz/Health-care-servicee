@@ -23,6 +23,35 @@
         <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
+        <style>
+            
+
+            .doctor-image-wrapper {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin:100px 0 0 50px;
+            }
+
+            #doctorImage {
+                width: 250px;
+                height: 300px;
+                object-fit: cover;
+               
+                border: 4px solid #ffffff;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            .emergency {
+                margin: 20px 0 0 80px;
+                
+                font-size: 16px;
+                font-weight: 600;
+                color: #007bff;
+            }
+        </style>
+
+
     </head>
 
     <body id="top">
@@ -50,7 +79,7 @@
             </div>
             <nav class="navbar navbar-expand-lg navigation" id="navbar">
                 <div class="container">
-                    <a class="navbar-brand" href="index_1.html">
+                    <a class="navbar-brand" href="index_1.jsp">
                         <img src="images/logo.png" alt="" class="img-fluid">
                     </a>
 
@@ -61,7 +90,7 @@
                     <div class="collapse navbar-collapse" id="navbarmain">
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item active">
-                                <a class="nav-link" href="index_1.html">Home</a>
+                                <a class="nav-link" href="index_1.jsp">Home</a>
                             </li>
                             <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
                             <li class="nav-item"><a class="nav-link" href="service.html">Services</a></li>
@@ -126,11 +155,15 @@
                     <div class="col-lg-4">
                         <div class="mt-3">
                             <div class="appoinment-content">
-                                <img id="doctorImage" src="images/about/img-3.jpg" alt="Doctor Image" class="img-fluid">
-                                <div class="emergency">
-                                    <p id="doctorSpecialization" class="mb-4">Specialization</p>
+                                <div class="doctor-image-wrapper">
+                                    <img id="doctorImage" src="images/about/img-3.jpg" alt="Doctor Image" class="img-fluid">
                                 </div>
+                                                      
                             </div>
+                            
+                             <div class="emergency">
+                                    <p id="doctorSpecialization" class="mb-2">Specialization</p>
+                                </div>
                         </div>
                     </div>
 
@@ -332,25 +365,6 @@
         =====================================-->
 
 
-        <!-- Main jQuery -->
-        <script src="plugins/jquery/jquery.js"></script>
-        <!-- Bootstrap 4.3.2 -->
-        <script src="plugins/bootstrap/js/popper.js"></script>
-        <script src="plugins/bootstrap/js/bootstrap.min.js"></script>
-        <script src="plugins/counterup/jquery.easing.js"></script>
-        <!-- Slick Slider -->
-        <script src="plugins/slick-carousel/slick/slick.min.js"></script>
-        <!-- Counterup -->
-        <script src="plugins/counterup/jquery.waypoints.min.js"></script>
-
-        <script src="plugins/shuffle/shuffle.min.js"></script>
-        <script src="plugins/counterup/jquery.counterup.min.js"></script>
-        <!-- Google Map -->
-        <script src="plugins/google-map/map.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkeLMlsiwzp6b3Gnaxd86lvakimwGA6UA&callback=initMap"></script>    
-
-        <script src="js/script.js"></script>
-        <script src="js/contact.js"></script>
-
+       
     </body>
 </html>

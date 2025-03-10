@@ -10,7 +10,6 @@ package model;
  */
 public class Invoice {
     private int invoiceID;
-    private Customer customerID;
     private MedicalExamination examinationID;
     private double totalAmount;
     private String paymentStatus;
@@ -22,9 +21,8 @@ public class Invoice {
     public Invoice() {
     }
 
-    public Invoice(int invoiceID, Customer customerID, MedicalExamination examinationID, double totalAmount, String paymentStatus, String paymentDate, String paymentMethod, String createdAt, Discount discountID) {
+    public Invoice(int invoiceID, MedicalExamination examinationID, double totalAmount, String paymentStatus, String paymentDate, String paymentMethod, String createdAt, Discount discountID) {
         this.invoiceID = invoiceID;
-        this.customerID = customerID;
         this.examinationID = examinationID;
         this.totalAmount = totalAmount;
         this.paymentStatus = paymentStatus;
@@ -42,13 +40,6 @@ public class Invoice {
         this.invoiceID = invoiceID;
     }
 
-    public Customer getCustomerID() {
-        return customerID;
-    }
-
-    public void setCustomerID(Customer customerID) {
-        this.customerID = customerID;
-    }
 
     public MedicalExamination getExaminationID() {
         return examinationID;

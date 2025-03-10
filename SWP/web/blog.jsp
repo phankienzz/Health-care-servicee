@@ -42,6 +42,37 @@
             background-color: #0056b3;
         }
 
+        .blog-list-item {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+
+        .blog-list-item img {
+            width: 130px;
+            height: 80px;
+            object-fit: cover;
+            margin-right: 15px;
+            border-radius: 5px;
+        }
+
+        .blog-content {
+            flex: 1;
+        }
+
+        .blog-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .read-more {
+            color: #007bff;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
 
 
     </style>
@@ -49,7 +80,7 @@
         <div class="main-wrapper">
             <div class="header">
                 <div class="header-left">
-                    <a href="dashboard.html" class="logo">
+                    <a href="index-2.html" class="logo">
                         <img src="assets/img/logo.png" width="35" height="35" alt=""> <span>Preclinic</span>
                     </a>
                 </div>
@@ -161,7 +192,7 @@
                         <ul>
                             <li class="menu-title">Main</li>
                             <li>
-                                <a href="dashboard.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
+                                <a href="index-2.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
                             </li>
                             <li>
                                 <a href="doctors.html"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
@@ -375,6 +406,8 @@
 
 
 
+
+
                     <div id="searchResults" class="row">
                         <c:if test="${empty blogs}">
                             <div class="col-12">
@@ -383,13 +416,11 @@
                         </c:if>
 
                         <c:forEach var="blog" items="${blogs}">
-                            <div class="col-sm-6 col-md-6 col-lg-4">
-                                <div class="blog grid-blog">
-                                    <div class="blog-image">
-                                        <a href="blogdetail?postId=${blog.post_id}">
-                                            <img style="width: 470px; height: 315px;" class="img-fluid" src="${blog.image}" alt="${blog.title}">
-                                        </a>
-                                    </div>
+                            <div class="col-6">
+                                <div class="blog-list-item">
+                                    <a href="blogdetail?postId=${blog.post_id}">
+                                        <img  src="${blog.image}" alt="${blog.title}">
+                                    </a>
                                     <div class="blog-content">
                                         <h3 class="blog-title">
                                             <a href="blogdetail?postId=${blog.post_id}">${blog.title}</a>
@@ -398,10 +429,10 @@
                                         <a href="blogdetail?postId=${blog.post_id}" class="read-more">
                                             <i class="fa fa-long-arrow-right"></i> Read More
                                         </a>
+                                        <a href="editblog?postId=${blog.post_id}" class="btn btn-warning btn-sm">
+                                            Update
+                                        </a>
                                     </div>
-                                    <a href="editblog?postId=${blog.post_id}" class="btn btn-warning">
-                                        Update
-                                    </a>
                                 </div>
                             </div>
                         </c:forEach>
