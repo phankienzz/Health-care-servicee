@@ -102,4 +102,13 @@
     <servlet-name>DeleteProfessionalServlet</servlet-name>
     <url-pattern>/DeleteProfessionalServlet</url-pattern>
 </servlet-mapping>
+<servlet>
+    <servlet-name>EditProfessionalServlet</servlet-name>
+    <servlet-class>ProfessionalController.EditProfessionalServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>EditProfessionalServlet</servlet-name>
+    <url-pattern>/EditProfessionalServlet</url-pattern>
+</servlet-mapping>
 </web-app>
