@@ -86,4 +86,12 @@
         <servlet-name>EditProfileServlet</servlet-name>
         <url-pattern>/editprofile</url-pattern>
     </servlet-mapping>
+    <servlet>
+    <servlet-name>AddProfessionalServlet</servlet-name>
+    <servlet-class>ProfessionalController.AddProfessionalServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>AddProfessionalServlet</servlet-name>
+    <url-pattern>/AddProfessionalServlet</url-pattern>
+</servlet-mapping>
 </web-app>
