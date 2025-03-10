@@ -377,9 +377,9 @@
                             </li>
 
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="doctor.html" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Doctors <i class="icofont-thin-down"></i></a>
+                                <a class="nav-link dropdown-toggle" href="doctor.jsp" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Doctors <i class="icofont-thin-down"></i></a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdown03">
-                                    <li><a class="dropdown-item" href="doctor.html">Doctors</a></li>
+                                    <li><a class="dropdown-item" href="doctor.jsp">Doctors</a></li>
                                     <li><a class="dropdown-item" href="doctor-single.html">Doctor Single</a></li>
                                     <li><a class="dropdown-item" href="appoinment.html">Appoinment</a></li>
                                 </ul>
