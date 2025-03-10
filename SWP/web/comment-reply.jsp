@@ -38,8 +38,30 @@
                     </p>
                 </div>
             </div>
-
-            <%-- Gọi đệ quy tiếp tục hiển thị bình luận con của bình luận con --%>
+            <c:if test="${not empty staffReplies}">
+                <ul class="staff-replies list-unstyled ml-5">
+                    <c:forEach var="staffReply" items="${staffReplies}">
+                        <c:if test="${staffReply.comment_id == reply.comment_id}">
+                            <li class="mb-3">
+                                <div class="comment-area-box">
+                                    <div class="comment-thumb float-left">
+                                        <img style="width: 50px; height: 50px; border-radius: 50%;" alt="" src="pictureprofile?staffID=${staffReply.staffID}" class="img-fluid">
+                                    </div>
+                                    <div class="comment-info">
+                                        <h5 class="mb-1">Staff</h5>
+                                        <span>${staffReply.created_at}</span>
+                                    </div>
+                                    <div class="comment-content mt-3">
+                                        <p>
+                                            <strong>Reply:</strong> ${staffReply.content}
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
+                        </c:if>
+                    </c:forEach>
+                </ul>
+            </c:if>
             <ul class="child-comments list-unstyled ml-5">
                 <jsp:include page="comment-reply.jsp">
                     <jsp:param name="parentId" value="${reply.comment_id}" />

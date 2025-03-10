@@ -99,39 +99,7 @@
 
                                         <p>${newsDetail.content}</p>
 
-                                        <!--                                        <blockquote class="quote">
-                                                                                    A brand for a company is like a reputation for a person. You earn reputation by
-                                                                                    trying to do hard things well.
-                                                                                </blockquote>-->
 
-
-                                        <!--                                        <p class="lead mb-4 font-weight-normal text-black">The same is true as we experience
-                                                                                    the emotional sensation of stress from our first instances of social rejection
-                                                                                    ridicule. We quickly learn to fear and thus automatically.</p>-->
-
-                                        <!--                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste, rerum beatae
-                                                                                    repellat tenetur incidunt quisquam libero dolores laudantium. Nesciunt quis
-                                                                                    itaque quidem, voluptatem autem eos animi laborum iusto expedita sapiente.</p>-->
-
-                                        <!--                                        <div class="mt-5 clearfix">
-                                                                                    <ul class="float-left list-inline tag-option">
-                                                                                        <li class="list-inline-item"><a href="#">Advancher</a></li>
-                                                                                        <li class="list-inline-item"><a href="#">Landscape</a></li>
-                                                                                        <li class="list-inline-item"><a href="#">Travel</a></li>
-                                                                                    </ul>
-                                        
-                                                                                    <ul class="float-right list-inline">
-                                                                                        <li class="list-inline-item"> Share: </li>
-                                                                                        <li class="list-inline-item"><a href="#" target="_blank"><i
-                                                                                                    class="icofont-facebook" aria-hidden="true"></i></a></li>
-                                                                                        <li class="list-inline-item"><a href="#" target="_blank"><i
-                                                                                                    class="icofont-twitter" aria-hidden="true"></i></a></li>
-                                                                                        <li class="list-inline-item"><a href="#" target="_blank"><i
-                                                                                                    class="icofont-pinterest" aria-hidden="true"></i></a></li>
-                                                                                        <li class="list-inline-item"><a href="#" target="_blank"><i
-                                                                                                    class="icofont-linkedin" aria-hidden="true"></i></a></li>
-                                                                                    </ul>
-                                                                                </div>-->
                                     </div>
                                 </div>
                             </div>
@@ -168,6 +136,28 @@
                                                             <p>${comment.content}</p>
                                                         </div>
                                                     </div>
+                                                    <c:if test="${not empty staffReplies}">
+                                                        <ul class="staff-replies list-unstyled ml-5">
+                                                            <c:forEach var="staffReply" items="${staffReplies}">
+                                                                <c:if test="${staffReply.comment_id == comment.comment_id}">
+                                                                    <li class="mb-3">
+                                                                        <div class="comment-area-box">
+                                                                            <div class="comment-thumb float-left">
+                                                                                <img style="width: 50px; height: 50px; border-radius: 50%;" alt="" src="pictureprofile?staffID=${staffReply.staffID}" class="img-fluid">
+                                                                            </div>
+                                                                            <div class="comment-info">
+                                                                                <h5 class="mb-1">Staff</h5>
+                                                                                <span>${staffReply.created_at}</span>
+                                                                            </div>
+                                                                            <div class="comment-content mt-3">
+                                                                                <p><strong>Reply:</strong> ${staffReply.content}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                </c:if>
+                                                            </c:forEach>
+                                                        </ul>
+                                                    </c:if>
                                                     <ul class="child-comments list-unstyled ml-5">
                                                         <jsp:include page="comment-reply.jsp">
                                                             <jsp:param name="parentId" value="${comment.comment_id}" />
@@ -176,8 +166,6 @@
                                                 </li>
                                             </c:if>
                                         </c:forEach>
-
-
                                     </ul>
                                 </div>
                             </div>

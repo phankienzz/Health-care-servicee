@@ -9,6 +9,7 @@ package model;
  * @author Hoang
  */
 public class Comment {
+
     private int comment_id;
     private int post_id;
     private Customer customerID;
@@ -91,7 +92,4 @@ public class Comment {
         return "Comment{" + "comment_id=" + comment_id + ", post_id=" + post_id + ", customerID=" + customerID + ", content=" + content + ", status=" + status + ", create_at=" + create_at + ", parent_comment_id=" + parent_comment_id + '}';
     }
 
-    
-
-    
 }

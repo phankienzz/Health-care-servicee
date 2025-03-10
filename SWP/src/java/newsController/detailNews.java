@@ -8,6 +8,7 @@ package newsController;
 import context.ValidFunction;
 import dao.CommentDAO;
 import dao.NewsDAO;
+import dao.StaffReplyDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,6 +20,7 @@ import java.util.List;
 import model.Category;
 import model.Comment;
 import model.News;
+import model.StaffReply;
 
 /**
  *
@@ -27,15 +29,6 @@ import model.News;
 @WebServlet(name = "detailNews", urlPatterns = {"/detailNews"})
 public class detailNews extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -59,6 +52,7 @@ public class detailNews extends HttpServlet {
         ValidFunction valid = new ValidFunction();
         NewsDAO dao = new NewsDAO();
         CommentDAO commentDAO = new CommentDAO();
+        StaffReplyDAO staffRepDAO = new StaffReplyDAO();
         String newsIdStr = request.getParameter("newsID");
         String parentCommentIdStr = request.getParameter("parent_comment_id");
 
@@ -76,14 +70,10 @@ public class detailNews extends HttpServlet {
         }
 
         List<Comment> comments = commentDAO.getCommentsByPostId(newsID);
+        List<StaffReply> staffRep = staffRepDAO.getStaffRepliesByPostId(newsID);
         List<Category> listCate = dao.getAllCategoryNews();
 
-//        for (Comment cm : comments) {
-//            cm.setCreate_at(valid.formatDateNews(cm.getCreate_at()));
-//        }
-
         news.setCreated_at(valid.formatDateNews(news.getCreated_at()));
-//        news.setUpdated_at(valid.formatDateNews(news.getUpdated_at()));
         news.setUpdated_at(valid.formatDateTime(news.getUpdated_at(), "dd/MM/yyyy HH:mm"));
 
         int parentCommentId = 0;
@@ -103,6 +93,7 @@ public class detailNews extends HttpServlet {
         request.setAttribute("newsDetail", news);
         request.setAttribute("listCate", listCate);
         request.setAttribute("comments", comments);
+        request.setAttribute("staffReplies", staffRep);
 
         request.getRequestDispatcher("detail-news.jsp").forward(request, response);
     }
@@ -113,11 +104,6 @@ public class detailNews extends HttpServlet {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
