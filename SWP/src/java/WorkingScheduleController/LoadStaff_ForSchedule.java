@@ -1,5 +1,6 @@
 package WorkingScheduleController;
 
+import context.ValidFunction;
 import dao.WorkingScheduleDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -19,11 +20,11 @@ public class LoadStaff_ForSchedule extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         WorkingScheduleDAO workingDAO = new WorkingScheduleDAO();
 
-        List<WorkingSchedule> professionalList = workingDAO.getProfessionalSchedules_haveName();
+        List<WorkingSchedule> professionalList = workingDAO.getListProfessionalSchedules();
         request.setAttribute("professionalList", professionalList);
-        
+
         request.getRequestDispatcher("listDoctor-demo.jsp").forward(request, response);
-    } 
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -34,7 +35,28 @@ public class LoadStaff_ForSchedule extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        WorkingScheduleDAO workingDAO = new WorkingScheduleDAO();
+        ValidFunction val = new ValidFunction();
+
+        // Lấy dữ liệu từ request
+        String searchName = request.getParameter("searchName");
+        String dayFilter = request.getParameter("dayFilter");
+        String shiftFilter = request.getParameter("shiftFilter");
+
+        List<WorkingSchedule> professionalList;
+
+        // Nếu searchName không rỗng hoặc không trống -> tìm kiếm theo tên
+        if (searchName != null && !searchName.trim().isEmpty()) {
+            professionalList = workingDAO.searchSchedulesByName(val.normalizeName(searchName));
+        } else {
+            // Nếu không có searchName -> lọc theo ca và ngày
+            int dayFilterInt = Integer.parseInt(dayFilter);
+            professionalList = workingDAO.getSchedulesByShiftAndDay(shiftFilter, dayFilterInt);
+        }
+
+        // Gửi dữ liệu về trang JSP
+        request.setAttribute("professionalList", professionalList);
+        request.getRequestDispatcher("listDoctor-demo.jsp").forward(request, response);
     }
 
     @Override

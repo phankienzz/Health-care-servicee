@@ -34,7 +34,7 @@ public class WorkingScheduleDAO {
         return scheduleList;
     }
 
-    public List<WorkingSchedule> getProfessionalSchedules_haveName() {
+    public List<WorkingSchedule> getListProfessionalSchedules() {
         List<WorkingSchedule> schedules = new ArrayList<>();
         String sql = """
             SELECT ws.scheduleID, ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime
@@ -46,6 +46,86 @@ public class WorkingScheduleDAO {
 
         try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
 
+            while (rs.next()) {
+                schedules.add(new WorkingSchedule(
+                        rs.getInt("professionalID"),
+                        rs.getString("fullName"),
+                        rs.getInt("dayOfWeek"),
+                        rs.getString("shift"),
+                        rs.getTime("startTime"),
+                        rs.getTime("endTime")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return schedules;
+    }
+
+    public List<WorkingSchedule> getSchedulesByProfessionalID(int professionalID) {
+        List<WorkingSchedule> schedules = new ArrayList<>();
+        String sql = """
+        SELECT ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime
+        FROM WorkingSchedule ws
+        INNER JOIN Professional p ON ws.professionalID = p.professionalID
+        INNER JOIN Staff s ON p.staffID = s.staffID
+        WHERE ws.professionalID = ?
+        ORDER BY ws.dayOfWeek, ws.startTime
+        """;
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, professionalID);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) { // Duyệt từng dòng trong kết quả
+                schedules.add(new WorkingSchedule(
+                        rs.getInt("professionalID"),
+                        rs.getString("fullName"),
+                        rs.getInt("dayOfWeek"),
+                        rs.getString("shift"),
+                        rs.getTime("startTime"),
+                        rs.getTime("endTime")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return schedules; // Trả về danh sách lịch làm việc (có thể rỗng nếu không có lịch)
+    }
+
+    public List<WorkingSchedule> getSchedulesByShiftAndDay(String shift, Integer dayOfWeek) {
+        List<WorkingSchedule> schedules = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("""
+        SELECT ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime
+        FROM WorkingSchedule ws
+        INNER JOIN Professional p ON ws.professionalID = p.professionalID
+        INNER JOIN Staff s ON p.staffID = s.staffID
+        WHERE 1=1
+        """);
+
+        List<Object> params = new ArrayList<>();
+
+        if (shift != null && !shift.isEmpty()) {
+            sql.append(" AND ws.shift = ?");
+            params.add(shift);
+        }
+        if (dayOfWeek != null) {  // Cho phép dayOfWeek là null
+            sql.append(" AND ws.dayOfWeek = ?");
+            params.add(dayOfWeek);
+        }
+
+        sql.append(" ORDER BY ws.startTime");
+
+        try (PreparedStatement st = connection.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                if (params.get(i) instanceof String) {
+                    st.setString(i + 1, (String) params.get(i));
+                } else if (params.get(i) instanceof Integer) {
+                    st.setInt(i + 1, (Integer) params.get(i));
+                }
+            }
+
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 schedules.add(new WorkingSchedule(
                         rs.getInt("professionalID"),
@@ -156,7 +236,6 @@ public class WorkingScheduleDAO {
 //        }
 //        return result;
 //    }
-
 //    public static List<String> extractProfessionalIDs(List<String> professionalData) {
 //        List<String> professionalIDs = new ArrayList<>();
 //
@@ -231,6 +310,38 @@ public class WorkingScheduleDAO {
         return false;
     }
 
+    // Search for schedules by professional name
+    public List<WorkingSchedule> searchSchedulesByName(String searchName) {
+        List<WorkingSchedule> schedules = new ArrayList<>();
+        String sql = """
+        SELECT ws.scheduleID, ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime
+        FROM WorkingSchedule ws
+        INNER JOIN Professional p ON ws.professionalID = p.professionalID
+        INNER JOIN Staff s ON p.staffID = s.staffID
+        WHERE s.fullName LIKE ?
+        ORDER BY ws.professionalID, ws.dayOfWeek, ws.startTime
+        """;
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, "%" + searchName + "%");  // Add wildcards for partial name matching
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                schedules.add(new WorkingSchedule(
+                        rs.getInt("professionalID"),
+                        rs.getString("fullName"),
+                        rs.getInt("dayOfWeek"),
+                        rs.getString("shift"),
+                        rs.getTime("startTime"),
+                        rs.getTime("endTime")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return schedules;
+    }
+
     // Chuyển đổi ResultSet thành WorkingSchedule ------------------------------------------------------------------------------
     // ---------------------------------------------------------------------------------------------------------------------------
     private WorkingSchedule mapResultSetToSchedule(ResultSet rs) throws SQLException {
@@ -246,10 +357,7 @@ public class WorkingScheduleDAO {
 
     public static void main(String[] args) {
         WorkingScheduleDAO dao = new WorkingScheduleDAO();
-        List<Integer> roles = new ArrayList<>();
-        roles.add(4);
-        roles.add(5);
-        List<WorkingSchedule> list = dao.getProfessionalSchedules_haveName();
+        List<WorkingSchedule> list = dao.getSchedulesByShiftAndDay("", 4);
         for (WorkingSchedule ws : list) {
             System.out.println(ws);
         }

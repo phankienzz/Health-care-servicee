@@ -16,7 +16,8 @@
             <form id="scheduleForm" action="saveSchedule" method="POST">
                 <div class="mb-3">
                     <label class="form-label">Chọn bác sĩ:</label>
-                    ${ID}
+                    ${ID} - ${fullName}
+                    <input type="hidden" name="ID" value="${ID}">
                 </div>
 
 

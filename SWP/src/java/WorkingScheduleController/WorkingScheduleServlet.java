@@ -22,7 +22,7 @@ public class WorkingScheduleServlet extends HttpServlet {
         try {
             WorkingScheduleDAO workingDAO = new WorkingScheduleDAO();
             List<WorkingSchedule> schedules = new ArrayList<>();
-            int ID = (int) request.getSession().getAttribute("ID");
+            int ID = Integer.parseInt(request.getParameter("ID"));
 
             int[] dayValues = {2, 3, 4, 5, 6, 7, 1};
             String[] shifts = {"MORNING", "AFTERNOON", "EVENING"};
@@ -59,10 +59,13 @@ public class WorkingScheduleServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         WorkingScheduleDAO workingDAO = new WorkingScheduleDAO();
+        String fullName = request.getParameter("fullName");
         String idStr = request.getParameter("professionalID");
+        
         int ID = Integer.parseInt(idStr);
-        request.getSession().setAttribute("ID", ID);
+        
         request.setAttribute("ID", ID);
+        request.setAttribute("fullName", fullName);
         request.getRequestDispatcher("createWorkingSchedule.jsp").forward(request, response);
     }
 

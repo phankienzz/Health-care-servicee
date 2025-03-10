@@ -7,6 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Danh Sách Lịch Làm Việc</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <style>
             body {
                 background-color: #f0f8ff;
@@ -61,11 +62,106 @@
             .manage-btn:hover {
                 background-color: #218838;
             }
+            .search-container {
+                margin-bottom: 15px;
+                background-color: #e9ecef;
+                padding: 15px;
+                border-radius: 5px;
+            }
+            .filter-container {
+                margin-bottom: 20px;
+                background-color: #f8f9fa;
+                padding: 15px;
+                border-radius: 5px;
+                border-top: 3px solid #6c757d;
+            }
+            .search-btn {
+                background-color: #007bff;
+                color: white;
+            }
+            .search-btn:hover {
+                background-color: #0069d9;
+            }
+            .filter-btn {
+                background-color: #6c757d;
+                color: white;
+            }
+            .filter-btn:hover {
+                background-color: #5a6268;
+            }
+            .reset-btn {
+                background-color: #dc3545;
+                color: white;
+                margin-left: 10px;
+            }
+            .reset-btn:hover {
+                background-color: #c82333;
+            }
+            .control-label {
+                font-weight: bold;
+            }
         </style>
     </head>
     <body>
         <div class="container mt-5">
             <h2>Danh Sách Lịch Làm Việc</h2>
+
+            <!-- Search Container -->
+            <div class="search-container">
+                <form action="loadstaffforschedule" method="Post" class="row g-3">
+                    <div class="col-md-8">
+                        <label for="doctorName" class="form-label control-label"><i class="fas fa-search"></i> Tìm kiếm theo tên bác sĩ</label>
+                        <input type="text" class="form-control" id="doctorName" name="searchName" placeholder="Nhập tên bác sĩ" value="${param.searchName}">
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="submit" class="btn search-btn">
+                            <i class="fas fa-search"></i> Tìm kiếm
+                        </button>
+                        <a href="loadstaffforschedule" class="btn reset-btn">
+                            <i class="fas fa-sync-alt"></i> Làm mới
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Filter Container -->
+            <div class="filter-container">
+                <form action="loadstaffforschedule" method="Post" class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label control-label"><i class="fas fa-filter"></i> Lọc lịch làm việc</label>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="dayName" class="form-label">Ngày</label>
+                        <select class="form-select" id="dayName" name="dayFilter">
+                            <option value="">Tất cả</option>
+                            <option value="2" ${param.dayFilter == '2' ? 'selected' : ''}>Monday</option>
+                            <option value="3" ${param.dayFilter == '3' ? 'selected' : ''}>Tuesday</option>
+                            <option value="4" ${param.dayFilter == '4' ? 'selected' : ''}>Wednesday</option>
+                            <option value="5" ${param.dayFilter == '5' ? 'selected' : ''}>Thursday</option>
+                            <option value="6" ${param.dayFilter == '6' ? 'selected' : ''}>Friday</option>
+                            <option value="7" ${param.dayFilter == '7' ? 'selected' : ''}>Saturday</option>
+                            <option value="1" ${param.dayFilter == '1' ? 'selected' : ''}>Sunday</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="shift" class="form-label">Ca</label>
+                        <select class="form-select" id="shift" name="shiftFilter">
+                            <option value="">Tất cả</option>
+                            <option value="MORNING" ${param.shiftFilter == 'MORNING' ? 'selected' : ''}>MORNING</option>
+                            <option value="AFTERNOON" ${param.shiftFilter == 'AFTERNOON' ? 'selected' : ''}>AFTERNOON</option>
+                            <option value="EVENING" ${param.shiftFilter == 'EVENING' ? 'selected' : ''}>EVENING</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button type="submit" class="btn filter-btn">
+                            <i class="fas fa-filter"></i> Lọc
+                        </button>
+                    </div>
+                    <!-- Hidden input để giữ lại tên tìm kiếm khi lọc -->
+                    <input type="hidden" name="searchName" value="${param.searchName}">
+                </form>
+            </div>
+
 
             <c:set var="prevID" value="-1" />
             <c:forEach var="schedule" items="${professionalList}">
@@ -74,10 +170,10 @@
                     </tbody>
                 </table>
             </c:if>
-
             <div class="doctor-header">
                 <span>Bác sĩ: ${schedule.fullName} (ID: ${schedule.professionalID})</span>
                 <form action="saveSchedule" method="GET">
+                    <input type="hidden" name="fullName" value="${schedule.fullName}">
                     <input type="hidden" name="professionalID" value="${schedule.professionalID}">
                     <button type="submit" class="manage-btn">Manage Lịch</button>
                 </form>
@@ -93,21 +189,27 @@
                 </thead>
                 <tbody>
                 </c:if>
-
                 <tr>
                     <td>${schedule.dayName}</td>
                     <td>${schedule.shift}</td>
                     <td>${schedule.startTime}</td>
                     <td>${schedule.endTime}</td>
                 </tr>
-
                 <c:set var="prevID" value="${schedule.professionalID}" />
             </c:forEach>
-
             <c:if test="${not empty professionalList}">
             </tbody>
         </table>
     </c:if>
+
+    <!-- No Results Message -->
+    <c:if test="${empty professionalList}">
+        <div class="alert alert-info text-center mt-4">
+            <i class="fas fa-info-circle"></i> Không tìm thấy kết quả phù hợp.
+        </div>
+    </c:if>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
