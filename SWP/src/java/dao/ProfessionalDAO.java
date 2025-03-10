@@ -262,6 +262,6 @@ public class ProfessionalDAO {
         newProfessional.setRoleID(3);
 
         ProfessionalDAO dao = new ProfessionalDAO();
-
+         System.out.println(dao.getProfessionalbyID(2).getProfilePicture());
     }
 }
