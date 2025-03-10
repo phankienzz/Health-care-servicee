@@ -4,6 +4,7 @@
  */
 package filter;
 
+import dao.RoleDAO;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -17,12 +18,15 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.Permission;
+import model.Staff;
 
 /**
  *
  * @author Gigabyte
  */
-public class LoginFilter implements Filter {
+public class InvoiceFilter implements Filter {
     
     private static final boolean debug = true;
 
@@ -31,13 +35,13 @@ public class LoginFilter implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
     
-    public LoginFilter() {
+    public InvoiceFilter() {
     }    
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("LoginFilter:DoBeforeProcessing");
+            log("InvoiceFilter:DoBeforeProcessing");
         }
 
         // Write code here to process the request and/or response before
@@ -65,7 +69,7 @@ public class LoginFilter implements Filter {
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("LoginFilter:DoAfterProcessing");
+            log("InvoiceFilter:DoAfterProcessing");
         }
 
         // Write code here to process the request and/or response after
@@ -101,23 +105,59 @@ public class LoginFilter implements Filter {
             throws IOException, ServletException {
         
         if (debug) {
-            log("LoginFilter:doFilter()");
+            log("InvoiceFilter:doFilter()");
         }
-        HttpServletRequest req = (HttpServletRequest)request;
-        HttpServletResponse res = (HttpServletResponse)response;
-        HttpSession session = req.getSession();
-        if(session.getAttribute("staffAccount")==null && session.getAttribute("customerAccount") == null){
-            res.sendRedirect("login.jsp");
-            return;
-        }
-        if(session.getAttribute("staffAccount")==null){
-            res.sendRedirect("errorPermission.jsp");
-        }
-        
-        
         
         doBeforeProcessing(request, response);
-        
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
+        HttpSession session = req.getSession();
+        if (session.getAttribute("staffAccount") == null && session.getAttribute("customerAccount") == null) {
+            res.sendRedirect("login.jsp");
+        }
+        if (session.getAttribute("customerAccount") != null) {
+            res.sendRedirect("errorPermission.jsp");
+
+        }
+        if (session.getAttribute("staffAccount") != null) {
+            String uri = req.getServletPath();
+            Staff s = (Staff) session.getAttribute("staffAccount");
+            RoleDAO roleDAO = new RoleDAO();
+            List<Permission> list = roleDAO.getRoleByID(s.getRoleID()).getPermission();
+            boolean canAdd = false;
+            boolean canEdit = false;
+            boolean canDelete = false;
+            boolean canView = false;
+            for (Permission p : list) {
+                if (p.getPermissionID() == 5) {
+                    canAdd = true;
+                }
+                if (p.getPermissionID() == 4) {
+                    canView = true;
+                }
+                if (p.getPermissionID() == 6) {
+                    canEdit = true;
+                }
+                if (p.getPermissionID() == 6) {
+                    canDelete = true;
+                }
+            }
+            if ((uri.contains("invoice") || uri.contains("invoices.jsp")) && !canView) {
+                res.sendRedirect("errorPermission.jsp");
+            }
+            if ((uri.contains("viewInvoice") || uri.contains("invoice-view.jsp")) && !canView) {
+                res.sendRedirect("errorPermission.jsp");
+            }
+            if ((uri.contains("createInvoice") || uri.contains("create-invoice.jsp")) && !canAdd) {
+                res.sendRedirect("errorPermission.jsp");
+            }
+            if ((uri.contains("editInvoice") || uri.contains("edit-invoice.jsp")) && !canEdit) {
+                res.sendRedirect("errorPermission.jsp");
+            }
+            if (uri.contains("deleteinvoice") && !canDelete) {
+                res.sendRedirect("errorPermission.jsp");
+            }
+        }
         Throwable problem = null;
         try {
             chain.doFilter(request, response);
@@ -173,7 +213,7 @@ public class LoginFilter implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {                
-                log("LoginFilter:Initializing filter");
+                log("InvoiceFilter:Initializing filter");
             }
         }
     }
@@ -184,9 +224,9 @@ public class LoginFilter implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("LoginFilter()");
+            return ("InvoiceFilter()");
         }
-        StringBuffer sb = new StringBuffer("LoginFilter(");
+        StringBuffer sb = new StringBuffer("InvoiceFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
