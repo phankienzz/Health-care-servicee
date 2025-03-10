@@ -94,4 +94,12 @@
     <servlet-name>AddProfessionalServlet</servlet-name>
     <url-pattern>/AddProfessionalServlet</url-pattern>
 </servlet-mapping>
+<servlet>
+    <servlet-name>DeleteProfessionalServlet</servlet-name>
+    <servlet-class>ProfessionalController.DeleteProfessionalServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>DeleteProfessionalServlet</servlet-name>
+    <url-pattern>/DeleteProfessionalServlet</url-pattern>
+</servlet-mapping>
 </web-app>
