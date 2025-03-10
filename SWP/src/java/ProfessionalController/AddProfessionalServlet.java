@@ -110,18 +110,18 @@ public class AddProfessionalServlet extends HttpServlet {
 //            PrintWriter out  = response.getWriter();
 //            out.print(fullName+email+password+gender+address+phone+dateOfBirth+ hireDate);
         Date createdAt = new Date(System.currentTimeMillis());
-        boolean success=false;
- ProfessionalDAO dbHelper = new ProfessionalDAO();
+        boolean success = false;
+        ProfessionalDAO dbHelper = new ProfessionalDAO();
         // Xử lý file ảnh
         try {
             Part filePart = request.getPart("profilePicture");
             if (filePart != null && filePart.getSize() > 0) {
                 if (!isValidImageFile(extractFileName(filePart))) {
                     request.setAttribute("errorMessage", "Chỉ được tải lên file ảnh có định dạng JPG, JPEG, PNG, GIF, WEBP!");
-                request.getRequestDispatcher("edit-doctor.jsp").forward(request, response);
-                return;
-            }
-            
+                    request.getRequestDispatcher("edit-doctor.jsp").forward(request, response);
+                    return;
+                }
+
                 String imagePath = "uploads/" + FileUploadHelper.saveProfilePicture(filePart); // Lưu file
                 Professional newProfessional = new Professional(
                         0, fullName, email, password, Date.valueOf(dateOfBirth), gender, address, phone,
@@ -130,8 +130,8 @@ public class AddProfessionalServlet extends HttpServlet {
                 );
                 newProfessional.setRoleID(3);
                 // Gọi DAO để thêm vào database
-               
-                success=dbHelper.addProfessional(newProfessional);
+
+                success = dbHelper.addProfessional(newProfessional);
 
                 // Lấy danh sách cập nhật và lưu vào session
                 HttpSession session = request.getSession();
@@ -148,11 +148,12 @@ public class AddProfessionalServlet extends HttpServlet {
 
         // Tạo đối tượng Professional
         // Chuyển hướng đến trang quản lý
-        List<Professional> list = dbHelper.getAllProfessionals();
-        HttpSession session = request.getSession();
+     
         if (success) {
-             session.setAttribute("specializations", dbHelper.getallSpecialization());
-            session.setAttribute("professionals", list);
+               List<Professional> list = dbHelper.getAllProfessionals();  
+              HttpSession session = request.getSession();
+            session.setAttribute("specializations", dbHelper.getallSpecialization());
+            session.setAttribute("professionals", dbHelper.getAllProfessionals());
             response.sendRedirect("manage-doctor.jsp");
         } else {
             request.setAttribute("errorMessage", "Update failed!");
@@ -172,18 +173,19 @@ public class AddProfessionalServlet extends HttpServlet {
         return "1.jpg";
     }
 // Hàm xử lý file ảnh -> byte[]
-     public static boolean isValidImageFile(String fileName) {
+
+    public static boolean isValidImageFile(String fileName) {
         if (fileName == null || !fileName.contains(".")) {
             return false; // Tên file không hợp lệ
         }
-        
+
         String[] allowedExtensions = {".jpg", ".jpeg", ".png", ".gif", ".webp"};
-        
+
         int lastDotIndex = fileName.lastIndexOf(".");
         if (lastDotIndex == -1 || lastDotIndex == fileName.length() - 1) {
             return false; // Không có phần mở rộng hoặc chỉ có dấu "."
         }
-        
+
         String fileExtension = fileName.substring(lastDotIndex).toLowerCase();
         return Arrays.asList(allowedExtensions).contains(fileExtension);
     }
