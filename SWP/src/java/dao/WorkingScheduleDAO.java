@@ -344,7 +344,7 @@ public class WorkingScheduleDAO {
         return schedules;
     }
 
-    public List<WorkingSchedule> getSchedulesByDate(String dateStr) {
+    public List<WorkingSchedule> getSchedulesByDate(String dateStr, String shift) {
         try {
             // Định dạng ngày (YYYY-MM-DD)
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -353,15 +353,27 @@ public class WorkingScheduleDAO {
             // Lấy thứ trong tuần theo Java
             int dayOfWeek = date.getDayOfWeek().getValue();
 
-            // Điều chỉnh để khớp với database
+            // Điều chỉnh để khớp với database (Chủ Nhật là 1, Thứ Hai là 2, ...)
             int dbDayOfWeek = (dayOfWeek == 7) ? 1 : dayOfWeek + 1;
 
-            // Gọi DAO để lấy lịch làm việc theo thứ trong database
-            return getSchedulesByShiftAndDay(null, dbDayOfWeek);
+            // Gọi DAO để lấy lịch làm việc theo thứ trong database và ca làm việc
+            return getSchedulesByShiftAndDay(shift, dbDayOfWeek);
         } catch (Exception e) {
             System.err.println("Lỗi khi chuyển đổi ngày: " + e.getMessage());
             return List.of(); // Trả về danh sách rỗng nếu lỗi
         }
+    }
+
+    public int countProfessionalsWithSchedule() {
+        String sql = "SELECT COUNT(DISTINCT professionalID) FROM WorkingSchedule";
+        try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1); // Trả về số lượng bác sĩ
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0; // Trả về 0 nếu có lỗi
     }
 
     // Chuyển đổi ResultSet thành WorkingSchedule ------------------------------------------------------------------------------
@@ -379,9 +391,12 @@ public class WorkingScheduleDAO {
 
     public static void main(String[] args) {
         WorkingScheduleDAO dao = new WorkingScheduleDAO();
-        List<WorkingSchedule> list = dao.getSchedulesByDate("2025-03-11");
+        List<WorkingSchedule> list = dao.getSchedulesByDate("2025-03-11","evening");
         for (WorkingSchedule ws : list) {
             System.out.println(ws);
         }
+
+        int c = dao.countProfessionalsWithSchedule();
+        System.out.println("so bac si la: " + c);
     }
 }

@@ -108,17 +108,21 @@
 
             <!-- Search Container -->
             <div class="search-container">
-                <form action="loadstaffforschedule" method="Post" class="row g-3">
+                <form action="loadstaffforschedule" method="POST" class="row g-3">
                     <input type="hidden" name="searchType" value="name">
+
                     <div class="col-md-8">
-                        <label for="doctorName" class="form-label control-label"><i class="fas fa-search"></i> Tìm kiếm theo tên</label>
+                        <label for="doctorName" class="form-label control-label">
+                            <i class="fas fa-search"></i> Tìm kiếm theo tên
+                        </label>
                         <input type="text" class="form-control" id="doctorName" name="searchName" placeholder="Nhập tên bác sĩ" value="${param.searchName}">
                     </div>
-                    <div class="col-md-4 d-flex align-items-end">
-                        <button type="submit" class="btn search-btn">
+
+                    <div class="col-md-4 d-flex align-items-end gap-2">
+                        <button type="submit" class="btn search-btn w-50">
                             <i class="fas fa-search"></i> Tìm kiếm
                         </button>
-                        <a href="loadstaffforschedule" class="btn reset-btn">
+                        <a href="loadstaffforschedule" class="btn reset-btn w-50">
                             <i class="fas fa-sync-alt"></i> Làm mới
                         </a>
                     </div>
@@ -129,12 +133,24 @@
             <div class="search-container">
                 <form action="loadstaffforschedule" method="POST" class="row g-3">
                     <input type="hidden" name="searchType" value="date">
-                    <div class="col-md-6">
+
+                    <div class="col-md-4">
                         <label for="workDate" class="form-label control-label">Tìm kiếm theo ngày</label>
-                        <input type="date" class="form-control" id="workDate" name="workDate" value="${param.workDate}">
+                        <input type="date" class="form-control" id="workDate" name="workDate" value="${param.workDate}">                       
                     </div>
-                    <div class="col-md-6 d-flex align-items-end">
-                        <button type="submit" class="btn search-btn">
+
+                    <div class="col-md-4">
+                        <label for="shift" class="form-label">Ca trong ngày</label>
+                        <select class="form-select" id="shift" name="shiftFilter">
+                            <option value="">Tất cả</option>
+                            <option value="MORNING" ${param.shiftFilter == 'MORNING' ? 'selected' : ''}>MORNING</option>
+                            <option value="AFTERNOON" ${param.shiftFilter == 'AFTERNOON' ? 'selected' : ''}>AFTERNOON</option>
+                            <option value="EVENING" ${param.shiftFilter == 'EVENING' ? 'selected' : ''}>EVENING</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="submit" class="btn search-btn w-100">
                             <i class="fas fa-search"></i> Tìm kiếm
                         </button>
                     </div>
@@ -143,11 +159,15 @@
 
             <!-- Filter Container -->
             <div class="filter-container">
-                <form action="loadstaffforschedule" method="Post" class="row g-3">
+                <form action="loadstaffforschedule" method="POST" class="row g-3">
                     <input type="hidden" name="searchType" value="dayandshift">
+
                     <div class="col-12">
-                        <label class="form-label control-label"><i class="fas fa-filter"></i> Lọc lịch làm việc</label>
+                        <label class="form-label control-label">
+                            <i class="fas fa-filter"></i> Lọc lịch làm việc
+                        </label>
                     </div>
+
                     <div class="col-md-5">
                         <label for="dayName" class="form-label">Ngày trong tuần</label>
                         <select class="form-select" id="dayName" name="dayFilter">
@@ -161,6 +181,7 @@
                             <option value="1" ${param.dayFilter == '1' ? 'selected' : ''}>Sunday</option>
                         </select>
                     </div>
+
                     <div class="col-md-4">
                         <label for="shift" class="form-label">Ca trong ngày</label>
                         <select class="form-select" id="shift" name="shiftFilter">
@@ -170,11 +191,13 @@
                             <option value="EVENING" ${param.shiftFilter == 'EVENING' ? 'selected' : ''}>EVENING</option>
                         </select>
                     </div>
+
                     <div class="col-md-3 d-flex align-items-end">
-                        <button type="submit" class="btn filter-btn">
+                        <button type="submit" class="btn filter-btn w-100">
                             <i class="fas fa-filter"></i> Lọc
                         </button>
                     </div>
+
                     <!-- Hidden input để giữ lại tên tìm kiếm khi lọc -->
                     <input type="hidden" name="searchName" value="${param.searchName}">
                 </form>

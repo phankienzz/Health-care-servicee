@@ -102,8 +102,8 @@
                     <c:forEach var="service" items="${serviceList}">
                         <tr>
                             <td>${service.packageID}</td>
-                            <td>${service.packageName}</td>
-                            <td>${service.description}</td>
+                            <td><c:out value="${service.packageName}"></c:out></td>
+                            <td><c:out value="${service.description}"></c:out></td>
                             <td>
                                 <img src="getimage?packageID=${service.packageID}" alt="" class="img-fluid service-image">
                             </td>

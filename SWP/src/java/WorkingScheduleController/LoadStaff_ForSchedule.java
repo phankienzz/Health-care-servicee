@@ -54,7 +54,7 @@ public class LoadStaff_ForSchedule extends HttpServlet {
                 break;
             case "date":
                 if (workDate != null && !workDate.trim().isEmpty()) {
-                    professionalList = workingDAO.getSchedulesByDate(workDate);
+                    professionalList = workingDAO.getSchedulesByDate(workDate,shiftFilter);
                 }
                 break;
             case "dayandshift":

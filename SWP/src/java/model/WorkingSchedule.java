@@ -45,6 +45,14 @@ public class WorkingSchedule {
     public WorkingSchedule() {
     }
 
+    public WorkingSchedule(String string, String string0, String string1, String string2) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public WorkingSchedule(int aInt, int aInt0, String string, int aInt1, String string0, Time time, Time time0) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     // Getters và Setters
     public int getScheduleID() {
         return scheduleID;
