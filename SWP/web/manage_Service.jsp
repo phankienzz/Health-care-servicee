@@ -39,8 +39,6 @@
         </style>
     </head>
     <body>
-        <jsp:include page="headerStaff.jsp"></jsp:include>
-            <jsp:include page="sidebar.jsp"></jsp:include>
         <div class="container mt-5">
             <h2 class="text-center">Service Management</h2>
 
@@ -128,61 +126,28 @@
                 </tbody>
             </table>
 
-            <!-- Phân trang thông minh -->
+            <!-- Phân trang -->
             <div class="row">
                 <div class="col-12">
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center">
-                            <!-- Nút Previous -->
                             <c:if test="${pageNumber > 1}">
                                 <li class="page-item">
-                                    <a class="page-link" href="loadmanage?pageNumber=${pageNumber - 1}&searchKeyword=${param.searchKeyword}&sortBy=${param.sortBy}&action=${param.action}" aria-label="Previous">
+                                    <a class="page-link" href="loadmanage?pageNumber=${pageNumber - 1}&searchKeyword=${param.searchKeyword}&sortBy=${param.sortBy}" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                 </li>
                             </c:if>
 
-                            <!-- Xác định startPage và endPage -->
-                            <c:set var="startPage" value="${pageNumber - 2}" />
-                            <c:if test="${startPage < 1}">
-                                <c:set var="startPage" value="1" />
-                            </c:if>
-                            <c:set var="endPage" value="${pageNumber + 2}" />
-                            <c:if test="${endPage > totalPages}">
-                                <c:set var="endPage" value="${totalPages}" />
-                            </c:if>
-
-                            <!-- Nếu startPage lớn hơn 1, hiển thị nút trang 1 và dấu "..." -->
-                            <c:if test="${startPage > 1}">
-                                <li class="page-item">
-                                    <a class="page-link" href="loadmanage?pageNumber=1&searchKeyword=${param.searchKeyword}&sortBy=${param.sortBy}&action=${param.action}">1</a>
-                                </li>
-                                <c:if test="${startPage > 2}">
-                                    <li class="page-item disabled"><span class="page-link">...</span></li>
-                                    </c:if>
-                                </c:if>
-
-                            <!-- Hiển thị các trang từ startPage đến endPage -->
-                            <c:forEach var="i" begin="${startPage}" end="${endPage}">
+                            <c:forEach var="i" begin="1" end="${totalPages}">
                                 <li class="page-item ${i == pageNumber ? 'active' : ''}">
-                                    <a class="page-link" href="loadmanage?pageNumber=${i}&searchKeyword=${param.searchKeyword}&sortBy=${param.sortBy}&action=${param.action}">${i}</a>
+                                    <a class="page-link" href="loadmanage?pageNumber=${i}&searchKeyword=${param.searchKeyword}&sortBy=${param.sortBy}">${i}</a>
                                 </li>
                             </c:forEach>
 
-                            <!-- Nếu endPage nhỏ hơn totalPages, hiển thị dấu "..." và nút trang cuối -->
-                            <c:if test="${endPage < totalPages}">
-                                <c:if test="${endPage < totalPages - 1}">
-                                    <li class="page-item disabled"><span class="page-link">...</span></li>
-                                    </c:if>
-                                <li class="page-item">
-                                    <a class="page-link" href="loadmanage?pageNumber=${totalPages}&searchKeyword=${param.searchKeyword}&sortBy=${param.sortBy}&action=${param.action}">${totalPages}</a>
-                                </li>
-                            </c:if>
-
-                            <!-- Nút Next -->
                             <c:if test="${pageNumber < totalPages}">
                                 <li class="page-item">
-                                    <a class="page-link" href="loadmanage?pageNumber=${pageNumber + 1}&searchKeyword=${param.searchKeyword}&sortBy=${param.sortBy}&action=${param.action}" aria-label="Next">
+                                    <a class="page-link" href="loadmanage?pageNumber=${pageNumber + 1}&searchKeyword=${param.searchKeyword}&sortBy=${param.sortBy}" aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
                                 </li>
@@ -191,7 +156,6 @@
                     </nav>
                 </div>
             </div>
-
         </div>
 
         <script>

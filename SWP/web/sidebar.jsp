@@ -5,7 +5,6 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,16 +15,9 @@
         <div class="sidebar-inner slimscroll">
             <div id="sidebar-menu" class="sidebar-menu">
                 <ul>
-                    <c:set var="viewStaff" value="false"/>
-                    <c:forEach var="permission" items="${sessionScope.role.permission}">
-                        <c:if test="${permission.permissionID == 24}">
-                            <c:set var="viewStaff" value="true"/>
-                        </c:if>
-                        
-                    </c:forEach>
                     <li class="menu-title">Main</li>
                     <li>
-                        <a href="dashboard.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
+                        <a href="index-2.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
                     </li>
                     <li>
                         <a href="doctors.html"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
@@ -42,16 +34,23 @@
                     <li>
                         <a href="departments.html"><i class="fa fa-hospital-o"></i> <span>Departments</span></a>
                     </li>
-                    <c:if test="${viewStaff}">
-                    <li>
-                        <a href="staff"><i class="fa fa-user"> </i> <span>Staff list</span>  </a>
+                    <li class="submenu">
+                        <a href="#"><i class="fa fa-user"></i> <span> Employees </span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            <li><a class="active" href="employees.html">Employees List</a></li>
+                            <li><a href="leaves.html">Leaves</a></li>
+                            <li><a href="holidays.html">Holidays</a></li>
+                            <li><a href="attendance.html">Attendance</a></li>
+                        </ul>
                     </li>
-                    </c:if>
                     <li class="submenu">
                         <a href="#"><i class="fa fa-money"></i> <span> Accounts </span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
-                            <li><a href="invoice">Invoices</a></li>
-                            <li><a href="discount">Discount</a></li>
+                            <li><a href="invoices.html">Invoices</a></li>
+                            <li><a href="payments.html">Payments</a></li>
+                            <li><a href="expenses.html">Expenses</a></li>
+                            <li><a href="taxes.html">Taxes</a></li>
+                            <li><a href="provident-fund.html">Provident Fund</a></li>
                         </ul>
                     </li>
                     <li class="submenu">

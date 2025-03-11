@@ -22,7 +22,7 @@ public class CommentDAO extends DBContext {
     public List<Comment> getCommentsByPostId(int postId) {
         List<Comment> comments = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
-        String sql = "SELECT * FROM Comments WHERE post_id = ? AND status = 1 ORDER BY created_at desc";
+        String sql = "SELECT * FROM Comments WHERE post_id = ? AND status = 1 ORDER BY created_at ASC";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, postId);
@@ -45,60 +45,32 @@ public class CommentDAO extends DBContext {
         return comments;
     }
 
-    public boolean addComment(Comment comment) {
-        String query = "INSERT INTO Comments (post_id, customerID, content,status, parent_comment_id) VALUES (?, ?,?, 1, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, comment.getPost_id());
-            ps.setInt(2, comment.getCustomerID().getCustomerID());
-            ps.setString(3, comment.getContent());
+    public boolean addComment(int postId, int customerId, String content, int parentCommentId) {
+        String sql = "INSERT INTO Comments (post_id, customerID, content, status, created_at, parent_comment_id) "
+                + "VALUES (?, ?, ?, ?, GETDATE(), ?)";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, postId);
+            pre.setInt(2, customerId);
+            pre.setString(3, content);
+            pre.setInt(4, 1);
+            pre.setInt(5, parentCommentId);
 
-            ps.setObject(4, comment.getParent_comment_id() == 0 ? null : comment.getParent_comment_id());
-            ps.executeUpdate();
-            return true;
+            return pre.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    public Comment getCommentById(int commentId) {
-        Comment comment = null;
-        try {
-            String sql = "SELECT * FROM Comments WHERE comment_id = ?";
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, commentId);
-            ResultSet rs = st.executeQuery();
-
-            if (rs.next()) {
-                comment = new Comment();
-                comment.setComment_id(rs.getInt("comment_id"));
-                comment.setPost_id(rs.getInt("post_id"));
-                comment.setContent(rs.getString("content"));
-                comment.setParent_comment_id(rs.getInt("parent_comment_id"));
-
-                // Lấy thông tin Customer
-                CustomerDAO customerDAO = new CustomerDAO();
-                Customer customer = customerDAO.getCustomerByID(rs.getInt("customerID"));
-                comment.setCustomerID(customer);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return comment;
-    }
-
     public static void main(String[] args) {
         CommentDAO dao = new CommentDAO();
-        Comment comment = new Comment();
-        comment.setPost_id(1); // ID bài viết 
-        comment.setCustomerID(new Customer(2)); // ID Customer
-        comment.setContent("Bình luận con 4");
-        comment.setParent_comment_id(9); // Không có bình luận cha
-
-        System.out.println(dao.getCommentById(1));
-        
-        // Gọi hàm addComment
-        boolean isAdded = dao.addComment(comment);
+        int postId = 1;
+        List<Comment> comments = dao.getCommentsByPostId(1);
+        for (Comment comment : comments) {
+            System.out.println(comment);
+        }
+//        System.out.println(dao.addComment(1, 1, "hahahahahahahahaha", 0));
 
     }
 

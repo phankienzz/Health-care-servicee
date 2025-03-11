@@ -50,7 +50,7 @@ public class Edit_Status extends HttpServlet {
              ServiceDAO dao = new ServiceDAO();
              dao.updateStatus(packageID, status);
             // Chuyển hướng về trang quản lý dịch vụ
-            response.sendRedirect("loadmanage");
+            request.getRequestDispatcher("loadmanage").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();

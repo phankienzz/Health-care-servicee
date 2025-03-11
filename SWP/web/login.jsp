@@ -9,6 +9,13 @@
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <script>
+            function toggleForm() {
+                const userType = document.getElementById('userType').value;
+                document.getElementById('userForm').style.display = userType === 'user' ? 'block' : 'none';
+                document.getElementById('staffForm').style.display = userType === 'staff' ? 'block' : 'none';
+                document.getElementById('googleLoginBtn').style.display = userType === 'staff' ? 'none' : 'block';
+            }
+
             function togglePasswordVisibility(passwordFieldId, toggleButtonId) {
                 const passwordField = document.getElementById(passwordFieldId);
                 const icon = document.getElementById(toggleButtonId).querySelector('i');
@@ -25,29 +32,18 @@
             }
         </script>
     </head>
-
     <body class="bg-light">
-        <%
-            Cookie[] cookies = request.getCookies();
-            String savedUsername = "";
-            String savedPassword = "";
-
-            if (cookies != null) {
-                for (Cookie cookie : cookies) {
-                    if ("username".equals(cookie.getName())) {
-                        savedUsername = cookie.getValue();
-                    }
-                    if ("password".equals(cookie.getName())) {
-                        savedPassword = cookie.getValue();
-                    }
-                }
-            }
-        %>
         <div class="container d-flex justify-content-center align-items-center vh-100">
             <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%;">
                 <div class="card-body">
+
+                    <% String savedUsername = (String) request.getAttribute("savedUsername");
+                           if (savedUsername == null) savedUsername = ""; %>
+                    <% String savedPassword = (String) request.getAttribute("savedPassword");
+                           if (savedPassword == null) savedPassword = ""; %>
+
                     <div class="text-center mb-4">
-                        <a href="dashboard.html">
+                        <a href="index-2.html">
                             <img src="assets/img/logo-dark.png" alt="Logo" class="mb-3" style="max-width: 120px;">
                         </a>
                         <h5 class="card-title">Welcome Back</h5>
@@ -82,7 +78,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group checkbox" id="rememberMeChkBox">
+                            <div class="form-group checkbox">
                                 <label><input type="checkbox" name="rememberMe" <% if (!savedUsername.isEmpty()) { %> checked <% } %>> Remember me</label>
                             </div>
 
@@ -94,11 +90,44 @@
                                 <button type="submit" class="btn btn-primary btn-block">Login</button>
                             </div>
 
-                            <div class="text-center mt-3" id="registerLink">
+                            <div class="text-center mt-3">
                                 <p class="small">Don't have an account? <a href="register.jsp">Register Now</a></p>
                             </div>
                         </form>
                     </div>
+
+                    <!-- User Login -->
+                    <div id="staffForm" style="display: none;">
+                        <form action="login" method="post" class="form-signin">
+                            <p class="text-danger text-center">${error}</p>
+
+                            <div class="form-group">
+                                <label for="staffId">Username</label>
+                                <input type="text" name="staffId" id="staffId" class="form-control" placeholder="Enter your staff ID" autofocus>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="staffPassword">Password</label>
+                                <div class="input-group">
+                                    <input type="password" name="staffPassword" id="staffPassword" class="form-control" placeholder="Enter your password">
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-outline-secondary" id="togglePasswordStaff" tabindex="-1" onclick="togglePasswordVisibility('staffPassword', 'togglePasswordStaff')">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group text-right">
+                                <a href="forgot-password.jsp" class="small">Forgot your password?</a>
+                            </div>
+
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-primary btn-block">Login</button>
+                            </div>
+                        </form>
+                    </div>
+
                     <div class="mt-4 text-center">
                         <button type="button" class="btn btn-danger btn-block mb-2" id="googleLoginBtn">
                             <i class="fa fa-google me-2"></i>Login with Google
@@ -125,16 +154,11 @@
                                                     userInput.placeholder = "Enter your username";
                                                     userInput.type = "text";
                                                     googleLogin.style.display = "block";
-                                                    registerLink.style.display = "block";
-                                                    rememberMeChkBox.style.display = "block";
-
                                                 } else {
                                                     userLabel.innerText = "Email";
                                                     userInput.placeholder = "Enter your email";
                                                     userInput.type = "email";
                                                     googleLogin.style.display = "none";
-                                                    registerLink.style.display = "none";
-                                                    rememberMeChkBox.style.display = "none";
                                                 }
                                             }
                                             window.onload = function () {

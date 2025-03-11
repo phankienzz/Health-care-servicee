@@ -55,50 +55,47 @@ public class LoginServlet extends HttpServlet {
         String user = request.getParameter("user");
         String password = request.getParameter("password");
         String rememberMe = request.getParameter("rememberMe");
-        ValidFunction valid = new ValidFunction();
+
         HttpSession session = request.getSession();
         if ("customer".equals(userType)) {
-                CustomerDAO dao = new CustomerDAO();
-                Customer customerAccount = dao.customerLogin(user);
-                try {
-                    if (customerAccount != null && valid.checkPassword(password, customerAccount.getPassword())) {
-                        session.setAttribute("customerAccount", customerAccount);
-                        if (rememberMe != null) {
-                            Cookie cusUsername = new Cookie("username", user);
-                            Cookie cusPassword = new Cookie("password", password);
+            CustomerDAO dao = new CustomerDAO();
+            Customer customerAccount = dao.customerLogin(user, password);
 
-                            cusUsername.setMaxAge(30 * 24 * 60 * 60);
-                            cusPassword.setMaxAge(30 * 24 * 60 * 60);
+            if (customerAccount == null) {
+                request.setAttribute("error", "Invalid username or password !");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            } else {
+                session.setAttribute("customerAccount", customerAccount);
+                if (rememberMe != null) {
+                    Cookie cusUsername = new Cookie("username", user);
+                    Cookie cusPassword = new Cookie("password", password);
 
-                            response.addCookie(cusUsername);
-                            response.addCookie(cusPassword);
-                        } else {
-                            //xoa cookie neu khong chon RemMe
-                            Cookie usernameCookie = new Cookie("username", "");
-                            Cookie passwordCookie = new Cookie("password", "");
-                            usernameCookie.setMaxAge(0);
-                            passwordCookie.setMaxAge(0);
-                            response.addCookie(usernameCookie);
-                            response.addCookie(passwordCookie);
-                        }
-                        response.sendRedirect("index_1.jsp");
-                    } else {
-                        request.setAttribute("error", "Invalid username or password !");
-                        request.getRequestDispatcher("login.jsp").forward(request, response);
-                    }
-                } catch (IllegalArgumentException e) {
-                    request.setAttribute("error", "Password format is invalid. Please contact support!");
-                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                    cusUsername.setMaxAge(30 * 24 * 60 * 60);
+                    cusPassword.setMaxAge(30 * 24 * 60 * 60);
+
+                    response.addCookie(cusUsername);
+                    response.addCookie(cusPassword);
+                } else {
+                    // Nếu "Remember Me" không được chọn, xóa cookies
+                    Cookie usernameCookie = new Cookie("username", "");
+                    Cookie passwordCookie = new Cookie("password", "");
+                    usernameCookie.setMaxAge(0);
+                    passwordCookie.setMaxAge(0);
+                    response.addCookie(usernameCookie);
+                    response.addCookie(passwordCookie);
                 }
-            }else if ("staff".equals(userType)) {
+            }
+            response.sendRedirect("index_1.jsp");
+        } else if ("staff".equals(userType)) {
             StaffDAO dao = new StaffDAO();
-            Staff staff = dao.staffLogin(user);
-            
-            if (staff == null || !valid.checkPassword(password, staff.getPassword()) ) {
+            Staff staff = dao.staffLogin(user, password);
+
+            if (staff == null) {
                 request.setAttribute("error", "Invalid email or password!");
                 request.setAttribute("userType", "staff");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             } else {
+                ValidFunction valid = new ValidFunction();
                 String dob = null;
                 String hireDate = null;
                 if(staff.getDateOfBirth() != null){
@@ -117,7 +114,7 @@ public class LoginServlet extends HttpServlet {
                     response.addCookie(staffEmail);
                     response.addCookie(staffPassword);
                 }
-                response.sendRedirect("roleStaff");
+                response.sendRedirect("index_1.jsp");
             }
         } else {
             request.setAttribute("error", "Invalid User Type");

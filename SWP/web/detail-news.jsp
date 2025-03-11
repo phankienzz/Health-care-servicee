@@ -5,7 +5,7 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -29,67 +29,44 @@
 
         <!-- Main Stylesheet -->
         <link rel="stylesheet" href="assets2/css/style.css">
-        <script>
-
-        </script>
-        <style>
-            .child-comments {
-                margin-left: 50px; /* Thụt vào */
-                border-left: 2px solid #ddd;
-                padding-left: 15px;
-            }
-            .comment-area-box {
-                background: #f9f9f9;
-                padding: 15px;
-                border-radius: 5px;
-            }
-            .comment-content p {
-                word-wrap: break-word;  /* Ngắt từ khi quá dài */
-                overflow-wrap: break-word;  /* Hỗ trợ xuống dòng trên mọi trình duyệt */
-                max-width: 100%; /* Giới hạn nội dung không tràn ra ngoài */
-            }
-            html{
-                scroll-behavior: smooth;
-
-            }
-        </style>
 
     </head>
 
     <body id="top">
-        <jsp:include page="headerHome.jsp"></jsp:include>
+        <jsp:include page="headerCustomer.jsp"></jsp:include>
 
-
-            <section class="page-title bg-1">
-                <div class="overlay"></div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="block text-center">
-                                <span class="text-white">News details</span>
-                                <h1 class="text-capitalize mb-5 text-lg">Blog Single</h1>
-                            </div>
+        <section class="page-title bg-1">
+            <div class="overlay"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="block text-center">
+                            <span class="text-white">News details</span>
+                            <h1 class="text-capitalize mb-5 text-lg">Blog Single</h1>
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
 
 
-            <section class="section blog-wrap">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <div class="row">
-                                <div class="col-lg-12 mb-5">
-                                    <div class="single-blog-item">
-                                        <img style="width:730px; height: 485px;" src="LoadBlogImage?postId=${newsDetail.post_id}" alt="" class="img-fluid">
+        <section class="section blog-wrap">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="row">
+                            <div class="col-lg-12 mb-5">
+                                <div class="single-blog-item">
+                                    <img src="assets2/images/blog/blog-1.jpg" alt="" class="img-fluid">
                                     <div class="blog-item-content mt-5">
                                         <div class="blog-item-meta mb-3">
-                                            <!--<span class="text-color-2 text-capitalize mr-3"><i class="icofont-book-mark mr-2"></i> Equipment</span>-->
-                                            <span class="text-muted text-capitalize mr-3"><i class="icofont-comment mr-2"></i>${comments.size()} Comments</span>
-                                            <span class="text-black text-capitalize mr-3"><i class="icofont-calendar mr-2"></i>${newsDetail.created_at}</span>
-                                            <span class="text-black text-capitalize mr-3"><i class="mr-1"></i>Updated last: ${newsDetail.updated_at}</span>
+                                            <span class="text-color-2 text-capitalize mr-3"><i
+                                                    class="icofont-book-mark mr-2"></i> Equipment</span>
+                                            <span class="text-muted text-capitalize mr-3"><i
+                                                    class="icofont-comment mr-2"></i>${comments.size()} Comments</span>
+                                            <span class="text-black text-capitalize mr-3"><i
+                                                    class="icofont-calendar mr-2"></i>${newsDetail.created_at}</span>
                                         </div>
 
                                         <h2 style="color:#009efb " class="mb-4 text-md">${newsDetail.title}</h2>
@@ -99,39 +76,39 @@
 
                                         <p>${newsDetail.content}</p>
 
-                                        <!--                                        <blockquote class="quote">
-                                                                                    A brand for a company is like a reputation for a person. You earn reputation by
-                                                                                    trying to do hard things well.
-                                                                                </blockquote>-->
+                                        <blockquote class="quote">
+                                            A brand for a company is like a reputation for a person. You earn reputation by
+                                            trying to do hard things well.
+                                        </blockquote>
 
 
-                                        <!--                                        <p class="lead mb-4 font-weight-normal text-black">The same is true as we experience
-                                                                                    the emotional sensation of stress from our first instances of social rejection
-                                                                                    ridicule. We quickly learn to fear and thus automatically.</p>-->
+                                        <p class="lead mb-4 font-weight-normal text-black">The same is true as we experience
+                                            the emotional sensation of stress from our first instances of social rejection
+                                            ridicule. We quickly learn to fear and thus automatically.</p>
 
-                                        <!--                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste, rerum beatae
-                                                                                    repellat tenetur incidunt quisquam libero dolores laudantium. Nesciunt quis
-                                                                                    itaque quidem, voluptatem autem eos animi laborum iusto expedita sapiente.</p>-->
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste, rerum beatae
+                                            repellat tenetur incidunt quisquam libero dolores laudantium. Nesciunt quis
+                                            itaque quidem, voluptatem autem eos animi laborum iusto expedita sapiente.</p>
 
-                                        <!--                                        <div class="mt-5 clearfix">
-                                                                                    <ul class="float-left list-inline tag-option">
-                                                                                        <li class="list-inline-item"><a href="#">Advancher</a></li>
-                                                                                        <li class="list-inline-item"><a href="#">Landscape</a></li>
-                                                                                        <li class="list-inline-item"><a href="#">Travel</a></li>
-                                                                                    </ul>
-                                        
-                                                                                    <ul class="float-right list-inline">
-                                                                                        <li class="list-inline-item"> Share: </li>
-                                                                                        <li class="list-inline-item"><a href="#" target="_blank"><i
-                                                                                                    class="icofont-facebook" aria-hidden="true"></i></a></li>
-                                                                                        <li class="list-inline-item"><a href="#" target="_blank"><i
-                                                                                                    class="icofont-twitter" aria-hidden="true"></i></a></li>
-                                                                                        <li class="list-inline-item"><a href="#" target="_blank"><i
-                                                                                                    class="icofont-pinterest" aria-hidden="true"></i></a></li>
-                                                                                        <li class="list-inline-item"><a href="#" target="_blank"><i
-                                                                                                    class="icofont-linkedin" aria-hidden="true"></i></a></li>
-                                                                                    </ul>
-                                                                                </div>-->
+                                        <div class="mt-5 clearfix">
+                                            <ul class="float-left list-inline tag-option">
+                                                <li class="list-inline-item"><a href="#">Advancher</a></li>
+                                                <li class="list-inline-item"><a href="#">Landscape</a></li>
+                                                <li class="list-inline-item"><a href="#">Travel</a></li>
+                                            </ul>
+
+                                            <ul class="float-right list-inline">
+                                                <li class="list-inline-item"> Share: </li>
+                                                <li class="list-inline-item"><a href="#" target="_blank"><i
+                                                            class="icofont-facebook" aria-hidden="true"></i></a></li>
+                                                <li class="list-inline-item"><a href="#" target="_blank"><i
+                                                            class="icofont-twitter" aria-hidden="true"></i></a></li>
+                                                <li class="list-inline-item"><a href="#" target="_blank"><i
+                                                            class="icofont-pinterest" aria-hidden="true"></i></a></li>
+                                                <li class="list-inline-item"><a href="#" target="_blank"><i
+                                                            class="icofont-linkedin" aria-hidden="true"></i></a></li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -142,120 +119,109 @@
                                     <ul class="comment-tree list-unstyled">
                                         <c:forEach var="comment" items="${comments}">
                                             <c:if test="${comment.parent_comment_id == 0}">
-                                                <li class="mb-4">
+                                                <li class="mb-5">
                                                     <div class="comment-area-box">
                                                         <div class="comment-thumb float-left">
-                                                            <img style="width: 50px; height: 50px; border-radius: 50%;" alt="" src="pictureprofile?customerID=${comment.customerID.customerID}" class="img-fluid">
+                                                            <img alt="" src="assets2/images/blog/testimonial1.jpg"
+                                                                 class="img-fluid">
                                                         </div>
                                                         <div class="comment-info">
                                                             <h5 class="mb-1">${comment.customerID.fullName}</h5>
                                                             <span>${comment.create_at}</span>
                                                         </div>
                                                         <div class="comment-meta mt-2">
-                                                            <c:if test="${sessionScope.customerAccount == null}">
-                                                                <a href="login.jsp?newsID=${newsDetail.post_id}&parent_comment_id=${comment.comment_id}#comment-form"
-                                                                   onclick="return confirm('Bạn cần đăng nhập để trả lời bình luận!');">
-                                                                    <i class="icofont-reply mr-2 text-muted"></i>Reply
-                                                                </a>
-                                                            </c:if>
-                                                            <c:if test="${sessionScope.customerAccount != null}">
-                                                                <a href="?newsID=${newsDetail.post_id}&parent_comment_id=${comment.comment_id}#comment-form">
-                                                                    <i class="icofont-reply mr-2 text-muted"></i>Reply
-                                                                </a>
-                                                            </c:if>
+                                                            <a href="#"><i
+                                                                    class="icofont-reply mr-2 text-muted"></i>Reply</a>
                                                         </div>
                                                         <div class="comment-content mt-3">
                                                             <p>${comment.content}</p>
                                                         </div>
                                                     </div>
-                                                    <ul class="child-comments list-unstyled ml-5">
-                                                        <jsp:include page="comment-reply.jsp">
-                                                            <jsp:param name="parentId" value="${comment.comment_id}" />
-                                                        </jsp:include>
+                                                    <ul>
+                                                        <c:forEach var="rep" items="${comments}">
+                                                            <c:if test="${rep.parent_comment_id == comment.comment_id}">
+                                                                <li class="mb-5">
+                                                                    <div class="comment-area-box">
+                                                                        <div class="comment-thumb float-left">
+                                                                            <img alt=""
+                                                                                 src="assets2/images/blog/testimonial2.jpg"
+                                                                                 class="img-fluid">
+                                                                        </div>
+
+                                                                        <div class="comment-info">
+                                                                            <h5 class="mb-1">${rep.customerID.fullName}</h5>
+                                                                            <span>${rep.create_at}</span>
+                                                                        </div>
+                                                                        <div class="comment-meta mt-2">
+                                                                            <a href="#"><i
+                                                                                    class="icofont-reply mr-2 text-muted"></i>Reply</a>
+                                                                        </div>
+                                                                        <div class="comment-content mt-3">
+                                                                            <p>${rep.content}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </c:if>
+                                                        </c:forEach>
                                                     </ul>
                                                 </li>
                                             </c:if>
                                         </c:forEach>
-
-
                                     </ul>
                                 </div>
                             </div>
 
 
-
-
-                            <div class="col-lg-12">                                    
-                                <c:if test="${sessionScope.customerAccount != null}">
-                                    <form action="comment" method="post" class="comment-form my-5" id="comment-form">
-                                        <h4 class="mb-4">
-                                            <c:choose>
-                                                <c:when test="${not empty requestScope.parent_comment_name}">
-                                                    Reply to <b>${requestScope.parent_comment_name}</b>
-                                                    <a href="detailNews?newsID=${newsDetail.post_id}" class="text-danger ml-2">Cancel Reply</a>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    Write a comment
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </h4>
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="form-control" type="text" name="name" value="${sessionScope.customerAccount.fullName}" id="name" placeholder="Name:" required readonly>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="form-control" type="email" name="mail" value="${sessionScope.customerAccount.email}" id="mail" placeholder="Email:" required readonly>
-                                                </div>
+                            <div class="col-lg-12">
+                                <form action="" method="" class="comment-form my-5" id="comment-form">
+                                    <h4 class="mb-4">Write a comment</h4>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input class="form-control" type="text" name="name" id="name" placeholder="Name:">
                                             </div>
                                         </div>
-                                        <textarea class="form-control mb-4" name="content" id="comment" cols="30" rows="5" placeholder="Write your comment here..." required></textarea>
-                                        <input type="hidden" name="newsID" value="${newsDetail.post_id}">
-                                        <input type="hidden" name="customerId" value="${sessionScope.customerAccount.customerID}">
-                                        <input type="hidden" name="parent_comment_id" value="${requestScope.parent_comment_id != null ? requestScope.parent_comment_id : 0}">
-
-                                        <input class="btn btn-main-2 btn-round-full" type="submit" name="submit-comment" id="submit_comment" value="Submit">
-                                    </form>
-                                </c:if>
-                                <c:if test="${sessionScope.customerAccount == null}">
-                                    <p>Please <a href="login.jsp">login</a> to write a comment.</p>
-                                </c:if>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input class="form-control" type="text" name="mail" id="mail" placeholder="Email:">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <textarea class="form-control mb-4" name="comment" id="comment" cols="30" rows="5" placeholder="Comment"></textarea>
+                                    <input class="btn btn-main-2 btn-round-full" type="submit" name="submit-contact" id="submit_contact" value="Submit Message">
+                                </form>
                             </div>
                         </div>
                     </div>
-
                     <div class="col-lg-4">
                         <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0">
                             <div class="sidebar-widget search  mb-3 ">
                                 <h5>Search Here</h5>
-                                <form action="allNews" method="get" class="search-form" style="display: flex; gap: 5px;">
-                                    <input type="text" name="search" class="form-control" placeholder="Search" value="${search}" style="flex: 1;">
-                                    <button type="submit" class="btn btn-primary"><i class="ti-search"></i>Search</button>
+                                <form action="allNews" method="get" class="search-form">
+                                    <input type="text" name="search" class="form-control" placeholder="search" value="${search}">
+                                    <i class="ti-search"></i>
                                 </form>
                             </div>
 
 
-                            <!--                            <div class="sidebar-widget latest-post mb-3">
-                                                            <h5>Popular Posts</h5>
-                            
-                                                            <div class="py-2">
-                                                                <span class="text-sm text-muted">03 Mar 2018</span>
-                                                                <h6 class="my-2"><a href="#">Thoughtful living in los Angeles</a></h6>
-                                                            </div>
-                            
-                                                            <div class="py-2">
-                                                                <span class="text-sm text-muted">03 Mar 2018</span>
-                                                                <h6 class="my-2"><a href="#">Vivamus molestie gravida turpis.</a></h6>
-                                                            </div>
-                            
-                                                            <div class="py-2">
-                                                                <span class="text-sm text-muted">03 Mar 2018</span>
-                                                                <h6 class="my-2"><a href="#">Fusce lobortis lorem at ipsum semper sagittis</a></h6>
-                                                            </div>
-                                                        </div>-->
+                            <div class="sidebar-widget latest-post mb-3">
+                                <h5>Popular Posts</h5>
+
+                                <div class="py-2">
+                                    <span class="text-sm text-muted">03 Mar 2018</span>
+                                    <h6 class="my-2"><a href="#">Thoughtful living in los Angeles</a></h6>
+                                </div>
+
+                                <div class="py-2">
+                                    <span class="text-sm text-muted">03 Mar 2018</span>
+                                    <h6 class="my-2"><a href="#">Vivamus molestie gravida turpis.</a></h6>
+                                </div>
+
+                                <div class="py-2">
+                                    <span class="text-sm text-muted">03 Mar 2018</span>
+                                    <h6 class="my-2"><a href="#">Fusce lobortis lorem at ipsum semper sagittis</a></h6>
+                                </div>
+                            </div>
 
                             <div class="sidebar-widget category mb-3">
                                 <h5 class="mb-4">Categories</h5>
@@ -275,19 +241,19 @@
                             </div>
 
 
-                            <!--                            <div class="sidebar-widget tags mb-3">
-                                                            <h5 class="mb-4">Tags</h5>
-                            
-                                                            <a href="#">Doctors</a>
-                                                            <a href="#">agency</a>
-                                                            <a href="#">company</a>
-                                                            <a href="#">medicine</a>
-                                                            <a href="#">surgery</a>
-                                                            <a href="#">Marketing</a>
-                                                            <a href="#">Social Media</a>
-                                                            <a href="#">Branding</a>
-                                                            <a href="#">Laboratory</a>
-                                                        </div>-->
+                            <div class="sidebar-widget tags mb-3">
+                                <h5 class="mb-4">Tags</h5>
+
+                                <a href="#">Doctors</a>
+                                <a href="#">agency</a>
+                                <a href="#">company</a>
+                                <a href="#">medicine</a>
+                                <a href="#">surgery</a>
+                                <a href="#">Marketing</a>
+                                <a href="#">Social Media</a>
+                                <a href="#">Branding</a>
+                                <a href="#">Laboratory</a>
+                            </div>
 
 
                             <div class="sidebar-widget schedule-widget mb-3">
@@ -320,7 +286,110 @@
             </div>
         </section>
 
-        <jsp:include page="footer.jsp"></jsp:include>
+
+        <!-- footer Start -->
+        <footer class="footer section gray-bg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 mr-auto col-sm-6">
+                        <div class="widget mb-5 mb-lg-0">
+                            <div class="logo mb-4">
+                                <img src="assets2/images/logo.png" alt="" class="img-fluid">
+                            </div>
+                            <p>Tempora dolorem voluptatum nam vero assumenda voluptate, facilis ad eos obcaecati tenetur
+                                veritatis eveniet distinctio possimus.</p>
+
+                            <ul class="list-inline footer-socials mt-4">
+                                <li class="list-inline-item"><a href="https://www.facebook.com/themefisher"><i
+                                            class="icofont-facebook"></i></a></li>
+                                <li class="list-inline-item"><a href="https://twitter.com/themefisher"><i
+                                            class="icofont-twitter"></i></a></li>
+                                <li class="list-inline-item"><a href="https://www.pinterest.com/themefisher/"><i
+                                            class="icofont-linkedin"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-md-6 col-sm-6">
+                        <div class="widget mb-5 mb-lg-0">
+                            <h4 class="text-capitalize mb-3">Department</h4>
+                            <div class="divider mb-4"></div>
+
+                            <ul class="list-unstyled footer-menu lh-35">
+                                <li><a href="#">Surgery </a></li>
+                                <li><a href="#">Wome's Health</a></li>
+                                <li><a href="#">Radiology</a></li>
+                                <li><a href="#">Cardioc</a></li>
+                                <li><a href="#">Medicine</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-md-6 col-sm-6">
+                        <div class="widget mb-5 mb-lg-0">
+                            <h4 class="text-capitalize mb-3">Support</h4>
+                            <div class="divider mb-4"></div>
+
+                            <ul class="list-unstyled footer-menu lh-35">
+                                <li><a href="#">Terms & Conditions</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                                <li><a href="#">Company Support </a></li>
+                                <li><a href="#">FAQuestions</a></li>
+                                <li><a href="#">Company Licence</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="widget widget-contact mb-5 mb-lg-0">
+                            <h4 class="text-capitalize mb-3">Get in Touch</h4>
+                            <div class="divider mb-4"></div>
+
+                            <div class="footer-contact-block mb-4">
+                                <div class="icon d-flex align-items-center">
+                                    <i class="icofont-email mr-3"></i>
+                                    <span class="h6 mb-0">Support Available for 24/7</span>
+                                </div>
+                                <h4 class="mt-2"><a href="tel:+23-345-67890">Support@email.com</a></h4>
+                            </div>
+
+                            <div class="footer-contact-block">
+                                <div class="icon d-flex align-items-center">
+                                    <i class="icofont-support mr-3"></i>
+                                    <span class="h6 mb-0">Mon to Fri : 08:30 - 18:00</span>
+                                </div>
+                                <h4 class="mt-2"><a href="tel:+23-345-67890">+23-456-6588</a></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-btm py-4 mt-5">
+                    <div class="row align-items-center justify-content-between">
+                        <div class="col-lg-6">
+                            <div class="copyright">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="subscribe-form text-lg-right mt-5 mt-lg-0">
+                                <form action="#" class="subscribe">
+                                    <input type="text" class="form-control" placeholder="Your Email address">
+                                    <a href="#" class="btn btn-main-2 btn-round-full">Subscribe</a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <a class="backtop js-scroll-trigger" href="#top">
+                                <i class="icofont-long-arrow-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
 
 
         <!-- 

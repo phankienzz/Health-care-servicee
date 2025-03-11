@@ -48,9 +48,7 @@
     </head>
 
     <body id="top">
-        <%--<jsp:include page="headerCustomer.jsp"></jsp:include>--%>
-        <jsp:include page="headerHome.jsp"></jsp:include>
-
+        <jsp:include page="headerCustomer.jsp"></jsp:include>
             <section class="page-title bg-1">
                 <div class="overlay"></div>
                 <div class="container">
@@ -139,56 +137,23 @@
                     <div class="col-12">
                         <nav aria-label="Page navigation">
                             <ul class="pagination justify-content-center">
-                                <!-- Nút Previous -->
                                 <c:if test="${pageNumber > 1}">
                                     <li class="page-item">
-                                        <a class="page-link" href="loadservice?pageNumber=${pageNumber - 1}&searchKeyword=${param.searchKeyword}&sortBy=${param.sortBy}&action=${param.action}" aria-label="Previous">
+                                        <a class="page-link" href="loadservice?pageNumber=${pageNumber - 1}&searchKeyword=${param.searchKeyword}&sortBy=${param.sortBy}" aria-label="Previous">
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
                                     </li>
                                 </c:if>
 
-                                <!-- Xác định startPage và endPage -->
-                                <c:set var="startPage" value="${pageNumber - 2}" />
-                                <c:if test="${startPage < 1}">
-                                    <c:set var="startPage" value="1" />
-                                </c:if>
-                                <c:set var="endPage" value="${pageNumber + 2}" />
-                                <c:if test="${endPage > totalPages}">
-                                    <c:set var="endPage" value="${totalPages}" />
-                                </c:if>
-
-                                <!-- Nếu startPage lớn hơn 1, hiển thị nút trang 1 và dấu "..." -->
-                                <c:if test="${startPage > 1}">
-                                    <li class="page-item">
-                                        <a class="page-link" href="loadservice?pageNumber=1&searchKeyword=${param.searchKeyword}&sortBy=${param.sortBy}&action=${param.action}">1</a>
-                                    </li>
-                                    <c:if test="${startPage > 2}">
-                                        <li class="page-item disabled"><span class="page-link">...</span></li>
-                                        </c:if>
-                                    </c:if>
-
-                                <!-- Hiển thị các trang từ startPage đến endPage -->
-                                <c:forEach var="i" begin="${startPage}" end="${endPage}">
+                                <c:forEach var="i" begin="1" end="${totalPages}">
                                     <li class="page-item ${i == pageNumber ? 'active' : ''}">
-                                        <a class="page-link" href="loadservice?pageNumber=${i}&searchKeyword=${param.searchKeyword}&sortBy=${param.sortBy}&action=${param.action}">${i}</a>
+                                        <a class="page-link" href="loadservice?pageNumber=${i}&searchKeyword=${param.searchKeyword}&sortBy=${param.sortBy}">${i}</a>
                                     </li>
                                 </c:forEach>
 
-                                <!-- Nếu endPage nhỏ hơn totalPages, hiển thị dấu "..." và nút trang cuối -->
-                                <c:if test="${endPage < totalPages}">
-                                    <c:if test="${endPage < totalPages - 1}">
-                                        <li class="page-item disabled"><span class="page-link">...</span></li>
-                                        </c:if>
-                                    <li class="page-item">
-                                        <a class="page-link" href="loadservice?pageNumber=${totalPages}&searchKeyword=${param.searchKeyword}&sortBy=${param.sortBy}&action=${param.action}">${totalPages}</a>
-                                    </li>
-                                </c:if>
-
-                                <!-- Nút Next -->
                                 <c:if test="${pageNumber < totalPages}">
                                     <li class="page-item">
-                                        <a class="page-link" href="loadservice?pageNumber=${pageNumber + 1}&searchKeyword=${param.searchKeyword}&sortBy=${param.sortBy}&action=${param.action}" aria-label="Next">
+                                        <a class="page-link" href="loadservice?pageNumber=${pageNumber + 1}&searchKeyword=${param.searchKeyword}&sortBy=${param.sortBy}" aria-label="Next">
                                             <span aria-hidden="true">&raquo;</span>
                                         </a>
                                     </li>
@@ -198,92 +163,17 @@
                     </div>
                 </div>
 
-
             </div>
         </section>
 
         <footer class="footer section gray-bg">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 mr-auto col-sm-6">
-                        <div class="widget mb-5 mb-lg-0">
-                            <div class="logo mb-4">
-                                <img src="images/logo.png" alt="" class="img-fluid">
-                            </div>
-                            <p>Tempora dolorem voluptatum nam vero assumenda voluptate, facilis ad eos obcaecati tenetur veritatis eveniet distinctio possimus.</p>
-
-                            <ul class="list-inline footer-socials mt-4">
-                                <li class="list-inline-item"><a href="https://www.facebook.com/themefisher"><i class="icofont-facebook"></i></a></li>
-                                <li class="list-inline-item"><a href="https://twitter.com/themefisher"><i class="icofont-twitter"></i></a></li>
-                                <li class="list-inline-item"><a href="https://www.pinterest.com/themefisher/"><i class="icofont-linkedin"></i></a></li>
-                            </ul>
-                        </div>
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-lg-6">
+                        <p>&copy; 2025 Novena - Health & Care</p>
                     </div>
-
-                    <div class="col-lg-2 col-md-6 col-sm-6">
-                        <div class="widget mb-5 mb-lg-0">
-                            <h4 class="text-capitalize mb-3">Department</h4>
-                            <div class="divider mb-4"></div>
-
-                            <ul class="list-unstyled footer-menu lh-35">
-                                <li><a href="#">Surgery </a></li>
-                                <li><a href="#">Wome's Health</a></li>
-                                <li><a href="#">Radiology</a></li>
-                                <li><a href="#">Cardioc</a></li>
-                                <li><a href="#">Medicine</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 col-md-6 col-sm-6">
-                        <div class="widget mb-5 mb-lg-0">
-                            <h4 class="text-capitalize mb-3">Support</h4>
-                            <div class="divider mb-4"></div>
-
-                            <ul class="list-unstyled footer-menu lh-35">
-                                <li><a href="#">Terms & Conditions</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="#">Company Support </a></li>
-                                <li><a href="#">FAQuestions</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="widget widget-contact mb-5 mb-lg-0">
-                            <h4 class="text-capitalize mb-3">Get in Touch</h4>
-                            <div class="divider mb-4"></div>
-
-                            <div class="footer-contact-block mb-4">
-                                <div class="icon d-flex align-items-center">
-                                    <i class="icofont-email mr-3"></i>
-                                    <span class="h6 mb-0">Support Available for 24/7</span>
-                                </div>
-                                <h4 class="mt-2"><a href="tel:+23-345-67890">Support@email.com</a></h4>
-                            </div>
-
-                            <div class="footer-contact-block">
-                                <div class="icon d-flex align-items-center">
-                                    <i class="icofont-support mr-3"></i>
-                                    <span class="h6 mb-0">Mon to Fri : 08:30 - 18:00</span>
-                                </div>
-                                <h4 class="mt-2"><a href="tel:+23-345-67890">+23-456-6588</a></h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="footer-btm py-4 mt-5">
-                    <div class="row align-items-center justify-content-between">
-
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <a class="backtop js-scroll-trigger" href="#top">
-                                <i class="icofont-long-arrow-up"></i>
-                            </a>
-                        </div>
+                    <div class="col-lg-6 text-lg-right">
+                        <a href="#" class="btn btn-main-2 btn-round-full">Subscribe</a>
                     </div>
                 </div>
             </div>
@@ -298,18 +188,18 @@
 
         <!-- JavaScript validate form -->
         <script>
-                    function validateForm(event) {
-                        if (event.submitter && event.submitter.value === 'search') {
-                            var searchInputField = document.getElementById("searchKeyword");
-                            var searchInput = searchInputField.value.trim();
-                            searchInputField.value = searchInput;
-                            if (searchInput === "") {
-                                alert("Vui lòng nhập từ khóa tìm kiếm.");
-                                return false;
-                            }
+                function validateForm(event) {
+                    if (event.submitter && event.submitter.value === 'search') {
+                        var searchInputField = document.getElementById("searchKeyword");
+                        var searchInput = searchInputField.value.trim();
+                        searchInputField.value = searchInput;
+                        if (searchInput === "") {
+                            alert("Vui lòng nhập từ khóa tìm kiếm.");
+                            return false;
                         }
-                        return true;
                     }
+                    return true;
+                }
         </script>
 
     </body>

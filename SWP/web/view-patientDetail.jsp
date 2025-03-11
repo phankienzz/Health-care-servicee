@@ -27,6 +27,7 @@
     <body>
         <div class="main-wrapper">
             <jsp:include page="headerStaff.jsp"></jsp:include>
+
                 <div class="sidebar" id="sidebar">
                     <div class="sidebar-inner slimscroll">
                         <div id="sidebar-menu" class="sidebar-menu">
@@ -228,8 +229,8 @@
                                     <div class="form-group">
                                         <label>Date of Birth</label>
                                         <!--<div class="cal-icon">-->
-                                        <!--<input type="text" class="form-control datetimepicker" readonly="">-->
-                                        <input class="form-control" value="${customer.dateOfBirth}" readonly="">
+                                            <!--<input type="text" class="form-control datetimepicker" readonly="">-->
+                                            <input class="form-control" value="${customer.dateOfBirth}" readonly="">
                                         <!--</div>-->
                                     </div>
                                 </div>

@@ -4,7 +4,6 @@
  */
 package CustomerController;
 
-import context.ValidFunction;
 import dao.CustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -51,7 +50,6 @@ public class PatientDetail extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ValidFunction valid = new ValidFunction();
         String customerIdStr = request.getParameter("patientId");
 
         if (customerIdStr == null || customerIdStr.isEmpty()) {
@@ -64,10 +62,6 @@ public class PatientDetail extends HttpServlet {
         CustomerDAO dao = new CustomerDAO();
         Customer customer = dao.getCustomerByID(customerId);
 
-        if (customer.getDateOfBirth() != null && !customer.getDateOfBirth().isEmpty()) {
-            String formattedDob = valid.convertDateString(customer.getDateOfBirth(), "dd/MM/yyyy");
-            customer.setDateOfBirth(formattedDob);
-        }
         if (customer == null) {
             response.sendRedirect("patient");
             return;
@@ -78,6 +72,14 @@ public class PatientDetail extends HttpServlet {
 
     }
 
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
