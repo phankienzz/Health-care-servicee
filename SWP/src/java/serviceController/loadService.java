@@ -1,5 +1,6 @@
 package serviceController;
 
+import context.ValidFunction;
 import dao.ServiceDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -19,26 +20,20 @@ public class loadService extends HttpServlet {
 
         ServiceDAO serviceDao = new ServiceDAO();
         List<Service> serviceList = null;
+        ValidFunction val = new ValidFunction();
 
         String action = request.getParameter("action");
         String searchKeyword = request.getParameter("searchKeyword");
         String sortBy = request.getParameter("sortBy");
 
-        // Kiểm tra nếu có danh sách lọc trong session
-        List<Service> filteredList = (List<Service>) request.getSession().getAttribute("filteredServiceList");
-
         // Nếu có hành động lọc (tìm kiếm hoặc sắp xếp)
         if ("search".equalsIgnoreCase(action) && searchKeyword != null && !searchKeyword.trim().isEmpty()) {
             // Tiến hành lọc theo từ khóa
-            serviceList = serviceDao.getAllOnServicesWithSearch(searchKeyword.trim());
-            request.getSession().setAttribute("filteredServiceList", serviceList);  // Lưu vào session
+            serviceList = serviceDao.getAllOnServicesWithSearch(val.normalizeName(searchKeyword));
         } else if ("filter".equalsIgnoreCase(action) && sortBy != null && !sortBy.isEmpty()) {
             // Tiến hành lọc theo tiêu chí sắp xếp
             serviceList = serviceDao.getAllOnServicesWithFilter(sortBy);
             request.getSession().setAttribute("filteredServiceList", serviceList);  // Lưu vào session
-        } else if (filteredList != null) {
-            // Nếu đã có danh sách lọc trong session, sử dụng nó
-            serviceList = filteredList;
         } else {
             // Nếu không có hành động lọc, lấy toàn bộ danh sách dịch vụ
             serviceList = serviceDao.getAll_ON_Service();

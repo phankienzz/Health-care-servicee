@@ -5,11 +5,15 @@
 package context;
 
 import dao.CustomerDAO;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import org.mindrot.jbcrypt.BCrypt;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import model.Customer;
+import java.util.Locale;
 
 /**
  *
@@ -68,6 +72,35 @@ public class ValidFunction {
         return dateTime.format(outputFormatter);
     }
     
+    public String formatDateInvoice(String date) {
+        // Chuyển từ chuỗi ngày ban đầu (yyyy-MM-dd HH:mm:ss) sang Timestamp
+        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
+        // Định dạng Timestamp thành chuỗi dd/MM/yyyy
+        java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy, MMMM dd", Locale.ENGLISH);
+        return dateFormat.format(timestamp);
+    }
+    
+    public String formatDateTime(String date, String pattern) {
+        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+        return dateFormat.format(timestamp);
+    }
+    
+    //chuyển ngày sinh thành dd/mm/yyy
+    public String convertDateString(String inputDate, String outputPattern) {
+        if (inputDate == null || inputDate.isEmpty()) {
+            return "";
+        }
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = inputFormat.parse(inputDate);
+            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
     public String formatDateNews(String date) {
         // Chuyển từ chuỗi ngày ban đầu (yyyy-MM-dd HH:mm:ss) sang Timestamp
         java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
@@ -76,21 +109,15 @@ public class ValidFunction {
         return dateFormat.format(timestamp);
     }
     
-    public static String hashPassword(String password) {
+    public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
     
-    public static boolean checkPassword(String password, String hashedPassword) {
+    public boolean checkPassword(String password, String hashedPassword) {
         return BCrypt.checkpw(password, hashedPassword);
     }
     
     public static void main(String[] args) {
-        CustomerDAO dao = new CustomerDAO();
-        List<Customer> list = dao.getAllCustomer();
-        for(Customer cus : list){
-            System.out.println("Customer password: " + cus.getPassword());
-            System.out.println("Hash password: " + hashPassword(cus.getPassword()));
-        }
         
     }
 }

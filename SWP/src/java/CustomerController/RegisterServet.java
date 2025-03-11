@@ -4,6 +4,7 @@
  */
 package CustomerController;
 
+import context.ValidFunction;
 import dao.CustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -49,6 +50,7 @@ public class RegisterServet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        ValidFunction valid = new ValidFunction();
         String username = request.getParameter("username");
         String fullname = request.getParameter("fullname");
         String email = request.getParameter("email");
@@ -62,8 +64,10 @@ public class RegisterServet extends HttpServlet {
             DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //dinh dang ngay thang theo yyyy-MM-dd
             LocalDate dateOfBirth = LocalDate.parse(dateOfBirthStr, format); //chuyen doi tu Str sang LocalDate
             LocalDate today = LocalDate.now(); // lay ngay hien tai
+
             if (dateOfBirth.isAfter(today)) {
                 request.setAttribute("error", "Date of Birth cannot be in the future!");
+                setFormAttributes(request, username, fullname, email, phone, address, dateOfBirthStr, gender);
                 request.getRequestDispatcher("register.jsp").forward(request, response);
                 return;
             }
@@ -97,19 +101,33 @@ public class RegisterServet extends HttpServlet {
 
                 if (usernameExists) {
                     request.setAttribute("error", "Username already exists!");
+                    setFormAttributes(request, username, fullname, email, phone, address, dateOfBirthStr, gender);
                     request.getRequestDispatcher("register.jsp").forward(request, response);
                 } else if (emailExists) {
                     request.setAttribute("error", "Email already exists!");
+                    setFormAttributes(request, username, fullname, email, phone, address, dateOfBirthStr, gender);
                     request.getRequestDispatcher("register.jsp").forward(request, response);
                 } else {
-                    dao.customerSignup(username, password, fullname, email, phone, address, dateOfBirthStr, gender);
+                    String hashedPassword = valid.hashPassword(password);
+                    dao.customerSignup(username, hashedPassword, fullname, email, phone, address, dateOfBirthStr, gender);
                     response.sendRedirect("login.jsp");
                 }
             }
         } catch (DateTimeParseException e) {
             request.setAttribute("error", "Nhap ngay sinh theo dinh dang YYYY-MM-DD.");
+            setFormAttributes(request, username, fullname, email, phone, address, dateOfBirthStr, gender);
             request.getRequestDispatcher("register.jsp").forward(request, response);
         }
+    }
+
+    private void setFormAttributes(HttpServletRequest request, String username, String fullname, String email, String phone, String address, String dateOfBirthStr, String gender) {
+        request.setAttribute("username", username);
+        request.setAttribute("fullname", fullname);
+        request.setAttribute("email", email);
+        request.setAttribute("phone", phone);
+        request.setAttribute("address", address);
+        request.setAttribute("dateOfBirth", dateOfBirthStr);
+        request.setAttribute("gender", gender);
     }
 
     @Override

@@ -66,7 +66,7 @@
         <div class="main-wrapper">
             <div class="header">
                 <div class="header-left">
-                    <a href="index-2.html" class="logo">
+                    <a href="dashboard.html" class="logo">
                         <img src="assets/img/logo.png" width="35" height="35" alt=""> <span>Preclinic</span>
                     </a>
                 </div>
@@ -178,7 +178,7 @@
                         <ul>
                             <li class="menu-title">Main</li>
                             <li>
-                                <a href="index-2.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
+                                <a href="dashboard.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
                             </li>
                             <li>
                                 <a href="doctors.html"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
@@ -342,7 +342,7 @@
                             <h4 class="page-title">Invoices</h4>
                         </div>
                         <div class="col-sm-7 col-8 text-right m-b-30">
-                            <a href="create-invoice.html" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Create New Invoice</a>
+                            <a href="createInvoice" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Create New Invoice</a>
                         </div>
                     </div>
                     
@@ -402,7 +402,7 @@
                                                 <td>${i}</td>
                                                 <c:set var="i" value="${i + 1}"/>
                                                 <td><a href="invoice-view.html">${invoice.invoiceID}</a></td>
-                                                <td>${invoice.customerID.fullName}</td>
+                                                <td>${invoice.examinationID.customerId.fullName}</td>
                                                 <td>${invoice.createdAt}</td>
                                                 <td>${invoice.paymentDate}</td>
                                                 <td>${invoice.totalAmount}</td>
@@ -417,7 +417,7 @@
                                                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                                                         <div class="dropdown-menu dropdown-menu-right">
                                                             <a class="dropdown-item" href="edit-invoice.html"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                            <a class="dropdown-item" href="invoice-view.html"><i class="fa fa-eye m-r-5"></i> View</a>
+                                                            <a class="dropdown-item" href="viewInvoice?invoiceID=${invoice.invoiceID}"><i class="fa fa-eye m-r-5"></i> View</a>
                                                             <a class="dropdown-item" href="#"><i class="fa fa-file-pdf-o m-r-5"></i> Download</a>
                                                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_invoice"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                                         </div>

@@ -78,12 +78,12 @@
                 <!-- Price -->
                 <div class="mb-3">
                     <label class="form-label">Price ($)</label>
-                    <input type="number" class="form-control" name="price" step="0.01" value="${service.price}" required>
+                    <input type="number" class="form-control" name="price" step="0.01" min="0.01" value="${service.price}" required>
                 </div>
                 <!-- Duration -->
                 <div class="mb-3">
                     <label class="form-label">Duration (minutes)</label>
-                    <input type="number" class="form-control" name="duration" value="${service.duration}" required>
+                    <input type="number" class="form-control" name="duration" step="1" min="1" value="${service.duration}" required>
                 </div>
                 <!-- Nút Update & Cancel -->
                 <div class="d-flex justify-content-between">
@@ -94,13 +94,6 @@
         </div>
 
         <script>
-            // Set thời gian hiện tại cho trường Created At
-            window.onload = function () {
-                let now = new Date().toLocaleString("en-GB", { timeZone: "Asia/Ho_Chi_Minh" }).replace(",", "");
-                document.getElementById("createdAt").value = now;
-                document.getElementById("displayCreatedAt").value = now;
-            };
-
             // Validate form trước khi submit: tự động trim khoảng trắng cho Package Name và Description,
             // kiểm tra các trường không được để trống và validate file upload nếu có.
             document.getElementById("serviceForm").addEventListener("submit", function (e) {
