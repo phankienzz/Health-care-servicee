@@ -118,7 +118,7 @@ public class AddProfessionalServlet extends HttpServlet {
             if (filePart != null && filePart.getSize() > 0) {
                 if (!isValidImageFile(extractFileName(filePart))) {
                     request.setAttribute("errorMessage", "Chỉ được tải lên file ảnh có định dạng JPG, JPEG, PNG, GIF, WEBP!");
-                    request.getRequestDispatcher("edit-doctor.jsp").forward(request, response);
+                    request.getRequestDispatcher("add-doctor.jsp").forward(request, response);
                     return;
                 }
 

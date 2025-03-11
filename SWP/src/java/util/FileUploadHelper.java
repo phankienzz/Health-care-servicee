@@ -18,7 +18,7 @@ public class FileUploadHelper {
     private static final String UPLOAD_DIR = "C:\\Users\\Phan Huu Kien\\Desktop\\Health-care-servicee\\SWP\\web\\uploads";  // Thay đổi thư mục phù hợp
 
     public static String saveProfilePicture(Part filePart) throws Exception {
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // Lấy tên file
+      String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // Lấy tên file
         String uploadPath = UPLOAD_DIR + File.separator + fileName; 
 
         File uploadDir = new File(UPLOAD_DIR);
