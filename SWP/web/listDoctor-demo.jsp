@@ -251,6 +251,57 @@
     </c:if>
 </div>
 
+<!-- Pagination -->
+<div class="d-flex justify-content-center align-items-center mt-4">
+    <nav aria-label="Pagination">
+        <ul class="pagination">
+            <c:if test="${currentPage > 1}">
+                <li class="page-item">
+                    <form action="loadstaffforschedule" method="POST">
+                        <input type="hidden" name="page" value="${currentPage - 1}">
+                        <input type="hidden" name="searchType" value="${param.searchType}">
+                        <input type="hidden" name="searchName" value="${param.searchName}">
+                        <input type="hidden" name="workDate" value="${param.workDate}">
+                        <input type="hidden" name="dayFilter" value="${param.dayFilter}">
+                        <input type="hidden" name="shiftFilter" value="${param.shiftFilter}">
+                        <button type="submit" class="page-link">&laquo; Trước</button>
+                    </form>
+                </li>
+            </c:if>
+
+            <c:forEach var="i" begin="1" end="${totalPages}">
+                <li class="page-item ${i == currentPage ? 'active' : ''}">
+                    <form action="loadstaffforschedule" method="POST">
+                        <input type="hidden" name="page" value="${i}">
+                        <input type="hidden" name="searchType" value="${param.searchType}">
+                        <input type="hidden" name="searchName" value="${param.searchName}">
+                        <input type="hidden" name="workDate" value="${param.workDate}">
+                        <input type="hidden" name="dayFilter" value="${param.dayFilter}">
+                        <input type="hidden" name="shiftFilter" value="${param.shiftFilter}">
+                        <button type="submit" class="page-link">${i}</button>
+                    </form>
+                </li>
+            </c:forEach>
+
+            <c:if test="${currentPage < totalPages}">
+                <li class="page-item">
+                    <form action="loadstaffforschedule" method="POST">
+                        <input type="hidden" name="page" value="${currentPage + 1}">
+                        <input type="hidden" name="searchType" value="${param.searchType}">
+                        <input type="hidden" name="searchName" value="${param.searchName}">
+                        <input type="hidden" name="workDate" value="${param.workDate}">
+                        <input type="hidden" name="dayFilter" value="${param.dayFilter}">
+                        <input type="hidden" name="shiftFilter" value="${param.shiftFilter}">
+                        <button type="submit" class="page-link">Sau &raquo;</button>
+                    </form>
+                </li>
+            </c:if>
+        </ul>
+    </nav>
+</div>
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

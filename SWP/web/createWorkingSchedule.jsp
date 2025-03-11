@@ -30,18 +30,25 @@
             .border {
                 border-color: #4a90e2 !important;
             }
+            .doctor-info {
+                background-color: #e3f2fd;
+                padding: 10px;
+                border-radius: 5px;
+                font-weight: bold;
+                font-size: 1.1rem;
+                color: #0d47a1;
+            }
         </style>
     </head>
     <body>
         <div class="container mt-4">
+            <a href="loadstaffforschedule" class="btn btn-secondary mb-3">Quay lại</a>
             <h2 class="text-center text-primary">Tạo Lịch Làm Việc Cho Bác Sĩ</h2>
+            <div class="doctor-info text-center mt-3 mb-4">
+                <span>${ID} - ${fullName}</span>
+            </div>
             <form id="scheduleForm" action="saveSchedule" method="POST">
-                <div class="mb-3">
-                    <label class="form-label text-primary">Chọn bác sĩ:</label>
-                    <strong class="text-dark">${ID} - ${fullName}</strong>
-                    <input type="hidden" name="ID" value="${ID}">
-                </div>
-
+                <input type="hidden" name="ID" value="${ID}">
                 <div class="mb-3">
                     <label class="form-label text-primary">Chọn lịch làm việc:</label>
                     <c:set var="days" value="Thứ Hai,Thứ Ba,Thứ Tư,Thứ Năm,Thứ Sáu,Thứ Bảy,Chủ Nhật"/>
@@ -131,6 +138,5 @@
                 });
             });
         </script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
