@@ -5,13 +5,10 @@
 package dao;
 
 import context.DBContext;
-import context.ValidFunction;
 import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import model.Customer;
@@ -25,7 +22,10 @@ public class CustomerDAO extends DBContext {
 //    ValidFunction valid = new ValidFunction();
 
     public Customer customerLogin(String username) {
-        String sql = "select * from Customer where username = ? and accountStatus = 'Active'";
+       String sql = "SELECT customerID, username, password, fullName, email, phone, address, accountStatus, " +
+             "registrationDate, CONVERT(NVARCHAR, dateOfBirth, 103) AS dateOfBirth, gender, profilePicture " +
+             "FROM Customer WHERE username = ? AND accountStatus = 'Active'";
+
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, username);

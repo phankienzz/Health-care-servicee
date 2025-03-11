@@ -35,6 +35,10 @@
         <servlet-name>Appointment</servlet-name>
         <servlet-class>Appointment.Appointment</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Edit_appointment</servlet-name>
+        <servlet-class>Appointment.Edit_appointment</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RequestPassword</servlet-name>
         <url-pattern>/requestPassword</url-pattern>
@@ -55,6 +59,10 @@
         <servlet-name>Appointment</servlet-name>
         <url-pattern>/appointment</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Edit_appointment</servlet-name>
+        <url-pattern>/edit_appointment</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index_1.jsp</welcome-file>
     </welcome-file-list>
@@ -71,10 +79,6 @@
         <servlet-class>CustomerController.ProfileServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>EditProfileServlet</servlet-name>
-        <servlet-class>CustomerController.EditProfileServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>RequestPassword</servlet-name>
         <servlet-class>CustomerController.RequestPassword</servlet-class>
     </servlet>
@@ -89,9 +93,5 @@
     <servlet-mapping>
         <servlet-name>ProfileServlet</servlet-name>
         <url-pattern>/profile</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>EditProfileServlet</servlet-name>
-        <url-pattern>/editprofile</url-pattern>
     </servlet-mapping>
 </web-app>

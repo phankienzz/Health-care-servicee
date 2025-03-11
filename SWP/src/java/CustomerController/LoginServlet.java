@@ -23,7 +23,6 @@ import model.Staff;
  *
  * @author jaxbo
  */
-
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
 
@@ -92,9 +91,11 @@ public class LoginServlet extends HttpServlet {
                         request.getRequestDispatcher("login.jsp").forward(request, response);
                     }
                 } catch (IllegalArgumentException e) {
+                    e.printStackTrace(); // Debug lỗi trong console
                     request.setAttribute("error", "Password format is invalid. Please contact support!");
                     request.getRequestDispatcher("login.jsp").forward(request, response);
                 }
+
             } else if ("staff".equals(userType)) {
                 StaffDAO dao = new StaffDAO();
                 Staff staff = dao.staffLogin(user);

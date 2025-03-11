@@ -79,32 +79,28 @@
 
                                     <div class="profile-basic">
                                         <div class="row">
+                                            <!-- Full Name -->
                                             <div class="col-md-6">
                                                 <div class="form-group form-focus">
                                                     <label class="focus-label">Full Name</label>
                                                     <input type="text" class="form-control floating" name="fullName" 
                                                            value="${sessionScope.customerAccount.fullName}" 
                                                            onblur="this.value = this.value.trim();">
-
                                                 </div>
                                             </div>
 
-
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Birth Date <span class="text-danger">*</span></label>
+                                            <!-- Birth Date -->
+                                            <div class="col-md-6">
+                                                <div class="form-group form-focus">
+                                                    <label class="focus-label">Birth Date</label>
                                                     <div class="cal-icon">
-                                                        <!-- Set the value of the input field dynamically -->
-                                                        <input name="dateOfBirth" class="form-control datetimepicker" type="text"
-                                                               value="${sessionScope.customerAccount.dateOfBirth != null ? sessionScope.customerAccount.dateOfBirth : ''}" />
+                                                        <input type="text" name="dateOfBirth" class="form-control datetimepicker" 
+                                                               value="${sessionScope.customerAccount.dateOfBirth != null ? sessionScope.customerAccount.dateOfBirth : ''}">
                                                     </div>
                                                 </div>
                                             </div>
 
-
-
-
-
+                                            <!-- Gender -->
                                             <div class="col-md-6">
                                                 <div class="form-group form-focus select-focus">
                                                     <label class="focus-label">Gender</label>
@@ -114,17 +110,19 @@
                                                     </select>
                                                 </div>
                                             </div>
+
+                                            <!-- Email -->
                                             <div class="col-md-6">
                                                 <div class="form-group form-focus">
                                                     <label class="focus-label">Email</label>
-                                                    <input type="text" class="form-control floating" name="email" value="${sessionScope.customerAccount.email}" >
-
+                                                    <input type="text" class="form-control floating" name="email" 
+                                                           value="${sessionScope.customerAccount.email}">
                                                 </div>
-                                                <div><p class="text-danger">${error}</p>
-                                                </div>
+                                                <p class="text-danger">${error}</p>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>

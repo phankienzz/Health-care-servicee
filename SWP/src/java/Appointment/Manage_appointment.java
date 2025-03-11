@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.MedicalExamination;
+import model.Professional;
 
 /**
  *
@@ -21,6 +22,8 @@ import model.MedicalExamination;
  */
 @WebServlet(name = "Manage_appointment", urlPatterns = {"/manage_appointment"})
 public class Manage_appointment extends HttpServlet {
+
+    private MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,7 +38,6 @@ public class Manage_appointment extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -48,7 +50,6 @@ public class Manage_appointment extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -57,22 +58,31 @@ public class Manage_appointment extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Lấy danh sách MedicalExamination từ DAO
-        List<MedicalExamination> list = medicalExaminationDAO.getAllExamination();
+        // Lấy tham số từ form lọc
+        String patientName = request.getParameter("patientName");
+        String ageSort = request.getParameter("ageSort");
+        String doctorName = request.getParameter("doctorName");
+        String appointmentDate = request.getParameter("appointmentDate");
+        String timeCreatedSort = request.getParameter("timeCreatedSort");
+        String status = request.getParameter("status");
 
-        // Đưa danh sách vào request attribute với key "list"
+        // Lấy danh sách đã lọc
+        List<MedicalExamination> list = medicalExaminationDAO.getFilteredExaminations(
+                patientName, ageSort, doctorName, appointmentDate, timeCreatedSort, status);
+
+        // Lấy danh sách tất cả bác sĩ để hiển thị trong dropdown
+        List<Professional> allProfessionals = medicalExaminationDAO.getAllProfessionals();
+
+        // Đặt dữ liệu vào request
         request.setAttribute("list", list);
+        request.setAttribute("allProfessionals", allProfessionals);
 
-        // Chuyển hướng đến JSP để hiển thị danh sách
+        // Chuyển hướng đến JSP
         request.getRequestDispatcher("manage_appointment.jsp").forward(request, response);
     }
-
-
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -96,6 +106,5 @@ public class Manage_appointment extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
 }
