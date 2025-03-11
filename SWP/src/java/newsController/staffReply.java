@@ -64,7 +64,7 @@ public class staffReply extends HttpServlet {
         // Tạo đối tượng StaffReply
         StaffReply reply = new StaffReply();
         reply.setComment_id(commentId);
-        reply.setStaffID(staffId);
+        reply.setStaff_id(staffId);
         reply.setContent(content);
         reply.setStatus(1);
 

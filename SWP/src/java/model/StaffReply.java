@@ -12,29 +12,18 @@ public class StaffReply {
 
     private int reply_id;
     private int comment_id;
-    private int staffID;
-    private Staff staffId;
+    private int staff_id;
     private String content;
     private int status;
     private String created_at;
 
     public StaffReply() {
     }
-    
 
-    public StaffReply(int reply_id, int comment_id, int staffID, String content, int status, String created_at) {
+    public StaffReply(int reply_id, int comment_id, int staff_id, String content, int status, String created_at) {
         this.reply_id = reply_id;
         this.comment_id = comment_id;
-        this.staffID = staffID;
-        this.content = content;
-        this.status = status;
-        this.created_at = created_at;
-    }
-
-    public StaffReply(int reply_id, int comment_id, Staff staffId, String content, int status, String created_at) {
-        this.reply_id = reply_id;
-        this.comment_id = comment_id;
-        this.staffId = staffId;
+        this.staff_id = staff_id;
         this.content = content;
         this.status = status;
         this.created_at = created_at;
@@ -56,20 +45,12 @@ public class StaffReply {
         this.comment_id = comment_id;
     }
 
-    public int getStaffID() {
-        return staffID;
+    public int getStaff_id() {
+        return staff_id;
     }
 
-    public void setStaffID(int staffID) {
-        this.staffID = staffID;
-    }
-
-    public Staff getStaffId() {
-        return staffId;
-    }
-
-    public void setStaffId(Staff staffId) {
-        this.staffId = staffId;
+    public void setStaff_id(int staff_id) {
+        this.staff_id = staff_id;
     }
 
     public String getContent() {
@@ -98,7 +79,7 @@ public class StaffReply {
 
     @Override
     public String toString() {
-        return "StaffReply{" + "reply_id=" + reply_id + ", comment_id=" + comment_id + ", staffID=" + staffID + ", content=" + content + ", status=" + status + ", created_at=" + created_at + '}';
-    }   
+        return "StaffReply{" + "reply_id=" + reply_id + ", comment_id=" + comment_id + ", staff_id=" + staff_id + ", content=" + content + ", status=" + status + ", created_at=" + created_at + '}';
+    }
 
 }

@@ -29,7 +29,7 @@ public class StaffReplyDAO extends DBContext {
                 StaffReply reply = new StaffReply();
                 reply.setReply_id(rs.getInt("reply_id"));
                 reply.setComment_id(rs.getInt("comment_id"));
-                reply.setStaffID(rs.getInt("staff_id"));
+                reply.setStaff_id(rs.getInt("staff_id"));
                 reply.setContent(rs.getString("content"));
                 reply.setStatus(rs.getInt("status"));
                 reply.setCreated_at(rs.getString("created_at"));
@@ -71,7 +71,7 @@ public class StaffReplyDAO extends DBContext {
         String sql = "INSERT INTO StaffReplies (comment_id, staff_id, content, status) VALUES (?, ?, ?, 1)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, reply.getComment_id());
-            ps.setInt(2, reply.getStaffID());
+            ps.setInt(2, reply.getStaff_id());
             ps.setString(3, reply.getContent());
             ps.executeUpdate();
             return true;

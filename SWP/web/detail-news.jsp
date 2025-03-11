@@ -120,17 +120,18 @@
                                                             <span>${comment.create_at}</span>
                                                         </div>
                                                         <div class="comment-meta mt-2">
-                                                            <c:if test="${sessionScope.customerAccount == null}">
-                                                                <a href="login.jsp?newsID=${newsDetail.post_id}&parent_comment_id=${comment.comment_id}#comment-form"
+                                                            <c:choose>
+                                                                <c:when test="${empty sessionScope.customerAccount and empty sessionScope.staffAccount}">                                                                <a href="login.jsp?newsID=${newsDetail.post_id}&parent_comment_id=${comment.comment_id}#comment-form"
                                                                    onclick="return confirm('Bạn cần đăng nhập để trả lời bình luận!');">
-                                                                    <i class="icofont-reply mr-2 text-muted"></i>Reply
-                                                                </a>
-                                                            </c:if>
-                                                            <c:if test="${sessionScope.customerAccount != null}">
-                                                                <a href="?newsID=${newsDetail.post_id}&parent_comment_id=${comment.comment_id}#comment-form">
-                                                                    <i class="icofont-reply mr-2 text-muted"></i>Reply
-                                                                </a>
-                                                            </c:if>
+                                                                        <i class="icofont-reply mr-2 text-muted"></i>Reply
+                                                                    </a>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <a href="?newsID=${newsDetail.post_id}&parent_comment_id=${comment.comment_id}#comment-form">
+                                                                        <i class="icofont-reply mr-2 text-muted"></i>Reply
+                                                                    </a>
+                                                                </c:otherwise>
+                                                            </c:choose>
                                                         </div>
                                                         <div class="comment-content mt-3">
                                                             <p>${comment.content}</p>
@@ -143,11 +144,26 @@
                                                                     <li class="mb-3">
                                                                         <div class="comment-area-box">
                                                                             <div class="comment-thumb float-left">
-                                                                                <img style="width: 50px; height: 50px; border-radius: 50%;" alt="" src="pictureprofile?staffID=${staffReply.staffID}" class="img-fluid">
+                                                                                <img style="width: 50px; height: 50px; border-radius: 50%;" alt="" src="pictureprofile?staffID=${staffReply.staff_id}" class="img-fluid">
                                                                             </div>
                                                                             <div class="comment-info">
                                                                                 <h5 class="mb-1">Staff</h5>
                                                                                 <span>${staffReply.created_at}</span>
+                                                                            </div>
+                                                                            <div class="comment-meta mt-2">
+                                                                                <c:choose>
+                                                                                    <c:when test="${empty sessionScope.customerAccount and empty sessionScope.staffAccount}">
+                                                                                        <a href="login.jsp?newsID=${newsDetail.post_id}&parent_comment_id=${staffReply.reply_id}&parent_type=staff#comment-form"
+                                                                                           onclick="return confirm('Bạn cần đăng nhập để trả lời bình luận!');">
+                                                                                            <i class="icofont-reply mr-2 text-muted"></i>Reply
+                                                                                        </a>
+                                                                                    </c:when>
+                                                                                    <c:otherwise>
+                                                                                        <a href="?newsID=${newsDetail.post_id}&parent_comment_id=${staffReply.reply_id}&parent_type=staff#comment-form">
+                                                                                            <i class="icofont-reply mr-2 text-muted"></i>Reply
+                                                                                        </a>
+                                                                                    </c:otherwise>
+                                                                                </c:choose>
                                                                             </div>
                                                                             <div class="comment-content mt-3">
                                                                                 <p><strong>Reply:</strong> ${staffReply.content}</p>
