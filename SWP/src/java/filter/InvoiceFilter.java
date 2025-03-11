@@ -26,22 +26,22 @@ import model.Staff;
  *
  * @author Gigabyte
  */
-public class StaffFilter implements Filter {
-
+public class InvoiceFilter implements Filter {
+    
     private static final boolean debug = true;
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
-
-    public StaffFilter() {
-    }
-
+    
+    public InvoiceFilter() {
+    }    
+    
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("StaffFilter:DoBeforeProcessing");
+            log("InvoiceFilter:DoBeforeProcessing");
         }
 
         // Write code here to process the request and/or response before
@@ -64,12 +64,12 @@ public class StaffFilter implements Filter {
 	    log(buf.toString());
 	}
          */
-    }
-
+    }    
+    
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("StaffFilter:DoAfterProcessing");
+            log("InvoiceFilter:DoAfterProcessing");
         }
 
         // Write code here to process the request and/or response after
@@ -103,11 +103,11 @@ public class StaffFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-
+        
         if (debug) {
-            log("StaffFilter:doFilter()");
+            log("InvoiceFilter:doFilter()");
         }
-
+        
         doBeforeProcessing(request, response);
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
@@ -129,29 +129,32 @@ public class StaffFilter implements Filter {
             boolean canDelete = false;
             boolean canView = false;
             for (Permission p : list) {
-                if (p.getPermissionID() == 23) {
+                if (p.getPermissionID() == 5) {
                     canAdd = true;
                 }
-                if (p.getPermissionID() == 24) {
+                if (p.getPermissionID() == 4) {
                     canView = true;
                 }
-                if (p.getPermissionID() == 25) {
+                if (p.getPermissionID() == 6) {
                     canEdit = true;
                 }
-                if (p.getPermissionID() == 26) {
+                if (p.getPermissionID() == 6) {
                     canDelete = true;
                 }
             }
-            if ((uri.contains("staff") || uri.contains("staff.jsp")) && !canView) {
+            if ((uri.contains("invoice") || uri.contains("invoices.jsp")) && !canView) {
                 res.sendRedirect("errorPermission.jsp");
             }
-            if ((uri.contains("addStaff") || uri.contains("add-staff.jsp")) && !canAdd) {
+            if ((uri.contains("viewInvoice") || uri.contains("invoice-view.jsp")) && !canView) {
                 res.sendRedirect("errorPermission.jsp");
             }
-            if ((uri.contains("editStaff") || uri.contains("edit-staff.jsp")) && !canEdit) {
+            if ((uri.contains("createInvoice") || uri.contains("create-invoice.jsp")) && !canAdd) {
                 res.sendRedirect("errorPermission.jsp");
             }
-            if (uri.contains("deleteStaff") && !canDelete) {
+            if ((uri.contains("editInvoice") || uri.contains("edit-invoice.jsp")) && !canEdit) {
+                res.sendRedirect("errorPermission.jsp");
+            }
+            if (uri.contains("deleteinvoice") && !canDelete) {
                 res.sendRedirect("errorPermission.jsp");
             }
         }
@@ -165,7 +168,7 @@ public class StaffFilter implements Filter {
             problem = t;
             t.printStackTrace();
         }
-
+        
         doAfterProcessing(request, response);
 
         // If there was a problem, we want to rethrow it if it is
@@ -200,17 +203,17 @@ public class StaffFilter implements Filter {
     /**
      * Destroy method for this filter
      */
-    public void destroy() {
+    public void destroy() {        
     }
 
     /**
      * Init method for this filter
      */
-    public void init(FilterConfig filterConfig) {
+    public void init(FilterConfig filterConfig) {        
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
-            if (debug) {
-                log("StaffFilter:Initializing filter");
+            if (debug) {                
+                log("InvoiceFilter:Initializing filter");
             }
         }
     }
@@ -221,27 +224,27 @@ public class StaffFilter implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("StaffFilter()");
+            return ("InvoiceFilter()");
         }
-        StringBuffer sb = new StringBuffer("StaffFilter(");
+        StringBuffer sb = new StringBuffer("InvoiceFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
     }
-
+    
     private void sendProcessingError(Throwable t, ServletResponse response) {
-        String stackTrace = getStackTrace(t);
-
+        String stackTrace = getStackTrace(t);        
+        
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
                 PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);
+                PrintWriter pw = new PrintWriter(ps);                
                 pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
 
                 // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
-                pw.print(stackTrace);
+                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
+                pw.print(stackTrace);                
                 pw.print("</pre></body>\n</html>"); //NOI18N
                 pw.close();
                 ps.close();
@@ -258,7 +261,7 @@ public class StaffFilter implements Filter {
             }
         }
     }
-
+    
     public static String getStackTrace(Throwable t) {
         String stackTrace = null;
         try {
@@ -272,9 +275,9 @@ public class StaffFilter implements Filter {
         }
         return stackTrace;
     }
-
+    
     public void log(String msg) {
-        filterConfig.getServletContext().log(msg);
+        filterConfig.getServletContext().log(msg);        
     }
-
+    
 }
