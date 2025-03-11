@@ -109,8 +109,9 @@
             <!-- Search Container -->
             <div class="search-container">
                 <form action="loadstaffforschedule" method="Post" class="row g-3">
+                    <input type="hidden" name="searchType" value="name">
                     <div class="col-md-8">
-                        <label for="doctorName" class="form-label control-label"><i class="fas fa-search"></i> Tìm kiếm theo tên bác sĩ</label>
+                        <label for="doctorName" class="form-label control-label"><i class="fas fa-search"></i> Tìm kiếm theo tên</label>
                         <input type="text" class="form-control" id="doctorName" name="searchName" placeholder="Nhập tên bác sĩ" value="${param.searchName}">
                     </div>
                     <div class="col-md-4 d-flex align-items-end">
@@ -124,14 +125,31 @@
                 </form>
             </div>
 
+            <!-- Search by Date -->
+            <div class="search-container">
+                <form action="loadstaffforschedule" method="POST" class="row g-3">
+                    <input type="hidden" name="searchType" value="date">
+                    <div class="col-md-6">
+                        <label for="workDate" class="form-label control-label">Tìm kiếm theo ngày</label>
+                        <input type="date" class="form-control" id="workDate" name="workDate" value="${param.workDate}">
+                    </div>
+                    <div class="col-md-6 d-flex align-items-end">
+                        <button type="submit" class="btn search-btn">
+                            <i class="fas fa-search"></i> Tìm kiếm
+                        </button>
+                    </div>
+                </form>
+            </div>
+
             <!-- Filter Container -->
             <div class="filter-container">
                 <form action="loadstaffforschedule" method="Post" class="row g-3">
+                    <input type="hidden" name="searchType" value="dayandshift">
                     <div class="col-12">
                         <label class="form-label control-label"><i class="fas fa-filter"></i> Lọc lịch làm việc</label>
                     </div>
                     <div class="col-md-5">
-                        <label for="dayName" class="form-label">Ngày</label>
+                        <label for="dayName" class="form-label">Ngày trong tuần</label>
                         <select class="form-select" id="dayName" name="dayFilter">
                             <option value="">Tất cả</option>
                             <option value="2" ${param.dayFilter == '2' ? 'selected' : ''}>Monday</option>
@@ -144,7 +162,7 @@
                         </select>
                     </div>
                     <div class="col-md-4">
-                        <label for="shift" class="form-label">Ca</label>
+                        <label for="shift" class="form-label">Ca trong ngày</label>
                         <select class="form-select" id="shift" name="shiftFilter">
                             <option value="">Tất cả</option>
                             <option value="MORNING" ${param.shiftFilter == 'MORNING' ? 'selected' : ''}>MORNING</option>

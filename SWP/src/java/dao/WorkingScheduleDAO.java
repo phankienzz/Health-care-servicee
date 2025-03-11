@@ -3,6 +3,8 @@ package dao;
 import context.DBContext;
 import model.WorkingSchedule;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -342,6 +344,26 @@ public class WorkingScheduleDAO {
         return schedules;
     }
 
+    public List<WorkingSchedule> getSchedulesByDate(String dateStr) {
+        try {
+            // Định dạng ngày (YYYY-MM-DD)
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate date = LocalDate.parse(dateStr, formatter);
+
+            // Lấy thứ trong tuần theo Java
+            int dayOfWeek = date.getDayOfWeek().getValue();
+
+            // Điều chỉnh để khớp với database
+            int dbDayOfWeek = (dayOfWeek == 7) ? 1 : dayOfWeek + 1;
+
+            // Gọi DAO để lấy lịch làm việc theo thứ trong database
+            return getSchedulesByShiftAndDay(null, dbDayOfWeek);
+        } catch (Exception e) {
+            System.err.println("Lỗi khi chuyển đổi ngày: " + e.getMessage());
+            return List.of(); // Trả về danh sách rỗng nếu lỗi
+        }
+    }
+
     // Chuyển đổi ResultSet thành WorkingSchedule ------------------------------------------------------------------------------
     // ---------------------------------------------------------------------------------------------------------------------------
     private WorkingSchedule mapResultSetToSchedule(ResultSet rs) throws SQLException {
@@ -357,7 +379,7 @@ public class WorkingScheduleDAO {
 
     public static void main(String[] args) {
         WorkingScheduleDAO dao = new WorkingScheduleDAO();
-        List<WorkingSchedule> list = dao.getSchedulesByShiftAndDay("", 4);
+        List<WorkingSchedule> list = dao.getSchedulesByDate("2025-03-11");
         for (WorkingSchedule ws : list) {
             System.out.println(ws);
         }

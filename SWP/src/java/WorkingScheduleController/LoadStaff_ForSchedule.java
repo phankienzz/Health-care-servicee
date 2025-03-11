@@ -40,18 +40,29 @@ public class LoadStaff_ForSchedule extends HttpServlet {
 
         // Lấy dữ liệu từ request
         String searchName = request.getParameter("searchName");
+        String workDate = request.getParameter("workDate");
         String dayFilter = request.getParameter("dayFilter");
         String shiftFilter = request.getParameter("shiftFilter");
+        String searchType = request.getParameter("searchType");
+        List<WorkingSchedule> professionalList = workingDAO.getAllSchedules();
 
-        List<WorkingSchedule> professionalList;
-
-        // Nếu searchName không rỗng hoặc không trống -> tìm kiếm theo tên
-        if (searchName != null && !searchName.trim().isEmpty()) {
-            professionalList = workingDAO.searchSchedulesByName(val.normalizeName(searchName));
-        } else {
-            // Nếu không có searchName -> lọc theo ca và ngày
-            int dayFilterInt = Integer.parseInt(dayFilter);
-            professionalList = workingDAO.getSchedulesByShiftAndDay(shiftFilter, dayFilterInt);
+        switch (searchType) {
+            case "name":
+                if (searchName != null && !searchName.trim().isEmpty()) {
+                    professionalList = workingDAO.searchSchedulesByName(val.normalizeName(searchName));
+                }
+                break;
+            case "date":
+                if (workDate != null && !workDate.trim().isEmpty()) {
+                    professionalList = workingDAO.getSchedulesByDate(workDate);
+                }
+                break;
+            case "dayandshift":
+                int dayFilterInt = Integer.parseInt(dayFilter);
+                professionalList = workingDAO.getSchedulesByShiftAndDay(shiftFilter, dayFilterInt);
+                break;
+            default:
+                throw new AssertionError();
         }
 
         // Gửi dữ liệu về trang JSP
