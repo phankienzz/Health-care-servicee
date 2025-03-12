@@ -19,6 +19,7 @@ public class MedicalExamination {
     private String note;
     private String createdAt;
     private List<Service> list;
+    
 
     public MedicalExamination() {
     }

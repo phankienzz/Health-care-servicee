@@ -453,6 +453,7 @@
                                     <h4><i style="color: green">${mess}</i></h4>
                                     </c:if>
                                 <div class="text-center m-t-20">
+                                    <a href="invoice" class="btn btn-grey submit-btn m-r-10">Back</a>
                                     <a href="createInvoice?medicalExaminationID=${medicalExaminationID}&&discount=${discountID}" class="btn btn-primary submit-btn">Create</a>
                                 </div>
                             </form>

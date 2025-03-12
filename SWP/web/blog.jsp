@@ -364,17 +364,23 @@
 
 
 
-                    <!-- Search Bar -->
-                    <form action="Search_block" method="get" class="d-flex mx-auto my-2 my-lg-0">
-                        <input type="text" name="keyword" id="searchKeyword" placeholder="Search blogs..." class="form-control" value="${keyword}">
-                        <button type="submit" class="btn btn-primary">Search</button>
+                    <form action="homeblogseverlet" method="get" class="d-flex mb-3">
+                        <select name="category" class="form-select me-2">
+                            <option value="" ${selectedCategory == -1 ? 'selected' : ''}>All Categories</option>
+                            <option value="1" ${selectedCategory == 1 ? 'selected' : ''}>General Health</option>
+                            <option value="2" ${selectedCategory == 2 ? 'selected' : ''}>Cardiology</option>
+                            <option value="3" ${selectedCategory == 3 ? 'selected' : ''}>Pediatrics</option>
+                            <option value="4" ${selectedCategory == 4 ? 'selected' : ''}>Nutrition</option>
+                            <option value="5" ${selectedCategory == 5 ? 'selected' : ''}>Mental Health</option>
+                        </select>
+
+
+                        <button type="submit" class="btn btn-primary">Filter</button>
                     </form>
 
-                    <!-- Hiển thị kết quả AJAX -->
-                    <div id="searchResults" class="row mt-3"></div>
 
 
-
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script>
                         $(document).ready(function () {
@@ -386,29 +392,34 @@
                                         method: "GET",
                                         data: {keyword: keyword},
                                         success: function (response) {
-                                            $("#searchResults").html(response);
+                                            $("#initialResults").hide(); // Ẩn danh sách ban đầu
+                                            $("#searchResults").show().html(response); // Hiện và cập nhật kết quả AJAX
+                                        },
+                                        error: function () {
+                                            $("#initialResults").hide();
+                                            $("#searchResults").show().html("<div class=\"col-12\"><p style=\"color: red;\">⚠️ Error occurred while searching!</p></div>");
                                         }
                                     });
                                 } else {
-                                    // Hiển thị lại danh sách gốc nếu không có từ khóa tìm kiếm
-                                    $.ajax({
-                                        url: "homeblogseverlet",
-                                        method: "GET",
-                                        success: function (response) {
-                                            $("#searchResults").html($(response).find("#searchResults").html());
-                                        }
-                                    });
+                                    $("#searchResults").hide(); // Ẩn kết quả AJAX
+                                    $("#initialResults").show(); // Hiện lại danh sách ban đầu
                                 }
                             });
                         });
-
                     </script>
 
 
+                    <!-- Search Bar -->
+                    <form action="Search_block" method="get" class="d-flex mx-auto my-2 my-lg-0">
+                        <input type="text" name="keyword" id="searchKeyword" placeholder="Search blogs..." class="form-control" value="${keyword}">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </form>
 
+                    <!-- Khu vực hiển thị kết quả AJAX -->
+                    <div id="searchResults" class="row" style="display: none;"></div>
 
-
-                    <div id="searchResults" class="row">
+                    <!-- Danh sách ban đầu -->
+                    <div id="initialResults" class="row">
                         <c:if test="${empty blogs}">
                             <div class="col-12">
                                 <p style="color: red;">⚠️ No blogs available!</p>
@@ -416,10 +427,10 @@
                         </c:if>
 
                         <c:forEach var="blog" items="${blogs}">
-                            <div class="col-6">
+                            <div class="col-12">
                                 <div class="blog-list-item">
                                     <a href="blogdetail?postId=${blog.post_id}">
-                                        <img  src="${blog.image}" alt="${blog.title}">
+                                        <img src="${blog.image}" alt="${blog.title}">
                                     </a>
                                     <div class="blog-content">
                                         <h3 class="blog-title">
@@ -432,12 +443,16 @@
                                         <a href="editblog?postId=${blog.post_id}" class="btn btn-warning btn-sm">
                                             Update
                                         </a>
+                                        <form action="deleteblog" method="post" style="display: inline;" 
+                                              onsubmit="return confirm('Bạn có chắc chắn muốn xóa bài viết này?');">
+                                            <input type="hidden" name="postId" value="${blog.post_id}">
+                                            <button type="submit" class="btn btn-danger btn-sm">🗑 Xóa</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </c:forEach>
                     </div>
-
                     <!-- Pagination -->
                     <div class="pagination">
                         <c:if test="${totalPages > 1}">

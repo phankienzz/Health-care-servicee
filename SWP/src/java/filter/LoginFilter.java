@@ -106,6 +106,10 @@ public class LoginFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest)request;
         HttpServletResponse res = (HttpServletResponse)response;
         HttpSession session = req.getSession();
+        if(session.getAttribute("staffAccount")==null && session.getAttribute("customerAccount") == null){
+            res.sendRedirect("login.jsp");
+            return;
+        }
         if(session.getAttribute("staffAccount")==null){
             res.sendRedirect("errorPermission.jsp");
         }

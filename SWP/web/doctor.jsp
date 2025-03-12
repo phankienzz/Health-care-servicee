@@ -1,8 +1,15 @@
 
 
-<%@ page import=" java.util.List, model.Professional" %>
+<%@ page import=" java.util.List, model.Professional,dao.ProfessionalDAO" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%
+    if (session.getAttribute("professionals") == null) {
+        ProfessionalDAO dao = new ProfessionalDAO();
+        List<Professional> professionals = dao.getAllProfessionals();
+        session.setAttribute("professionals", professionals);
+    }
+%>
 <!DOCTYPE html>
 <html lang="zxx">
     <head>

@@ -164,7 +164,7 @@
                                                                     </c:if>
 
                                                                     <c:if test="${permission.permissionID == 26}">
-                                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee" data-id="${staff.staffID}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_ employee" data-id="${staff.staffID}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                                                     </c:if>
                                                                 </c:forEach>
                                                             </div>

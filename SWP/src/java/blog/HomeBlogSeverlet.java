@@ -1,110 +1,89 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package blog;
 
 import dao.NewsDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 import model.News;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name = "HomeBlogSeverlet", urlPatterns = {"/homeblogseverlet"})
+@WebServlet(name = "HomeBlogServlet", urlPatterns = {"/homeblogseverlet"})
 public class HomeBlogSeverlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         NewsDAO dao = new NewsDAO();
 
         int page = 1;
-    int recordsPerPage = 8; 
+        int recordsPerPage = 8; 
 
-    // Validate page parameter
-    String pageParam = request.getParameter("page");
-    if (pageParam != null) {
-        try {
-            page = Integer.parseInt(pageParam);
-            if (page < 1) page = 1; // Minimum page is 1
-        } catch (NumberFormatException e) {
-            page = 1; // Default to page 1 if invalid
+        // Lấy tham số "page" và kiểm tra hợp lệ
+        String pageParam = request.getParameter("page");
+        if (pageParam != null) {
+            try {
+                page = Integer.parseInt(pageParam);
+                if (page < 1) page = 1;
+            } catch (NumberFormatException e) {
+                page = 1;
+            }
         }
+
+        // Lấy tham số category_id từ request (dạng số nguyên)
+        int categoryId = -1; // -1 nghĩa là lấy tất cả bài viết
+        String categoryParam = request.getParameter("category");
+        if (categoryParam != null && !categoryParam.isEmpty()) {
+            try {
+                categoryId = Integer.parseInt(categoryParam);
+            } catch (NumberFormatException e) {
+                categoryId = -1; // Nếu không hợp lệ, lấy tất cả bài viết
+            }
+        }
+
+        // Lấy danh sách blog theo danh mục và phân trang
+        List<News> blogs;
+        int totalRecords;
+        if (categoryId != -1) {
+            blogs = dao.getBlogsByCategoryAndPage(categoryId, (page - 1) * recordsPerPage, recordsPerPage);
+            totalRecords = dao.getTotalBlogCountByCategory(categoryId);
+        } else {
+            blogs = dao.getBlogsByPage((page - 1) * recordsPerPage, recordsPerPage);
+            totalRecords = dao.getTotalBlogCount();
+        }
+
+        int totalPages = (int) Math.ceil((double) totalRecords / recordsPerPage);
+        if (totalRecords == 0) totalPages = 1;
+        if (page > totalPages) page = totalPages;
+
+        // Set attributes cho JSP
+        request.setAttribute("blogs", blogs);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("selectedCategory", categoryId);
+        request.getRequestDispatcher("blog.jsp").forward(request, response);
     }
 
-    // Fetch blogs and total count
-    List<News> blogs = dao.getBlogsByPage((page - 1) * recordsPerPage, recordsPerPage);
-    int totalRecords = dao.getTotalBlogCount();
-    int totalPages = (int) Math.ceil((double) totalRecords / recordsPerPage);
-
-    // Ensure totalPages is at least 1 even if no records
-    if (totalRecords == 0) totalPages = 1;
-
-    // Validate page against totalPages
-    if (page > totalPages) page = totalPages;
-
-    // Set attributes for JSP
-    request.setAttribute("blogs", blogs);
-    request.setAttribute("currentPage", page);
-    request.setAttribute("totalPages", totalPages);
-    request.getRequestDispatcher("blog.jsp").forward(request, response);
-}
-
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "Servlet hiển thị danh sách blog có phân trang và lọc theo danh mục";
+    }
 }

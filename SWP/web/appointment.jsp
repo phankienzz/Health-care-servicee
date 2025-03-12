@@ -211,7 +211,7 @@
 
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <input name="date" type="date" class="form-control" required>
+                                            <input name="date" type="date" class="form-control " required>
                                         </div>
                                     </div>
 

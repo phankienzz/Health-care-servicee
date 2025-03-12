@@ -54,41 +54,54 @@
                                     <label>Blog Name</label>
                                     <input class="form-control" type="text" name="name" required>
                                 </div>
+
                                 <div class="form-group">
                                     <label>Description</label>
-                                    <textarea cols="30" rows="2" class="form-control" name="description" required></textarea>
+                                    <textarea cols="30" rows="2" class="form-control" name="description" ></textarea>
                                 </div>
+
+                                <div class="form-group">
+                                    <label>Category</label>
+                                    <select class="form-control" name="categoryId" required>
+                                        <option value="">Select Category</option>
+                                        <option value="1">General Health</option>
+                                        <option value="2">Cardiology</option>
+                                        <option value="3">Pediatrics</option>
+                                        <option value="4">Nutrition</option>
+                                        <option value="5">Mental Health</option>
+                                    </select>
+                                </div>
+
                                 <div class="form-group">
                                     <label>Blog Images</label>
-                                    <!-- Adding the 'accept' attribute to limit selection to PNG files -->
                                     <input class="form-control" type="file" name="image" id="image" accept="image/png, image/jpeg, image/gif, image/jpg">
-
-
                                     <c:if test="${not empty blog.image}">
                                         <img src="${blog.image}" width="100">
                                     </c:if>
                                 </div>
 
-
                                 <div class="form-group">
-                                    <label>Blog content</label>
-                                    <textarea cols="30" rows="6" class="form-control" id="descriptiondetail" name="descriptiondetail" ></textarea>
+                                    <label>Blog Content</label>
+                                    <textarea cols="30" rows="6" class="form-control" id="descriptiondetail" name="descriptiondetail"></textarea>
                                 </div>
+
                                 <div class="form-group">
                                     <label class="display-block">Blog Status</label>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" id="blog_active" value="true" checked>
+                                        <input class="form-check-input" type="radio" name="status" id="blog_active" value="active" checked>
                                         <label class="form-check-label" for="blog_active">Active</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" id="blog_inactive" value="false">
+                                        <input class="form-check-input" type="radio" name="status" id="blog_inactive" value="inactive">
                                         <label class="form-check-label" for="blog_inactive">Inactive</label>
                                     </div>
                                 </div>
+
                                 <div class="m-t-20 text-center">
                                     <button class="btn btn-primary submit-btn">Publish Blog</button>
                                 </div>
                             </form>
+
 
                             <script>
                                 document.addEventListener("DOMContentLoaded", function () {
@@ -101,8 +114,8 @@
                                             .catch(error => console.error(error));
                                 });
                             </script>
-                            
-                            
+
+
                             <script>
                                 document.addEventListener("DOMContentLoaded", function () {
                                     document.getElementById("image").addEventListener("change", function () {
