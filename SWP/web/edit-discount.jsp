@@ -1,6 +1,6 @@
 <%-- 
-    Document   : discount
-    Created on : Mar 5, 2025, 1:12:52 AM
+    Document   : edit-discount
+    Created on : Mar 11, 2025, 1:58:27 PM
     Author     : Gigabyte
 --%>
 
@@ -10,7 +10,7 @@
 <html lang="en">
 
 
-    <!-- taxes23:26-->
+    <!-- edit-tax24:07-->
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -30,63 +30,42 @@
         <div class="main-wrapper">
             <jsp:include page="headerStaff.jsp"></jsp:include>
             <jsp:include page="sidebar.jsp"></jsp:include>
-            <div class="page-wrapper">
-                <div class="content">
-                    <div class="row">
-                        <div class="col-sm-8 col-6">
-                            <h4 class="page-title">Discount</h4>
-                        </div>
-                        <div class="col-sm-4 col-6 text-right m-b-30">
-                            <a href="add-discount.jsp" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Add Discount</a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="table-responsive">
-                                <table class="table table-striped custom-table mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Discount Name </th>
-                                            <th>Discount Percentage (%) </th>
-                                            <th>Status</th>
-                                            <th class="text-right">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach var="discount" items="${listDiscount}">
-                                            <tr>
-                                                <td>${discount.discountID}</td>
-                                                <td>${discount.discountName}</td>
-                                                <td>${discount.percentage}%</td>
-                                                <td>
-                                                    <div class="action-label">
-                                                        <c:if test="${discount.status == 'Active'}">
-                                                            <a class="custom-badge status-green " href="#" data-toggle="dropdown" aria-expanded="false">
-                                                                Active
-                                                            </a>
-                                                        </c:if>
-                                                        <c:if test="${discount.status == 'Inactive'}">
-                                                            <a class="custom-badge status-red " href="#" data-toggle="dropdown" aria-expanded="false">
-                                                                Inactive
-                                                            </a>
-                                                        </c:if>
-                                                    </div>
-                                                </td>
-                                                <td class="text-right">
-                                                    <div class="dropdown dropdown-action">
-                                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                            <a class="dropdown-item" href="editDiscount?discountID=${discount.discountID}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_discount" data-id="${discount.discountID}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
+                <div class="page-wrapper">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-lg-8 offset-lg-2">
+                                <h4 class="page-title">Edit Discount</h4>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-8 offset-lg-2">
+                                <form action="editDiscount" method="Post">
+                                    <input type="hidden" name="discountID" value="${discount.discountID}" />
+                                <div class="form-group">
+                                    <label>Discount Name <span class="text-danger">*</span></label>
+                                    <input class="form-control" name="discountName" value="${discount.discountName}" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label>Discount Percentage (%) <span class="text-danger">*</span></label>
+                                    <input class="form-control" name="percentage" value="${discount.percentage}" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label>Status <span class="text-danger">*</span></label>
+                                    <select class="select" name="status">
+                                        <option value="Active" <c:if test="${discount.status == 'Active'}">selected</c:if>>Active</option>
+                                        <option value="Inactive" <c:if test="${discount.status == 'Inactive'}">selected</c:if>>Inactive</option>
+                                        </select>
+                                    </div>
+                                <c:if test="${error != null}">
+                                    <h4><i style="color: red">${error}</i></h4>
+                                    </c:if>
+                                    <c:if test="${mess != null}">
+                                    <h4><i style="color: green">${mess}</i></h4>
+                                    </c:if>
+                                <div class="m-t-20 text-center">
+                                    <button class="btn btn-primary submit-btn">Save</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -300,23 +279,6 @@
                     </div>
                 </div>
             </div>
-            <div id="delete_discount" class="modal fade delete-modal" role="dialog">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-body text-center">
-                            <img src="assets/img/sent.png" alt="" width="50" height="46">
-                            <h3>Are you sure want to delete this Discount?</h3>
-                            <form id="deleteForm" action="deleteDiscount" method="GET">
-                                <input type="hidden" name="discountID" id="deleteDiscountID">
-
-                                <div class="m-t-20"> <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="sidebar-overlay" data-reff=""></div>
         <script src="assets/js/jquery-3.2.1.min.js"></script>
@@ -325,17 +287,9 @@
         <script src="assets/js/jquery.slimscroll.js"></script>
         <script src="assets/js/select2.min.js"></script>
         <script src="assets/js/app.js"></script>
-        <script>
-            $(document).ready(function () {
-                $('#delete_discount').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget); // Lấy nút vừa bấm
-                    var discountID = button.data('id'); 
-                    $('#deleteDiscountID').val(discountID);
-                });
-            });
-        </script>
     </body>
 
 
-    <!-- taxes23:27-->
+    <!-- edit-tax24:07-->
 </html>
+

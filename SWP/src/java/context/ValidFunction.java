@@ -19,6 +19,9 @@ public class ValidFunction {
     public boolean containsDigitOrSpecialChar(String str) {
         return str.matches(".*[^a-zA-Z\\s].*"); // Kiểm tra nếu có ký tự không phải chữ cái hoặc khoảng trắng
     }
+    public boolean containsSpecialCharacter(String str) {
+        return str.matches(".*[^a-zA-Z0-9\\s].*");
+    }
 
     public  String normalizeName(String name) {
         if (name == null || name.trim().isEmpty()) {
