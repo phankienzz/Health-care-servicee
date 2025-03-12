@@ -1,16 +1,15 @@
 <%-- 
-    Document   : create-invoice
-    Created on : Mar 4, 2025, 1:36:02 AM
+    Document   : edit-invoice
+    Created on : Mar 11, 2025, 1:47:55 PM
     Author     : Gigabyte
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
 
-    <!-- create-invoice24:07-->
+    <!-- edit-invoice24:07-->
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -304,71 +303,77 @@
                 <div class="content">
                     <div class="row">
                         <div class="col-sm-12">
-                            <h4 class="page-title">Create Invoice</h4>
+                            <h4 class="page-title">Edit Invoice</h4>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12">
-                            <form action="createInvoice" method="post">
+                        <div class="col-md-12">
+                            <form>
                                 <div class="row">
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group">
-                                            <label>Medical Examination ID <span class="text-danger">*</span></label>
-                                            <select class="select" name="medicalExaminationID" onchange="this.form.submit()">
-                                                <option value="0">Select Medical Examination</option>
-                                                <c:forEach var="medExam" items="${listMedicalExam}">
-                                                    <option value="${medExam.examinationID}" <c:if test="${medicalExaminationID == medExam.examinationID}"> selected</c:if>>${medExam.examinationID}</option>
-                                                </c:forEach>
+                                            <label>Client <span class="text-danger">*</span></label>
+                                            <select class="select">
+                                                <option>Please Select</option>
+                                                <option selected>Charles Ortega</option>
+                                                <option>Denise Stevens</option>
+                                                <option>Jennifer Robinson</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group">
-                                            <label>Patient Name</label>
-                                            <input class="form-control" type="text" name="patientName" readonly="" value="${patientName}">
+                                            <label>Department <span class="text-danger">*</span></label>
+                                            <select class="select">
+                                                <option>Select Department</option>
+                                                <option selected>Dentists</option>
+                                                <option>Neurology</option>
+                                            </select>
                                         </div>
                                     </div>
-
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group">
                                             <label>Email</label>
-                                            <input class="form-control" type="email" name="email" readonly="" value="${email}">
+                                            <input class="form-control" type="email" value="charlesortega@example.com">
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group">
-                                            <label>Phone</label>
-                                            <input class="form-control" type="text" name="phone" readonly="" value="${phone}">
+                                            <label>Tax</label>
+                                            <select class="select">
+                                                <option>Select Tax</option>
+                                                <option>VAT</option>
+                                                <option selected>GST</option>
+                                                <option>No Tax</option>
+                                            </select>
                                         </div>
                                     </div>
-
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group">
-                                            <label>Patient Address</label>
-                                            <input class="form-control" type="text" name="address" readonly="" value="${address}"/>
+                                            <label>Client Address</label>
+                                            <textarea class="form-control" rows="3">5754 Airport Rd, Coosada, AL, 36020</textarea>
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group">
-                                            <label>Date of birth <span class="text-danger">*</span></label>
+                                            <label>Billing Address</label>
+                                            <textarea class="form-control" rows="3">5754 Airport Rd, Coosada, AL, 36020</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
+                                            <label>Invoice date <span class="text-danger">*</span></label>
                                             <div class="cal-icon">
-                                                <input class="form-control datetimepicker" readonly="" value="${dateOfBirth}" type="text" name="dateOfBirth">
+                                                <input class="form-control datetimepicker" type="text" value="01/08/2018">
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="col-sm-6 col-md-3">
-
-                                    </div>
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group">
-                                            <label>Discount</label>
-                                            <select class="select" name="discount" onchange="this.form.submit()">
-                                                <option value="0">Select Discount</option>
-                                                <c:forEach var="dis" items="${listDis}">
-                                                    <option value="${dis.discountID}" <c:if test="${dis.discountID == discountID}">selected</c:if> >${dis.discountName}</option>
-                                                </c:forEach>
-                                            </select>
+                                            <label>Due Date <span class="text-danger">*</span></label>
+                                            <div class="cal-icon">
+                                                <input class="form-control datetimepicker" type="text" value="07/08/2018">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -379,32 +384,72 @@
                                                 <thead>
                                                     <tr>
                                                         <th style="width: 20px">#</th>
-                                                        <th class="col-sm-3">Service</th>
-                                                        <th class="col-md-7">Description</th>
-                                                        <th style="width:100px;">Type</th>
+                                                        <th class="col-sm-2">Item</th>
+                                                        <th class="col-md-6">Description</th>
+                                                        <th style="width:100px;">Unit Cost</th>
+                                                        <th style="width:80px;">Qty</th>
                                                         <th>Amount</th>
+                                                        <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <c:set var="i" value="1"/>
-                                                    <c:forEach var="service" items="${listService}">
-                                                        <tr>
-                                                            <td>${i}</td>
-                                                            <c:set var="i" value="${i + 1}"/>
-                                                            <td>
-                                                                <input class="form-control" readonly="" type="text" value="${service.packageName}" style="min-width:150px">
-                                                            </td>
-                                                            <td>
-                                                                <input class="form-control"  readonly="" type="text" value="${service.description}" style="min-width:150px">
-                                                            </td>
-                                                            <td>
-                                                                <input class="form-control" readonly="" value="${service.type}" style="width:100px" type="text">
-                                                            </td>
-                                                            <td>
-                                                                <input class="form-control form-amt" value="${service.price}" readonly="" style="width:120px" type="text">
-                                                            </td>
-                                                        </tr>
-                                                    </c:forEach>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>
+                                                            <input class="form-control" type="text" value="Full body checkup" style="min-width:150px">
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" type="text" value="Lorem ipsum dolor sit amet, consectetur adipiscing elit" style="min-width:150px">
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" style="width:100px" type="text" value="150">
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" style="width:80px" type="text" value="1">
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control form-amt" readonly="" style="width:120px" type="text" value="150">
+                                                        </td>
+                                                        <td><a href="javascript:void(0)" class="text-success font-18" title="Add"><i class="fa fa-plus"></i></a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2</td>
+                                                        <td>
+                                                            <input class="form-control" type="text" value="Blood Test" style="min-width:150px">
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" type="text" value="Lorem ipsum dolor sit amet, consectetur adipiscing elit" style="min-width:150px">
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" style="width:100px" type="text" value="12">
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" style="width:80px" type="text" value="1">
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control form-amt" readonly="" style="width:120px" type="text" value="12">
+                                                        </td>
+                                                        <td><a href="javascript:void(0)" class="text-danger font-18" title="Remove"><i class="fa fa-trash-o"></i></a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>3</td>
+                                                        <td>
+                                                            <input class="form-control" type="text" value="General checkup" style="min-width:150px">
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" type="text" value="Lorem ipsum dolor sit amet, consectetur adipiscing elit" style="min-width:150px">
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" style="width:100px" type="text" value="100">
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" style="width:80px" type="text" value="1">
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control form-amt" readonly="" style="width:120px" type="text" value="100">
+                                                        </td>
+                                                        <td><a href="javascript:void(0)" class="text-danger font-18" title="Remove"><i class="fa fa-trash-o"></i></a></td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -417,20 +462,28 @@
                                                         <td></td>
                                                         <td></td>
                                                         <td class="text-right">Total</td>
-                                                        <td style="text-align: right; padding-right: 30px;width: 230px">${total}</td>
+                                                        <td style="text-align: right; width: 230px">262</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="text-right"> Discount %</td>
-                                                        <td style="text-align: right; padding-right: 30px;width: 230px">
-                                                            <input class="form-control text-right form-amt" value="${discount}" readonly="" type="text">
+                                                        <td colspan="5" style="text-align: right">Tax</td>
+                                                        <td style="text-align: right;width: 230px">
+                                                            <input class="form-control text-right form-amt" value="0" readonly="" type="text">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5" style="text-align: right">
+                                                            Discount %
+                                                        </td>
+                                                        <td style="text-align: right; width: 230px">
+                                                            <input class="form-control text-right" value="26.2" type="text">
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="5" style="text-align: right; font-weight: bold">
                                                             Grand Total
                                                         </td>
-                                                        <td style="text-align: right; padding-right: 30px; font-weight: bold; font-size: 16px;width: 230px">
-                                                            ${totalGrand}
+                                                        <td style="text-align: right; font-weight: bold; font-size: 16px;width: 230px">
+                                                            $ 288.2
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -440,20 +493,14 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Other Information</label>
-                                                    <textarea class="form-control"></textarea>
+                                                    <textarea class="form-control" rows="4"></textarea>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <c:if test="${error != null}">
-                                    <h4><i style="color: red">${error}</i></h4>
-                                    </c:if>
-                                    <c:if test="${mess != null}">
-                                    <h4><i style="color: green">${mess}</i></h4>
-                                    </c:if>
                                 <div class="text-center m-t-20">
-                                    <a href="createInvoice?medicalExaminationID=${medicalExaminationID}&&discount=${discountID}" class="btn btn-primary submit-btn">Create</a>
+                                    <button class="btn btn-primary submit-btn">Save Invoice</button>
                                 </div>
                             </form>
                         </div>
@@ -682,5 +729,5 @@
     </body>
 
 
-    <!-- create-invoice24:07-->
+    <!-- edit-invoice24:07-->
 </html>

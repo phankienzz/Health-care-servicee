@@ -1,16 +1,16 @@
 <%-- 
-    Document   : create-invoice
-    Created on : Mar 4, 2025, 1:36:02 AM
+    Document   : invoice-view
+    Created on : Mar 6, 2025, 3:12:42 AM
     Author     : Gigabyte
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
 
-    <!-- create-invoice24:07-->
+    <!-- invoice-view24:07-->
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -18,8 +18,6 @@
         <title>Preclinic - Medical & Hospital - Bootstrap 4 Admin Template</title>
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
-        <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <!--[if lt IE 9]>
                     <script src="assets/js/html5shiv.min.js"></script>
@@ -31,7 +29,7 @@
         <div class="main-wrapper">
             <div class="header">
                 <div class="header-left">
-                    <a href="dashboard.html" class="logo">
+                    <a href="index-2.html" class="logo">
                         <img src="assets/img/logo.png" width="35" height="35" alt=""> <span>Preclinic</span>
                     </a>
                 </div>
@@ -50,7 +48,7 @@
                                         <a href="activities.html">
                                             <div class="media">
                                                 <span class="avatar">
-                                                    <img alt="John Doe" src="assets/img/user.jpg" class="img-fluid rounded-circle">
+                                                    <img alt="John Doe" src="assets/img/user.jpg" class="img-fluid">
                                                 </span>
                                                 <div class="media-body">
                                                     <p class="noti-details"><span class="noti-title">John Doe</span> added new task <span class="noti-title">Patient appointment booking</span></p>
@@ -143,7 +141,7 @@
                         <ul>
                             <li class="menu-title">Main</li>
                             <li>
-                                <a href="dashboard.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
+                                <a href="index-2.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
                             </li>
                             <li>
                                 <a href="doctors.html"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
@@ -303,159 +301,128 @@
             <div class="page-wrapper">
                 <div class="content">
                     <div class="row">
-                        <div class="col-sm-12">
-                            <h4 class="page-title">Create Invoice</h4>
+                        <div class="col-sm-5 col-4">
+                            <h4 class="page-title">Invoice</h4>
+                        </div>
+                        <div class="col-sm-7 col-8 text-right m-b-30">
+                            <div class="btn-group btn-group-sm">
+                                <button class="btn btn-white">PDF</button>
+                                <button class="btn btn-white"><i class="fa fa-print fa-lg"></i> Print</button>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12">
-                            <form action="createInvoice" method="post">
-                                <div class="row">
-                                    <div class="col-sm-6 col-md-3">
-                                        <div class="form-group">
-                                            <label>Medical Examination ID <span class="text-danger">*</span></label>
-                                            <select class="select" name="medicalExaminationID" onchange="this.form.submit()">
-                                                <option value="0">Select Medical Examination</option>
-                                                <c:forEach var="medExam" items="${listMedicalExam}">
-                                                    <option value="${medExam.examinationID}" <c:if test="${medicalExaminationID == medExam.examinationID}"> selected</c:if>>${medExam.examinationID}</option>
-                                                </c:forEach>
-                                            </select>
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row custom-invoice">
+                                        <div class="col-6 col-sm-6 m-b-20">
+                                            <img src="assets/img/logo-dark.png" class="inv-logo" alt="">
+                                            <ul class="list-unstyled">
+                                                <li>PreClinic</li>
+                                                <li>FPT Univercity,</li>
+                                                <li>Hòa Lạc, Hà Nội, Việt Nam</li>
+                                            </ul>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-6 col-md-3">
-                                        <div class="form-group">
-                                            <label>Patient Name</label>
-                                            <input class="form-control" type="text" name="patientName" readonly="" value="${patientName}">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-6 col-md-3">
-                                        <div class="form-group">
-                                            <label>Email</label>
-                                            <input class="form-control" type="email" name="email" readonly="" value="${email}">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6 col-md-3">
-                                        <div class="form-group">
-                                            <label>Phone</label>
-                                            <input class="form-control" type="text" name="phone" readonly="" value="${phone}">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-6 col-md-3">
-                                        <div class="form-group">
-                                            <label>Patient Address</label>
-                                            <input class="form-control" type="text" name="address" readonly="" value="${address}"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6 col-md-3">
-                                        <div class="form-group">
-                                            <label>Date of birth <span class="text-danger">*</span></label>
-                                            <div class="cal-icon">
-                                                <input class="form-control datetimepicker" readonly="" value="${dateOfBirth}" type="text" name="dateOfBirth">
+                                        <div class="col-6 col-sm-6 m-b-20">
+                                            <div class="invoice-details">
+                                                <h3 class="text-uppercase">Invoice #${invoice.invoiceID}</h3>
+                                                <ul class="list-unstyled">
+                                                    <li>Created Date: <span>${createdDate}</span></li>
+                                                    
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 col-lg-6 m-b-20">
 
-                                    <div class="col-sm-6 col-md-3">
+                                            <h5>Invoice to:</h5>
+                                            <ul class="list-unstyled">
+                                                <li>
+                                                    <h5><strong>${invoice.examinationID.customerId.fullName}</strong></h5>
+                                                </li>
+                                                <li><span>Việt Nam</span></li>
+                                                <li>${invoice.examinationID.customerId.address}</li>
+                                                
+                                                <li>${invoice.examinationID.customerId.phone}</li>
+                                                <li><a href="#">${invoice.examinationID.customerId.email}</a></li>
+                                            </ul>
 
+                                        </div>
+                                        <div class="col-sm-6 col-lg-6 m-b-20">
+                                            <div class="invoices-view">
+                                                <span class="text-muted">Payment Details:</span>
+                                                <ul class="list-unstyled invoice-payment-details">
+                                                    <li>
+                                                        <h5>Total Due: <span class="text-right">${invoice.totalAmount}</span></h5>
+                                                    </li>
+                                                    <li>Country: <span>Việt Nam</span></li>
+                                                    <li>City: <span>Hà Nội</span></li>
+                                                    <li>Address: <span>Hòa Lạc, FPT University</span></li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-6 col-md-3">
-                                        <div class="form-group">
-                                            <label>Discount</label>
-                                            <select class="select" name="discount" onchange="this.form.submit()">
-                                                <option value="0">Select Discount</option>
-                                                <c:forEach var="dis" items="${listDis}">
-                                                    <option value="${dis.discountID}" <c:if test="${dis.discountID == discountID}">selected</c:if> >${dis.discountName}</option>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Service</th>
+                                                    <th>DESCRIPTION</th>
+                                                    <th>TOTAL</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:set var="i" value="1"/>
+                                                <c:forEach var="service" items="${invoice.examinationID.list}">
+                                                <tr>
+                                                    <td>${i}</td>
+                                                    <c:set var="i" value="${i + 1}"/>
+                                                    <td>${service.packageName}</td>
+                                                    <td>${service.description}</td>
+                                                    <td>${service.price}</td>
+                                                </tr>
                                                 </c:forEach>
-                                            </select>
-                                        </div>
+                                                
+                                            </tbody>
+                                        </table>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12 col-sm-12">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover table-white">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="width: 20px">#</th>
-                                                        <th class="col-sm-3">Service</th>
-                                                        <th class="col-md-7">Description</th>
-                                                        <th style="width:100px;">Type</th>
-                                                        <th>Amount</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <c:set var="i" value="1"/>
-                                                    <c:forEach var="service" items="${listService}">
-                                                        <tr>
-                                                            <td>${i}</td>
-                                                            <c:set var="i" value="${i + 1}"/>
-                                                            <td>
-                                                                <input class="form-control" readonly="" type="text" value="${service.packageName}" style="min-width:150px">
-                                                            </td>
-                                                            <td>
-                                                                <input class="form-control"  readonly="" type="text" value="${service.description}" style="min-width:150px">
-                                                            </td>
-                                                            <td>
-                                                                <input class="form-control" readonly="" value="${service.type}" style="width:100px" type="text">
-                                                            </td>
-                                                            <td>
-                                                                <input class="form-control form-amt" value="${service.price}" readonly="" style="width:120px" type="text">
-                                                            </td>
-                                                        </tr>
-                                                    </c:forEach>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="table-responsive">
-                                            <table class="table table-hover table-white">
-                                                <tbody>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td class="text-right">Total</td>
-                                                        <td style="text-align: right; padding-right: 30px;width: 230px">${total}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="5" class="text-right"> Discount %</td>
-                                                        <td style="text-align: right; padding-right: 30px;width: 230px">
-                                                            <input class="form-control text-right form-amt" value="${discount}" readonly="" type="text">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="5" style="text-align: right; font-weight: bold">
-                                                            Grand Total
-                                                        </td>
-                                                        <td style="text-align: right; padding-right: 30px; font-weight: bold; font-size: 16px;width: 230px">
-                                                            ${totalGrand}
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label>Other Information</label>
-                                                    <textarea class="form-control"></textarea>
+                                    <div>
+                                        <div class="row invoice-payment">
+                                            <div class="col-sm-7">
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="m-b-20">
+                                                    <h6>Total due</h6>
+                                                    <div class="table-responsive no-border">
+                                                        <table class="table mb-0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th>Subtotal:</th>
+                                                                    <td class="text-right">${subtotal}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Discount: <span class="text-regular">(${invoice.discountID.percentage}%)</span></th>
+                                                                    <td class="text-right">${discount}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Total:</th>
+                                                                    <td class="text-right text-primary">
+                                                                        <h5>${invoice.totalAmount}</h5>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        
                                     </div>
                                 </div>
-                                <c:if test="${error != null}">
-                                    <h4><i style="color: red">${error}</i></h4>
-                                    </c:if>
-                                    <c:if test="${mess != null}">
-                                    <h4><i style="color: green">${mess}</i></h4>
-                                    </c:if>
-                                <div class="text-center m-t-20">
-                                    <a href="createInvoice?medicalExaminationID=${medicalExaminationID}&&discount=${discountID}" class="btn btn-primary submit-btn">Create</a>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -675,12 +642,9 @@
         <script src="assets/js/popper.min.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/jquery.slimscroll.js"></script>
-        <script src="assets/js/moment.min.js"></script>
-        <script src="assets/js/select2.min.js"></script>
-        <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
         <script src="assets/js/app.js"></script>
     </body>
 
 
-    <!-- create-invoice24:07-->
+    <!-- invoice-view24:07-->
 </html>
