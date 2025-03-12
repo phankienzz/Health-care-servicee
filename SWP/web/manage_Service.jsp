@@ -45,9 +45,7 @@
             <h2 class="text-center">Service Management</h2>
 
             <!-- Nút Home -->
-            <div class="mb-3">
-                <a href="index_1.jsp" class="btn btn-primary">Home</a>
-            </div>
+           
 
             <!-- Search Form (Tìm kiếm) -->
             <form action="loadmanage" method="get" class="row g-2 mb-4" onsubmit="return validateSearch()">

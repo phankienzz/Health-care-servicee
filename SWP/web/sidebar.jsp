@@ -76,7 +76,7 @@
 
                     <c:if test="${viewStaff}">
                         <li>
-                            <a href="doctors.html"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
+                            <a href="manage-doctor.jsp"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
                         </li>
                     </c:if>
 
@@ -93,19 +93,19 @@
 
                     <c:if test="${viewAppointment}">
                         <li>
-                            <a href="appointments.html"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
+                            <a href="manage_appointment"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
                         </li>
                     </c:if>
 
                     <c:if test="${viewSchedule}">
                         <li>
-                            <a href="schedule.html"><i class="fa fa-calendar-check-o"></i> <span>Doctor Schedule</span></a>
+                            <a href="loadstaffforschedule"><i class="fa fa-calendar-check-o"></i> <span>Doctor Schedule</span></a>
                         </li>
                     </c:if>
 
                     <c:if test="${viewService}">
                         <li>
-                            <a href="loadservice"><i class="fa fa-hospital-o"></i> <span>Service</span></a>
+                            <a href="loadmanage"><i class="fa fa-hospital-o"></i> <span>Service</span></a>
                         </li>
                     </c:if>
 
@@ -129,7 +129,7 @@
                         <li class="submenu">
                             <a href="#"><i class="fa fa-commenting-o"></i> <span> Blog</span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
-                                <li><a href="blog.jsp">Blog</a></li>
+                                <li><a href="homeblogseverlet">Blog</a></li>
                                 <li><a href="add-blog.jsp">Add Blog</a></li>
                             </ul>
                         </li>
