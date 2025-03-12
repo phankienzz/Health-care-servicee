@@ -24,7 +24,6 @@ public class WorkingSchedule {
     }
 
     public WorkingSchedule(int professionalID, String fullName, int dayOfWeek, String shift, Time startTime, Time endTime, String status) {
-        this.scheduleID = scheduleID;
         this.professionalID = professionalID;
         this.fullName = fullName;
         this.dayOfWeek = dayOfWeek;
