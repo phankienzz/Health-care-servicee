@@ -9,21 +9,15 @@
         <filter-name>StaffFilter</filter-name>
         <filter-class>filter.StaffFilter</filter-class>
     </filter>
-    <filter>
-        <filter-name>LoginFilter</filter-name>
-        <filter-class>filter.LoginFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/adminIndex.jsp</url-pattern>
-    </filter-mapping>
     <filter-mapping>
         <filter-name>StaffFilter</filter-name>
         <url-pattern>/staff</url-pattern>
-        <url-pattern>/addStaff.jsp</url-pattern>
+        <url-pattern>/staff.jsp</url-pattern>
         <url-pattern>/addStaff</url-pattern>
-        <url-pattern>/editStaff</url-pattern>
         <url-pattern>/deleteStaff</url-pattern>
+        <url-pattern>/editStaff</url-pattern>
+        <url-pattern>/add-staff.jsp</url-pattern>
+        <url-pattern>/edit-staff.jsp</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>ResetPassword</servlet-name>
@@ -36,10 +30,6 @@
     <servlet>
         <servlet-name>addBlog</servlet-name>
         <servlet-class>blog.addBlog</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Appointment</servlet-name>
-        <servlet-class>Appointment.Appointment</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RequestPassword</servlet-name>
@@ -56,10 +46,6 @@
     <servlet-mapping>
         <servlet-name>addBlog</servlet-name>
         <url-pattern>/addblog</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Appointment</servlet-name>
-        <url-pattern>/appointment</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index_1.jsp</welcome-file>
