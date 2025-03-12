@@ -13,49 +13,62 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Discount;
 
 /**
  *
  * @author Gigabyte
  */
-@WebServlet(name = "addDiscount", urlPatterns = {"/addDiscount"})
-public class addDiscount extends HttpServlet {
+@WebServlet(name = "editDiscount", urlPatterns = {"/editDiscount"})
+public class editDiscount extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        DiscountDAO disDAO = new DiscountDAO();
+        String discountID = request.getParameter("discountID");
+        Discount dis = disDAO.getDiscountByID(Integer.parseInt(discountID));
+        request.setAttribute("discount", dis);
+        request.getRequestDispatcher("edit-discount.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String discountID = request.getParameter("discountID");
         String discountName = request.getParameter("discountName");
         String percentage_raw = request.getParameter("percentage");
         String status = request.getParameter("status");
         ValidFunction valid = new ValidFunction();
-        if(valid.containsSpecialCharacter(discountName)){
+        DiscountDAO disDAO = new DiscountDAO();
+        Discount dis = disDAO.getDiscountByID(Integer.parseInt(discountID));
+        if (valid.containsSpecialCharacter(discountName)) {
             request.setAttribute("error", "Name can not contains special character");
-            request.getRequestDispatcher("add-discount.jsp").forward(request, response);
+            request.setAttribute("discount", dis);
+            request.getRequestDispatcher("edit-discount.jsp").forward(request, response);
             return;
+        } else {
+            dis.setDiscountName(discountName);
         }
+        request.setAttribute("discount", dis);
         try {
             double percentage = Double.parseDouble(percentage_raw);
             if (percentage < 0 || percentage > 100) {
                 throw new IllegalArgumentException("Percentage must be between 0 and 100");
-            }else{
-                DiscountDAO disDAO = new DiscountDAO();
-                disDAO.addDiscount(valid.normalizeName(discountName), percentage, status);
-                request.setAttribute("mess", "Add discount successfully");
-            request.getRequestDispatcher("add-discount.jsp").forward(request, response);
+            } else {
+                request.removeAttribute("discount");
+
+                disDAO.updateDiscount(Integer.parseInt(discountID), valid.normalizeName(discountName), percentage, status);
+                request.setAttribute("mess", "Edit discount successfully");
+                request.getRequestDispatcher("edit-discount.jsp").forward(request, response);
             }
-            
+
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Please enter a valid number");
-            request.getRequestDispatcher("add-discount.jsp").forward(request, response);
+            request.getRequestDispatcher("edit-discount.jsp").forward(request, response);
         } catch (IllegalArgumentException e) {
             request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher("add-discount.jsp").forward(request, response);
+            request.getRequestDispatcher("edit-discount.jsp").forward(request, response);
         }
     }
 

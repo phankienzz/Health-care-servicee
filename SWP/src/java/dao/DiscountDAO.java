@@ -17,9 +17,29 @@ import model.Discount;
  * @author Gigabyte
  */
 public class DiscountDAO extends DBContext{
+    public List<Discount> getAllDiscountStatus() {
+        List<Discount> discountList = new ArrayList<>();
+        String sql = "SELECT * FROM Discount where status=N'Active'";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int discountID = rs.getInt("discountID");
+                String discountName= rs.getString("discountName");
+                double percentage = rs.getDouble("percentage");
+                String status = rs.getString("status");
+                Discount dis = new Discount(discountID, discountName,percentage, status);
+                discountList.add(dis);
+            }
+
+        } catch (SQLException e) {
+        }
+        return discountList; // Trả về danh sách khách hàng
+    }
+    
     public List<Discount> getAllDiscount() {
         List<Discount> discountList = new ArrayList<>();
-        String sql = "SELECT * FROM Discount ";
+        String sql = "SELECT * FROM Discount";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -63,6 +83,30 @@ public class DiscountDAO extends DBContext{
             st.setString(1, discountName);
             st.setDouble(2, percentage);
             st.setString(3, status);
+            st.executeUpdate();
+        } catch (SQLException e) {
+        }
+    }
+    
+    public void updateDiscount(int discountID, String discountName, double percentage, String status) {
+        String sql = "update Discount set discountName = ?, percentage = ?, status = ? where discountID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, discountName);
+            st.setDouble(2, percentage);
+            st.setString(3, status);
+            st.setInt(4, discountID);
+            st.executeUpdate();
+        } catch (SQLException e) {
+        }
+    }
+    
+    public void deleteDiscount(int discountID) {
+        String sql = "delete  from Discount where discountID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            st.setInt(1, discountID);
             st.executeUpdate();
         } catch (SQLException e) {
         }

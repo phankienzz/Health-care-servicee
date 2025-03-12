@@ -36,7 +36,7 @@ public class createInvoice extends HttpServlet {
         ValidFunction valid = new ValidFunction();
         InvoiceDAO inDAO = new InvoiceDAO();
         DiscountDAO disDAO = new DiscountDAO();
-        List<Discount> listDis = disDAO.getAllDiscount();
+        List<Discount> listDis = disDAO.getAllDiscountStatus();
         String discount = request.getParameter("discount");
         String medicalExaminationID = request.getParameter("medicalExaminationID");
         if (medicalExaminationID != null && !medicalExaminationID.isEmpty() && !medicalExaminationID.equals("0")) {
@@ -86,7 +86,7 @@ public class createInvoice extends HttpServlet {
             }
         }
         DiscountDAO disDAO = new DiscountDAO();
-        List<Discount> listDis = disDAO.getAllDiscount();
+        List<Discount> listDis = disDAO.getAllDiscountStatus();
         String discount = request.getParameter("discount");
         String medicalExaminationID = request.getParameter("medicalExaminationID");
         if (medicalExaminationID != null && !medicalExaminationID.isEmpty() && !medicalExaminationID.equals("0")) {
