@@ -99,7 +99,7 @@
 
                     <c:if test="${viewSchedule}">
                         <li>
-                            <a href="schedule.html"><i class="fa fa-calendar-check-o"></i> <span>Doctor Schedule</span></a>
+                            <a href="loadstaffforschedule"><i class="fa fa-calendar-check-o"></i> <span>Doctor Schedule</span></a>
                         </li>
                     </c:if>
 
