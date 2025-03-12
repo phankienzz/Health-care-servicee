@@ -5,14 +5,28 @@
         <artifactId>jbcrypt</artifactId>
         <version>0.4</version>
     </dependency>
+
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>filter.LoginFilter</filter-class>
+    </filter>
     <filter>
         <filter-name>StaffFilter</filter-name>
         <filter-class>filter.StaffFilter</filter-class>
     </filter>
     <filter>
-        <filter-name>LoginFilter</filter-name>
-        <filter-class>filter.LoginFilter</filter-class>
+        <filter-name>InvoiceFilter</filter-name>
+        <filter-class>filter.InvoiceFilter</filter-class>
     </filter>
+    <filter-mapping>
+        <filter-name>InvoiceFilter</filter-name>
+        <url-pattern>/invoice</url-pattern>
+        <url-pattern>/viewInvoice</url-pattern>
+        <url-pattern>/createInvoice</url-pattern>
+        <url-pattern>/invoices.jsp</url-pattern>
+        <url-pattern>/invoice-view.jsp</url-pattern>
+        <url-pattern>/create-invoice.jsp</url-pattern>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>LoginFilter</filter-name>
         <url-pattern>/adminIndex.jsp</url-pattern>
@@ -20,10 +34,12 @@
     <filter-mapping>
         <filter-name>StaffFilter</filter-name>
         <url-pattern>/staff</url-pattern>
-        <url-pattern>/addStaff.jsp</url-pattern>
         <url-pattern>/addStaff</url-pattern>
-        <url-pattern>/editStaff</url-pattern>
         <url-pattern>/deleteStaff</url-pattern>
+        <url-pattern>/staff.jsp</url-pattern>
+        <url-pattern>/editStaff</url-pattern>
+        <url-pattern>/add-staff.jsp</url-pattern>
+        <url-pattern>/edit-staff.jsp</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>ResetPassword</servlet-name>
@@ -40,10 +56,6 @@
     <servlet>
         <servlet-name>Appointment</servlet-name>
         <servlet-class>Appointment.Appointment</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Edit_appointment</servlet-name>
-        <servlet-class>Appointment.Edit_appointment</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RequestPassword</servlet-name>
@@ -65,10 +77,6 @@
         <servlet-name>Appointment</servlet-name>
         <url-pattern>/appointment</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Edit_appointment</servlet-name>
-        <url-pattern>/edit_appointment</url-pattern>
-    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index_1.jsp</welcome-file>
     </welcome-file-list>
@@ -85,6 +93,10 @@
         <servlet-class>CustomerController.ProfileServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>EditProfileServlet</servlet-name>
+        <servlet-class>CustomerController.EditProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>RequestPassword</servlet-name>
         <servlet-class>CustomerController.RequestPassword</servlet-class>
     </servlet>
@@ -99,5 +111,9 @@
     <servlet-mapping>
         <servlet-name>ProfileServlet</servlet-name>
         <url-pattern>/profile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditProfileServlet</servlet-name>
+        <url-pattern>/editprofile</url-pattern>
     </servlet-mapping>
 </web-app>
