@@ -316,11 +316,9 @@
                     <div class="row">
                         <div class="col-lg-8 offset-lg-2">
 
-                            <form action="deleteblog" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bài viết này?');">
-                                <input type="hidden" name="postId" value="${blog.post_id}">
-                                <button type="submit" class="btn btn-danger">🗑 Xóa</button>
-                            </form>
+
                             <h4 class="page-title">Edit Blog</h4>
+
                             <form method="post" action="editblog" enctype="multipart/form-data">
                                 <input type="hidden" name="postId" value="${blog.post_id}">
 
@@ -330,45 +328,50 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Description</label>
-                                    <textarea cols="30" rows="2" class="form-control" name="description" required >${blog.content}</textarea>
+                                    <textarea cols="30" rows="2" class="form-control" name="description" required>${blog.content}</textarea>
                                 </div>
+
+                                <div class="form-group">
+                                    <label>Category</label>
+                                    <select class="form-control" name="categoryId" required>
+                                        <option value="">Select Category</option>
+                                        <option value="1" ${blog.category_id == 1 ? 'selected' : ''}>General Health</option>
+                                        <option value="2" ${blog.category_id == 2 ? 'selected' : ''}>Cardiology</option>
+                                        <option value="3" ${blog.category_id == 3 ? 'selected' : ''}>Pediatrics</option>
+                                        <option value="4" ${blog.category_id == 4 ? 'selected' : ''}>Nutrition</option>
+                                        <option value="5" ${blog.category_id == 5 ? 'selected' : ''}>Mental Health</option>
+                                    </select>
+                                </div>
+
                                 <div class="form-group">
                                     <label>Blog Images</label>
-                                    <!-- Adding the 'accept' attribute to limit selection to PNG files -->
                                     <input class="form-control" type="file" name="image" id="image" accept="image/png, image/jpeg, image/gif, image/jpg">
-
-
                                     <c:if test="${not empty blog.image}">
                                         <img src="${blog.image}" width="100">
                                     </c:if>
                                 </div>
 
-
-
                                 <div class="form-group">
-                                    <label>Blog content</label>
+                                    <label>Blog Content</label>
                                     <textarea cols="30" rows="6" class="form-control" name="detail" id="detail" required>${blog.detail}</textarea>
                                 </div>
+
                                 <div class="form-group">
                                     <label class="display-block">Blog Status</label>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="status" value="1" ${blog.status == 1 ? 'checked' : ''}>
-
                                         <label class="form-check-label">Active</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="status" value="2" ${blog.status == 2 ? 'checked' : ''}>
-
                                         <label class="form-check-label">Inactive</label>
                                     </div>
                                 </div>
+
                                 <div class="m-t-20 text-center">
                                     <button class="btn btn-primary submit-btn">Update</button>
                                 </div>
                             </form>
-
-
-                            
 
                             <script>
                                 document.addEventListener("DOMContentLoaded", function () {
@@ -407,22 +410,22 @@
 
 
 
- 
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-                    <div class="sidebar-overlay" data-reff=""></div>
-                    <script src="assets/js/jquery-3.2.1.min.js"></script>
-                    <script src="assets/js/popper.min.js"></script>
-                    <script src="assets/js/bootstrap.min.js"></script>
-                    <script src="assets/js/jquery.slimscroll.js"></script>
-                    <script src="assets/js/select2.min.js"></script>
-                    <script src="assets/js/tagsinput.js"></script>
-                    <script src="assets/js/app.js"></script>
-                    </body>
+        <div class="sidebar-overlay" data-reff=""></div>
+        <script src="assets/js/jquery-3.2.1.min.js"></script>
+        <script src="assets/js/popper.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.slimscroll.js"></script>
+        <script src="assets/js/select2.min.js"></script>
+        <script src="assets/js/tagsinput.js"></script>
+        <script src="assets/js/app.js"></script>
+    </body>
 
 
-                    <!-- edit-blog23:57-->
-                    </html>
+    <!-- edit-blog23:57-->
+</html>

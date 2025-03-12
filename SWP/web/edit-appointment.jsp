@@ -2,7 +2,7 @@
 <html lang="en">
 
 
-    <!-- add-appointment24:07-->
+    <!-- edit-appointment24:07-->
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -296,112 +296,127 @@
                 <div class="content">
                     <div class="row">
                         <div class="col-lg-8 offset-lg-2">
-                            <h4 class="page-title">Add Appointment</h4>
+                            <h4 class="page-title">Edit Appointment</h4>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-8 offset-lg-2">
-                            <form>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Appointment ID</label>
-                                            <input class="form-control" type="text" value="APT-0001" readonly="">
+                            <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+                            <!DOCTYPE html>
+
+                            <title>Edit Appointment</title>
+
+
+                            <div class="container">
+                               
+                                <form method="post" action="edit_appointment">
+                                    <input type="hidden" name="appointmentId" value="${appointment.examinationID}">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Customer ID</label>
+                                                <input class="form-control" type="text" value="${appointment.customerId.customerID}" readonly>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Patient Name</label>
-                                            <select class="select">
-                                                <option>Select</option>
-                                                <option>Jennifer Robinson</option>
-                                                <option>Terry Baker</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Department</label>
-                                            <select class="select">
-                                                <option>Select</option>
-                                                <option>Dentists</option>
-                                                <option>Neurology</option>
-                                                <option>Opthalmology</option>
-                                                <option>Orthopedics</option>
-                                                <option>Cancer Department</option>
-                                                <option>ENT Department</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Doctor</label>
-                                            <select class="select">
-                                                <option>Select</option>
-                                                <option>Cristina Groves</option>
-                                                <option>Marie Wells</option>
-                                                <option>Henry Daniels</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Date</label>
-                                            <div class="cal-icon">
-                                                <input type="text" class="form-control datetimepicker">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Customer Name</label>
+                                                <input class="form-control" type="text" value="${appointment.customerId.fullName}" readonly>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Time</label>
-                                            <div class="time-icon">
-                                                <input type="text" class="form-control" id="datetimepicker3">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Services</label>
+                                                <div style="border: 1px solid #ced4da;">
+                                                    <div class="dropdown" style="margin-bottom: 8px;">
+                                                        <button class="btn btn-outline-secondary dropdown-toggle form-control" type="button" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">
+                                                            Select Services
+                                                        </button>
+                                                        <div class="dropdown-menu p-2" style="max-height: 150px; overflow-y: auto; width: 100%;">
+                                                            <c:forEach var="service" items="${services}">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="serviceIds[]" value="${service.packageID}" id="service_${service.packageID}"
+                                                                           <c:forEach var="selectedService" items="${appointment.list}">
+                                                                               ${selectedService.packageID == service.packageID ? 'checked' : ''}
+                                                                           </c:forEach>>
+                                                                    <label class="form-check-label" for="service_${service.packageID}">
+                                                                        ${service.packageName}
+                                                                    </label>
+                                                                </div>
+                                                            </c:forEach>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Doctor</label>
+                                                <select class="form-control" name="doctor">
+                                                    <option>Select</option>
+                                                    <c:forEach var="professional" items="${allProfessionals}">
+                                                        <option ${appointment.consultantId.fullName == professional.fullName ? 'selected' : ''}>${professional.fullName}</option>
+                                                    </c:forEach>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Patient Email</label>
-                                            <input class="form-control" type="email">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Date</label>
+                                                <div class="cal-icon">
+                                                    <input type="text" class="form-control" name="date" value="${appointment.examinationDate}" readonly="">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Patient Phone Number</label>
-                                            <input class="form-control" type="text">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Customer Email</label>
+                                                <input class="form-control" type="email" name="email" value="${appointment.customerId.email}" readonly="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Customer Phone Number</label>
+                                                <input class="form-control" type="text" name="phone" value="${appointment.customerId.phone}">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Message</label>
-                                    <textarea cols="30" rows="4" class="form-control"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label class="display-block">Appointment Status</label>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" id="product_active" value="option1" checked>
-                                        <label class="form-check-label" for="product_active">
-                                            Active
-                                        </label>
+
+                                    <div class="form-group">
+                                        <label>Message</label>
+                                        <textarea cols="30" rows="4" class="form-control" name="message">${appointment.note}</textarea>
                                     </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" id="product_inactive" value="option2">
-                                        <label class="form-check-label" for="product_inactive">
-                                            Inactive
-                                        </label>
+
+                                    <div class="form-group">
+                                        <label class="display-block">Appointment Status</label>
+                                        <select class="form-control" name="status">
+                                            <option value="Pending" ${appointment.status == 'Pending' ? 'selected' : ''}>Pending</option>
+                                            <option value="In process" ${appointment.status == 'In process' ? 'selected' : ''}>In process</option>
+                                            <option value="Confirmed" ${appointment.status == 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+                                            <option value="Completed" ${appointment.status == 'Completed' ? 'selected' : ''}>Completed</option>
+                                            <option value="Rejected" ${appointment.status == 'Rejected' ? 'selected' : ''}>Rejected</option>
+                                        </select>
                                     </div>
-                                </div>
-                                <div class="m-t-20 text-center">
-                                    <button class="btn btn-primary submit-btn">Create Appointment</button>
-                                </div>
-                            </form>
+
+                                    <div class="m-t-20 text-center">
+                                        <button class="btn btn-primary submit-btn">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                            </body>
+
+
                         </div>
                     </div>
                 </div>
@@ -612,7 +627,6 @@
                         <div class="topnav-dropdown-footer">
                             <a href="chat.html">See all messages</a>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -627,15 +641,15 @@
         <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
         <script src="assets/js/app.js"></script>
         <script>
-            $(function () {
-                $('#datetimepicker3').datetimepicker({
-                    format: 'LT'
+                                                            $(function () {
+                                                                $('#datetimepicker3').datetimepicker({
+                                                                    format: 'LT'
 
-                });
-            });
+                                                                });
+                                                            });
         </script>
     </body>
 
 
-    <!-- add-appointment24:07-->
+    <!-- edit-appointment24:07-->
 </html>
