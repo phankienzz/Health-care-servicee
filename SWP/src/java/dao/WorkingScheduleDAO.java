@@ -68,7 +68,7 @@ public class WorkingScheduleDAO {
     public List<WorkingSchedule> getSchedulesByProfessionalID(int professionalID) {
         List<WorkingSchedule> schedules = new ArrayList<>();
         String sql = """
-        SELECT ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime
+        SELECT ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime, ws.status
         FROM WorkingSchedule ws
         INNER JOIN Professional p ON ws.professionalID = p.professionalID
         INNER JOIN Staff s ON p.staffID = s.staffID
@@ -87,7 +87,8 @@ public class WorkingScheduleDAO {
                         rs.getInt("dayOfWeek"),
                         rs.getString("shift"),
                         rs.getTime("startTime"),
-                        rs.getTime("endTime")
+                        rs.getTime("endTime"),
+                        rs.getString("status")
                 ));
             }
         } catch (SQLException e) {
@@ -99,7 +100,7 @@ public class WorkingScheduleDAO {
     public List<WorkingSchedule> getSchedulesByShiftAndDay(String shift, Integer dayOfWeek) {
         List<WorkingSchedule> schedules = new ArrayList<>();
         StringBuilder sql = new StringBuilder("""
-        SELECT ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime
+        SELECT ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime, ws.status
         FROM WorkingSchedule ws
         INNER JOIN Professional p ON ws.professionalID = p.professionalID
         INNER JOIN Staff s ON p.staffID = s.staffID
@@ -112,7 +113,7 @@ public class WorkingScheduleDAO {
             sql.append(" AND ws.shift = ?");
             params.add(shift);
         }
-        if (dayOfWeek != null) {  // Cho phép dayOfWeek là null
+        if (dayOfWeek != null) { 
             sql.append(" AND ws.dayOfWeek = ?");
             params.add(dayOfWeek);
         }
@@ -136,7 +137,8 @@ public class WorkingScheduleDAO {
                         rs.getInt("dayOfWeek"),
                         rs.getString("shift"),
                         rs.getTime("startTime"),
-                        rs.getTime("endTime")
+                        rs.getTime("endTime"),
+                        rs.getString("status") // status
                 ));
             }
         } catch (SQLException e) {
@@ -331,7 +333,7 @@ public class WorkingScheduleDAO {
     public List<WorkingSchedule> searchSchedulesByName(String searchName) {
         List<WorkingSchedule> schedules = new ArrayList<>();
         String sql = """
-        SELECT ws.scheduleID, ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime
+        SELECT ws.scheduleID, ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime, ws.status
         FROM WorkingSchedule ws
         INNER JOIN Professional p ON ws.professionalID = p.professionalID
         INNER JOIN Staff s ON p.staffID = s.staffID
@@ -350,7 +352,8 @@ public class WorkingScheduleDAO {
                         rs.getInt("dayOfWeek"),
                         rs.getString("shift"),
                         rs.getTime("startTime"),
-                        rs.getTime("endTime")
+                        rs.getTime("endTime"),
+                        rs.getString("status") // status
                 ));
             }
         } catch (SQLException e) {
@@ -406,8 +409,7 @@ public class WorkingScheduleDAO {
 
     public static void main(String[] args) {
         WorkingScheduleDAO dao = new WorkingScheduleDAO();
-        dao.updateScheduleStatus(2, 2, "afternoon", "Off");
-        List<WorkingSchedule> list = dao.getListProfessionalSchedules();
+        List<WorkingSchedule> list = dao.getSchedulesByShiftAndDay("morning", 2);
         for (WorkingSchedule ws : list) {
             System.out.println(ws);
         }

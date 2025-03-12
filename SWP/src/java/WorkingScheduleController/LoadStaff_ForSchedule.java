@@ -60,17 +60,17 @@ public class LoadStaff_ForSchedule extends HttpServlet {
             case "name":
                 professionalList = (searchName != null && !searchName.trim().isEmpty())
                         ? workingDAO.searchSchedulesByName(val.normalizeName(searchName))
-                        : workingDAO.getAllSchedules();
+                        : workingDAO.getListProfessionalSchedules();
                 break;
             case "date":
                 professionalList = (workDate != null && !workDate.trim().isEmpty())
                         ? workingDAO.getSchedulesByDate(workDate, shiftFilter)
-                        : workingDAO.getAllSchedules();
+                        : workingDAO.getListProfessionalSchedules();
                 break;
             case "dayandshift":
                 professionalList = (dayFilter != null && shiftFilter != null)
                         ? workingDAO.getSchedulesByShiftAndDay(shiftFilter, Integer.parseInt(dayFilter))
-                        : workingDAO.getAllSchedules();
+                        : workingDAO.getListProfessionalSchedules();
                 break;
             default:
                 // Nếu không có tìm kiếm, lấy tất cả lịch làm việc
