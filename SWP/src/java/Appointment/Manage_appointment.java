@@ -25,39 +25,7 @@ public class Manage_appointment extends HttpServlet {
 
     private MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Manage_appointment</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Manage_appointment at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -69,9 +37,26 @@ public class Manage_appointment extends HttpServlet {
         String timeCreatedSort = request.getParameter("timeCreatedSort");
         String status = request.getParameter("status");
 
-        // Lấy danh sách đã lọc
-        List<MedicalExamination> list = medicalExaminationDAO.getFilteredExaminations(
+        // Tham số phân trang
+        int page = 1; // Trang mặc định
+        int pageSize = 10; // Số bản ghi mỗi trang (có thể thay đổi)
+        String pageStr = request.getParameter("page");
+        if (pageStr != null && !pageStr.isEmpty()) {
+            page = Integer.parseInt(pageStr);
+        }
+
+        // Tính tổng số bản ghi để xác định số trang
+        int totalRecords = medicalExaminationDAO.getTotalFilteredRecords(
                 patientName, ageSort, doctorName, appointmentDate, timeCreatedSort, status);
+        int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+
+        // Đảm bảo page không vượt quá giới hạn
+        if (page < 1) page = 1;
+        if (page > totalPages && totalPages > 0) page = totalPages;
+
+        // Lấy danh sách đã lọc với phân trang
+        List<MedicalExamination> list = medicalExaminationDAO.getFilteredExaminations(
+                patientName, ageSort, doctorName, appointmentDate, timeCreatedSort, status, page, pageSize);
 
         // Lấy danh sách tất cả bác sĩ để hiển thị trong dropdown
         List<Professional> allProfessionals = medicalExaminationDAO.getAllProfessionals();
@@ -79,32 +64,14 @@ public class Manage_appointment extends HttpServlet {
         // Đặt dữ liệu vào request
         request.setAttribute("list", list);
         request.setAttribute("allProfessionals", allProfessionals);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("pageSize", pageSize);
 
         // Chuyển hướng đến JSP
         request.getRequestDispatcher("manage_appointment.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }
+   
+    
 }

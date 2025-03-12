@@ -1,6 +1,6 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package dao;
 
@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Customer;
 import model.MedicalExamination;
+import model.MedicalRecord;
 import model.Professional;
 import model.Service;
 
@@ -25,9 +26,9 @@ public class MedicalExaminationDAO extends DBContext {
         CustomerDAO cusDAO = new CustomerDAO();
         ProfessionalDAO proDAO = new ProfessionalDAO();
         String sql = "SELECT examinationID, "
-                + "FORMAT(examinationDate, 'dd/MM/yyyy HH:mm') AS examinationDate, " // Định dạng dd/MM/yyyy HH:mm
+                + "FORMAT(examinationDate, 'dd/MM/yyyy HH:mm') AS examinationDate, "
                 + "customerID, status, consultantID, notes, "
-                + "FORMAT(createdAt, 'dd/MM/yyyy HH:mm') AS createdAt " // Định dạng dd/MM/yyyy HH:mm
+                + "FORMAT(createdAt, 'dd/MM/yyyy HH:mm') AS createdAt "
                 + "FROM MedicalExamination WHERE examinationID = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -36,16 +37,16 @@ public class MedicalExaminationDAO extends DBContext {
             if (rs.next()) {
                 return new MedicalExamination(
                         rs.getInt("examinationID"),
-                        rs.getString("examinationDate"), // Đã được định dạng thành dd/MM/yyyy HH:mm
+                        rs.getString("examinationDate"),
                         cusDAO.getCustomerByID(rs.getInt("customerID")),
                         rs.getString("status"),
                         proDAO.getProfessionalbyID(rs.getInt("consultantID")),
                         rs.getString("notes"),
-                        rs.getString("createdAt"), // Đã được định dạng thành dd/MM/yyyy HH:mm
+                        rs.getString("createdAt"),
                         dao.getServiceExaminationID(examinationID));
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // In lỗi chi tiết để debug
+            e.printStackTrace();
         }
         return null;
     }
@@ -76,7 +77,6 @@ public class MedicalExaminationDAO extends DBContext {
         return medicalExaminationList;
     }
 
-    // Lưu danh sách dịch vụ liên quan vào bảng MedicalService
     private void saveExaminationServices(int examinationId, List<Service> services) {
         String sql = "INSERT INTO MedicalService (examinationID, packageID) VALUES (?, ?)";
         try {
@@ -92,7 +92,6 @@ public class MedicalExaminationDAO extends DBContext {
         }
     }
 
-    // Lưu MedicalExamination mới - Loại bỏ createdAt khỏi câu INSERT
     public boolean saveMedicalExamination(MedicalExamination examination) {
         String sql = "INSERT INTO MedicalExamination (examinationDate, customerID, status, consultantID, notes) VALUES (?, ?, ?, ?, ?)";
         try {
@@ -122,9 +121,9 @@ public class MedicalExaminationDAO extends DBContext {
     public List<MedicalExamination> getAllExamination() {
         List<MedicalExamination> medicalExaminationList = new ArrayList<>();
         String sql = "SELECT m.examinationID, "
-                + "FORMAT(m.examinationDate, 'dd/MM/yyyy HH:mm') AS examinationDate, " // Định dạng dd/MM/yyyy HH:mm
+                + "FORMAT(m.examinationDate, 'dd/MM/yyyy HH:mm') AS examinationDate, "
                 + "m.customerID, m.status, m.consultantID, m.notes, "
-                + "FORMAT(m.createdAt, 'dd/MM/yyyy HH:mm') AS createdAt, " // Định dạng dd/MM/yyyy HH:mm
+                + "FORMAT(m.createdAt, 'dd/MM/yyyy HH:mm') AS createdAt, "
                 + "c.fullName AS customerName, "
                 + "DATEDIFF(YEAR, c.dateOfBirth, GETDATE()) AS age, "
                 + "s.fullName AS staffName "
@@ -146,12 +145,12 @@ public class MedicalExaminationDAO extends DBContext {
 
                 MedicalExamination exam = new MedicalExamination();
                 exam.setExaminationID(rs.getInt("examinationID"));
-                exam.setExaminationDate(rs.getString("examinationDate")); // Đã là dd/MM/yyyy HH:mm
+                exam.setExaminationDate(rs.getString("examinationDate"));
                 exam.setCustomerId(customer);
                 exam.setStatus(rs.getString("status"));
                 exam.setConsultantId(professional);
                 exam.setNote(rs.getString("notes"));
-                exam.setCreatedAt(rs.getString("createdAt")); // Đã là dd/MM/yyyy HH:mm
+                exam.setCreatedAt(rs.getString("createdAt"));
                 exam.setList(getServicesByExaminationId(rs.getInt("examinationID")));
 
                 medicalExaminationList.add(exam);
@@ -189,18 +188,16 @@ public class MedicalExaminationDAO extends DBContext {
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
 
-            // Chuyển đổi định dạng ngày giờ từ dd/MM/yyyy HH:mm sang yyyy-MM-dd HH:mm:ss
             SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String formattedDate = outputFormat.format(inputFormat.parse(examination.getExaminationDate()));
-            ps.setString(1, formattedDate); // Truyền chuỗi đã chuyển đổi
-
+            ps.setString(1, formattedDate);
             ps.setString(2, examination.getStatus());
             ps.setInt(3, examination.getConsultantId().getStaffID());
             ps.setString(4, examination.getNote());
             ps.setInt(5, examination.getExaminationID());
 
-            System.out.println("SQL Query: " + ps.toString()); // Debug câu lệnh SQL
+            System.out.println("SQL Query: " + ps.toString());
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
@@ -268,17 +265,12 @@ public class MedicalExaminationDAO extends DBContext {
         return professionalList;
     }
 
-    // Trong class MedicalExaminationDAO.java
     public boolean deleteMedicalExamination(int examinationId) {
         String sql = "DELETE FROM MedicalExamination WHERE examinationID = ?";
         try {
-            // Xóa các dịch vụ liên quan trước
             deleteExaminationServices(examinationId);
-
-            // Xóa bản ghi MedicalExamination
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, examinationId);
-
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -288,72 +280,85 @@ public class MedicalExaminationDAO extends DBContext {
     }
 
     public List<MedicalExamination> getFilteredExaminations(String patientName, String ageSort, String doctorName,
-            String appointmentDate, String timeCreatedSort, String status) {
+            String appointmentDate, String timeCreatedSort, String status, int page, int pageSize) {
         List<MedicalExamination> medicalExaminationList = new ArrayList<>();
         StringBuilder sql = new StringBuilder(
-                "SELECT m.examinationID, "
-                + "FORMAT(m.examinationDate, 'dd/MM/yyyy HH:mm') AS examinationDate, "
-                + "m.customerID, m.status, m.consultantID, m.notes, "
-                + "FORMAT(m.createdAt, 'dd/MM/yyyy HH:mm') AS createdAt, "
-                + "c.fullName AS customerName, "
-                + "DATEDIFF(YEAR, c.dateOfBirth, GETDATE()) AS age, "
-                + "s.fullName AS staffName "
-                + "FROM MedicalExamination m "
-                + "JOIN Customer c ON m.customerID = c.customerID "
-                + "JOIN Staff s ON m.consultantID = s.staffID "
-                + "WHERE 1=1"
+                "WITH FilteredExaminations AS ( "
+                + "    SELECT m.examinationID, "
+                + "           FORMAT(m.examinationDate, 'dd/MM/yyyy HH:mm') AS examinationDate, "
+                + "           m.customerID, m.status, m.consultantID, m.notes, "
+                + "           FORMAT(m.createdAt, 'dd/MM/yyyy HH:mm') AS createdAt, "
+                + "           c.fullName AS customerName, "
+                + "           DATEDIFF(YEAR, c.dateOfBirth, GETDATE()) AS age, "
+                + "           s.fullName AS staffName, "
+                + "           ROW_NUMBER() OVER ("
+        );
+
+        if ("asc".equals(ageSort)) {
+            sql.append("ORDER BY age ASC");
+        } else if ("desc".equals(ageSort)) {
+            sql.append("ORDER BY age DESC");
+        } else if ("latest".equals(timeCreatedSort)) {
+            sql.append("ORDER BY m.createdAt DESC");
+        } else if ("oldest".equals(timeCreatedSort)) {
+            sql.append("ORDER BY m.createdAt ASC");
+        } else {
+            sql.append("ORDER BY m.examinationID");
+        }
+
+        sql.append(") AS RowNum "
+                + "    FROM MedicalExamination m "
+                + "    JOIN Customer c ON m.customerID = c.customerID "
+                + "    JOIN Staff s ON m.consultantID = s.staffID "
+                + "    WHERE 1=1"
         );
 
         List<Object> params = new ArrayList<>();
 
-        // Search by Patient Name
         if (patientName != null && !patientName.trim().isEmpty()) {
             sql.append(" AND c.fullName LIKE ?");
             params.add("%" + patientName + "%");
         }
-
-        // Filter by Doctor Name
         if (doctorName != null && !doctorName.trim().isEmpty()) {
             sql.append(" AND s.fullName = ?");
             params.add(doctorName);
         }
-
-        // Filter by Appointment Date
         if (appointmentDate != null && !appointmentDate.trim().isEmpty()) {
-            sql.append(" AND CAST(m.examinationDate AS DATE) = ?");
-            params.add(appointmentDate); // Định dạng yyyy-MM-dd từ input type="date"
+            sql.append(" AND CONVERT(date, m.examinationDate, 103) = CONVERT(date, ?, 103)");
+            params.add(appointmentDate);
         }
-
-        // Filter by Status
         if (status != null && !status.trim().isEmpty()) {
             sql.append(" AND m.status = ?");
             params.add(status);
         }
 
-        // Sort by Age (nếu có)
-        if ("asc".equals(ageSort)) {
-            sql.append(" ORDER BY age ASC");
-        } else if ("desc".equals(ageSort)) {
-            sql.append(" ORDER BY age DESC");
-        } // Sort by Time Created (nếu có, ưu tiên cao hơn ageSort)
-        else if ("latest".equals(timeCreatedSort)) {
-            sql.append(" ORDER BY m.createdAt DESC");
-        } else if ("oldest".equals(timeCreatedSort)) {
-            sql.append(" ORDER BY m.createdAt ASC");
-        }
+        sql.append(") SELECT * FROM FilteredExaminations "
+                + "WHERE RowNum BETWEEN ? AND ?");
+
+        int startRow = (page - 1) * pageSize + 1;
+        int endRow = page * pageSize;
+        params.add(startRow);
+        params.add(endRow);
 
         try {
+            if (connection == null) {
+                System.out.println("Database connection is null!");
+                return medicalExaminationList;
+            }
+
+            System.out.println("SQL Query: " + sql.toString());
+            System.out.println("Params: " + params);
+
             PreparedStatement ps = connection.prepareStatement(sql.toString());
             for (int i = 0; i < params.size(); i++) {
                 ps.setObject(i + 1, params.get(i));
             }
-
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Customer customer = new Customer();
                 customer.setCustomerID(rs.getInt("customerID"));
                 customer.setFullName(rs.getString("customerName"));
-                customer.setDateOfBirth(String.valueOf(rs.getInt("age"))); // Giả sử tuổi được tính từ dateOfBirth
+                customer.setDateOfBirth(String.valueOf(rs.getInt("age")));
 
                 Professional professional = new Professional();
                 professional.setStaffID(rs.getInt("consultantID"));
@@ -371,50 +376,235 @@ public class MedicalExaminationDAO extends DBContext {
 
                 medicalExaminationList.add(exam);
             }
+            System.out.println("Records retrieved: " + medicalExaminationList.size());
         } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
             e.printStackTrace();
         }
         return medicalExaminationList;
     }
 
-    public static void main(String[] args) {
-        // Khởi tạo đối tượng DAO
-        MedicalExaminationDAO dao = new MedicalExaminationDAO();
+    public int getTotalFilteredRecords(String patientName, String ageSort, String doctorName,
+            String appointmentDate, String timeCreatedSort, String status) {
+        StringBuilder sql = new StringBuilder(
+                "SELECT COUNT(*) AS total "
+                + "FROM MedicalExamination m "
+                + "JOIN Customer c ON m.customerID = c.customerID "
+                + "JOIN Staff s ON m.consultantID = s.staffID "
+                + "WHERE 1=1"
+        );
 
-        // ID để kiểm tra - thay đổi theo dữ liệu thực tế trong database của bạn
-        int testExaminationId = 15;
+        List<Object> params = new ArrayList<>();
 
-        // Gọi phương thức deleteMedicalExamination và kiểm tra kết quả
-        boolean result = dao.deleteMedicalExamination(testExaminationId);
-
-        // In kết quả
-        if (result) {
-            System.out.println("Xóa bản ghi MedicalExamination với ID "
-                    + testExaminationId + " thành công!");
-        } else {
-            System.out.println("Không thể xóa bản ghi MedicalExamination với ID "
-                    + testExaminationId + " hoặc bản ghi không tồn tại.");
+        if (patientName != null && !patientName.trim().isEmpty()) {
+            sql.append(" AND c.fullName LIKE ?");
+            params.add("%" + patientName + "%");
+        }
+        if (doctorName != null && !doctorName.trim().isEmpty()) {
+            sql.append(" AND s.fullName = ?");
+            params.add(doctorName);
+        }
+        if (appointmentDate != null && !appointmentDate.trim().isEmpty()) {
+            sql.append(" AND CAST(m.examinationDate AS DATE) = ?");
+            params.add(appointmentDate);
+        }
+        if (status != null && !status.trim().isEmpty()) {
+            sql.append(" AND m.status = ?");
+            params.add(status);
         }
 
-        // Kiểm tra thêm với một ID không tồn tại
-        int nonExistentId = 9999;
-        result = dao.deleteMedicalExamination(nonExistentId);
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql.toString());
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
 
-        if (result) {
-            System.out.println("Xóa bản ghi MedicalExamination với ID "
-                    + nonExistentId + " thành công!");
-        } else {
-            System.out.println("Không thể xóa bản ghi MedicalExamination với ID "
-                    + nonExistentId + " hoặc bản ghi không tồn tại.");
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return 0;
+    }
 
-        // (Tùy chọn) In danh sách tất cả examinations sau khi xóa để kiểm tra
-        List<MedicalExamination> examinations = dao.getAllMedicalExamination();
-        System.out.println("\nDanh sách các MedicalExamination còn lại:");
-        for (MedicalExamination exam : examinations) {
-            System.out.println("ID: " + exam.getExaminationID()
-                    + ", Date: " + exam.getExaminationDate()
-                    + ", Status: " + exam.getStatus());
+    // Sửa phương thức addMedicalExamination để tự động tăng examinationID
+    public boolean addMedicalExamination(MedicalExamination exam) {
+        String sql = "INSERT INTO MedicalExamination (examinationID, examinationDate, customerID, status, consultantID, notes, createdAt) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try {
+            int newId = getNextExaminationId();
+            exam.setExaminationID(newId);
+
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, exam.getExaminationID());
+
+            SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String formattedExaminationDate = outputFormat.format(inputFormat.parse(exam.getExaminationDate()));
+            String formattedCreatedAt = outputFormat.format(inputFormat.parse(exam.getCreatedAt()));
+            ps.setTimestamp(2, Timestamp.valueOf(formattedExaminationDate));
+            ps.setInt(3, exam.getCustomerId().getCustomerID());
+            ps.setString(4, exam.getStatus());
+            ps.setInt(5, exam.getConsultantId().getStaffID());
+            ps.setString(6, exam.getNote());
+            ps.setTimestamp(7, Timestamp.valueOf(formattedCreatedAt));
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                // Lưu danh sách dịch vụ nếu có
+                if (exam.getList() != null && !exam.getList().isEmpty()) {
+                    saveExaminationServices(newId, exam.getList());
+                }
+                return true;
+            }
+            return false;
+        } catch (SQLException | ParseException e) {
+            e.printStackTrace();
+            return false;
         }
     }
+
+    // Thêm phương thức để lấy examinationID lớn nhất và tăng lên 1
+    public int getNextExaminationId() {
+        String sql = "SELECT MAX(examinationID) FROM MedicalExamination";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) + 1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 1; // Bắt đầu từ 1 nếu bảng rỗng
+    }
+
+    public int getCustomerIdByName(String fullName) {
+        String sql = "SELECT customerID FROM Customer WHERE fullName = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, fullName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("customerID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public int getStaffIdByName(String fullName) {
+        String sql = "SELECT staffID FROM Staff WHERE fullName = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, fullName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("staffID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public List<Customer> getAllCustomers() {
+        List<Customer> customers = new ArrayList<>();
+        String sql = "SELECT customerID, fullName FROM Customer";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Customer customer = new Customer();
+                customer.setCustomerID(rs.getInt("customerID"));
+                customer.setFullName(rs.getString("fullName"));
+                customers.add(customer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customers;
+    }
+
+    // Lấy hồ sơ bệnh án theo examinationID
+    public MedicalRecord getMedicalRecordByExamId(int examId) {
+        String sql = "SELECT examinationID, diagnosis, treatmentPlan, medicationsPrescribed, "
+                + "FORMAT(createdAt, 'dd/MM/yyyy HH:mm') AS createdAt, notes "
+                + "FROM MedicalRecord WHERE examinationID = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, examId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                MedicalRecord record = new MedicalRecord();
+                record.setExaminationID(rs.getInt("examinationID"));
+                record.setDiagnosis(rs.getString("diagnosis"));
+                record.setTreatmentPlan(rs.getString("treatmentPlan"));
+                record.setMedicationsPrescribed(rs.getString("medicationsPrescribed"));
+                record.setCreatedAt(rs.getString("createdAt"));
+                record.setNotes(rs.getString("notes"));
+                return record;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // Hủy cuộc hẹn (chỉ khi trạng thái là "Pending")
+    public boolean cancelAppointment(int examId) {
+        String sql = "UPDATE MedicalExamination SET status = 'Rejected' WHERE examinationID = ? AND status = 'Pending'";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, examId);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<MedicalExamination> getAppointmentsByCustomerId(int customerId) {
+        List<MedicalExamination> appointments = new ArrayList<>();
+        String sql = "SELECT m.examinationID, FORMAT(m.examinationDate, 'dd/MM/yyyy HH:mm') AS examinationDate, "
+                + "m.customerID, m.status, m.consultantID, m.notes, FORMAT(m.createdAt, 'dd/MM/yyyy HH:mm') AS createdAt, "
+                + "c.fullName AS customerName, s.fullName AS staffName "
+                + "FROM MedicalExamination m "
+                + "JOIN Customer c ON m.customerID = c.customerID "
+                + "JOIN Staff s ON m.consultantID = s.staffID "
+                + "WHERE m.customerID = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, customerId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Customer customer = new Customer();
+                customer.setCustomerID(rs.getInt("customerID"));
+                customer.setFullName(rs.getString("customerName"));
+
+                Professional professional = new Professional();
+                professional.setStaffID(rs.getInt("consultantID"));
+                professional.setFullName(rs.getString("staffName"));
+
+                MedicalExamination exam = new MedicalExamination();
+                exam.setExaminationID(rs.getInt("examinationID"));
+                exam.setExaminationDate(rs.getString("examinationDate"));
+                exam.setCustomerId(customer);
+                exam.setStatus(rs.getString("status"));
+                exam.setConsultantId(professional);
+                exam.setNote(rs.getString("notes"));
+                exam.setCreatedAt(rs.getString("createdAt"));
+                exam.setList(getServicesByExaminationId(rs.getInt("examinationID")));
+                appointments.add(exam);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return appointments;
+    }
+
 }

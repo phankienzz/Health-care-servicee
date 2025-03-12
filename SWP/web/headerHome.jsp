@@ -98,6 +98,7 @@
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <a class="dropdown-item" href="profile.jsp">Profile</a>
                         <!-- <a class="dropdown-item" href="#"></a> -->
+                        <a class="dropdown-item" href="customer-medical-records">Medicalrecords</a>
                         <a class="dropdown-item" href="logout">Logout</a>
                     </div>
                 </c:if>
@@ -109,6 +110,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <a class="dropdown-item" href="profile.jsp">Profile</a>
+                        <a class="dropdown-item" href="customer-medical-records">Medicalrecords</a>
                         <!-- <a class="dropdown-item" href="#"></a> -->
                         <a class="dropdown-item" href=logout>Logout</a>
                     </div>

@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
-    <!-- appointments23:19-->
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -11,286 +8,27 @@
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
+        <!-- Thêm CSS cho Datetimepicker -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <!--[if lt IE 9]>
-                    <script src="assets/js/html5shiv.min.js"></script>
-                    <script src="assets/js/respond.min.js"></script>
-            <![endif]-->
+            <script src="assets/js/html5shiv.min.js"></script>
+            <script src="assets/js/respond.min.js"></script>
+        <![endif]-->
     </head>
-
     <body>
         <div class="main-wrapper">
+            <!-- Header -->
             <div class="header">
-                <div class="header-left">
-                    <a href="dashboard.html" class="logo">
-                        <img src="assets/img/logo.png" width="35" height="35" alt=""> <span>Preclinic</span>
-                    </a>
-                </div>
-                <a id="toggle_btn" href="javascript:void(0);"><i class="fa fa-bars"></i></a>
-                <a id="mobile_btn" class="mobile_btn float-left" href="#sidebar"><i class="fa fa-bars"></i></a>
-                <ul class="nav user-menu float-right">
-                    <li class="nav-item dropdown d-none d-sm-block">
-                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"><i class="fa fa-bell-o"></i> <span class="badge badge-pill bg-danger float-right">3</span></a>
-                        <div class="dropdown-menu notifications">
-                            <div class="topnav-dropdown-header">
-                                <span>Notifications</span>
-                            </div>
-                            <div class="drop-scroll">
-                                <ul class="notification-list">
-                                    <li class="notification-message">
-                                        <a href="activities.html">
-                                            <div class="media">
-                                                <span class="avatar">
-                                                    <img alt="John Doe" src="assets/img/user.jpg" class="img-fluid">
-                                                </span>
-                                                <div class="media-body">
-                                                    <p class="noti-details"><span class="noti-title">John Doe</span> added new task <span class="noti-title">Patient appointment booking</span></p>
-                                                    <p class="noti-time"><span class="notification-time">4 mins ago</span></p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="notification-message">
-                                        <a href="activities.html">
-                                            <div class="media">
-                                                <span class="avatar">V</span>
-                                                <div class="media-body">
-                                                    <p class="noti-details"><span class="noti-title">Tarah Shropshire</span> changed the task name <span class="noti-title">Appointment booking with payment gateway</span></p>
-                                                    <p class="noti-time"><span class="notification-time">6 mins ago</span></p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="notification-message">
-                                        <a href="activities.html">
-                                            <div class="media">
-                                                <span class="avatar">L</span>
-                                                <div class="media-body">
-                                                    <p class="noti-details"><span class="noti-title">Misty Tison</span> added <span class="noti-title">Domenic Houston</span> and <span class="noti-title">Claire Mapes</span> to project <span class="noti-title">Doctor available module</span></p>
-                                                    <p class="noti-time"><span class="notification-time">8 mins ago</span></p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="notification-message">
-                                        <a href="activities.html">
-                                            <div class="media">
-                                                <span class="avatar">G</span>
-                                                <div class="media-body">
-                                                    <p class="noti-details"><span class="noti-title">Rolland Webber</span> completed task <span class="noti-title">Patient and Doctor video conferencing</span></p>
-                                                    <p class="noti-time"><span class="notification-time">12 mins ago</span></p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="notification-message">
-                                        <a href="activities.html">
-                                            <div class="media">
-                                                <span class="avatar">V</span>
-                                                <div class="media-body">
-                                                    <p class="noti-details"><span class="noti-title">Bernardo Galaviz</span> added new task <span class="noti-title">Private chat module</span></p>
-                                                    <p class="noti-time"><span class="notification-time">2 days ago</span></p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="topnav-dropdown-footer">
-                                <a href="activities.html">View all Notifications</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown d-none d-sm-block">
-                        <a href="javascript:void(0);" id="open_msg_box" class="hasnotifications nav-link"><i class="fa fa-comment-o"></i> <span class="badge badge-pill bg-danger float-right">8</span></a>
-                    </li>
-                    <li class="nav-item dropdown has-arrow">
-                        <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
-                            <span class="user-img"><img class="rounded-circle" src="assets/img/user.jpg" width="40" alt="Admin">
-                                <span class="status online"></span></span>
-                            <span>Admin</span>
-                        </a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="profile.html">My Profile</a>
-                            <a class="dropdown-item" href="edit-profile.html">Edit Profile</a>
-                            <a class="dropdown-item" href="settings.html">Settings</a>
-                            <a class="dropdown-item" href="login.html">Logout</a>
-                        </div>
-                    </li>
-                </ul>
-                <div class="dropdown mobile-user-menu float-right">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="profile.html">My Profile</a>
-                        <a class="dropdown-item" href="edit-profile.html">Edit Profile</a>
-                        <a class="dropdown-item" href="settings.html">Settings</a>
-                        <a class="dropdown-item" href="login.html">Logout</a>
-                    </div>
-                </div>
+                <!-- ... (gi? nguyên ph?n header) ... -->
             </div>
+
+            <!-- Sidebar -->
             <div class="sidebar" id="sidebar">
-                <div class="sidebar-inner slimscroll">
-                    <div id="sidebar-menu" class="sidebar-menu">
-                        <ul>
-                            <li class="menu-title">Main</li>
-                            <li>
-                                <a href="dashboard.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
-                            </li>
-                            <li>
-                                <a href="doctors.html"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
-                            </li>
-                            <li>
-                                <a href="patients.html"><i class="fa fa-wheelchair"></i> <span>Patients</span></a>
-                            </li>
-                            <li class="active">
-                                <a href="appointments.html"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
-                            </li>
-                            <li>
-                                <a href="schedule.html"><i class="fa fa-calendar-check-o"></i> <span>Doctor Schedule</span></a>
-                            </li>
-                            <li>
-                                <a href="departments.html"><i class="fa fa-hospital-o"></i> <span>Departments</span></a>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-user"></i> <span> Employees </span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="employees.html">Employees List</a></li>
-                                    <li><a href="leaves.html">Leaves</a></li>
-                                    <li><a href="holidays.html">Holidays</a></li>
-                                    <li><a href="attendance.html">Attendance</a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-money"></i> <span> Accounts </span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="invoices.html">Invoices</a></li>
-                                    <li><a href="payments.html">Payments</a></li>
-                                    <li><a href="expenses.html">Expenses</a></li>
-                                    <li><a href="taxes.html">Taxes</a></li>
-                                    <li><a href="provident-fund.html">Provident Fund</a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-book"></i> <span> Payroll </span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="salary.html"> Employee Salary </a></li>
-                                    <li><a href="salary-view.html"> Payslip </a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="chat.html"><i class="fa fa-comments"></i> <span>Chat</span> <span class="badge badge-pill bg-primary float-right">5</span></a>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-video-camera camera"></i> <span> Calls</span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="voice-call.html">Voice Call</a></li>
-                                    <li><a href="video-call.html">Video Call</a></li>
-                                    <li><a href="incoming-call.html">Incoming Call</a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-envelope"></i> <span> Email</span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="compose.html">Compose Mail</a></li>
-                                    <li><a href="inbox.html">Inbox</a></li>
-                                    <li><a href="mail-view.html">Mail View</a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-commenting-o"></i> <span> Blog</span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="blog.html">Blog</a></li>
-                                    <li><a href="blog-details.html">Blog View</a></li>
-                                    <li><a href="add-blog.html">Add Blog</a></li>
-                                    <li><a href="edit-blog.html">Edit Blog</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="assets.html"><i class="fa fa-cube"></i> <span>Assets</span></a>
-                            </li>
-                            <li>
-                                <a href="activities.html"><i class="fa fa-bell-o"></i> <span>Activities</span></a>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-flag-o"></i> <span> Reports </span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="expense-reports.html"> Expense Report </a></li>
-                                    <li><a href="invoice-reports.html"> Invoice Report </a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="settings.html"><i class="fa fa-cog"></i> <span>Settings</span></a>
-                            </li>
-                            <li class="menu-title">UI Elements</li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-laptop"></i> <span> Components</span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="uikit.html">UI Kit</a></li>
-                                    <li><a href="typography.html">Typography</a></li>
-                                    <li><a href="tabs.html">Tabs</a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-edit"></i> <span> Forms</span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="form-basic-inputs.html">Basic Inputs</a></li>
-                                    <li><a href="form-input-groups.html">Input Groups</a></li>
-                                    <li><a href="form-horizontal.html">Horizontal Form</a></li>
-                                    <li><a href="form-vertical.html">Vertical Form</a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-table"></i> <span> Tables</span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="tables-basic.html">Basic Tables</a></li>
-                                    <li><a href="tables-datatables.html">Data Table</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="calendar.html"><i class="fa fa-calendar"></i> <span>Calendar</span></a>
-                            </li>
-                            <li class="menu-title">Extras</li>
-                            <li class="submenu">
-                                <a href="#"><i class="fa fa-columns"></i> <span>Pages</span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a href="login.html"> Login </a></li>
-                                    <li><a href="register.html"> Register </a></li>
-                                    <li><a href="forgot-password.html"> Forgot Password </a></li>
-                                    <li><a href="change-password2.html"> Change Password </a></li>
-                                    <li><a href="lock-screen.html"> Lock Screen </a></li>
-                                    <li><a href="profile.html"> Profile </a></li>
-                                    <li><a href="gallery.html"> Gallery </a></li>
-                                    <li><a href="error-404.html">404 Error </a></li>
-                                    <li><a href="error-500.html">500 Error </a></li>
-                                    <li><a href="blank-page.html"> Blank Page </a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu">
-                                <a href="javascript:void(0);"><i class="fa fa-share-alt"></i> <span>Multi Level</span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li class="submenu">
-                                        <a href="javascript:void(0);"><span>Level 1</span> <span class="menu-arrow"></span></a>
-                                        <ul style="display: none;">
-                                            <li><a href="javascript:void(0);"><span>Level 2</span></a></li>
-                                            <li class="submenu">
-                                                <a href="javascript:void(0);"> <span> Level 2</span> <span class="menu-arrow"></span></a>
-                                                <ul style="display: none;">
-                                                    <li><a href="javascript:void(0);">Level 3</a></li>
-                                                    <li><a href="javascript:void(0);">Level 3</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="javascript:void(0);"><span>Level 2</span></a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);"><span>Level 1</span></a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                <!-- ... (gi? nguyên ph?n sidebar) ... -->
             </div>
+
+            <!-- Page Content -->
             <div class="page-wrapper">
                 <div class="content">
                     <div class="row">
@@ -298,9 +36,10 @@
                             <h4 class="page-title">Appointments</h4>
                         </div>
                         <div class="col-sm-8 col-9 text-right m-b-20">
-                            <a href="add-appointment.html" class="btn btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Add Appointment</a>
+                            <a href="add-appointment.jsp" class="btn btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Add Appointment</a>
                         </div>
                     </div>
+
                     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                     <div class="container">
                         <h2>Medical Examinations</h2>
@@ -308,13 +47,10 @@
                         <!-- Form tìm ki?m và l?c -->
                         <form method="get" action="manage_appointment" class="mb-4">
                             <div class="row">
-                                <!-- Search by Patient Name -->
                                 <div class="col-md-3">
                                     <label for="patientName">Patient Name</label>
                                     <input type="text" class="form-control" id="patientName" name="patientName" value="${param.patientName}" placeholder="Enter patient name">
                                 </div>
-
-                                <!-- Filter Age (T?ng d?n/Gi?m d?n) -->
                                 <div class="col-md-2">
                                     <label for="ageSort">Sort by Age</label>
                                     <select class="form-control" id="ageSort" name="ageSort">
@@ -323,8 +59,6 @@
                                         <option value="desc" ${param.ageSort == 'desc' ? 'selected' : ''}>Descending</option>
                                     </select>
                                 </div>
-
-                                <!-- Filter by Doctor Name -->
                                 <div class="col-md-2">
                                     <label for="doctorName">Doctor Name</label>
                                     <select class="form-control" id="doctorName" name="doctorName">
@@ -334,14 +68,10 @@
                                         </c:forEach>
                                     </select>
                                 </div>
-
-                                <!-- Filter Appointment Date (L?ch) -->
                                 <div class="col-md-2">
                                     <label for="appointmentDate">Appointment Date</label>
-                                    <input type="date" class="form-control" id="appointmentDate" name="appointmentDate" value="${param.appointmentDate}">
+                                    <input type="text" class="form-control" id="appointmentDate" name="appointmentDate" value="${param.appointmentDate}">
                                 </div>
-
-                                <!-- Filter Time Created (Ngày gi? m?i nh?t) -->
                                 <div class="col-md-2">
                                     <label for="timeCreatedSort">Sort by Time Created</label>
                                     <select class="form-control" id="timeCreatedSort" name="timeCreatedSort">
@@ -350,8 +80,6 @@
                                         <option value="oldest" ${param.timeCreatedSort == 'oldest' ? 'selected' : ''}>Oldest First</option>
                                     </select>
                                 </div>
-
-                                <!-- Filter by Status -->
                                 <div class="col-md-2">
                                     <label for="status">Status</label>
                                     <select class="form-control" id="status" name="status">
@@ -388,6 +116,9 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <c:if test="${list == null || empty list}">
+                                                <tr><td colspan="9">No data available</td></tr>
+                                            </c:if>
                                             <c:forEach var="exam" items="${list}">
                                                 <tr>
                                                     <td>${exam.examinationID}</td>
@@ -448,6 +179,29 @@
                             </div>
                         </div>
 
+                        <!-- Phân trang -->
+                        <c:if test="${totalPages > 1}">
+                            <nav aria-label="Page navigation" class="mt-3">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                        <a class="page-link" href="manage_appointment?page=${currentPage - 1}&patientName=${param.patientName}&ageSort=${param.ageSort}&doctorName=${param.doctorName}&appointmentDate=${param.appointmentDate}&timeCreatedSort=${param.timeCreatedSort}&status=${param.status}" aria-label="Previous">
+                                            <span aria-hidden="true">«</span>
+                                        </a>
+                                    </li>
+                                    <c:forEach begin="1" end="${totalPages}" var="i">
+                                        <li class="page-item ${currentPage == i ? 'active' : ''}">
+                                            <a class="page-link" href="manage_appointment?page=${i}&patientName=${param.patientName}&ageSort=${param.ageSort}&doctorName=${param.doctorName}&appointmentDate=${param.appointmentDate}&timeCreatedSort=${param.timeCreatedSort}&status=${param.status}">${i}</a>
+                                        </li>
+                                    </c:forEach>
+                                    <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
+                                        <a class="page-link" href="manage_appointment?page=${currentPage + 1}&patientName=${param.patientName}&ageSort=${param.ageSort}&doctorName=${param.doctorName}&appointmentDate=${param.appointmentDate}&timeCreatedSort=${param.timeCreatedSort}&status=${param.status}" aria-label="Next">
+                                            <span aria-hidden="true">»</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </c:if>
+
                         <!-- Delete Modal -->
                         <div id="delete_appointment" class="modal fade delete-modal" role="dialog">
                             <div class="modal-dialog modal-dialog-centered">
@@ -466,36 +220,34 @@
                                 </div>
                             </div>
                         </div>
-
-                        <script>
-                            function setDeleteId(examId) {
-                                document.getElementById("deleteExamId").value = examId;
-                            }
-                        </script>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="sidebar-overlay" data-reff=""></div>
-    <script src="assets/js/jquery-3.2.1.min.js"></script>
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/jquery.slimscroll.js"></script>
-    <script src="assets/js/select2.min.js"></script>
-    <script src="assets/js/app.js"></script>
-    <script>
-                            $(function () {
-                                $('#datetimepicker3').datetimepicker({
-                                    format: 'LT'
-                                });
-                                $('#datetimepicker4').datetimepicker({
-                                    format: 'LT'
-                                });
-                            });
-    </script>
-</body>
+        <div class="sidebar-overlay" data-reff=""></div>
 
+        <!-- Scripts -->
+        <script src="assets/js/jquery-3.2.1.min.js"></script>
+        <script src="assets/js/popper.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.slimscroll.js"></script>
+        <script src="assets/js/select2.min.js"></script>
+        <!-- Thêm Moment.js và Bootstrap Datetimepicker -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+        <script src="assets/js/app.js"></script>
+        <script>
+                                                                       $(document).ready(function () {
+                                                                           // Kh?i t?o datetimepicker cho appointmentDate
+                                                                           $('#appointmentDate').datetimepicker({
+                                                                               format: 'DD/MM/YYYY', // ??nh d?ng ngày
+                                                                               useCurrent: false
+                                                                           });
+                                                                       });
 
-<!-- appointments23:20-->
+                                                                       function setDeleteId(examId) {
+                                                                           document.getElementById("deleteExamId").value = examId;
+                                                                       }
+        </script>
+    </body>
 </html>
