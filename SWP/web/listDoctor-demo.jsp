@@ -100,6 +100,11 @@
             .control-label {
                 font-weight: bold;
             }
+            .btn-sm {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.875rem;
+                border-radius: 0.2rem;
+            }
         </style>
     </head>
     <body>
@@ -226,6 +231,7 @@
                         <th>Ca</th>
                         <th>Giờ bắt đầu</th>
                         <th>Giờ kết thúc</th>
+                        <th>Trạng thái</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -235,6 +241,9 @@
                     <td>${schedule.shift}</td>
                     <td>${schedule.startTime}</td>
                     <td>${schedule.endTime}</td>
+                    <td>
+                        ${schedule.status} 
+                    </td>
                 </tr>
                 <c:set var="prevID" value="${schedule.professionalID}" />
             </c:forEach>

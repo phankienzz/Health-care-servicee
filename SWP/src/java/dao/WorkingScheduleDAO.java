@@ -39,23 +39,24 @@ public class WorkingScheduleDAO {
     public List<WorkingSchedule> getListProfessionalSchedules() {
         List<WorkingSchedule> schedules = new ArrayList<>();
         String sql = """
-            SELECT ws.scheduleID, ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime
-            FROM WorkingSchedule ws
-            INNER JOIN Professional p ON ws.professionalID = p.professionalID
-            INNER JOIN Staff s ON p.staffID = s.staffID
-            ORDER BY ws.professionalID, ws.dayOfWeek, ws.startTime
-            """;
+        SELECT ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime, ws.status
+        FROM WorkingSchedule ws
+        INNER JOIN Professional p ON ws.professionalID = p.professionalID
+        INNER JOIN Staff s ON p.staffID = s.staffID
+        ORDER BY ws.professionalID, ws.dayOfWeek, ws.startTime
+        """;
 
         try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
 
             while (rs.next()) {
                 schedules.add(new WorkingSchedule(
-                        rs.getInt("professionalID"),
-                        rs.getString("fullName"),
-                        rs.getInt("dayOfWeek"),
-                        rs.getString("shift"),
-                        rs.getTime("startTime"),
-                        rs.getTime("endTime")
+                        rs.getInt("professionalID"), // professionalID
+                        rs.getString("fullName"), // fullName
+                        rs.getInt("dayOfWeek"), // dayOfWeek
+                        rs.getString("shift"), // shift
+                        rs.getTime("startTime"), // startTime
+                        rs.getTime("endTime"), // endTime
+                        rs.getString("status") // status
                 ));
             }
         } catch (SQLException e) {
@@ -187,6 +188,20 @@ public class WorkingScheduleDAO {
             st.setTime(3, schedule.getEndTime());
             st.setString(4, schedule.getShift());
             st.setInt(5, schedule.getScheduleID());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateScheduleStatus(int professionalID, int dayOfWeek, String shift, String status) {
+        String sql = "UPDATE WorkingSchedule SET status = ? WHERE professionalID = ? AND dayOfWeek = ? AND shift = ?";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, status);
+            st.setInt(2, professionalID);
+            st.setInt(3, dayOfWeek);
+            st.setString(4, shift);
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -391,12 +406,11 @@ public class WorkingScheduleDAO {
 
     public static void main(String[] args) {
         WorkingScheduleDAO dao = new WorkingScheduleDAO();
-        List<WorkingSchedule> list = dao.getSchedulesByDate("2025-03-11","evening");
+        dao.updateScheduleStatus(2, 2, "afternoon", "Off");
+        List<WorkingSchedule> list = dao.getListProfessionalSchedules();
         for (WorkingSchedule ws : list) {
             System.out.println(ws);
         }
 
-        int c = dao.countProfessionalsWithSchedule();
-        System.out.println("so bac si la: " + c);
     }
 }

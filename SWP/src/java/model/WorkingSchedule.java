@@ -11,6 +11,7 @@ public class WorkingSchedule {
     private Time startTime;
     private Time endTime;
     private String shift;
+    private String status;
 
     // Constructor đầy đủ
     public WorkingSchedule(int scheduleID, int professionalID, int dayOfWeek, Time startTime, Time endTime, String shift) {
@@ -20,6 +21,17 @@ public class WorkingSchedule {
         this.startTime = startTime;
         this.endTime = endTime;
         this.shift = shift;
+    }
+
+    public WorkingSchedule(int professionalID, String fullName, int dayOfWeek, String shift, Time startTime, Time endTime, String status) {
+        this.scheduleID = scheduleID;
+        this.professionalID = professionalID;
+        this.fullName = fullName;
+        this.dayOfWeek = dayOfWeek;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.shift = shift;
+        this.status = status;
     }
 
     // Constructor không có scheduleID (dùng khi thêm mới)
@@ -43,14 +55,6 @@ public class WorkingSchedule {
 
     // Constructor mặc định
     public WorkingSchedule() {
-    }
-
-    public WorkingSchedule(String string, String string0, String string1, String string2) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public WorkingSchedule(int aInt, int aInt0, String string, int aInt1, String string0, Time time, Time time0) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     // Getters và Setters
@@ -110,6 +114,14 @@ public class WorkingSchedule {
         this.fullName = fullName;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     // Phương thức chuyển đổi dayOfWeek thành tên ngày
     public String getDayName() {
         switch (dayOfWeek) {
@@ -134,8 +146,7 @@ public class WorkingSchedule {
 
     @Override
     public String toString() {
-        return "WorkingSchedule{" + "scheduleID=" + scheduleID + ", professionalID=" + professionalID + ", fullName=" + fullName
-                + ", dayOfWeek=" + dayOfWeek + ", startTime=" + startTime
-                + ", endTime=" + endTime + ", shift=" + shift + '}';
+        return "WorkingSchedule{" + "scheduleID=" + scheduleID + ", professionalID=" + professionalID + ", fullName=" + fullName + ", dayOfWeek=" + dayOfWeek + ", startTime=" + startTime + ", endTime=" + endTime + ", shift=" + shift + ", status=" + status + '}';
     }
+
 }

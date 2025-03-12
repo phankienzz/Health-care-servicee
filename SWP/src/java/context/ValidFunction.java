@@ -44,16 +44,17 @@ public class ValidFunction {
         }
         name = name.trim().toLowerCase(); // Loại bỏ khoảng trắng đầu cuối và chuyển về chữ thường
         String[] words = name.split("\\s+"); // Tách các từ dựa vào khoảng trắng
-
         StringBuilder normalized = new StringBuilder();
-        normalized.append(Character.toUpperCase(words[0].charAt(0))) // Viết hoa chữ cái đầu tiên
-                .append(words[0].substring(1)); // Giữ lại phần còn lại của từ đầu tiên
 
-        for (int i = 1; i < words.length; i++) {
-            normalized.append(" ").append(words[i]); // Thêm 1 khoảng trắng giữa các từ
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                normalized.append(Character.toUpperCase(word.charAt(0))) // Viết hoa chữ cái đầu
+                        .append(word.substring(1)) // Giữ lại phần còn lại
+                        .append(" "); // Thêm khoảng trắng giữa các từ
+            }
         }
 
-        return normalized.toString();
+        return normalized.toString().trim(); // Loại bỏ khoảng trắng cuối cùng
     }
 
     public boolean isValidPhoneNumber(String input) {
