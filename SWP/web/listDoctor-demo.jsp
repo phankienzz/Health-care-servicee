@@ -246,7 +246,18 @@
                                 <td>${schedule.startTime}</td>
                                 <td>${schedule.endTime}</td>
                                 <td>
-                                    ${schedule.status} 
+                                    <c:choose>
+                                        <c:when test="${schedule.status == 'On'}">
+                                            <a href="saveSchedule?update=statusUpdate&professionalID=${schedule.professionalID}&dayOfWeek=${schedule.dayOfWeek}&shift=${schedule.shift}&status=On" 
+                                               class="btn btn-success btn-sm" 
+                                               onclick="return confirm('Bạn có chắc chắn muốn tắt trạng thái này không?')">On</a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="saveSchedule?update=statusUpdate&professionalID=${schedule.professionalID}&dayOfWeek=${schedule.dayOfWeek}&shift=${schedule.shift}&status=Off" 
+                                               class="btn btn-danger btn-sm" 
+                                               onclick="return confirm('Bạn có chắc chắn muốn bật trạng thái này không?')">Off</a>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </td>
                             </tr>
                             <c:set var="prevID" value="${schedule.professionalID}" />
