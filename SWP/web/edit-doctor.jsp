@@ -417,7 +417,7 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label>Profile Picture</label>
-                                            <input type="file" class="form-control" name="profilePicture" accept="image/*">
+                                            <input type="file" class="form-control" name="profilePicture" accept="image/* id="profilePicture">
                                             <small id="fileError" class="text-danger">
                                                 <% if (request.getAttribute("errorMessage") != null) {%>
                                                 <%= request.getAttribute("errorMessage")%>
@@ -425,7 +425,21 @@
                                             </small>
                                         </div>
                                     </div>
-                               
+                                 <script>
+                                        document.getElementById("profilePicture").addEventListener("change", function () {
+                                            var file = this.files[0];
+                                            var errorMessage = document.getElementById("fileError");
+                                            if (file) {
+                                                var allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+                                                if (!allowedTypes.includes(file.type)) {
+                                                    errorMessage.textContent = "Chỉ được tải lên file ảnh (JPEG, PNG, GIF, WEBP)!";
+                                                    this.value = ""; // Xóa file nếu không hợp lệ
+                                                } else {
+                                                    errorMessage.textContent = ""; // Xóa thông báo lỗi nếu hợp lệ
+                                                }
+                                            }
+                                        });
+                                    </script>
 
                                 <div class="m-t-20 text-center">
                                     <button class="btn btn-primary submit-btn" type="submit">Save</button>

@@ -146,7 +146,7 @@
                                 <a href="dashboard.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
                             </li>
                             <li class="active">
-                                <a href="doctors.html"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
+                                <a href="ViewDoctor"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
                             </li>
                             <li>
                                 <a href="patients.html"><i class="fa fa-wheelchair"></i> <span>Patients</span></a>

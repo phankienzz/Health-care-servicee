@@ -62,7 +62,7 @@
                             <li class="nav-item dropdown has-arrow">
                                 <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
                                     <span class="user-img">
-                                        <img class="rounded-circle" src="assets/img/user.jpg" width="24" alt="Admin">
+                                        <img class="rounded-circle" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" width="50" height="35"  >
                                         <span class="status online"></span>
                                     </span>
                                     <span>${sessionScope.customerAccount.fullName}</span>
@@ -141,17 +141,17 @@
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="doctor.html" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Doctors <i class="icofont-thin-down"></i></a>
+                        <a class="nav-link dropdown-toggle" href="doctor.jsp" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Doctors <i class="icofont-thin-down"></i></a>
                         <ul class="dropdown-menu" aria-labelledby="dropdown03">
-                            <li><a class="dropdown-item" href="doctor.html">Doctors</a></li>
-                            <li><a class="dropdown-item" href="doctor-single.html">Doctor Single</a></li>
-                            <li><a class="dropdown-item" href="appoinment.html">Appointment</a></li>
+                            <li><a class="dropdown-item" href="doctor.jsp">Doctors</a></li>
+                            <li><a class="dropdown-item" href="doctor-single.jsp">Doctor Single</a></li>
+                            <li><a class="dropdown-item" href="appoinment.jsp">Appointment</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="blog-sidebar.html" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">News<i class="icofont-thin-down"></i></a>
                         <ul class="dropdown-menu" aria-labelledby="dropdown05">
-                            <li><a class="dropdown-item" href="news">All News</a></li>
+                            <li><a class="dropdown-item" href="allNews">All News</a></li>
                             <li><a class="dropdown-item" href="blog-single.html">Blog Single</a></li>
                         </ul>
                     </li>

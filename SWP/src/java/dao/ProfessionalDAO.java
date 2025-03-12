@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import model.Professional;
+import model.Staff;
 
 public class ProfessionalDAO {
 
@@ -232,36 +233,79 @@ public class ProfessionalDAO {
         );
     }
 
-    public static void main(String[] args) {
-        int staffID = 0;
-        String fullName = "chu chung 23";
-        String email = "johndoe2@example.com";
-        String password = "password123";
-        Date dateOfBirth = Date.valueOf("1990-05-15");
-        String gender = "Male";
-        String address = "123 Main Street, City, Country";
-        String phone = "123-456-7890";
-        Date hireDate = Date.valueOf("2020-08-01");
-        String status = "Active";
+    
+    public List<Professional> getAllDoctors() {
+    List<Professional> list = new ArrayList<>();
+    String sql = "SELECT \n"
+            + "    s.staffID,\n"
+            + "    s.fullName,\n"
+            + "    s.email,\n"
+            + "    s.password,\n"
+            + "    s.phone,\n"
+            + "    s.gender,\n"
+            + "    s.dateOfBirth,\n"
+            + "    s.address,\n"
+            + "    s.hireDate,\n"
+            + "    s.roleID,\n"
+            + "    s.status AS staffStatus,\n"
+            + "    s.profilePicture AS staffProfilePicture,\n"
+            + "    p.professionalID,\n"
+            + "    p.specialization,\n"
+            + "    p.officeHours,\n"
+            + "    p.qualification,\n"
+            + "    p.biography,\n"
+            + "    p.profilePicture AS professionalProfilePicture,\n"
+            + "    p.status AS professionalStatus,\n"
+            + "    p.createdAt\n"
+            + "FROM Staff s\n"
+            + "JOIN Professional p ON s.staffID = p.staffID\n"
+            + "WHERE p.status = 'Active';"; // Chỉ lấy bác sĩ có trạng thái Active
 
-        // Ảnh giả lập dưới dạng byte[]
-        byte[] profilePicture = "z6121385986382_002_aa9d762069fae77f259ff28d97b77428.jpg".getBytes();
-
-        String specialization = "Heart Surgeon";
-        String officeHours = "9 AM - 5 PM";
-        String qualification = "MD, PhD";
-        String biography = "Experienced heart surgeon with 15+ years in practice.";
-        Date createdAt = new Date(System.currentTimeMillis());
-
-        // Gọi constructor
-        Professional newProfessional = new Professional(
-                staffID, fullName, email, password, dateOfBirth, gender, address, phone,
-                hireDate, status, profilePicture, specialization, officeHours, qualification,
-                biography, createdAt
-        );
-        newProfessional.setRoleID(3);
-
-        ProfessionalDAO dao = new ProfessionalDAO();
-
+    try (PreparedStatement stmt = conn.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
+        while (rs.next()) {
+            Professional doctor = extractProfessional(rs);
+            list.add(doctor);
+            System.out.println("Doctor Found: " + doctor.getFullName());
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return list;
+}
+
+    
+    
+    
+    
+    
+   public static void main(String[] args) {
+    // Khởi tạo DAO
+    ProfessionalDAO dao = new ProfessionalDAO();
+    
+    // Kiểm tra kết nối CSDL trước khi truy vấn
+    if (dao.conn == null) {
+        System.out.println("❌ Lỗi kết nối đến CSDL! Vui lòng kiểm tra lại DBContext.");
+        return;
+    } else {
+        System.out.println("✅ Kết nối CSDL thành công!");
+    }
+
+    // Lấy danh sách bác sĩ từ database
+    List<Professional> doctors = dao.getAllDoctors();
+
+    // Kiểm tra danh sách bác sĩ có dữ liệu hay không
+    if (doctors == null || doctors.isEmpty()) {
+        System.out.println("⚠️ Không tìm thấy bác sĩ nào! Hãy kiểm tra dữ liệu trong bảng Professional.");
+    } else {
+        System.out.println("✅ Danh sách bác sĩ:");
+        for (Professional doc : doctors) {
+            System.out.println("🆔 ID: " + doc.getStaffID()+ 
+                               " | 👨‍⚕️ Tên: " + doc.getFullName() + 
+                               " | 📞 SĐT: " + doc.getPhone() + 
+                               " | 🎓 Chuyên môn: " + doc.getSpecialization());
+        }
+    }
+}
+
 }

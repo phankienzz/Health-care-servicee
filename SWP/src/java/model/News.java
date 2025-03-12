@@ -1,18 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
-import java.util.Date;
 
-/**
- *
- * @author jaxbo
- */
+
+
 public class News {
-
-    private int postId;
+   private int post_id;
     private String title;
     private String content;
     private int created_by;
@@ -22,12 +14,12 @@ public class News {
     private String detail;
     private String created_at;
     private String updated_at;
-
+    
     public News() {
     }
 
-    public News(int postId, String title, String content, int created_by, int category_id, int status, String image, String detail, String created_at, String updated_at) {
-        this.postId = postId;
+    public News(int post_id, String title, String content, int created_by, int category_id, int status, String image, String detail, String created_at, String updated_at) {
+        this.post_id = post_id;
         this.title = title;
         this.content = content;
         this.created_by = created_by;
@@ -39,12 +31,12 @@ public class News {
         this.updated_at = updated_at;
     }
 
-    public int getPostId() {
-        return postId;
+    public int getPost_id() {
+        return post_id;
     }
 
-    public void setPostId(int postId) {
-        this.postId = postId;
+    public void setPost_id(int post_id) {
+        this.post_id = post_id;
     }
 
     public String getTitle() {
@@ -121,7 +113,8 @@ public class News {
 
     @Override
     public String toString() {
-        return "News{" + "postId=" + postId + ", title=" + title + ", content=" + content + ", created_by=" + created_by + ", category_id=" + category_id + ", status=" + status + ", image=" + image + ", detail=" + detail + ", created_at=" + created_at + ", updated_at=" + updated_at + '}';
+        return "News{" + "post_id=" + post_id + ", title=" + title + ", content=" + content + ", created_by=" + created_by + ", category_id=" + category_id + ", status=" + status + ", image=" + image + ", detail=" + detail + ", created_at=" + created_at + ", updated_at=" + updated_at + '}';
     }
 
+   
 }

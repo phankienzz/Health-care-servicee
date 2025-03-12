@@ -8,9 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceDAO {
-
-    private Connection connection;
+public class ServiceDAO extends DBContext {
 
     public ServiceDAO() {
         try {
@@ -29,6 +27,46 @@ public class ServiceDAO {
         try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
             while (rs.next()) {
                 serviceList.add(mapResultSetToService(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return serviceList;
+    }
+
+    public void insertMedicalService(int examinationID, int packageID) {
+        String sql = "INSERT INTO MedicalService (examinationID, packageID) VALUES (?, ?)";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, examinationID);
+            st.setInt(2, packageID);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public List<Service> getServiceExaminationID(int examinationID) {
+        List<Service> serviceList = new ArrayList<>();
+        String sql = " select ServicePackage.packageID, packageName,description, service_image, type, price, duration, status, createdAt from ServicePackage join MedicalService on ServicePackage.packageID = MedicalService.packageID where examinationID = ?";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, examinationID);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                serviceList.add(new Service(
+                        rs.getInt("packageID"),
+                        rs.getString("packageName"),
+                        rs.getString("description"),
+                        rs.getBytes("service_image"),
+                        rs.getString("type"),
+                        rs.getDouble("price"),
+                        rs.getInt("duration"),
+                        rs.getString("status"),
+                        rs.getString("createdAt")
+                ));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -323,7 +361,7 @@ public class ServiceDAO {
 
     public static void main(String[] args) {
         ServiceDAO dao = new ServiceDAO();
-        List<Service> list = dao.getAllService();
+        List<Service> list = dao.getServiceExaminationID(1);
         for (Service sv : list) {
             System.out.println(sv);
         }

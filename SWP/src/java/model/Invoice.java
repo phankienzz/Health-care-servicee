@@ -10,26 +10,26 @@ package model;
  */
 public class Invoice {
     private int invoiceID;
-    private Customer customerID;
-    private int examinationID;
+    private MedicalExamination examinationID;
     private double totalAmount;
     private String paymentStatus;
     private String paymentDate;
     private String paymentMethod;
     private String createdAt;
+    private Discount discountID;
 
     public Invoice() {
     }
 
-    public Invoice(int invoiceID, Customer customerID, int examinationID, double totalAmount, String paymentStatus, String paymentDate, String paymentMethod, String createdAt) {
+    public Invoice(int invoiceID, MedicalExamination examinationID, double totalAmount, String paymentStatus, String paymentDate, String paymentMethod, String createdAt, Discount discountID) {
         this.invoiceID = invoiceID;
-        this.customerID = customerID;
         this.examinationID = examinationID;
         this.totalAmount = totalAmount;
         this.paymentStatus = paymentStatus;
         this.paymentDate = paymentDate;
         this.paymentMethod = paymentMethod;
         this.createdAt = createdAt;
+        this.discountID = discountID;
     }
 
     public int getInvoiceID() {
@@ -40,19 +40,12 @@ public class Invoice {
         this.invoiceID = invoiceID;
     }
 
-    public Customer getCustomerID() {
-        return customerID;
-    }
 
-    public void setCustomerID(Customer customerID) {
-        this.customerID = customerID;
-    }
-
-    public int getExaminationID() {
+    public MedicalExamination getExaminationID() {
         return examinationID;
     }
 
-    public void setExaminationID(int examinationID) {
+    public void setExaminationID(MedicalExamination examinationID) {
         this.examinationID = examinationID;
     }
 
@@ -96,5 +89,16 @@ public class Invoice {
         this.createdAt = createdAt;
     }
 
+    public Discount getDiscountID() {
+        return discountID;
+    }
+
+    public void setDiscountID(Discount discountID) {
+        this.discountID = discountID;
+    }
+
+    
+
+    
     
 }

@@ -1,9 +1,3 @@
-<%-- 
-    Document   : add-doctor.jsp
-    Created on : Mar 3, 2025, 9:12:02 PM
-    Author     : Phan Huu Kien
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <!DOCTYPE html>

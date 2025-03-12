@@ -26,7 +26,7 @@
                         <form class="form-signin"  action="requestPassword" method="post">
                             <p class="text-danger text-center">${mess}</p>
                             <div class="account-logo">
-                                <a href="index-2.html"><img src="assets/img/logo-dark.png" alt=""></a>
+                                <a href="dashboard.html"><img src="assets/img/logo-dark.png" alt=""></a>
                             </div>
                             <div class="form-group">
                                 <label for="email">Enter Your Email</label>

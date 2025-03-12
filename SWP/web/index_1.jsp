@@ -1,12 +1,13 @@
 <%-- 
-    Document   : index_1
-    Created on : Jan 14, 2025, 10:36:16 PM
-    Author     : jaxbo
+    Document   : home
+    Created on : Feb 13, 2025, 2:57:49 AM
+    Author     : Hoang
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="zxx">
+
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="description" content="Orbitor,business,company,agency,modern,bootstrap4,tech,software">
@@ -18,20 +19,22 @@
         <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
 
         <!-- bootstrap.min css -->
-        <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets2/plugins/bootstrap/css/bootstrap.min.css">
         <!-- Icon Font Css -->
-        <link rel="stylesheet" href="plugins/icofont/icofont.min.css">
+        <link rel="stylesheet" href="assets2/plugins/icofont/icofont.min.css">
         <!-- Slick Slider  CSS -->
-        <link rel="stylesheet" href="plugins/slick-carousel/slick/slick.css">
-        <link rel="stylesheet" href="plugins/slick-carousel/slick/slick-theme.css">
+        <link rel="stylesheet" href="assets2/plugins/slick-carousel/slick/slick.css">
+        <link rel="stylesheet" href="assets2/plugins/slick-carousel/slick/slick-theme.css">
 
         <!-- Main Stylesheet -->
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="assets2/css/style.css">
 
     </head>
 
     <body id="top">
-        <jsp:include page="headerCustomer.jsp"></jsp:include>
+
+        <jsp:include page="headerHome.jsp"></jsp:include>
+
         <!-- Slider Start -->
         <section class="banner">
             <div class="container">
@@ -39,13 +42,15 @@
                     <div class="col-lg-6 col-md-12 col-xl-7">
                         <div class="block">
                             <div class="divider mb-3"></div>
-                            <span class="text-uppercase text-sm letter-spacing ">Total Health care solution</span>
-                            <h1 class="mb-3 mt-3" >Your most trusted health partner</h1>
+                            <span class="text-uppercase text-sm letter-spacing " style="color: black;">Total Health care solution</span>
+                            <h1 class="mb-3 mt-3">Your most trusted health partner</h1>
 
-
-                            <p class="mb-4 pr-5">A repudiandae ipsam labore ipsa voluptatum quidem quae laudantium quisquam aperiam maiores sunt fugit, deserunt rem suscipit placeat.</p>
+                            <p class="mb-4 pr-5" style="color: black;">A repudiandae ipsam labore ipsa voluptatum quidem quae laudantium quisquam
+                                aperiam maiores sunt fugit, deserunt rem suscipit placeat.</p>
                             <div class="btn-container ">
-                                <a href="appoinment.html" target="_blank" class="btn btn-main-2 btn-icon btn-round-full">Make appoinment <i class="icofont-simple-right ml-2  "></i></a>
+                                <a href="appointment" target="_blank"
+                                   class="btn btn-main-2 btn-icon btn-round-full">Make appoinment <i
+                                        class="icofont-simple-right ml-2  "></i></a>
                             </div>
                         </div>
                     </div>
@@ -62,9 +67,10 @@
                                     <i class="icofont-surgeon-alt"></i>
                                 </div>
                                 <span>24 Hours Service</span>
-                                <h4 class="mb-3" >Online Appoinment</h4>
-                                <p class="mb-4">Get ALl time support for emergency.We have introduced the principle of family medicine.</p>
-                                <a href="appoinment.html" class="btn btn-main btn-round-full">Make a appoinment</a>
+                                <h4 class="mb-3">Online Appoinment</h4>
+                                <p class="mb-4">Get ALl time support for emergency.We have introduced the principle of
+                                    family medicine.</p>
+                                <a href="appointment" class="btn btn-main btn-round-full">Make a appoinment</a>
                             </div>
 
                             <div class="feature-item mb-5 mb-lg-0">
@@ -72,7 +78,7 @@
                                     <i class="icofont-ui-clock"></i>
                                 </div>
                                 <span>Timing schedule</span>
-                                <h4 class="mb-3" style="color: #009efb;">Working Hours</h4>
+                                <h4 class="mb-3">Working Hours</h4>
                                 <ul class="w-hours list-unstyled">
                                     <li class="d-flex justify-content-between">Sun - Wed : <span>8:00 - 17:00</span></li>
                                     <li class="d-flex justify-content-between">Thu - Fri : <span>9:00 - 17:00</span></li>
@@ -85,8 +91,9 @@
                                     <i class="icofont-support"></i>
                                 </div>
                                 <span>Emegency Cases</span>
-                                <h4 class="mb-3" style="color: #009efb;">1-800-700-6200</h4>
-                                <p>Get ALl time support for emergency.We have introduced the principle of family medicine.Get Conneted with us for any urgency .</p>
+                                <h4 class="mb-3">1-800-700-6200</h4>
+                                <p>Get ALl time support for emergency.We have introduced the principle of family
+                                    medicine.Get Conneted with us for any urgency .</p>
                             </div>
                         </div>
                     </div>
@@ -100,21 +107,23 @@
                 <div class="row align-items-center">
                     <div class="col-lg-4 col-sm-6">
                         <div class="about-img">
-                            <img src="images/about/img-1.jpg" alt="" class="img-fluid">
-                            <img src="images/about/img-2.jpg" alt="" class="img-fluid mt-4">
+                            <img src="assets2/images/about/img-1.jpg" alt="" class="img-fluid">
+                            <img src="assets2/images/about/img-2.jpg" alt="" class="img-fluid mt-4">
                         </div>
                     </div>
                     <div class="col-lg-4 col-sm-6">
                         <div class="about-img mt-4 mt-lg-0">
-                            <img src="images/about/img-3.jpg" alt="" class="img-fluid">
+                            <img src="assets2/images/about/img-3.jpg" alt="" class="img-fluid">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="about-content pl-4 mt-4 mt-lg-0">
-                            <h2 class="title-color" style="color: #009efb;">Personal care <br>& healthy living</h2>
-                            <p class="mt-4 mb-5">We provide best leading medicle service Nulla perferendis veniam deleniti ipsum officia dolores repellat laudantium obcaecati neque.</p>
+                            <h2 class="title-color">Personal care <br>& healthy living</h2>
+                            <p class="mt-4 mb-5">We provide best leading medicle service Nulla perferendis veniam deleniti
+                                ipsum officia dolores repellat laudantium obcaecati neque.</p>
 
-                            <a href="loadservice" class="btn btn-main-2 btn-round-full btn-icon">Services<i class="icofont-simple-right ml-3"></i></a>
+                            <a href="service.jsp" class="btn btn-main-2 btn-round-full btn-icon">Services<i
+                                    class="icofont-simple-right ml-3"></i></a>
                         </div>
                     </div>
                 </div>
@@ -162,9 +171,10 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-7 text-center">
                         <div class="section-title">
-                            <h2 >Award winning patient care</h2>
+                            <h2>Award winning patient care</h2>
                             <div class="divider mx-auto my-4"></div>
-                            <p>Lets know moreel necessitatibus dolor asperiores illum possimus sint voluptates incidunt molestias nostrum laudantium. Maiores porro cumque quaerat.</p>
+                            <p>Lets know moreel necessitatibus dolor asperiores illum possimus sint voluptates incidunt
+                                molestias nostrum laudantium. Maiores porro cumque quaerat.</p>
                         </div>
                     </div>
                 </div>
@@ -252,7 +262,7 @@
                 <div class="row align-items-center">
                     <div class="col-lg-6 ">
                         <div class="appoinment-content">
-                            <img src="images/about/img-3.jpg" alt="" class="img-fluid">
+                            <img src="assets2/images/about/img-3.jpg" alt="" class="img-fluid">
                             <div class="emergency">
                                 <h2 class="text-lg"><i class="icofont-phone-circle text-lg"></i>+23 345 67980</h2>
                             </div>
@@ -260,8 +270,9 @@
                     </div>
                     <div class="col-lg-6 col-md-10 ">
                         <div class="appoinment-wrap mt-5 mt-lg-0">
-                            <h2 class="mb-2 title-color" >Book appoinment</h2>
-                            <p class="mb-4">Mollitia dicta commodi est recusandae iste, natus eum asperiores corrupti qui velit . Iste dolorum atque similique praesentium soluta.</p>
+                            <h2 class="mb-2 title-color">Book appoinment</h2>
+                            <p class="mb-4">Mollitia dicta commodi est recusandae iste, natus eum asperiores corrupti qui
+                                velit . Iste dolorum atque similique praesentium soluta.</p>
                             <form id="#" class="appoinment-form" method="post" action="#">
                                 <div class="row">
                                     <div class="col-lg-6">
@@ -295,32 +306,38 @@
 
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <input name="date" id="date" type="text" class="form-control" placeholder="dd/mm/yyyy">
+                                            <input name="date" id="date" type="text" class="form-control"
+                                                   placeholder="dd/mm/yyyy">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <input name="time" id="time" type="text" class="form-control" placeholder="Time">
+                                            <input name="time" id="time" type="text" class="form-control"
+                                                   placeholder="Time">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <input name="name" id="name" type="text" class="form-control" placeholder="Full Name">
+                                            <input name="name" id="name" type="text" class="form-control"
+                                                   placeholder="Full Name">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <input name="phone" id="phone" type="Number" class="form-control" placeholder="Phone Number">
+                                            <input name="phone" id="phone" type="Number" class="form-control"
+                                                   placeholder="Phone Number">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group-2 mb-4">
-                                    <textarea name="message" id="message" class="form-control" rows="6" placeholder="Your Message"></textarea>
+                                    <textarea name="message" id="message" class="form-control" rows="6"
+                                              placeholder="Your Message"></textarea>
                                 </div>
 
-                                <a class="btn btn-main btn-round-full" href="appoinment.html" >Make Appoinment <i class="icofont-simple-right ml-2  "></i></a>
+                                <a class="btn btn-main btn-round-full" href="appointment">Make Appoinment <i
+                                        class="icofont-simple-right ml-2  "></i></a>
                             </form>
                         </div>
                     </div>
@@ -334,7 +351,8 @@
                         <div class="section-title text-center">
                             <h2>We served over 5000+ Patients</h2>
                             <div class="divider mx-auto my-4"></div>
-                            <p>Lets know moreel necessitatibus dolor asperiores illum possimus sint voluptates incidunt molestias nostrum laudantium. Maiores porro cumque quaerat.</p>
+                            <p>Lets know moreel necessitatibus dolor asperiores illum possimus sint voluptates incidunt
+                                molestias nostrum laudantium. Maiores porro cumque quaerat.</p>
                         </div>
                     </div>
                 </div>
@@ -347,28 +365,30 @@
                             <i class="icofont-quote-right"></i>
 
                             <div class="testimonial-thumb">
-                                <img src="images/team/test-thumb1.jpg" alt="" class="img-fluid">
+                                <img src="assets2/images/team/test-thumb1.jpg" alt="" class="img-fluid">
                             </div>
 
                             <div class="client-info ">
                                 <h4>Amazing service!</h4>
                                 <span>John Partho</span>
                                 <p>
-                                    They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
+                                    They provide great service facilty consectetur adipisicing elit. Itaque rem,
+                                    praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
                                 </p>
                             </div>
                         </div>
 
                         <div class="testimonial-block style-2  gray-bg">
                             <div class="testimonial-thumb">
-                                <img src="images/team/test-thumb2.jpg" alt="" class="img-fluid">
+                                <img src="assets2/images/team/test-thumb2.jpg" alt="" class="img-fluid">
                             </div>
 
                             <div class="client-info">
                                 <h4>Expert doctors!</h4>
                                 <span>Mullar Sarth</span>
                                 <p>
-                                    They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
+                                    They provide great service facilty consectetur adipisicing elit. Itaque rem,
+                                    praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
                                 </p>
                             </div>
 
@@ -377,14 +397,15 @@
 
                         <div class="testimonial-block style-2  gray-bg">
                             <div class="testimonial-thumb">
-                                <img src="images/team/test-thumb3.jpg" alt="" class="img-fluid">
+                                <img src="assets2/images/team/test-thumb3.jpg" alt="" class="img-fluid">
                             </div>
 
                             <div class="client-info">
                                 <h4>Good Support!</h4>
                                 <span>Kolis Mullar</span>
                                 <p>
-                                    They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
+                                    They provide great service facilty consectetur adipisicing elit. Itaque rem,
+                                    praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
                                 </p>
                             </div>
 
@@ -393,14 +414,15 @@
 
                         <div class="testimonial-block style-2  gray-bg">
                             <div class="testimonial-thumb">
-                                <img src="images/team/test-thumb4.jpg" alt="" class="img-fluid">
+                                <img src="assets2/images/team/test-thumb4.jpg" alt="" class="img-fluid">
                             </div>
 
                             <div class="client-info">
                                 <h4>Nice Environment!</h4>
                                 <span>Partho Sarothi</span>
                                 <p class="mt-4">
-                                    They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
+                                    They provide great service facilty consectetur adipisicing elit. Itaque rem,
+                                    praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
                                 </p>
                             </div>
                             <i class="icofont-quote-right"></i>
@@ -408,14 +430,15 @@
 
                         <div class="testimonial-block style-2  gray-bg">
                             <div class="testimonial-thumb">
-                                <img src="images/team/test-thumb1.jpg" alt="" class="img-fluid">
+                                <img src="assets2/images/team/test-thumb1.jpg" alt="" class="img-fluid">
                             </div>
 
                             <div class="client-info">
                                 <h4>Modern Service!</h4>
                                 <span>Kolis Mullar</span>
                                 <p>
-                                    They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
+                                    They provide great service facilty consectetur adipisicing elit. Itaque rem,
+                                    praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
                                 </p>
                             </div>
                             <i class="icofont-quote-right"></i>
@@ -431,7 +454,8 @@
                         <div class="section-title text-center">
                             <h2>Partners who support us</h2>
                             <div class="divider mx-auto my-4"></div>
-                            <p>Lets know moreel necessitatibus dolor asperiores illum possimus sint voluptates incidunt molestias nostrum laudantium. Maiores porro cumque quaerat.</p>
+                            <p>Lets know moreel necessitatibus dolor asperiores illum possimus sint voluptates incidunt
+                                molestias nostrum laudantium. Maiores porro cumque quaerat.</p>
                         </div>
                     </div>
                 </div>
@@ -441,186 +465,82 @@
                 <div class="row clients-logo">
                     <div class="col-lg-2">
                         <div class="client-thumb">
-                            <img src="images/about/1.png" alt="" class="img-fluid">
+                            <img src="assets2/images/about/1.png" alt="" class="img-fluid">
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="client-thumb">
-                            <img src="images/about/2.png" alt="" class="img-fluid">
+                            <img src="assets2/images/about/2.png" alt="" class="img-fluid">
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="client-thumb">
-                            <img src="images/about/3.png" alt="" class="img-fluid">
+                            <img src="assets2/images/about/3.png" alt="" class="img-fluid">
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="client-thumb">
-                            <img src="images/about/4.png" alt="" class="img-fluid">
+                            <img src="assets2/images/about/4.png" alt="" class="img-fluid">
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="client-thumb">
-                            <img src="images/about/5.png" alt="" class="img-fluid">
+                            <img src="assets2/images/about/5.png" alt="" class="img-fluid">
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="client-thumb">
-                            <img src="images/about/6.png" alt="" class="img-fluid">
+                            <img src="assets2/images/about/6.png" alt="" class="img-fluid">
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="client-thumb">
-                            <img src="images/about/3.png" alt="" class="img-fluid">
+                            <img src="assets2/images/about/3.png" alt="" class="img-fluid">
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="client-thumb">
-                            <img src="images/about/4.png" alt="" class="img-fluid">
+                            <img src="assets2/images/about/4.png" alt="" class="img-fluid">
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="client-thumb">
-                            <img src="images/about/5.png" alt="" class="img-fluid">
+                            <img src="assets2/images/about/5.png" alt="" class="img-fluid">
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="client-thumb">
-                            <img src="images/about/6.png" alt="" class="img-fluid">
+                            <img src="assets2/images/about/6.png" alt="" class="img-fluid">
                         </div>
                     </div>
                 </div>
             </div>
         </section>
         <!-- footer Start -->
-        <footer class="footer section gray-bg">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 mr-auto col-sm-6">
-                        <div class="widget mb-5 mb-lg-0">
-                            <div class="logo mb-4">
-                                <img src="images/logo.png" alt="" class="img-fluid">
-                            </div>
-                            <p>Tempora dolorem voluptatum nam vero assumenda voluptate, facilis ad eos obcaecati tenetur veritatis eveniet distinctio possimus.</p>
-
-                            <ul class="list-inline footer-socials mt-4">
-                                <li class="list-inline-item"><a href="https://www.facebook.com/themefisher"><i class="icofont-facebook"></i></a></li>
-                                <li class="list-inline-item"><a href="https://twitter.com/themefisher"><i class="icofont-twitter"></i></a></li>
-                                <li class="list-inline-item"><a href="https://www.pinterest.com/themefisher/"><i class="icofont-linkedin"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 col-md-6 col-sm-6">
-                        <div class="widget mb-5 mb-lg-0">
-                            <h4 class="text-capitalize mb-3">Department</h4>
-                            <div class="divider mb-4"></div>
-
-                            <ul class="list-unstyled footer-menu lh-35">
-                                <li><a href="#">Surgery </a></li>
-                                <li><a href="#">Wome's Health</a></li>
-                                <li><a href="#">Radiology</a></li>
-                                <li><a href="#">Cardioc</a></li>
-                                <li><a href="#">Medicine</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 col-md-6 col-sm-6">
-                        <div class="widget mb-5 mb-lg-0">
-                            <h4 class="text-capitalize mb-3">Support</h4>
-                            <div class="divider mb-4"></div>
-
-                            <ul class="list-unstyled footer-menu lh-35">
-                                <li><a href="#">Terms & Conditions</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="#">Company Support </a></li>
-                                <li><a href="#">FAQuestions</a></li>
-                                <li><a href="#">Company Licence</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="widget widget-contact mb-5 mb-lg-0">
-                            <h4 class="text-capitalize mb-3">Get in Touch</h4>
-                            <div class="divider mb-4"></div>
-
-                            <div class="footer-contact-block mb-4">
-                                <div class="icon d-flex align-items-center">
-                                    <i class="icofont-email mr-3"></i>
-                                    <span class="h6 mb-0">Support Available for 24/7</span>
-                                </div>
-                                <h4 class="mt-2"><a href="tel:+23-345-67890">Support@email.com</a></h4>
-                            </div>
-
-                            <div class="footer-contact-block">
-                                <div class="icon d-flex align-items-center">
-                                    <i class="icofont-support mr-3"></i>
-                                    <span class="h6 mb-0">Mon to Fri : 08:30 - 18:00</span>
-                                </div>
-                                <h4 class="mt-2"><a href="tel:+23-345-67890">+23-456-6588</a></h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="footer-btm py-4 mt-5">
-                    <div class="row align-items-center justify-content-between">
-                        <div class="col-lg-6">
-                            <div class="copyright">
-                                &copy; Copyright Reserved to <span class="text-color">Novena</span> by <a href="https://themefisher.com/" target="_blank">Themefisher</a>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="subscribe-form text-lg-right mt-5 mt-lg-0">
-                                <form action="#" class="subscribe">
-                                    <input type="text" class="form-control" placeholder="Your Email address">
-                                    <a href="#" class="btn btn-main-2 btn-round-full">Subscribe</a>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <a class="backtop js-scroll-trigger" href="#top">
-                                <i class="icofont-long-arrow-up"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-
-
-
-        <!-- 
-        Essential Scripts
-        =====================================-->
+        <jsp:include page="footer.jsp"></jsp:include>
 
 
         <!-- Main jQuery -->
-        <script src="plugins/jquery/jquery.js"></script>
+        <script src="assets2/plugins/jquery/jquery.js"></script>
         <!-- Bootstrap 4.3.2 -->
-        <script src="plugins/bootstrap/js/popper.js"></script>
-        <script src="plugins/bootstrap/js/bootstrap.min.js"></script>
-        <script src="plugins/counterup/jquery.easing.js"></script>
+        <script src="assets2/plugins/bootstrap/js/popper.js"></script>
+        <script src="assets2/plugins/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets2/plugins/counterup/jquery.easing.js"></script>
         <!-- Slick Slider -->
-        <script src="plugins/slick-carousel/slick/slick.min.js"></script>
+        <script src="assets2/plugins/slick-carousel/slick/slick.min.js"></script>
         <!-- Counterup -->
-        <script src="plugins/counterup/jquery.waypoints.min.js"></script>
+        <script src="assets2/plugins/counterup/jquery.waypoints.min.js"></script>
 
-        <script src="plugins/shuffle/shuffle.min.js"></script>
-        <script src="plugins/counterup/jquery.counterup.min.js"></script>
+        <script src="assets2/plugins/shuffle/shuffle.min.js"></script>
+        <script src="assets2/plugins/counterup/jquery.counterup.min.js"></script>
         <!-- Google Map -->
-        <script src="plugins/google-map/map.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkeLMlsiwzp6b3Gnaxd86lvakimwGA6UA&callback=initMap"></script>    
+        <script src="assets2/plugins/google-map/map.js"></script>
+        <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkeLMlsiwzp6b3Gnaxd86lvakimwGA6UA&callback=initMap"></script>
 
-        <script src="js/script.js"></script>
-        <script src="js/contact.js"></script>
+        <script src="assets2/js/script.js"></script>
+        <script src="assets2/js/contact.js"></script>
 
     </body>
+
 </html>
-
-
