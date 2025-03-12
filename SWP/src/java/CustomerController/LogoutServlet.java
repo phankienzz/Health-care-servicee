@@ -42,8 +42,12 @@ public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+        if(session.getAttribute("staffAccount") != null){
+            session.invalidate();
+            response.sendRedirect("index_1.jsp");
+            return;
+        }
         session.invalidate();
-
         String referer = request.getHeader("referer"); // Lấy URL trang trước đó
         if (referer != null && !referer.isEmpty()) {
             response.sendRedirect(referer);

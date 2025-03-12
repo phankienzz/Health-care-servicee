@@ -91,11 +91,11 @@
 
 
                                             <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Birth Date <span class="text-danger">*</span></label>
+                                                <div class="form-group form-focus">
+                                                    <label class="focus-label">Birth Date <span >*</span></label>
                                                     <div class="cal-icon">
                                                         <!-- Set the value of the input field dynamically -->
-                                                        <input name="dateOfBirth" class="form-control datetimepicker" type="text"
+                                                        <input name="dateOfBirth" class="form-control datetimepicker floating" type="text"
                                                                value="${sessionScope.customerAccount.dateOfBirth != null ? sessionScope.customerAccount.dateOfBirth : ''}" />
                                                     </div>
                                                 </div>
