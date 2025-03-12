@@ -129,14 +129,14 @@
                 </form>
             </div>
 
-            <!-- Search by Date -->
+            <!-- Search by Date and shift-->
             <div class="search-container">
                 <form action="loadstaffforschedule" method="POST" class="row g-3">
                     <input type="hidden" name="searchType" value="date">
 
                     <div class="col-md-4">
                         <label for="workDate" class="form-label control-label">Tìm kiếm theo ngày</label>
-                        <input type="date" class="form-control" id="workDate" name="workDate" value="${param.workDate}">                       
+                        <input type="date" class="form-control" id="workDate" name="workDate" required="" value="${param.workDate}">                       
                     </div>
 
                     <div class="col-md-4">
@@ -170,8 +170,8 @@
 
                     <div class="col-md-5">
                         <label for="dayName" class="form-label">Ngày trong tuần</label>
-                        <select class="form-select" id="dayName" name="dayFilter">
-                            <option value="">Tất cả</option>
+                        <select class="form-select" id="dayName" name="dayFilter" required="">
+                            <option value="">Chọn ngày</option>
                             <option value="2" ${param.dayFilter == '2' ? 'selected' : ''}>Monday</option>
                             <option value="3" ${param.dayFilter == '3' ? 'selected' : ''}>Tuesday</option>
                             <option value="4" ${param.dayFilter == '4' ? 'selected' : ''}>Wednesday</option>

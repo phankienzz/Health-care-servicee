@@ -74,7 +74,7 @@ public class LoadStaff_ForSchedule extends HttpServlet {
                 break;
             default:
                 // Nếu không có tìm kiếm, lấy tất cả lịch làm việc
-                professionalList = workingDAO.getAllSchedules();
+                professionalList = workingDAO.getListProfessionalSchedules();
                 break;
         }
 
