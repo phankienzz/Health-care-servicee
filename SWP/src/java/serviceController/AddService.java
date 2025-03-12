@@ -1,5 +1,6 @@
 package serviceController;
 
+import context.ValidFunction;
 import dao.ServiceDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -18,11 +19,14 @@ public class AddService extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ServiceDAO serviceDAO = new ServiceDAO();
+        ValidFunction val = new ValidFunction();
 
         try {
             // Lấy thông tin từ form
             String packageName = request.getParameter("packageName");
+            packageName = val.normalizeName(packageName);
             String description = request.getParameter("description");
+            description = val.normalizeName(description);
             String type = request.getParameter("type");
             String status = request.getParameter("status");
 
