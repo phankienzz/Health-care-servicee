@@ -111,7 +111,7 @@ public class AddProfessionalServlet extends HttpServlet {
         boolean success = false;
         ProfessionalDAO dbHelper = new ProfessionalDAO();
 
-        // 🔹 Lấy roleID từ specialization
+       
         int roleID = dbHelper.getRoleIDByName(specialization);
         if (roleID == -1) {
             request.setAttribute("errorMessage", "Lỗi: Không tìm thấy Role ID cho chuyên môn " + specialization);
@@ -119,7 +119,7 @@ public class AddProfessionalServlet extends HttpServlet {
             return;
         }
 
-        // 🔹 Xử lý file ảnh (nếu có)
+        
         byte[] profilePicture = null;
         try {
             Part filePart = request.getPart("profilePicture");
@@ -138,7 +138,7 @@ public class AddProfessionalServlet extends HttpServlet {
             return;
         }
 
-        // 🔹 Tạo Professional
+       
         Professional newProfessional = new Professional(
                 0, fullName, email, valid.hashPassword(password),
                 Date.valueOf(dateOfBirth), gender, address, phone,
