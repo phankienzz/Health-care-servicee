@@ -9,43 +9,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Tạo lịch làm việc</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <style>
-            body {
-                background-color: #f0f8ff;
-            }
-            .container {
-                background: white;
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            }
-            .btn-primary {
-                background-color: #4a90e2;
-                border-color: #4a90e2;
-            }
-            .btn-primary:hover {
-                background-color: #357abd;
-                border-color: #357abd;
-            }
-            .border {
-                border-color: #4a90e2 !important;
-            }
-            .doctor-info {
-                background-color: #e3f2fd;
-                padding: 10px;
-                border-radius: 5px;
-                font-weight: bold;
-                font-size: 1.1rem;
-                color: #0d47a1;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="assets/css/css_create_WorkingSchedule.css">
     </head>
     <body>
         <div class="container mt-4">
-            <a href="loadstaffforschedule" class="btn btn-secondary mb-3">Quay lại</a>
-            <h2 class="text-center text-primary">Tạo Lịch Làm Việc Cho Bác Sĩ</h2>
-            <div class="doctor-info text-center mt-3 mb-4">
-                <span>${ID} - ${fullName}</span>
+            <jsp:include page="headerStaff.jsp"></jsp:include>
+            <jsp:include page="sidebar.jsp"></jsp:include>
+                <a href="loadstaffforschedule" class="btn btn-secondary mb-3">Quay lại</a>
+                <h2 class="text-center text-primary">Tạo Lịch Làm Việc Cho Bác Sĩ</h2>
+                <div class="doctor-info text-center mt-3 mb-4">
+                    <span>${ID} - ${fullName}</span>
             </div>
             <form id="scheduleForm" action="saveSchedule" method="POST">
                 <input type="hidden" name="ID" value="${ID}">
@@ -138,5 +111,16 @@
                 });
             });
         </script>
+        <script src="assets/js/jquery-3.2.1.min.js"></script>
+        <script src="assets/js/popper.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.dataTables.min.js"></script>
+        <script src="assets/js/dataTables.bootstrap4.min.js"></script>
+        <script src="assets/js/jquery.slimscroll.js"></script>
+        <script src="assets/js/select2.min.js"></script>
+        <script src="assets/js/moment.min.js"></script>
+        <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+        <script src="assets/js/app.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
