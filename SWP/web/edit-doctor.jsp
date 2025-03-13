@@ -383,11 +383,8 @@
                                         <label>Specialization</label>
                                         <select class="form-control" name="specialization" style="width: 100%;">
                                             <option value="">Select Specialization</option>
-                                            <option value="Cardiology" <%= professional != null && "Cardiology".equals(professional.getSpecialization()) ? "selected" : ""%>>Cardiology</option>
-                                            <option value="Pediatrics" <%= professional != null && "Pediatrics".equals(professional.getSpecialization()) ? "selected" : ""%>>Pediatrics</option>
-                                            <option value="General Medicine" <%= professional != null && "General Medicine".equals(professional.getSpecialization()) ? "selected" : ""%>>General Medicine</option>
-                                            <option value="Neurology" <%= professional != null && "Neurology".equals(professional.getSpecialization()) ? "selected" : ""%>>Neurology</option>
-                                            <option value="Dermatology" <%= professional != null && "Dermatology".equals(professional.getSpecialization()) ? "selected" : ""%>>Dermatology</option>
+                                            <option value="Doctor" <%= professional != null && "Doctor".equals(professional.getSpecialization()) ? "selected" : ""%>>Doctor</option>
+                                            <option value="Expert" <%= professional != null && "Expert".equals(professional.getSpecialization()) ? "selected" : ""%>>Expert</option>
                                         </select>
                                     </div>
                                 </div>
@@ -412,15 +409,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Role</label>
-                                        <select class="form-control" name="roleID" required>
-                                            <option value="3" <%= professional != null && professional.getRoleID() == 3 ? "selected" : ""%>>Doctor</option>
-                                            <option value="4" <%= professional != null && professional.getRoleID() == 4 ? "selected" : ""%>>Expert</option>
-                                        </select>
-                                    </div>
-                                </div>
+                             
 
                                 <div class="col-sm-6">
                                     <div class="form-group">
