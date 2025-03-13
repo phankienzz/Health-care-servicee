@@ -12,72 +12,77 @@
         <li class="mb-3">
             <div class="comment-area-box">
                 <div class="comment-thumb float-left">
-                    <img style="width: 50px; height: 50px; border-radius: 50%;" alt="" src="pictureprofile?customerID=${reply.customerID.customerID}" class="img-fluid">
+                    <c:if test="${reply.customerID != null}">
+                        <img style="width: 50px; height: 50px; border-radius: 50%;" 
+                             alt="" 
+                             src="pictureprofile?customerID=${reply.customerID.customerID}" 
+                             class="img-fluid">
+                    </c:if>
+                    <c:if test="${reply.staff_id != null}">
+                        <img style="width: 50px; height: 50px; border-radius: 50%;" 
+                             alt="" 
+                             src="pictureprofile?staffID=${reply.staff_id.staffID}" 
+                             class="img-fluid">
+                    </c:if>
+                    <c:if test="${reply.customerID == null && reply.staff_id == null}">
+                        <img style="width: 50px; height: 50px; border-radius: 50%;" 
+                             alt="Unknown" 
+                             src="assets/default-profile.png" 
+                             class="img-fluid">
+                    </c:if>
                 </div>
+
                 <div class="comment-info">
-                    <h5 class="mb-1">${reply.customerID.fullName}</h5>
+                    <h5 class="mb-1 d-flex justify-content-between align-items-center">
+                        <c:if test="${reply.customerID != null}">
+                            ${reply.customerID.fullName}
+                        </c:if>
+                        <c:if test="${reply.staff_id != null}">
+                            <span style="color: #009efb;">[Staff] ${reply.staff_id.fullName}</span>
+                        </c:if>
+                        <c:if test="${sessionScope.customerAccount != null 
+                                      && sessionScope.customerAccount.customerID == reply.customerID.customerID 
+                                      || sessionScope.staffAccount != null 
+                                      && sessionScope.staffAccount.staffID == reply.staff_id.staffID}">                     
+                              <span>
+                                  <a href="#" class="mr-2"><i
+                                          class="icofont-edit text-muted"></i>Edit</a>
+                                  <a href="#"><i
+                                          class="icofont-trash text-muted"></i>Delete</a>
+                              </span>
+                        </c:if>
+                    </h5>
                     <span>${reply.create_at}</span>
                 </div>
+
                 <div class="comment-meta mt-2">
-                    <c:choose>
-                        <c:when test="${empty sessionScope.customerAccount and empty sessionScope.staffAccount}">                                                                <a href="login.jsp?newsID=${newsDetail.post_id}&parent_comment_id=${comment.comment_id}#comment-form"
+                    <c:if test="${sessionScope.customerAccount == null && sessionScope.staffAccount == null}">
+                        <a href="login.jsp"
                            onclick="return confirm('Bạn cần đăng nhập để trả lời bình luận!');">
-                                <i class="icofont-reply mr-2 text-muted"></i>Reply
-                            </a>
-                        </c:when>
-                        <c:otherwise>
-                            <a href="?newsID=${newsDetail.post_id}&parent_comment_id=${comment.comment_id}#comment-form">
-                                <i class="icofont-reply mr-2 text-muted"></i>Reply
-                            </a>
-                        </c:otherwise>
-                    </c:choose>
+                            <i class="icofont-reply mr-2 text-muted"></i>Reply
+                        </a>
+                    </c:if>
+                    <c:if test="${sessionScope.customerAccount != null || sessionScope.staffAccount != null}">
+                        <a href="?newsID=${newsDetail.post_id}&parent_comment_id=${reply.comment_id}#comment-form">
+                            <i class="icofont-reply mr-2 text-muted"></i>Reply
+                        </a>
+                    </c:if>
                 </div>
+
                 <div class="comment-content mt-3">
                     <p>
-                        <strong>Reply to ${reply.customerID.fullName}:</strong>
-                        ${reply.content}
+                        <strong>Reply to 
+                            <c:if test="${reply.customerID != null}">
+                                ${reply.customerID.fullName}
+                            </c:if>
+                            <c:if test="${reply.staff_id != null}">
+                                <span style="color: #009efb;">[Staff] ${reply.staff_id.fullName}</span>
+                            </c:if>
+                            :</strong> 
+                            ${reply.content}
                     </p>
                 </div>
             </div>
-            <c:if test="${not empty staffReplies}">
-                <ul class="staff-replies list-unstyled ml-5">
-                    <c:forEach var="staffReply" items="${staffReplies}">
-                        <c:if test="${staffReply.comment_id == reply.comment_id}">
-                            <li class="mb-3">
-                                <div class="comment-area-box">
-                                    <div class="comment-thumb float-left">
-                                        <img style="width: 50px; height: 50px; border-radius: 50%;" alt="" src="pictureprofile?staffID=${staffReply.staff_id}" class="img-fluid">
-                                    </div>
-                                    <div class="comment-info">
-                                        <h5 class="mb-1">Staff</h5>
-                                        <span>${staffReply.created_at}</span>
-                                    </div>
-                                    <div class="comment-meta mt-2">
-                                        <c:choose>
-                                            <c:when test="${empty sessionScope.customerAccount and empty sessionScope.staffAccount}">
-                                                <a href="login.jsp?newsID=${newsDetail.post_id}&parent_comment_id=${staffReply.reply_id}&parent_type=staff#comment-form"
-                                                   onclick="return confirm('Bạn cần đăng nhập để trả lời bình luận!');">
-                                                    <i class="icofont-reply mr-2 text-muted"></i>Reply
-                                                </a>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <a href="?newsID=${newsDetail.post_id}&parent_comment_id=${staffReply.reply_id}&parent_type=staff#comment-form">
-                                                    <i class="icofont-reply mr-2 text-muted"></i>Reply
-                                                </a>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </div>
-                                    <div class="comment-content mt-3">
-                                        <p>
-                                            <strong>Reply:</strong> ${staffReply.content}
-                                        </p>
-                                    </div>
-                                </div>
-                            </li>
-                        </c:if>
-                    </c:forEach>
-                </ul>
-            </c:if>
             <ul class="child-comments list-unstyled ml-5">
                 <jsp:include page="comment-reply.jsp">
                     <jsp:param name="parentId" value="${reply.comment_id}" />
@@ -86,4 +91,6 @@
         </li>
     </c:if>
 </c:forEach>
+
+
 

@@ -8,7 +8,6 @@ package newsController;
 import context.ValidFunction;
 import dao.CommentDAO;
 import dao.NewsDAO;
-import dao.StaffReplyDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -20,7 +19,6 @@ import java.util.List;
 import model.Category;
 import model.Comment;
 import model.News;
-import model.StaffReply;
 
 /**
  *
@@ -52,7 +50,6 @@ public class detailNews extends HttpServlet {
         ValidFunction valid = new ValidFunction();
         NewsDAO dao = new NewsDAO();
         CommentDAO commentDAO = new CommentDAO();
-        StaffReplyDAO staffRepDAO = new StaffReplyDAO();
         String newsIdStr = request.getParameter("newsID");
         String parentCommentIdStr = request.getParameter("parent_comment_id");
 
@@ -70,30 +67,39 @@ public class detailNews extends HttpServlet {
         }
 
         List<Comment> comments = commentDAO.getCommentsByPostId(newsID);
-        List<StaffReply> staffRep = staffRepDAO.getStaffRepliesByPostId(newsID);
         List<Category> listCate = dao.getAllCategoryNews();
+        
+        for (Comment comment : comments) {
+            comment.setCreate_at(valid.formatDateNews(comment.getCreate_at()));
+        }
 
         news.setCreated_at(valid.formatDateNews(news.getCreated_at()));
         news.setUpdated_at(valid.formatDateTime(news.getUpdated_at(), "dd/MM/yyyy HH:mm"));
 
         int parentCommentId = 0;
-        if (parentCommentIdStr != null && !parentCommentIdStr.isEmpty()) {
-            try {
+
+        try {
+            if (parentCommentIdStr != null && !parentCommentIdStr.isEmpty()) {
                 parentCommentId = Integer.parseInt(parentCommentIdStr);
                 Comment parentComment = commentDAO.getCommentById(parentCommentId);
+
                 if (parentComment != null) {
-                    request.setAttribute("parent_comment_name", parentComment.getCustomerID().getFullName());
+                    if (parentComment.getCustomerID() != null) {
+                        request.setAttribute("parent_comment_name", parentComment.getCustomerID().getFullName());
+                    } else {
+                        request.setAttribute("parent_comment_name", parentComment.getStaff_id().getFullName());
+                    }
                     request.setAttribute("parent_comment_id", parentCommentId);
                 }
-            } catch (NumberFormatException e) {
-                parentCommentId = 0;
             }
+        } catch (NumberFormatException e) {
+            request.setAttribute("error_message", "Invalid comment ID format.");
+        } catch (Exception e) {
+            request.setAttribute("error_message", "An error occurred while fetching the comment.");
         }
-
         request.setAttribute("newsDetail", news);
         request.setAttribute("listCate", listCate);
         request.setAttribute("comments", comments);
-        request.setAttribute("staffReplies", staffRep);
 
         request.getRequestDispatcher("detail-news.jsp").forward(request, response);
     }
