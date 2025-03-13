@@ -23,10 +23,10 @@ public class Professional extends Staff {
     
 
     // Constructor có tham số
-    public Professional(int staffID, String fullName, String email, String password, Date dateOfBirth, String gender, String address, String phone, Date hireDate, String status, byte[] profilePicture, String specialization, String officeHours, String qualification, String biography, Date createdAt) {
+    public Professional(int staffID, String fullName, String email, String password,Date dateOfBirth, String gender, String address, String phone, Date hireDate, String status, byte[] profilePicture, String specialization, String officeHours, String qualification, String biography, Date createdAt,int roleID) {
         // Chuyển Date thành String khi gọi super() cho dateOfBirth và hireDate
         //int staffID, String fullName, String email, String password, String phone, String gender, String dateOfBirth, String address, String hireDate, int roleID, String status, String profilePicture
-        super(staffID, fullName, email, password, phone,gender,dateOfBirth.toString(),address, hireDate.toString(), 0, status, new String(profilePicture, StandardCharsets.ISO_8859_1));  // convert to String
+        super(staffID, fullName, email, password, phone,gender,dateOfBirth.toString(),address, hireDate.toString(), roleID, status, new String(profilePicture, StandardCharsets.ISO_8859_1));  // convert to String
         this.specialization = specialization;
         this.officeHours = officeHours;
         this.qualification = qualification;
@@ -34,6 +34,9 @@ public class Professional extends Staff {
         this.createdAt = createdAt;
         this.status=status;
     }
+  public int getRoleID(){
+      return super.getRoleID();
+  }
     public int getStaffID(){
         return super.getStaffID();
     }
@@ -59,6 +62,7 @@ public class Professional extends Staff {
     public String getSpecialization() {
         return specialization;
     }
+    
 
     public void setSpecialization(String specialization) {
         this.specialization = specialization;

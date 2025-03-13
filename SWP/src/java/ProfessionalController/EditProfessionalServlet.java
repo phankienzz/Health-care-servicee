@@ -101,6 +101,12 @@ public class EditProfessionalServlet extends HttpServlet {
         String dateOfBirth = request.getParameter("dateOfBirth");
         boolean success=false;
          ProfessionalDAO professionalDAO = new ProfessionalDAO();
+         int roleID = professionalDAO.getRoleIDByName(specialization);
+if (roleID == -1) {
+    request.setAttribute("errorMessage", "Lỗi: Không tìm thấy Role ID cho chuyên môn này!");
+    request.getRequestDispatcher("edit-doctor.jsp").forward(request, response);
+    return;
+}
         try {
             Part filePart = request.getPart("profilePicture");
             if (filePart != null && filePart.getSize() > 0) {
@@ -113,10 +119,10 @@ public class EditProfessionalServlet extends HttpServlet {
                 String imagePath = "uploads/"+FileUploadHelper.saveProfilePicture(filePart); // Lưu file
               
         //nt staffID, String fullName, String email, String password, Date dateOfBirth, String gender, String address, String phone, Date hireDate, String status, byte[] profilePicture, String specialization, String officeHours, String qualification, String biography, Date createdA
-        Professional professional = new Professional(staffID, fullName, email, "", Date.valueOf(dateOfBirth),
-                null, address, phone, new Date(System.currentTimeMillis()), status, imagePath.getBytes(), specialization,
-                officeHours, qualification, biography, new Date(System.currentTimeMillis()));
-
+        Professional professional = new Professional(staffID, fullName, email, "", Date.valueOf(dateOfBirth), 
+    null, address, phone, new Date(System.currentTimeMillis()), status,
+    imagePath.getBytes(), specialization, officeHours, qualification, biography, 
+    new Date(System.currentTimeMillis()),roleID );
          success = professionalDAO.updateProfessional(professional);
 
             // Lấy danh sách cập nhật và lưu vào session

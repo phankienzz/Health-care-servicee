@@ -29,13 +29,12 @@ import java.util.logging.Logger;
 import static javax.xml.bind.DatatypeConverter.parseDate;
 import model.Professional;
 import util.FileUploadHelper;
+import context.ValidFunction;
 
 /**
  *
  * @author Win11
  */
-
-@WebServlet("/AddProfessionalServlet")
 @MultipartConfig(maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 10)
 public class AddProfessionalServlet extends HttpServlet {
 
@@ -93,6 +92,7 @@ public class AddProfessionalServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // Lấy dữ liệu từ form
+         ValidFunction valid = new ValidFunction();
         String fullName = request.getParameter("fullName");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
@@ -106,59 +106,61 @@ public class AddProfessionalServlet extends HttpServlet {
         String biography = request.getParameter("biography");
         String dateOfBirth = request.getParameter("dateOfBirth");
         String hireDate = request.getParameter("hireDate");
-//            PrintWriter out  = response.getWriter();
-//            out.print(fullName+email+password+gender+address+phone+dateOfBirth+ hireDate);
+
         Date createdAt = new Date(System.currentTimeMillis());
-        boolean success=false;
- ProfessionalDAO dbHelper = new ProfessionalDAO();
-        // Xử lý file ảnh
+        boolean success = false;
+        ProfessionalDAO dbHelper = new ProfessionalDAO();
+
+        // 🔹 Lấy roleID từ specialization
+        int roleID = dbHelper.getRoleIDByName(specialization);
+        if (roleID == -1) {
+            request.setAttribute("errorMessage", "Lỗi: Không tìm thấy Role ID cho chuyên môn " + specialization);
+            request.getRequestDispatcher("add-doctor.jsp").forward(request, response);
+            return;
+        }
+
+        // 🔹 Xử lý file ảnh (nếu có)
+        byte[] profilePicture = null;
         try {
             Part filePart = request.getPart("profilePicture");
             if (filePart != null && filePart.getSize() > 0) {
                 if (!isValidImageFile(extractFileName(filePart))) {
                     request.setAttribute("errorMessage", "Chỉ được tải lên file ảnh có định dạng JPG, JPEG, PNG, GIF, WEBP!");
-                request.getRequestDispatcher("edit-doctor.jsp").forward(request, response);
-                return;
-            }
-            
-                String imagePath = "uploads/" + FileUploadHelper.saveProfilePicture(filePart); // Lưu file
-                Professional newProfessional = new Professional(
-                        0, fullName, email, password, Date.valueOf(dateOfBirth), gender, address, phone,
-                        Date.valueOf(hireDate), status, imagePath.getBytes(), specialization, officeHours, qualification,
-                        biography, createdAt
-                );
-                newProfessional.setRoleID(3);
-                // Gọi DAO để thêm vào database
-               
-                success=dbHelper.addProfessional(newProfessional);
-
-                // Lấy danh sách cập nhật và lưu vào session
-                HttpSession session = request.getSession();
-                session.setAttribute("specializations", dbHelper.getallSpecialization());
-                session.setAttribute("professionals", dbHelper.getAllProfessionals());
-                response.getWriter().write("Upload thành công: " + imagePath);
-            } else {
-                response.getWriter().write("Vui lòng chọn ảnh!");
+                    request.getRequestDispatcher("add-doctor.jsp").forward(request, response);
+                    return;
+                }
+                profilePicture = FileUploadHelper.saveProfilePicture(filePart).getBytes();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            response.getWriter().write("Lỗi upload file: " + e.getMessage());
+            request.setAttribute("errorMessage", "Lỗi upload file: " + e.getMessage());
+            request.getRequestDispatcher("add-doctor.jsp").forward(request, response);
+            return;
         }
 
-        // Tạo đối tượng Professional
-        // Chuyển hướng đến trang quản lý
-        List<Professional> list = dbHelper.getAllProfessionals();
+        // 🔹 Tạo Professional
+        Professional newProfessional = new Professional(
+                0, fullName, email, valid.hashPassword(password),
+                Date.valueOf(dateOfBirth), gender, address, phone,
+                Date.valueOf(hireDate), status, profilePicture,
+                specialization, officeHours, qualification, biography,
+                createdAt, roleID 
+        );
+
+        
+        success = dbHelper.addProfessional(newProfessional);
+
+        
         HttpSession session = request.getSession();
+        session.setAttribute("specializations", dbHelper.getallSpecialization());
+        session.setAttribute("professionals", dbHelper.getAllProfessionals());
+
         if (success) {
-             session.setAttribute("specializations", dbHelper.getallSpecialization());
-            session.setAttribute("professionals", list);
             response.sendRedirect("manage-doctor.jsp");
         } else {
-            request.setAttribute("errorMessage", "Update failed!");
+            request.setAttribute("errorMessage", "Thêm bác sĩ thất bại!");
             request.getRequestDispatcher("add-doctor.jsp").forward(request, response);
         }
-//response.sendRedirect("test.jsp");
-
     }
 
     private String extractFileName(Part part) {
@@ -170,40 +172,25 @@ public class AddProfessionalServlet extends HttpServlet {
         }
         return "1.jpg";
     }
-// Hàm xử lý file ảnh -> byte[]
-     public static boolean isValidImageFile(String fileName) {
+
+    public static boolean isValidImageFile(String fileName) {
         if (fileName == null || !fileName.contains(".")) {
             return false; // Tên file không hợp lệ
         }
-        
+
         String[] allowedExtensions = {".jpg", ".jpeg", ".png", ".gif", ".webp"};
-        
+
         int lastDotIndex = fileName.lastIndexOf(".");
         if (lastDotIndex == -1 || lastDotIndex == fileName.length() - 1) {
             return false; // Không có phần mở rộng hoặc chỉ có dấu "."
         }
-        
+
         String fileExtension = fileName.substring(lastDotIndex).toLowerCase();
         return Arrays.asList(allowedExtensions).contains(fileExtension);
     }
 
-    private byte[] processProfilePicture(Part filePart) throws IOException {
-        if (filePart == null || filePart.getSize() <= 0) {
-            return null;
-        }
-        try (InputStream inputStream = filePart.getInputStream()) {
-            return inputStream.readAllBytes();
-        }
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "Servlet for adding professionals";
+    }
 }

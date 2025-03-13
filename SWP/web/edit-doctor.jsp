@@ -22,10 +22,10 @@
                 <script src="assets/js/respond.min.js"></script>
         <![endif]-->
     <style>
-    select.form-control {
-    width: 100%;
-    height: 38px; /* Điều chỉnh chiều cao để bằng với input */
-}</style>
+        select.form-control {
+            width: 100%;
+            height: 38px; /* Điều chỉnh chiều cao để bằng với input */
+        }</style>
 </head>
 
 <body>
@@ -378,68 +378,76 @@
                                         <textarea class="form-control" name="biography"><%= professional != null ? professional.getBiography() : ""%></textarea>
                                     </div>
                                 </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Specialization</label>
-                                            <select class="form-control" name="specialization" style="width: 100%;">
-                                                <option value="">Select Specialization</option>
-                                                <option value="Cardiology" <%= professional != null && "Cardiology".equals(professional.getSpecialization()) ? "selected" : ""%>>Cardiology</option>
-                                                <option value="Pediatrics" <%= professional != null && "Pediatrics".equals(professional.getSpecialization()) ? "selected" : ""%>>Pediatrics</option>
-                                                <option value="General Medicine" <%= professional != null && "General Medicine".equals(professional.getSpecialization()) ? "selected" : ""%>>General Medicine</option>
-                                                <option value="Neurology" <%= professional != null && "Neurology".equals(professional.getSpecialization()) ? "selected" : ""%>>Neurology</option>
-                                                <option value="Dermatology" <%= professional != null && "Dermatology".equals(professional.getSpecialization()) ? "selected" : ""%>>Dermatology</option>
-                                            </select>
-                                        </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Specialization</label>
+                                        <select class="form-control" name="specialization" style="width: 100%;">
+                                            <option value="">Select Specialization</option>
+                                            <option value="Cardiology" <%= professional != null && "Cardiology".equals(professional.getSpecialization()) ? "selected" : ""%>>Cardiology</option>
+                                            <option value="Pediatrics" <%= professional != null && "Pediatrics".equals(professional.getSpecialization()) ? "selected" : ""%>>Pediatrics</option>
+                                            <option value="General Medicine" <%= professional != null && "General Medicine".equals(professional.getSpecialization()) ? "selected" : ""%>>General Medicine</option>
+                                            <option value="Neurology" <%= professional != null && "Neurology".equals(professional.getSpecialization()) ? "selected" : ""%>>Neurology</option>
+                                            <option value="Dermatology" <%= professional != null && "Dermatology".equals(professional.getSpecialization()) ? "selected" : ""%>>Dermatology</option>
+                                        </select>
                                     </div>
+                                </div>
 
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Office Hours</label>
-                                            <textarea class="form-control" name="officeHours"><%= professional != null ? professional.getOfficeHours() : ""%></textarea>
-                                        </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Office Hours</label>
+                                        <textarea class="form-control" name="officeHours"><%= professional != null ? professional.getOfficeHours() : ""%></textarea>
                                     </div>
+                                </div>
 
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Qualification</label>
-                                            <select class="form-control" name="qualification" style="width: 100%;">
-                                                <option value="">Select Qualification</option>
-                                                <option value="MD, FACC" <%= professional != null && "MD, FACC".equals(professional.getQualification()) ? "selected" : ""%>>MD, FACC</option>
-                                                <option value="MD, FAAP" <%= professional != null && "MD, FAAP".equals(professional.getQualification()) ? "selected" : ""%>>MD, FAAP</option>
-                                                <option value="MD" <%= professional != null && "MD".equals(professional.getQualification()) ? "selected" : ""%>>MD</option>
-                                                <option value="MD, PhD" <%= professional != null && "MD, PhD".equals(professional.getQualification()) ? "selected" : ""%>>MD, PhD</option>
-                                                <option value="MD, FAAD" <%= professional != null && "MD, FAAD".equals(professional.getQualification()) ? "selected" : ""%>>MD, FAAD</option>
-                                            </select>
-                                        </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Qualification</label>
+                                        <select class="form-control" name="qualification" style="width: 100%;">
+                                            <option value="">Select Qualification</option>
+                                            <option value="MD, FACC" <%= professional != null && "MD, FACC".equals(professional.getQualification()) ? "selected" : ""%>>MD, FACC</option>
+                                            <option value="MD, FAAP" <%= professional != null && "MD, FAAP".equals(professional.getQualification()) ? "selected" : ""%>>MD, FAAP</option>
+                                            <option value="MD" <%= professional != null && "MD".equals(professional.getQualification()) ? "selected" : ""%>>MD</option>
+                                            <option value="MD, PhD" <%= professional != null && "MD, PhD".equals(professional.getQualification()) ? "selected" : ""%>>MD, PhD</option>
+                                            <option value="MD, FAAD" <%= professional != null && "MD, FAAD".equals(professional.getQualification()) ? "selected" : ""%>>MD, FAAD</option>
+                                        </select>
                                     </div>
-
-
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Profile Picture</label>
-                                            <input type="file" class="form-control" name="profilePicture" accept="image/* id="profilePicture">
-                                            <small id="fileError" class="text-danger">
-                                                <% if (request.getAttribute("errorMessage") != null) {%>
-                                                <%= request.getAttribute("errorMessage")%>
-                                                <% }%>
-                                            </small>
-                                        </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Role</label>
+                                        <select class="form-control" name="roleID" required>
+                                            <option value="3" <%= professional != null && professional.getRoleID() == 3 ? "selected" : ""%>>Doctor</option>
+                                            <option value="4" <%= professional != null && professional.getRoleID() == 4 ? "selected" : ""%>>Expert</option>
+                                        </select>
                                     </div>
-                                 <script>
-                                        document.getElementById("profilePicture").addEventListener("change", function () {
-                                            var file = this.files[0];
-                                            var errorMessage = document.getElementById("fileError");
-                                            if (file) {
-                                                var allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
-                                                if (!allowedTypes.includes(file.type)) {
-                                                    errorMessage.textContent = "Chỉ được tải lên file ảnh (JPEG, PNG, GIF, WEBP)!";
-                                                    this.value = ""; // Xóa file nếu không hợp lệ
-                                                } else {
-                                                    errorMessage.textContent = ""; // Xóa thông báo lỗi nếu hợp lệ
-                                                }
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Profile Picture</label>
+                                        <input type="file" class="form-control" name="profilePicture" accept="image/* id="profilePicture">
+                                        <small id="fileError" class="text-danger">
+                                            <% if (request.getAttribute("errorMessage") != null) {%>
+                                            <%= request.getAttribute("errorMessage")%>
+                                            <% }%>
+                                        </small>
+                                    </div>
+                                </div>
+                                <script>
+                                    document.getElementById("profilePicture").addEventListener("change", function () {
+                                        var file = this.files[0];
+                                        var errorMessage = document.getElementById("fileError");
+                                        if (file) {
+                                            var allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+                                            if (!allowedTypes.includes(file.type)) {
+                                                errorMessage.textContent = "Chỉ được tải lên file ảnh (JPEG, PNG, GIF, WEBP)!";
+                                                this.value = ""; // Xóa file nếu không hợp lệ
+                                            } else {
+                                                errorMessage.textContent = ""; // Xóa thông báo lỗi nếu hợp lệ
                                             }
-                                        });
-                                    </script>
+                                        }
+                                    });
+                                </script>
 
                                 <div class="m-t-20 text-center">
                                     <button class="btn btn-primary submit-btn" type="submit">Save</button>
@@ -448,7 +456,7 @@
                     </div>
                 </div>
             </div>
-                                            
+
             <div class="notification-box">
                 <div class="msg-sidebar notifications msg-noti">
                     <div class="topnav-dropdown-header">
