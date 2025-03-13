@@ -24,7 +24,7 @@ public class WorkingScheduleServlet extends HttpServlet {
             List<WorkingSchedule> schedules = new ArrayList<>();
             int ID = Integer.parseInt(request.getParameter("ID"));
 
-            int[] dayValues = {2, 3, 4, 5, 6, 7, 1};
+            int[] dayValues = {2, 3, 4, 5, 6, 7, 8};
             String[] shifts = {"MORNING", "AFTERNOON", "EVENING"};
 
             for (int day : dayValues) {

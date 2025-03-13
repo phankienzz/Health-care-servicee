@@ -103,7 +103,7 @@ public class WorkingScheduleDAO {
             params.add(dayOfWeek);
         }
 
-        sql.append(" ORDER BY ws.startTime");
+        sql.append(" ORDER BY ws.professionalID, ws.startTime");
 
         try (PreparedStatement st = connection.prepareStatement(sql.toString())) {
             for (int i = 0; i < params.size(); i++) {
@@ -240,7 +240,7 @@ public class WorkingScheduleDAO {
             int dayOfWeek = date.getDayOfWeek().getValue();
 
             // Điều chỉnh để khớp với database (Chủ Nhật là 1, Thứ Hai là 2, ...)
-            int dbDayOfWeek = (dayOfWeek == 7) ? 1 : dayOfWeek + 1;
+            int dbDayOfWeek = dayOfWeek + 1;
 
             // Gọi DAO để lấy lịch làm việc theo thứ trong database và ca làm việc
             return getSchedulesByShiftAndDay(shift, dbDayOfWeek);
@@ -250,22 +250,9 @@ public class WorkingScheduleDAO {
         }
     }
 
-    // Chuyển đổi ResultSet thành WorkingSchedule ------------------------------------------------------------------------------
-    // ---------------------------------------------------------------------------------------------------------------------------
-    private WorkingSchedule mapResultSetToSchedule(ResultSet rs) throws SQLException {
-        return new WorkingSchedule(
-                rs.getInt("scheduleID"),
-                rs.getInt("professionalID"),
-                rs.getInt("dayOfWeek"),
-                rs.getTime("startTime"),
-                rs.getTime("endTime"),
-                rs.getString("shift")
-        );
-    }
-
     public static void main(String[] args) {
         WorkingScheduleDAO dao = new WorkingScheduleDAO();
-        List<WorkingSchedule> list = dao.getListProfessionalSchedules();
+        List<WorkingSchedule> list = dao.getSchedulesByShiftAndDay("", 2);
         for (WorkingSchedule ws : list) {
             System.out.println(ws);
         }

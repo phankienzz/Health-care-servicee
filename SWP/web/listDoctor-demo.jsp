@@ -187,7 +187,7 @@
                                 <option value="5" ${param.dayFilter == '5' ? 'selected' : ''}>Thursday</option>
                                 <option value="6" ${param.dayFilter == '6' ? 'selected' : ''}>Friday</option>
                                 <option value="7" ${param.dayFilter == '7' ? 'selected' : ''}>Saturday</option>
-                                <option value="1" ${param.dayFilter == '1' ? 'selected' : ''}>Sunday</option>
+                                <option value="8" ${param.dayFilter == '8' ? 'selected' : ''}>Sunday</option>
                             </select>
                         </div>
 
@@ -208,7 +208,7 @@
                         </div>
 
                         <!-- Hidden input để giữ lại tên tìm kiếm khi lọc -->
-                        <input type="hidden" name="searchName" value="${param.searchName}">
+<!--                        <input type="hidden" name="searchName" value="${param.searchName}">-->
                     </form>
                 </div>
 
