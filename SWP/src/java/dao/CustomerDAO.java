@@ -267,6 +267,33 @@ public class CustomerDAO extends DBContext {
         }
         return null;
     }
+    
+    public Customer getCustomerByID(int customerID,String status) {
+        String sql = "select * from Customer where customerID = ? and accountStatus = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, customerID);
+            st.setString(2, status);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                return new Customer(
+                        rs.getInt("customerID"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("fullName"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getString("accountStatus"),
+                        rs.getString("registrationDate"),
+                        rs.getString("dateOfBirth"),
+                        rs.getString("gender"),
+                        rs.getString("profilePicture"));
+            }
+        } catch (SQLException e) {
+        }
+        return null;
+    }
 
     public List<Customer> getCustomerByName(String name) {
         List<Customer> listCustomer = new ArrayList<>();
@@ -332,6 +359,41 @@ public class CustomerDAO extends DBContext {
         }
         return listCustomer; // Trả về danh sách khách hàng
     }
+    
+    public List<Customer> getCustomerByName(String name, int index, int pageSize,String status) {
+        List<Customer> listCustomer = new ArrayList<>();
+        String sql = "select * from Customer where fullName like ? and accountStatus = ? order by customerID offset ? rows fetch next ? rows only";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            int offset = (index - 1) * pageSize;
+            st.setString(1, "%" + name + "%");
+            st.setString(2, status);
+            st.setInt(3, offset);
+            st.setInt(4, pageSize);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int customerID = rs.getInt("customerID");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String fullName = rs.getString("fullName");
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                String accountStatus = rs.getString("accountStatus");
+                String registrationDate = rs.getString("registrationDate");
+                String dateOfBirth = rs.getString("dateOfBirth");
+                String gender = rs.getString("gender");
+                String profilePicture = rs.getString("profilePicture");
+
+                Customer customer = new Customer(customerID, username, password, fullName, email, phone, address,
+                        accountStatus, registrationDate, dateOfBirth, gender, profilePicture);
+                listCustomer.add(customer); // Thêm customer vào danh sách
+            }
+
+        } catch (SQLException e) {
+        }
+        return listCustomer; // Trả về danh sách khách hàng
+    }
 
     public Customer getCustomerByIdAndName(int id, String name) {
         String sql = "select * FROM Customer WHERE customerID = ? and fullName like ?";
@@ -339,6 +401,35 @@ public class CustomerDAO extends DBContext {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, id);
             pre.setString(2, "%" + name + "%");
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                return new Customer(
+                        rs.getInt("customerID"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("fullName"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getString("accountStatus"),
+                        rs.getString("registrationDate"),
+                        rs.getString("dateOfBirth"),
+                        rs.getString("gender"),
+                        rs.getString("profilePicture"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public Customer getCustomerByIdAndName(int id, String name,String status) {
+        String sql = "select * FROM Customer WHERE customerID = ? and fullName like ? and accountStatus = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, id);
+            pre.setString(2, "%" + name + "%");
+            pre.setString(3, status);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 return new Customer(

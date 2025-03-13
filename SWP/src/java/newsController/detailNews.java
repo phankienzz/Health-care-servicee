@@ -27,15 +27,6 @@ import model.News;
 @WebServlet(name = "detailNews", urlPatterns = {"/detailNews"})
 public class detailNews extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -77,29 +68,35 @@ public class detailNews extends HttpServlet {
 
         List<Comment> comments = commentDAO.getCommentsByPostId(newsID);
         List<Category> listCate = dao.getAllCategoryNews();
-
-//        for (Comment cm : comments) {
-//            cm.setCreate_at(valid.formatDateNews(cm.getCreate_at()));
-//        }
+        
+        for (Comment comment : comments) {
+            comment.setCreate_at(valid.formatDateNews(comment.getCreate_at()));
+        }
 
         news.setCreated_at(valid.formatDateNews(news.getCreated_at()));
-//        news.setUpdated_at(valid.formatDateNews(news.getUpdated_at()));
         news.setUpdated_at(valid.formatDateTime(news.getUpdated_at(), "dd/MM/yyyy HH:mm"));
 
         int parentCommentId = 0;
-        if (parentCommentIdStr != null && !parentCommentIdStr.isEmpty()) {
-            try {
+
+        try {
+            if (parentCommentIdStr != null && !parentCommentIdStr.isEmpty()) {
                 parentCommentId = Integer.parseInt(parentCommentIdStr);
                 Comment parentComment = commentDAO.getCommentById(parentCommentId);
+
                 if (parentComment != null) {
-                    request.setAttribute("parent_comment_name", parentComment.getCustomerID().getFullName());
+                    if (parentComment.getCustomerID() != null) {
+                        request.setAttribute("parent_comment_name", parentComment.getCustomerID().getFullName());
+                    } else {
+                        request.setAttribute("parent_comment_name", parentComment.getStaff_id().getFullName());
+                    }
                     request.setAttribute("parent_comment_id", parentCommentId);
                 }
-            } catch (NumberFormatException e) {
-                parentCommentId = 0;
             }
+        } catch (NumberFormatException e) {
+            request.setAttribute("error_message", "Invalid comment ID format.");
+        } catch (Exception e) {
+            request.setAttribute("error_message", "An error occurred while fetching the comment.");
         }
-
         request.setAttribute("newsDetail", news);
         request.setAttribute("listCate", listCate);
         request.setAttribute("comments", comments);
@@ -113,11 +110,6 @@ public class detailNews extends HttpServlet {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
