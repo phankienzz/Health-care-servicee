@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Permission;
 import model.Role;
@@ -53,11 +54,12 @@ public class rolePermission extends HttpServlet {
 
         int roleID = Integer.parseInt(request.getParameter("roleID"));
         String[] selectedPermissions = request.getParameterValues("selectedPermissions");
-
+        RoleDAO rDAO = new RoleDAO();
         PermissionDAO permissionDAO = new PermissionDAO();
         permissionDAO.updateRolePermissions(roleID, selectedPermissions);
-
-        // Quay lại trang role-permission.jsp
+        HttpSession session = request.getSession();
+        session.removeAttribute("role");
+        session.setAttribute("role", rDAO.getRoleByID(roleID));
         response.sendRedirect("rolePermission?roleID=" + roleID);
     }
 

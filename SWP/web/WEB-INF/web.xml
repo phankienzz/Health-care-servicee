@@ -5,7 +5,6 @@
         <artifactId>jbcrypt</artifactId>
         <version>0.4</version>
     </dependency>
-
     <filter>
         <filter-name>LoginFilter</filter-name>
         <filter-class>filter.LoginFilter</filter-class>
@@ -18,15 +17,59 @@
         <filter-name>InvoiceFilter</filter-name>
         <filter-class>filter.InvoiceFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>RoleFilter</filter-name>
+        <filter-class>filter.RoleFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>AppointmentFilter</filter-name>
+        <filter-class>filter.AppointmentFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>BlogFilter</filter-name>
+        <filter-class>filter.BlogFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>BlogFilter</filter-name>
+        <url-pattern>/homeblogseverlet</url-pattern>
+        <url-pattern>/blog.jsp</url-pattern>
+        <url-pattern>/addblog</url-pattern>
+        <url-pattern>/add-blog.jsp</url-pattern>
+        <url-pattern>/blogdetail.jsp</url-pattern>
+        <url-pattern>/blog-detail.jsp</url-pattern>
+        <url-pattern>/editblog</url-pattern>
+        <url-pattern>/ edit-blog.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AppointmentFilter</filter-name>
+        <url-pattern>/edit_appointment</url-pattern>
+        <url-pattern>/edit-appointment.jsp</url-pattern>
+        <url-pattern>/manage_appointment</url-pattern>
+        <url-pattern>/manage_appointment.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>RoleFilter</filter-name>
+        <url-pattern>/rolePermission</url-pattern>
+        <url-pattern>/roles-permissions.jsp</url-pattern>
+        <url-pattern>/addRole</url-pattern>
+        <url-pattern>/deleteRole</url-pattern>
+        <url-pattern>/editRole</url-pattern>
+        <url-pattern>/edit-role.jsp</url-pattern>
+        <url-pattern>/add-role.jsp</url-pattern>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>InvoiceFilter</filter-name>
         <url-pattern>/invoice</url-pattern>
-        <url-pattern>/viewInvoice</url-pattern>
         <url-pattern>/createInvoice</url-pattern>
-        <url-pattern>/invoices.jsp</url-pattern>
+        <url-pattern>/editInvoice</url-pattern>
+        <url-pattern>/viewInvoice</url-pattern>
         <url-pattern>/invoice-view.jsp</url-pattern>
+        <url-pattern>/edit-invoice.jsp</url-pattern>
         <url-pattern>/create-invoice.jsp</url-pattern>
+        <url-pattern>/invoices.jsp</url-pattern>
+        
     </filter-mapping>
+    
     <filter-mapping>
         <filter-name>LoginFilter</filter-name>
         <url-pattern>/adminIndex.jsp</url-pattern>
@@ -40,6 +83,7 @@
         <url-pattern>/editStaff</url-pattern>
         <url-pattern>/add-staff.jsp</url-pattern>
         <url-pattern>/edit-staff.jsp</url-pattern>
+
     </filter-mapping>
     <servlet>
         <servlet-name>ResetPassword</servlet-name>
