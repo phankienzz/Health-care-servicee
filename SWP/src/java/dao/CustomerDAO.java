@@ -20,11 +20,10 @@ import model.Customer;
 public class CustomerDAO extends DBContext {
 
 //    ValidFunction valid = new ValidFunction();
-
     public Customer customerLogin(String username) {
-       String sql = "SELECT customerID, username, password, fullName, email, phone, address, accountStatus, " +
-             "registrationDate, CONVERT(NVARCHAR, dateOfBirth, 103) AS dateOfBirth, gender, profilePicture " +
-             "FROM Customer WHERE username = ? AND accountStatus = 'Active'";
+        String sql = "SELECT customerID, username, password, fullName, email, phone, address, accountStatus, "
+                + "registrationDate, CONVERT(NVARCHAR, dateOfBirth, 103) AS dateOfBirth, gender, profilePicture "
+                + "FROM Customer WHERE username = ? AND accountStatus = 'Active'";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -51,7 +50,7 @@ public class CustomerDAO extends DBContext {
         }
         return null;
     }
-    
+
     public List<Customer> getAllCustomer() {
         List<Customer> customers = new ArrayList<>();
         String sql = "SELECT * FROM Customer";
@@ -81,7 +80,7 @@ public class CustomerDAO extends DBContext {
         }
         return customers; // Trả về danh sách khách hàng
     }
-    
+
     //cai nay de phan trang
     public List<Customer> getAllCustomerActive(int index, int pageSize) {
         List<Customer> customers = new ArrayList<>();
@@ -115,7 +114,7 @@ public class CustomerDAO extends DBContext {
         }
         return customers; // Trả về danh sách khách hàng
     }
-    
+
     //cai nay de lay so luong
     public List<Customer> getAllCustomerActive() {
         List<Customer> customers = new ArrayList<>();
@@ -146,8 +145,7 @@ public class CustomerDAO extends DBContext {
         }
         return customers; // Trả về danh sách khách hàng
     }
-    
-    
+
     public List<Customer> getAllCustomerInactive(int index, int pageSize) {
         List<Customer> customers = new ArrayList<>();
         String sql = "select * from Customer where accountStatus = 'Inactive' order by customerID offset ? rows  fetch  next ? rows only";
@@ -180,7 +178,7 @@ public class CustomerDAO extends DBContext {
         }
         return customers; // Trả về danh sách khách hàng
     }
-    
+
     public List<Customer> getAllCustomerInactive() {
         List<Customer> customers = new ArrayList<>();
         String sql = "select * from Customer where accountStatus = 'Inactive'";
@@ -210,7 +208,6 @@ public class CustomerDAO extends DBContext {
         }
         return customers; // Trả về danh sách khách hàng
     }
-    
 
     public List<Customer> getAllCustomer(int index, int pageSize) {
         List<Customer> customers = new ArrayList<>();
@@ -407,7 +404,7 @@ public class CustomerDAO extends DBContext {
         }
     }
 
-     public void updateCustomerProfile(String fullName, String email, String phone, String address, String dateOfBirth, String gender, InputStream profilePicture, int customerID) {
+    public void updateCustomerProfile(String fullName, String email, String phone, String address, String dateOfBirth, String gender, InputStream profilePicture, int customerID) {
         String sql;
 
         if (profilePicture != null) {
@@ -469,43 +466,25 @@ public class CustomerDAO extends DBContext {
         return null;
     }
 
-    public void updatePassword(String email, String password) {
-        String sql = "update Customer set password = ? where email = ?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, password);
-            st.setString(2, email);
-            st.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-    }
-
-    public boolean checkOldPassword(int customerID, String oldPassword) {
-        String sql = "SELECT password FROM Customer WHERE customerID = ?";
-
+    public String getCustomerHashedPassword(int customerID) {
+        String sql = "SELECT password FROM Customer WHERE CustomerID = ?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, customerID);
             try (ResultSet rs = st.executeQuery()) {
                 if (rs.next()) {
-                    String storedPassword = rs.getString("password");
-                    // Here you may want to hash 'oldPassword' and compare with 'storedPassword'.
-                    // Assuming passwords are stored as plain text (not recommended), we directly compare.
-                    return storedPassword.equals(oldPassword);
+                    return rs.getString("password");
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error checking old password: " + e.getMessage());
+            System.out.println("Error getting hashed password: " + e.getMessage());
         }
-
-        return false; // return false if customer not found or any error occurs
+        return null;
     }
 
-    public void changeCustomerPassword(int customerID, String password) {
-        String sql = "UPDATE Customer SET password = ? WHERE customerID = ?";
-
+    public void changeCustomerPassword(int customerID, String hashedPassword) {
+        String sql = "UPDATE Customer SET password = ? WHERE CustomerID = ?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
-            st.setString(1, password);
+            st.setString(1, hashedPassword);
             st.setInt(2, customerID);
             st.executeUpdate();
         } catch (SQLException e) {

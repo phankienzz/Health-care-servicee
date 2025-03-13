@@ -25,7 +25,7 @@ public class blogdetail extends HttpServlet {
 
             if (blog != null) {
                 request.setAttribute("blogdetail", blog);
-                request.getRequestDispatcher("blog-detail.jsp").forward(request, response);
+                request.getRequestDispatcher("").forward(request, response);
             } else {
                 response.sendRedirect("error.jsp"); // Nếu không tìm thấy bài viết
             }

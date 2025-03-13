@@ -48,12 +48,16 @@ public class LogoutServlet extends HttpServlet {
             return;
         }
         session.invalidate();
-        String referer = request.getHeader("referer"); // Lấy URL trang trước đó
-        if (referer != null && !referer.isEmpty()) {
-            response.sendRedirect(referer);
-        } else {
-            response.sendRedirect("index_1.jsp");
-        }
+//        String referer = request.getHeader("referer"); // Lấy URL trang trước đó
+//        if (referer != null && !referer.isEmpty()) {
+//            response.sendRedirect(referer);
+//        } else {
+//            response.sendRedirect("index_1.jsp");
+//        }
+
+
+        response.sendRedirect("index_1.jsp");
+        
     }
 
     @Override

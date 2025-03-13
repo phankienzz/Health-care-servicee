@@ -25,7 +25,30 @@
     </head>
 
     <body>
-        <jsp:include page="editseting.jsp"></jsp:include>
+       <div class="header">
+                <div class="header-left">
+                    <a href="customer-dashboard.html" class="logo">
+                        <img src="assets/img/logo.png" width="35" height="35" alt=""> <span>Preclinic</span>
+                    </a>
+                </div>
+                <ul class="nav user-menu float-right">
+                
+                
+                <li class="nav-item dropdown has-arrow">
+                    <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
+                        <span class="user-img"><img class="rounded-circle" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" width="50" height="35">
+                            <span class="status online"></span></span>
+                        <span>${sessionScope.customerAccount.fullName}</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="profile.jsp">My Profile</a>
+                        <a class="dropdown-item" href="customer-medical-records">Medical record</a>
+                        
+                        <a class="dropdown-item" href="logout">Logout</a>
+                    </div>
+                </li>
+            </ul>
+            </div>
 
             <style>
                 .enlarged-img {
