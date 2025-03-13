@@ -15,6 +15,7 @@
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/blog.css">
 
 
 
@@ -24,58 +25,7 @@
             <![endif]-->
     </head>
 
-    <style>
-        .btn-update {
-            display: inline-flex;
-            align-items: flex-start;
-            justify-content: flex-end;
-            background-color: #007bff;
-            color: white;
-            padding: 10px 15px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-        }
-        .btn-update:hover {
-            background-color: #0056b3;
-        }
-
-        .blog-list-item {
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid #ddd;
-            padding: 15px 0;
-        }
-
-        .blog-list-item img {
-            width: 130px;
-            height: 80px;
-            object-fit: cover;
-            margin-right: 15px;
-            border-radius: 5px;
-        }
-
-        .blog-content {
-            flex: 1;
-        }
-
-        .blog-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .read-more {
-            color: #007bff;
-            font-size: 14px;
-            text-decoration: none;
-        }
-
-
-
-    </style>
+   
     <body>
         <div class="main-wrapper">
             <div class="header">
