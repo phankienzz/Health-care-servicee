@@ -67,9 +67,7 @@
         <url-pattern>/edit-invoice.jsp</url-pattern>
         <url-pattern>/create-invoice.jsp</url-pattern>
         <url-pattern>/invoices.jsp</url-pattern>
-        
     </filter-mapping>
-    
     <filter-mapping>
         <filter-name>LoginFilter</filter-name>
         <url-pattern>/adminIndex.jsp</url-pattern>
@@ -83,7 +81,6 @@
         <url-pattern>/editStaff</url-pattern>
         <url-pattern>/add-staff.jsp</url-pattern>
         <url-pattern>/edit-staff.jsp</url-pattern>
-
     </filter-mapping>
     <servlet>
         <servlet-name>ResetPassword</servlet-name>
@@ -100,6 +97,10 @@
     <servlet>
         <servlet-name>Appointment</servlet-name>
         <servlet-class>Appointment.Appointment</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListAppointment</servlet-name>
+        <servlet-class>Appointment.ListAppointment</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RequestPassword</servlet-name>
@@ -120,6 +121,10 @@
     <servlet-mapping>
         <servlet-name>Appointment</servlet-name>
         <url-pattern>/appointment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListAppointment</servlet-name>
+        <url-pattern>/ListAppointment</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index_1.jsp</welcome-file>
@@ -160,31 +165,30 @@
         <servlet-name>EditProfileServlet</servlet-name>
         <url-pattern>/editprofile</url-pattern>
     </servlet-mapping>
-        <servlet>
-    <servlet-name>AddProfessionalServlet</servlet-name>
-    <servlet-class>ProfessionalController.AddProfessionalServlet</servlet-class>
-</servlet>
-<servlet-mapping>
-    <servlet-name>AddProfessionalServlet</servlet-name>
-    <url-pattern>/AddProfessionalServlet</url-pattern>
-</servlet-mapping>
-<servlet>
-    <servlet-name>DeleteProfessionalServlet</servlet-name>
-    <servlet-class>ProfessionalController.DeleteProfessionalServlet</servlet-class>
-</servlet>
-<servlet-mapping>
-    <servlet-name>DeleteProfessionalServlet</servlet-name>
-    <url-pattern>/DeleteProfessionalServlet</url-pattern>
-</servlet-mapping>
-<servlet>
-    <servlet-name>EditProfessionalServlet</servlet-name>
-    <servlet-class>ProfessionalController.EditProfessionalServlet</servlet-class>
-</servlet>
-
-<servlet-mapping>
-    <servlet-name>EditProfessionalServlet</servlet-name>
-    <url-pattern>/EditProfessionalServlet</url-pattern>
-</servlet-mapping>
+    <servlet>
+        <servlet-name>AddProfessionalServlet</servlet-name>
+        <servlet-class>ProfessionalController.AddProfessionalServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddProfessionalServlet</servlet-name>
+        <url-pattern>/AddProfessionalServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>DeleteProfessionalServlet</servlet-name>
+        <servlet-class>ProfessionalController.DeleteProfessionalServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteProfessionalServlet</servlet-name>
+        <url-pattern>/DeleteProfessionalServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>EditProfessionalServlet</servlet-name>
+        <servlet-class>ProfessionalController.EditProfessionalServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditProfessionalServlet</servlet-name>
+        <url-pattern>/EditProfessionalServlet</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>ForgotPassword</servlet-name>
         <servlet-class>controller.ForgotPassword</servlet-class>

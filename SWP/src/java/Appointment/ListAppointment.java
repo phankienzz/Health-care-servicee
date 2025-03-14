@@ -3,24 +3,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package ProfessionalController;
+package Appointment;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Date;
-import dao.MedicalExaminationDAO;
 
 /**
  *
  * @author Phan Huu Kien
  */
-@WebServlet(name="MedicalRecordServlet", urlPatterns={"/MedicalRecordServlet"})
-public class MedicalRecordServlet extends HttpServlet {
+public class ListAppointment extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,10 +33,10 @@ public class MedicalRecordServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet MedicalRecordServlet</title>");  
+            out.println("<title>Servlet ListAppointment</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet MedicalRecordServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ListAppointment at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -70,17 +66,7 @@ public class MedicalRecordServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       String service = request.getParameter("service");
-       String doctors = request.getParameter("doctor");
-       String date = request.getParameter("date");
-       String phone = request.getParameter("phone");
-       String discritpion = request.getParameter("discription");
-        MedicalExaminationDAO medical = new MedicalExaminationDAO();
-        
-        try {
-            
-        } catch (Exception e) {
-        }
+        processRequest(request, response);
     }
 
     /** 
