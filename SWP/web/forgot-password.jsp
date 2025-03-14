@@ -25,9 +25,10 @@
                         <!-- Add a message area for showing error or success -->
                         <div class="form-group">
                             <label for="email">Enter Your Email</label>
-                            <input type="text" name="email" class="form-control" autofocus>
+                            <div>${requestScope.err}</div>
+                            <input type="text" name="email" class="form-control" >
                         </div>
-
+                        
                         <!-- Add error or success messages here -->
                         <div class="form-group text-center">
                             <!-- Placeholder for error/success message -->
@@ -46,10 +47,6 @@
         </div>
     </div>
 
-    <script src="assets/js/jquery-3.2.1.min.js"></script>
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/app.js"></script>
 </body>
 
 </html>

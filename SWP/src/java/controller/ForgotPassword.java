@@ -20,7 +20,6 @@ import model.Customer;
  *
  * @author Phan Huu Kien
  */
-@WebServlet(name = "ForgotPassword", urlPatterns = {"/forgotpassword"})
 public class ForgotPassword extends HttpServlet {
 
     /**
@@ -78,6 +77,7 @@ public class ForgotPassword extends HttpServlet {
     String emailr = request.getParameter("email");
     String code = getRandom();  // Tạo mã OTP ngẫu nhiên
     Email email = new Email();
+
     CustomerDAO customerDAO = new CustomerDAO();
     Customer customer = customerDAO.getCustomerByEmail(emailr);
     

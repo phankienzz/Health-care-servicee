@@ -5,16 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <title>Đặt lại mật khẩu</title>
-    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    
 </head>
 <body>
     <div class="main-wrapper account-wrapper">
         <div class="account-page">
             <div class="account-center">
                 <div class="account-box">
-                    <form class="form-signin" action="change-password" method="POST">
+                    <form class="form-signin" action="changePassword" method="POST">
                         <div class="account-logo text-center">
                             <a href="index_1.jsp"><img src="assets/img/logo-dark.png" alt=""></a>
                         </div>
@@ -52,9 +50,6 @@
         </div>
     </div>
 
-    <script src="assets/js/jquery-3.2.1.min.js"></script>
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/app.js"></script>
+  
 </body>
 </html>

@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Permission;
 import model.Role;
+import model.Staff;
 
 /**
  *
@@ -60,6 +61,10 @@ public class rolePermission extends HttpServlet {
         HttpSession session = request.getSession();
         session.removeAttribute("role");
         session.setAttribute("role", rDAO.getRoleByID(roleID));
+        Staff s = (Staff)session.getAttribute("staffAccount");
+        session.removeAttribute("staffAccount");
+        
+        session.setAttribute("staffAccount", s);
         response.sendRedirect("rolePermission?roleID=" + roleID);
     }
 

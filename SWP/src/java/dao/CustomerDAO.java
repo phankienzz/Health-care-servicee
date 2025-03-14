@@ -5,6 +5,9 @@
 package dao;
 
 import context.DBContext;
+import context.ValidFunction;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,11 +23,10 @@ import model.Customer;
 public class CustomerDAO extends DBContext {
 
 //    ValidFunction valid = new ValidFunction();
-
     public Customer customerLogin(String username) {
-       String sql = "SELECT customerID, username, password, fullName, email, phone, address, accountStatus, " +
-             "registrationDate, CONVERT(NVARCHAR, dateOfBirth, 103) AS dateOfBirth, gender, profilePicture " +
-             "FROM Customer WHERE username = ? AND accountStatus = 'Active'";
+        String sql = "SELECT customerID, username, password, fullName, email, phone, address, accountStatus, "
+                + "registrationDate, CONVERT(NVARCHAR, dateOfBirth, 103) AS dateOfBirth, gender, profilePicture "
+                + "FROM Customer WHERE username = ? AND accountStatus = 'Active'";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -51,7 +53,7 @@ public class CustomerDAO extends DBContext {
         }
         return null;
     }
-    
+
     public List<Customer> getAllCustomer() {
         List<Customer> customers = new ArrayList<>();
         String sql = "SELECT * FROM Customer";
@@ -81,7 +83,7 @@ public class CustomerDAO extends DBContext {
         }
         return customers; // Trả về danh sách khách hàng
     }
-    
+
     //cai nay de phan trang
     public List<Customer> getAllCustomerActive(int index, int pageSize) {
         List<Customer> customers = new ArrayList<>();
@@ -115,7 +117,7 @@ public class CustomerDAO extends DBContext {
         }
         return customers; // Trả về danh sách khách hàng
     }
-    
+
     //cai nay de lay so luong
     public List<Customer> getAllCustomerActive() {
         List<Customer> customers = new ArrayList<>();
@@ -146,8 +148,7 @@ public class CustomerDAO extends DBContext {
         }
         return customers; // Trả về danh sách khách hàng
     }
-    
-    
+
     public List<Customer> getAllCustomerInactive(int index, int pageSize) {
         List<Customer> customers = new ArrayList<>();
         String sql = "select * from Customer where accountStatus = 'Inactive' order by customerID offset ? rows  fetch  next ? rows only";
@@ -180,7 +181,7 @@ public class CustomerDAO extends DBContext {
         }
         return customers; // Trả về danh sách khách hàng
     }
-    
+
     public List<Customer> getAllCustomerInactive() {
         List<Customer> customers = new ArrayList<>();
         String sql = "select * from Customer where accountStatus = 'Inactive'";
@@ -210,7 +211,6 @@ public class CustomerDAO extends DBContext {
         }
         return customers; // Trả về danh sách khách hàng
     }
-    
 
     public List<Customer> getAllCustomer(int index, int pageSize) {
         List<Customer> customers = new ArrayList<>();
@@ -407,7 +407,7 @@ public class CustomerDAO extends DBContext {
         }
     }
 
-     public void updateCustomerProfile(String fullName, String email, String phone, String address, String dateOfBirth, String gender, InputStream profilePicture, int customerID) {
+    public void updateCustomerProfile(String fullName, String email, String phone, String address, String dateOfBirth, String gender, InputStream profilePicture, int customerID) {
         String sql;
 
         if (profilePicture != null) {
@@ -442,7 +442,60 @@ public class CustomerDAO extends DBContext {
             System.err.println("Error: " + e.getMessage());
         }
     }
+   public boolean updateCustomerbyId(Customer customer) {
+    String sql = "UPDATE [dbo].[Customer] SET "
+            + "[username] = ?, "
+            + "[password] = ?, "
+            + "[fullName] = ?, "
+            + "[email] = ?, "
+            + "[phone] = ?, "
+            + "[address] = ?, "
+            + "[accountStatus] = ?, "
+            + "[dateOfBirth] = ?, "
+            + "[gender] = ? "
+            + (customer.getProfilePicture() != null ? ", [profilePicture] = ? " : "")
+            + "WHERE [customerID] = ?"; 
 
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        System.out.println("Updating customer ID: " + customer.getCustomerID());
+
+        // Chỉ băm lại mật khẩu nếu nó thực sự thay đổi
+        String hashedPassword = customer.getPassword();
+        if (!hashedPassword.startsWith("$2a$")) { // Nếu mật khẩu chưa băm (băm bcrypt có $2a$)
+            hashedPassword = new ValidFunction().hashPassword(hashedPassword);
+        }
+
+        stmt.setString(1, customer.getUsername());
+        stmt.setString(2, hashedPassword);
+        stmt.setString(3, customer.getFullName());
+        stmt.setString(4, customer.getEmail());
+        stmt.setString(5, customer.getPhone());
+        stmt.setString(6, customer.getAddress());
+        stmt.setString(7, customer.getAccountStatus());
+        stmt.setString(8, customer.getDateOfBirth());
+        stmt.setString(9, customer.getGender());
+
+        int paramIndex = 10;
+        if (customer.getProfilePicture() != null) {
+            File file = new File(customer.getProfilePicture());
+            try (InputStream profilePictureStream = new FileInputStream(file)) {
+                stmt.setBlob(paramIndex++, profilePictureStream);
+            }
+        }
+
+        stmt.setInt(paramIndex, customer.getCustomerID());
+
+        int result = stmt.executeUpdate();
+        System.out.println("Rows updated: " + result);
+        return result > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+    
+    
+    
     public Customer getCustomerByEmail(String email) {
         String sql = "select * from Customer where email = ?";
         try {
