@@ -100,7 +100,7 @@ public class comment extends HttpServlet {
                                 : "[Staff]" + parentComment.getStaff_id().getFullName());
                     }
                 }
-                boolean isAdded = dao.insertComment(comment);
+                boolean isAdded = dao.addComment(comment);
                 if (isAdded) {
                     response.sendRedirect("detailNews?newsID=" + postId + "&commentSuccess=true&parent_comment_id=" + parentCommentId);
                 } else {

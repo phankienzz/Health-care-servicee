@@ -21,9 +21,9 @@ import model.Staff;
 public class CommentDAO extends DBContext {
 
     public Comment getCommentById(int commentId) {
-        Comment comment = null;
         CustomerDAO customerDAO = new CustomerDAO();
         StaffDAO staffDAO = new StaffDAO();
+
         try {
             String sql = "SELECT * FROM Comments WHERE comment_id = ?";
             PreparedStatement st = connection.prepareStatement(sql);
@@ -31,20 +31,38 @@ public class CommentDAO extends DBContext {
             ResultSet rs = st.executeQuery();
 
             if (rs.next()) {
-                comment = new Comment();
-                Customer customer = customerDAO.getCustomerByID(rs.getInt("customerID"));
-                Staff staff = staffDAO.getStaffByID(rs.getInt("staff_id"));
+                Comment comment = new Comment();
+                System.out.println("Debug: Đã tìm thấy comment trong DB!");
+
+                // Lấy thông tin customer
+                int customerId = rs.getInt("customerID");
+                Customer customer = customerDAO.getCustomerByID(customerId);
+                System.out.println("Debug: customerID = " + customerId);
+
+                // Lấy thông tin staff (nếu không phải null)
+                Integer staffId = (Integer) rs.getObject("staff_id"); // Cho phép nhận giá trị NULL
+                Staff staff = null;
+                if (staffId != null) {
+                    staff = staffDAO.getStaffByID(staffId);
+                }
+                System.out.println("Debug: staffID = " + (staffId == null ? "NULL" : staffId));
+
+                // Gán dữ liệu vào comment
                 comment.setStaff_id(staff);
                 comment.setCustomerID(customer);
                 comment.setComment_id(rs.getInt("comment_id"));
                 comment.setPost_id(rs.getInt("post_id"));
                 comment.setContent(rs.getString("content"));
                 comment.setParent_comment_id(rs.getInt("parent_comment_id"));
+
+                return comment;
+            } else {
+                System.out.println("Debug: Không tìm thấy comment trong DB!");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return comment;
+        return null;
     }
 
     public List<Comment> getCommentsByPostId(int postId) {
@@ -76,7 +94,7 @@ public class CommentDAO extends DBContext {
         return comments;
     }
 
-    public boolean insertComment(Comment comment) {
+    public boolean addComment(Comment comment) {
         String sql = "INSERT INTO Comments (post_id, customerID, staff_id, content, status, parent_comment_id) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -109,26 +127,11 @@ public class CommentDAO extends DBContext {
         return false;
     }
 
-    public boolean editComment(Comment comment) {
-        String sql = "UPDATE Comments SET post_id = ?, customerID = ?, staff_id = ?, content = ?, status = ?, created_at = ?, parent_comment_id = ? WHERE comment_id = ?";
+    public boolean updateComment(Comment comment) {
+        String sql = "UPDATE Comments SET content = ? WHERE comment_id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, comment.getPost_id());
-            if (comment.getCustomerID() != null) {
-                ps.setInt(2, comment.getCustomerID().getCustomerID());
-            } else {
-                ps.setNull(2, java.sql.Types.INTEGER);
-            }
-            if (comment.getStaff_id() != null) {
-                ps.setInt(3, comment.getStaff_id().getStaffID());
-            } else {
-                ps.setNull(3, java.sql.Types.INTEGER);
-            }
-            ps.setString(4, comment.getContent());
-            ps.setInt(5, comment.getStatus());
-            ps.setString(6, comment.getCreate_at());
-            ps.setInt(7, comment.getParent_comment_id());
-            ps.setInt(8, comment.getComment_id());
-
+            ps.setString(1, comment.getContent());
+            ps.setInt(2, comment.getComment_id());
             int rows = ps.executeUpdate();
             return rows > 0;
         } catch (SQLException e) {
@@ -137,55 +140,62 @@ public class CommentDAO extends DBContext {
         return false;
     }
 
-    public boolean deleteComment(int commentId) {
+    public boolean deleteCommentRecursively(int commentId) {
+        // Update status of the comment to 0 (deleted)
         String sql = "UPDATE Comments SET status = 0 WHERE comment_id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, commentId);
             int rows = ps.executeUpdate();
-            return rows > 0;
+            if (rows > 0) {
+                List<Integer> childCommentIds = getChildCommentIds(commentId);
+                for (int childCommentId : childCommentIds) {
+                    deleteCommentRecursively(childCommentId);
+                }
+                return true;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
 
+    private List<Integer> getChildCommentIds(int parentCommentId) {
+        List<Integer> childCommentIds = new ArrayList<>();
+        String sql = "SELECT comment_id FROM Comments WHERE parent_comment_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, parentCommentId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                childCommentIds.add(rs.getInt("comment_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return childCommentIds;
+    }
+
     public static void main(String[] args) {
-        CommentDAO dao = new CommentDAO();
-
-        boolean del = dao.deleteComment(2);
-        System.out.println("delete :" + del);
-        // Bình luận của khách hàng
-//        Customer customer = new Customer();
-//        customer.setCustomerID(1); // Đảm bảo customerID tồn tại
+        CommentDAO commentDAO = new CommentDAO();
+        Comment comment = commentDAO.getCommentById(1);
+//        if (comment != null) {
+//            System.out.println("Original Content: " + comment.getContent());
 //
-//        Comment comment1 = new Comment();
-//        comment1.setPost_id(1);
-//        comment1.setCustomerID(customer);
-//        comment1.setContent("Cus gốc");
-//        comment1.setStatus(1);
-//        comment1.setParent_comment_id(0);
+//            comment.setContent("Updated content from main method");
+//            boolean isUpdated = commentDAO.updateComment(comment);
+//            if (isUpdated) {
+//                System.out.println("Comment updated successfully!");
+//            } else {
+//                System.out.println("Failed to update comment.");
+//            }
 //
-//        boolean result1 = dao.insertComment(comment1);
-//        System.out.println("Thêm bình luận khách hàng: " + result1);
-        // Phản hồi của nhân viên
-//        Staff staff = new Staff();
-//        staff.setStaffID(1); // Đảm bảo staff_id tồn tại
-//
-//        Comment comment2 = new Comment();
-//        comment2.setPost_id(3);
-//        comment2.setStaff_id(staff);
-//        comment2.setContent("Staff");
-//        comment2.setStatus(1);
-//        comment2.setParent_comment_id(23); // Trả lời bình luận của khách hàng
-//
-//        boolean result2 = dao.insertComment(comment2);
-//        System.out.println("Thêm phản hồi của nhân viên: " + result2);
-//        List<Comment> list = dao.getCommentsByPostId(1);
-//        for (Comment comment : list) {
-//            System.out.println(comment);
+//            Comment updatedComment = commentDAO.getCommentById(comment.getComment_id());
+//            if (updatedComment != null) {
+//                System.out.println("Updated Content: " + updatedComment.getContent());
+//            }
+//        } else {
+//            System.out.println("Comment not found.");
 //        }
-//        System.out.println(dao.getCommentById(10));
-//        System.out.println(dao.getCommentById(9));
 
+        System.out.println(comment.getContent());
     }
 }

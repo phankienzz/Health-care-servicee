@@ -16,7 +16,6 @@ import java.util.List;
 import model.Category;
 import model.News;
 import context.ValidFunction;
-import java.util.ArrayList;
 
 /**
  *

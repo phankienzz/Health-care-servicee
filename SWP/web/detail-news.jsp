@@ -6,6 +6,10 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+
+
+
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -29,9 +33,6 @@
 
         <!-- Main Stylesheet -->
         <link rel="stylesheet" href="assets2/css/style.css">
-        <script>
-
-        </script>
         <style>
             .child-comments {
                 margin-left: 50px;
@@ -53,6 +54,13 @@
                 scroll-behavior: smooth;
             }
         </style>
+        <script>
+            function showReplies(parentId, depth) {
+                // Logic để hiển thị thêm bình luận.
+                // Ví dụ: Bạn có thể thực hiện một yêu cầu AJAX để tải thêm bình luận từ server và hiển thị chúng.
+                // Hoặc thay đổi CSS để hiển thị các phần tử đã bị ẩn.
+            }
+        </script>
 
     </head>
 
@@ -71,8 +79,6 @@
                     </div>
                 </div>
             </section>
-
-
 
             <section class="section blog-wrap">
                 <div class="container">
@@ -137,10 +143,12 @@
                                                                               || sessionScope.staffAccount != null 
                                                                               && sessionScope.staffAccount.staffID == comment.staff_id.staffID}">                                                               
                                                                       <span>
-                                                                          <a href="#" class="mr-2"><i
+                                                                          <a href="detailNews?newsID=${newsDetail.post_id}&editMode=true&comment_id=${comment.comment_id}&content=${comment.content}#comment-form" class="mr-2"><i
                                                                                   class="icofont-edit text-muted"></i>Edit</a>
-                                                                          <a href="#"><i
-                                                                                  class="icofont-trash text-muted"></i>Delete</a>
+                                                                          <a href="deleteComment?comment_id=${comment.comment_id}" 
+                                                                             onclick="return confirm('Are you sure to delete this comment?');">
+                                                                              <i class="icofont-trash text-muted"></i>Delete
+                                                                          </a>
                                                                       </span>
                                                                 </c:if>
                                                             </h5>
@@ -149,8 +157,7 @@
 
                                                         <div class="comment-meta mt-2">
                                                             <c:if test="${sessionScope.customerAccount == null && sessionScope.staffAccount == null}">
-                                                                <a href="login.jsp"
-                                                                   onclick="return confirm('Bạn cần đăng nhập để trả lời bình luận!');">
+                                                                <a href="login.jsp" onclick="return confirm('Bạn cần đăng nhập để trả lời bình luận!');">
                                                                     <i class="icofont-reply mr-2 text-muted"></i>Reply
                                                                 </a>
                                                             </c:if>
@@ -166,7 +173,8 @@
                                                     </div>
                                                     <ul class="child-comments list-unstyled ml-5">
                                                         <jsp:include page="comment-reply.jsp">
-                                                            <jsp:param name="parentId" value="${comment.comment_id}" />
+                                                            <jsp:param name="parentId" value="${comment.comment_id}"/>
+                                                            <jsp:param name="depth" value="1" />
                                                         </jsp:include>
                                                     </ul>
                                                 </li>
@@ -178,19 +186,35 @@
 
 
                             <div class="col-lg-12">                                    
+                                <c:choose>
+                                    <c:when test="${param.editMode == 'true'}">
+                                        <c:set var="editMode" value="true" />
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:set var="editMode" value="false" />
+                                    </c:otherwise>
+                                </c:choose>
                                 <c:if test="${sessionScope.customerAccount != null || sessionScope.staffAccount != null}">
-                                    <form action="comment" method="post" class="comment-form my-5" id="comment-form">
+<!--                                    <p>Debug: comment_id trong form = <c:out value="${param.comment_id != null ? param.comment_id : (editMode ? comment.comment_id : 0)}"/></p>
+                                    <p>Debug: param.comment_id = <c:out value="${param.comment_id}" /></p>
+                                    <p>Debug: param.content = <c:out value="${param.content}" /></p>-->
+                                    <form action="<c:out value='${editMode ? "editComment" : "comment"}'/>" method="post" class="comment-form my-5" id="comment-form">
                                         <h4 class="mb-4">
                                             <c:choose>
                                                 <c:when test="${not empty parent_comment_name}">
                                                     Reply to <b>${parent_comment_name}</b>
                                                     <a href="detailNews?newsID=${newsDetail.post_id}" class="text-danger ml-2">Cancel Reply</a>
                                                 </c:when>
+                                                <c:when test="${editMode}">
+                                                    Edit Comment
+                                                    <a href="detailNews?newsID=${newsDetail.post_id}" class="text-danger ml-2">Cancel Edit</a>
+                                                </c:when>
                                                 <c:otherwise>
                                                     Write a comment
                                                 </c:otherwise>
                                             </c:choose>
                                         </h4>
+
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -207,7 +231,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <textarea class="form-control mb-4" name="content" id="comment" cols="30" rows="5" placeholder="Write your comment here..." required></textarea>
+                                        <textarea class="form-control mb-4" name="content" id="comment" cols="30" rows="5" placeholder="Write your comment here..." required>${not empty param.content ? param.content : ""}</textarea>
                                         <input type="hidden" name="newsID" value="${newsDetail.post_id}">
                                         <c:if test="${sessionScope.customerAccount != null}">
                                             <input type="hidden" name="customerId" value="${sessionScope.customerAccount.customerID}">
@@ -215,11 +239,11 @@
                                         <c:if test="${sessionScope.staffAccount != null}">
                                             <input type="hidden" name="staffId" value="${sessionScope.staffAccount.staffID}">
                                         </c:if>
-                                        <input type="hidden" name="parent_comment_id" value="${requestScope.parent_comment_id != null ? requestScope.parent_comment_id : 0}">
-                                        <input class="btn btn-main-2 btn-round-full" type="submit" name="submit-comment" id="submit_comment" value="Submit">
+                                        <input type="hidden" name="parent_comment_id" value="${editMode ? comment.parent_comment_id : (requestScope.parent_comment_id != null ? requestScope.parent_comment_id : 0)}">
+                                        <input type="hidden" name="comment_id" value="${not empty param.comment_id ? param.comment_id : (editMode ? comment.comment_id : 0)}">
+                                        <input class="btn btn-main-2 btn-round-full" type="submit" name="submit-comment" id="submit_comment" value="${editMode ? "Update Comment" : "Submit"}">
                                     </form>
                                 </c:if>
-
                                 <c:if test="${sessionScope.customerAccount == null && sessionScope.staffAccount == null}">
                                     <p>Please <a href="login.jsp">login</a> to write a comment.</p>
                                 </c:if>
