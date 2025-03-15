@@ -50,37 +50,37 @@ public class WorkingScheduleDAO {
         return schedules;
     }
 
-//    public List<WorkingSchedule> getSchedulesByProfessionalID(int professionalID) {
-//        List<WorkingSchedule> schedules = new ArrayList<>();
-//        String sql = """
-//        SELECT ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime, ws.status
-//        FROM WorkingSchedule ws
-//        INNER JOIN Professional p ON ws.professionalID = p.professionalID
-//        INNER JOIN Staff s ON p.staffID = s.staffID
-//        WHERE ws.professionalID = ?
-//        ORDER BY ws.dayOfWeek, ws.startTime
-//        """;
-//
-//        try (PreparedStatement st = connection.prepareStatement(sql)) {
-//            st.setInt(1, professionalID);
-//            ResultSet rs = st.executeQuery();
-//
-//            while (rs.next()) { // Duyệt từng dòng trong kết quả
-//                schedules.add(new WorkingSchedule(
-//                        rs.getInt("professionalID"),
-//                        rs.getString("fullName"),
-//                        rs.getInt("dayOfWeek"),
-//                        rs.getString("shift"),
-//                        rs.getTime("startTime"),
-//                        rs.getTime("endTime"),
-//                        rs.getString("status")
-//                ));
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return schedules; // Trả về danh sách lịch làm việc (có thể rỗng nếu không có lịch)
-//    }
+    public List<WorkingSchedule> getAllSchedulesByProfessionalID(int professionalID) {
+        List<WorkingSchedule> schedules = new ArrayList<>();
+        String sql = """
+        SELECT ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime, ws.status
+        FROM WorkingSchedule ws
+        INNER JOIN Professional p ON ws.professionalID = p.professionalID
+        INNER JOIN Staff s ON p.staffID = s.staffID
+        WHERE ws.professionalID = ?
+        ORDER BY ws.dayOfWeek, ws.startTime
+        """;
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, professionalID);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) { // Duyệt từng dòng trong kết quả
+                schedules.add(new WorkingSchedule(
+                        rs.getInt("professionalID"),
+                        rs.getString("fullName"),
+                        rs.getInt("dayOfWeek"),
+                        rs.getString("shift"),
+                        rs.getTime("startTime"),
+                        rs.getTime("endTime"),
+                        rs.getString("status")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return schedules; // Trả về danh sách lịch làm việc (có thể rỗng nếu không có lịch)
+    }
 
     public List<WorkingSchedule> getSchedulesByShiftAndDay(String shift, Integer dayOfWeek) {
         List<WorkingSchedule> schedules = new ArrayList<>();
@@ -98,7 +98,7 @@ public class WorkingScheduleDAO {
             sql.append(" AND ws.shift = ?");
             params.add(shift);
         }
-        if (dayOfWeek != null) { 
+        if (dayOfWeek != null) {
             sql.append(" AND ws.dayOfWeek = ?");
             params.add(dayOfWeek);
         }
@@ -252,7 +252,7 @@ public class WorkingScheduleDAO {
 
     public static void main(String[] args) {
         WorkingScheduleDAO dao = new WorkingScheduleDAO();
-        List<WorkingSchedule> list = dao.getSchedulesByShiftAndDay("", 2);
+        List<WorkingSchedule> list = dao.getAllSchedulesByProfessionalID(2);
         for (WorkingSchedule ws : list) {
             System.out.println(ws);
         }
