@@ -24,7 +24,7 @@ public class WorkingScheduleServlet extends HttpServlet {
             List<WorkingSchedule> schedules = new ArrayList<>();
             int ID = Integer.parseInt(request.getParameter("ID"));
 
-            int[] dayValues = {2, 3, 4, 5, 6, 7, 1};
+            int[] dayValues = {2, 3, 4, 5, 6, 7, 8};
             String[] shifts = {"MORNING", "AFTERNOON", "EVENING"};
 
             for (int day : dayValues) {
@@ -59,14 +59,35 @@ public class WorkingScheduleServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         WorkingScheduleDAO workingDAO = new WorkingScheduleDAO();
+        // Lấy tham số từ request
         String fullName = request.getParameter("fullName");
         String idStr = request.getParameter("professionalID");
-        
+        String dayOfWeekStr = request.getParameter("dayOfWeek");
+        String shift = request.getParameter("shift");
+        String status = request.getParameter("status");
+        String update = request.getParameter("update");
+
+        if (update != null && !update.isEmpty()
+                && status != null && !status.isEmpty()
+                && shift != null && !shift.isEmpty()
+                && dayOfWeekStr != null && !dayOfWeekStr.isEmpty()) {
+
+            int ID = Integer.parseInt(idStr);
+            int dayOfWeek = Integer.parseInt(dayOfWeekStr);
+            
+            if (status.equalsIgnoreCase("On")) {
+                workingDAO.updateScheduleStatus(ID, dayOfWeek, shift, "Off");
+            } else {
+                workingDAO.updateScheduleStatus(ID, dayOfWeek, shift, "On");
+            }
+            response.sendRedirect("loadstaffforschedule");
+        }else{
         int ID = Integer.parseInt(idStr);
-        
         request.setAttribute("ID", ID);
         request.setAttribute("fullName", fullName);
         request.getRequestDispatcher("createWorkingSchedule.jsp").forward(request, response);
+        }
+
     }
 
 }
