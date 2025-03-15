@@ -1,4 +1,3 @@
-
 package model;
 
 import java.nio.charset.StandardCharsets;
@@ -10,6 +9,7 @@ import java.util.Date;
  */
 public class Professional extends Staff {
 
+    
     private String specialization;
     private String officeHours;
     private String qualification;
@@ -20,41 +20,52 @@ public class Professional extends Staff {
     public Professional() {
     }
 
-    
-
     // Constructor có tham số
     public Professional(int staffID, String fullName, String email, String password, Date dateOfBirth, String gender, String address, String phone, Date hireDate, String status, byte[] profilePicture, String specialization, String officeHours, String qualification, String biography, Date createdAt) {
         // Chuyển Date thành String khi gọi super() cho dateOfBirth và hireDate
         //int staffID, String fullName, String email, String password, String phone, String gender, String dateOfBirth, String address, String hireDate, int roleID, String status, String profilePicture
-        super(staffID, fullName, email, password, phone,gender,dateOfBirth.toString(),address, hireDate.toString(), 0, status, new String(profilePicture, StandardCharsets.ISO_8859_1));  // convert to String
+        super(staffID, fullName, email, password, phone, gender, dateOfBirth.toString(), address, hireDate.toString(), 0, status, new String(profilePicture, StandardCharsets.ISO_8859_1));  // convert to String
         this.specialization = specialization;
         this.officeHours = officeHours;
         this.qualification = qualification;
         this.biography = biography;
         this.createdAt = createdAt;
-        this.status=status;
+        this.status = status;
     }
-    public int getStaffID(){
+
+    @Override
+    public int getStaffID() {
         return super.getStaffID();
     }
-        public String getName(){
+
+    public String getName() {
         return super.getFullName();
     }
-        public String getEmail(){
-            return super.getEmail();
-        }
-    public String getPhone(){
+
+    @Override
+    public String getEmail() {
+        return super.getEmail();
+    }
+
+    @Override
+    public String getPhone() {
         return super.getPhone();
     }
-    public String getAddress(){
+
+    @Override
+    public String getAddress() {
         return super.getAddress();
     }
-    public String getDOB(){
+
+    public String getDOB() {
         return super.getDateOfBirth();
     }
-    public String getGender(){
+
+    @Override
+    public String getGender() {
         return super.getGender();
     }
+
     // Getters và Setters (lấy và gán giá trị)
     public String getSpecialization() {
         return specialization;
@@ -88,10 +99,12 @@ public class Professional extends Staff {
         this.biography = biography;
     }
 
+    @Override
     public String getStatus() {
         return status;
     }
 
+    @Override
     public void setStatus(String status) {
         this.status = status;
     }
@@ -106,5 +119,10 @@ public class Professional extends Staff {
 
     public String getDepartment() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String toString() {
+        return "Professional{" + "specialization=" + specialization + ", officeHours=" + officeHours + ", qualification=" + qualification + ", biography=" + biography + ", status=" + status + ", createdAt=" + createdAt + '}';
     }
 }

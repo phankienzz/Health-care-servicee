@@ -41,10 +41,10 @@ public class ProfessionalDAO {
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 list.add(rs.getString(1));
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
@@ -81,7 +81,8 @@ public class ProfessionalDAO {
         }
         return false;
     }
-    public Professional getProfessionalbyID(int id){
+
+    public Professional getProfessionalbyID(int id) {
         Professional pro = null;
         String sql = "SELECT \n"
                 + "    s.staffID,\n"
@@ -106,19 +107,19 @@ public class ProfessionalDAO {
                 + "    p.createdAt\n"
                 + "FROM Staff s\n"
                 + "JOIN Professional p ON s.staffID = p.staffID where s.staffID = ?;";
-        try{
+        try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()){
-                    pro = extractProfessional(rs);
+            if (rs.next()) {
+                pro = extractProfessional(rs);
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return pro;
     }
-    
+
     // READ - Get all Professionals
     public List<Professional> getAllProfessionals() {
         List<Professional> list = new ArrayList<>();
@@ -233,79 +234,72 @@ public class ProfessionalDAO {
         );
     }
 
-    
     public List<Professional> getAllDoctors() {
-    List<Professional> list = new ArrayList<>();
-    String sql = "SELECT \n"
-            + "    s.staffID,\n"
-            + "    s.fullName,\n"
-            + "    s.email,\n"
-            + "    s.password,\n"
-            + "    s.phone,\n"
-            + "    s.gender,\n"
-            + "    s.dateOfBirth,\n"
-            + "    s.address,\n"
-            + "    s.hireDate,\n"
-            + "    s.roleID,\n"
-            + "    s.status AS staffStatus,\n"
-            + "    s.profilePicture AS staffProfilePicture,\n"
-            + "    p.professionalID,\n"
-            + "    p.specialization,\n"
-            + "    p.officeHours,\n"
-            + "    p.qualification,\n"
-            + "    p.biography,\n"
-            + "    p.profilePicture AS professionalProfilePicture,\n"
-            + "    p.status AS professionalStatus,\n"
-            + "    p.createdAt\n"
-            + "FROM Staff s\n"
-            + "JOIN Professional p ON s.staffID = p.staffID\n"
-            + "WHERE p.status = 'Active';"; // Chỉ lấy bác sĩ có trạng thái Active
+        List<Professional> list = new ArrayList<>();
+        String sql = "SELECT \n"
+                + "    s.staffID,\n"
+                + "    s.fullName,\n"
+                + "    s.email,\n"
+                + "    s.password,\n"
+                + "    s.phone,\n"
+                + "    s.gender,\n"
+                + "    s.dateOfBirth,\n"
+                + "    s.address,\n"
+                + "    s.hireDate,\n"
+                + "    s.roleID,\n"
+                + "    s.status AS staffStatus,\n"
+                + "    s.profilePicture AS staffProfilePicture,\n"
+                + "    p.professionalID,\n"
+                + "    p.specialization,\n"
+                + "    p.officeHours,\n"
+                + "    p.qualification,\n"
+                + "    p.biography,\n"
+                + "    p.profilePicture AS professionalProfilePicture,\n"
+                + "    p.status AS professionalStatus,\n"
+                + "    p.createdAt\n"
+                + "FROM Staff s\n"
+                + "JOIN Professional p ON s.staffID = p.staffID\n"
+                + "WHERE p.status = 'Active';"; // Chỉ lấy bác sĩ có trạng thái Active
 
-    try (PreparedStatement stmt = conn.prepareStatement(sql);
-         ResultSet rs = stmt.executeQuery()) {
-        while (rs.next()) {
-            Professional doctor = extractProfessional(rs);
-            list.add(doctor);
-            System.out.println("Doctor Found: " + doctor.getFullName());
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Professional doctor = extractProfessional(rs);
+                list.add(doctor);
+                System.out.println("Doctor Found: " + doctor.getFullName());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return list;
-}
-
-    
-    
-    
-    
-    
-   public static void main(String[] args) {
-    // Khởi tạo DAO
-    ProfessionalDAO dao = new ProfessionalDAO();
-    
-    // Kiểm tra kết nối CSDL trước khi truy vấn
-    if (dao.conn == null) {
-        System.out.println("❌ Lỗi kết nối đến CSDL! Vui lòng kiểm tra lại DBContext.");
-        return;
-    } else {
-        System.out.println("✅ Kết nối CSDL thành công!");
+        return list;
     }
 
-    // Lấy danh sách bác sĩ từ database
-    List<Professional> doctors = dao.getAllDoctors();
+    public static void main(String[] args) {
+        // Khởi tạo DAO
+        ProfessionalDAO dao = new ProfessionalDAO();
 
-    // Kiểm tra danh sách bác sĩ có dữ liệu hay không
-    if (doctors == null || doctors.isEmpty()) {
-        System.out.println("⚠️ Không tìm thấy bác sĩ nào! Hãy kiểm tra dữ liệu trong bảng Professional.");
-    } else {
-        System.out.println("✅ Danh sách bác sĩ:");
-        for (Professional doc : doctors) {
-            System.out.println("🆔 ID: " + doc.getStaffID()+ 
-                               " | 👨‍⚕️ Tên: " + doc.getFullName() + 
-                               " | 📞 SĐT: " + doc.getPhone() + 
-                               " | 🎓 Chuyên môn: " + doc.getSpecialization());
+        // Kiểm tra kết nối CSDL trước khi truy vấn
+        if (dao.conn == null) {
+            System.out.println("❌ Lỗi kết nối đến CSDL! Vui lòng kiểm tra lại DBContext.");
+            return;
+        } else {
+            System.out.println("✅ Kết nối CSDL thành công!");
+        }
+
+        // Lấy danh sách bác sĩ từ database
+        List<Professional> doctors = dao.getAllDoctors();
+
+        // Kiểm tra danh sách bác sĩ có dữ liệu hay không
+        if (doctors == null || doctors.isEmpty()) {
+            System.out.println("⚠️ Không tìm thấy bác sĩ nào! Hãy kiểm tra dữ liệu trong bảng Professional.");
+        } else {
+            System.out.println("✅ Danh sách bác sĩ:");
+            for (Professional doc : doctors) {
+                System.out.println("🆔 ID: " + doc.getStaffID()
+                        + " | 👨‍⚕️ Tên: " + doc.getFullName()
+                        + " | 📞 SĐT: " + doc.getPhone()
+                        + " | 🎓 Chuyên môn: " + doc.getSpecialization());
+            }
         }
     }
-}
 
 }

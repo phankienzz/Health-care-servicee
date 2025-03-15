@@ -607,4 +607,11 @@ public class MedicalExaminationDAO extends DBContext {
         return appointments;
     }
 
+    public static void main(String[] args) {
+        MedicalExaminationDAO dao = new MedicalExaminationDAO();
+        List<MedicalExamination> list = dao.getAllMedicalExamination();
+        for (MedicalExamination medicalExamination : list) {
+            System.out.println(medicalExamination.getCustomerId().getFullName()+", " + medicalExamination.getConsultantId().getFullName());
+        }
+    }
 }

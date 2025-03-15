@@ -32,6 +32,10 @@ public class Invoice {
         this.discountID = discountID;
     }
 
+    public Invoice(int invoiceID) {
+        this.invoiceID = invoiceID;
+    }
+
     public int getInvoiceID() {
         return invoiceID;
     }
@@ -95,6 +99,11 @@ public class Invoice {
 
     public void setDiscountID(Discount discountID) {
         this.discountID = discountID;
+    }
+
+    @Override
+    public String toString() {
+        return "Invoice{" + "invoiceID=" + invoiceID + ", examinationID=" + examinationID + ", totalAmount=" + totalAmount + ", paymentStatus=" + paymentStatus + ", paymentDate=" + paymentDate + ", paymentMethod=" + paymentMethod + ", createdAt=" + createdAt + ", discountID=" + discountID + '}';
     }
 
     
