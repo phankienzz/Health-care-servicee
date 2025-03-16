@@ -29,6 +29,32 @@
         <filter-name>BlogFilter</filter-name>
         <filter-class>filter.BlogFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>ServiceFilter</filter-name>
+        <filter-class>filter.ServiceFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>ScheduleFilter</filter-name>
+        <filter-class>filter.ScheduleFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ScheduleFilter</filter-name>
+        <url-pattern>/loadstaffforschedule</url-pattern>
+        <url-pattern>/saveSchedule</url-pattern>
+        <url-pattern>/listDoctor-demo.jsp</url-pattern>
+        <url-pattern>/createWorkingSchedult.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>ServiceFilter</filter-name>
+        <url-pattern>/loadmanage</url-pattern>
+        <url-pattern>/manage_Service.jsp</url-pattern>
+        <url-pattern>/addService</url-pattern>
+        <url-pattern>/add_Service.jsp</url-pattern>
+        <url-pattern>/loadupdate</url-pattern>
+        <url-pattern>/updateservice</url-pattern>
+        <url-pattern>/editstatus</url-pattern>
+        <url-pattern>/update_Service.jsp</url-pattern>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>BlogFilter</filter-name>
         <url-pattern>/homeblogseverlet</url-pattern>
@@ -83,7 +109,6 @@
         <url-pattern>/editStaff</url-pattern>
         <url-pattern>/add-staff.jsp</url-pattern>
         <url-pattern>/edit-staff.jsp</url-pattern>
-
     </filter-mapping>
     <servlet>
         <servlet-name>ResetPassword</servlet-name>

@@ -19,15 +19,8 @@
     <body>
         <div class="main-wrapper">
             <!-- Header -->
-            <div class="header">
-                <!-- ... (gi? nguyên ph?n header) ... -->
-            </div>
-
-            <!-- Sidebar -->
-            <div class="sidebar" id="sidebar">
-                <!-- ... (gi? nguyên ph?n sidebar) ... -->
-            </div>
-
+            <jsp:include page="headerStaff.jsp"></jsp:include>
+            <jsp:include page="sidebar.jsp"></jsp:include>
             <!-- Page Content -->
             <div class="page-wrapper">
                 <div class="content">

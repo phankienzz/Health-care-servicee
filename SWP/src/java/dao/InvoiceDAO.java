@@ -50,6 +50,8 @@ public class InvoiceDAO extends DBContext {
         }
         return invoiceList; // Trả về danh sách khách hàng
     }
+    
+   
     public Invoice getInvoiceByID(int invoiceID) {
         String sql = "select * from Invoice where invoiceID = ?";
         MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
@@ -580,9 +582,20 @@ public class InvoiceDAO extends DBContext {
         return invoiceList; // Trả về danh sách khách hàng
     }
      
+     public void updateInvoiceOnline(int invoiceID) {
+        String sql = "update invoice set paymentDate = SYSDATETIME(),paymentMethod=N'Credit Card', paymentStatus = N'Paid' where invoiceID = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, invoiceID);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+     
      public static void main(String[] args) {
-        InvoiceDAO dao = new InvoiceDAO();
-        dao.getInvoiceByFromDate("10/02/2025");
-         System.out.println(dao.getInvoiceByFromDate("10/02/2025").get(0).getCreatedAt());
+       
+         long a = Math.round(123.3333);
+         System.out.println(a);
     }
 }
