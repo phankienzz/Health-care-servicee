@@ -81,7 +81,7 @@ public class LoginServlet extends HttpServlet {
                             response.addCookie(usernameCookie);
                             response.addCookie(passwordCookie);
                         }
-                        response.sendRedirect("index_1.jsp");
+                        response.sendRedirect("home");
                     } else {
                         request.setAttribute("error", "Invalid username or password !");
                         request.getRequestDispatcher("login.jsp").forward(request, response);

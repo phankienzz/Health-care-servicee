@@ -7,6 +7,7 @@ package HomePageController;
 import context.ValidFunction;
 import dao.FeedbackDAO;
 import dao.HomePageDAO;
+import dao.VisitCounterDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Feedback;
 import model.Service;
@@ -50,9 +52,42 @@ public class Home extends HttpServlet {
         FeedbackDAO feedbackDAO = new FeedbackDAO();
         List<Service> listService = dao.get4Service();
         List<Feedback> listFeedback = feedbackDAO.getAllFeedbacksByCustomer();
+
         for (Feedback feedback : listFeedback) {
             feedback.setDate(valid.formatDateNews(feedback.getDate()));
         }
+
+        // Lấy session của người dùng
+        HttpSession session = request.getSession();
+
+        // Kiểm tra nếu session chưa có biến "visited"
+        if (session.getAttribute("visited") == null) {
+            // Nếu chưa có, tức là đây là lần đầu tiên truy cập trong phiên
+            VisitCounterDAO daoV = new VisitCounterDAO();
+            daoV.increaseVisitCount(); // Tăng số lượt truy cập trong database
+            int visitCount = daoV.getVisitCount(); // Lấy số lượt truy cập mới
+
+            // Đánh dấu rằng phiên này đã được tính lượt truy cập
+            session.setAttribute("visited", true);
+
+            // Lưu lượt truy cập vào ServletContext (tùy chọn)
+            Integer contextVisitCount = (Integer) getServletContext().getAttribute("visitCount");
+            if (contextVisitCount == null) {
+                contextVisitCount = 0;
+            }
+            contextVisitCount++;
+            getServletContext().setAttribute("visitCount", contextVisitCount);
+
+            // Gửi số lượt truy cập đến JSP
+            request.setAttribute("visitCount", visitCount);
+            request.setAttribute("contextVisitCount", contextVisitCount);
+        } else {
+            // Nếu đã có "visited" trong session, chỉ lấy số lượt truy cập hiện tại mà không tăng
+            VisitCounterDAO daoV = new VisitCounterDAO();
+            int visitCount = daoV.getVisitCount();
+            request.setAttribute("visitCount", visitCount);
+        }
+
         request.setAttribute("listService", listService);
         request.setAttribute("listFeedback", listFeedback);
 
