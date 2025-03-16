@@ -8,7 +8,7 @@
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
-        <!-- Thêm CSS cho Datetimepicker -->
+        <!-- Thï¿½m CSS cho Datetimepicker -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <!--[if lt IE 9]>
@@ -18,9 +18,9 @@
     </head>
     <body>
         <div class="main-wrapper">
-             <jsp:include page="headerStaff.jsp"></jsp:include>
+            <!-- Header -->
+            <jsp:include page="headerStaff.jsp"></jsp:include>
             <jsp:include page="sidebar.jsp"></jsp:include>
-
             <!-- Page Content -->
             <div class="page-wrapper">
                 <div class="content">
@@ -37,7 +37,7 @@
                     <div class="container">
                         <h2>Medical Examinations</h2>
 
-                        <!-- Form tìm ki?m và l?c -->
+                        <!-- Form tï¿½m ki?m vï¿½ l?c -->
                         <form method="get" action="manage_appointment" class="mb-4">
                             <div class="row">
                                 <div class="col-md-3">
@@ -83,7 +83,7 @@
                             </div>
                         </form>
 
-                        <!-- B?ng danh sách -->
+                        <!-- B?ng danh sï¿½ch -->
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
@@ -165,13 +165,13 @@
                             </div>
                         </div>
 
-                        <!-- Phân trang -->
+                        <!-- Phï¿½n trang -->
                         <c:if test="${totalPages > 1}">
                             <nav aria-label="Page navigation" class="mt-3">
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
                                         <a class="page-link" href="manage_appointment?page=${currentPage - 1}&patientName=${param.patientName}&ageSort=${param.ageSort}&doctorName=${param.doctorName}&appointmentDate=${param.appointmentDate}&timeCreatedSort=${param.timeCreatedSort}&status=${param.status}" aria-label="Previous">
-                                            <span aria-hidden="true">«</span>
+                                            <span aria-hidden="true">ï¿½</span>
                                         </a>
                                     </li>
                                     <c:forEach begin="1" end="${totalPages}" var="i">
@@ -181,7 +181,7 @@
                                     </c:forEach>
                                     <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
                                         <a class="page-link" href="manage_appointment?page=${currentPage + 1}&patientName=${param.patientName}&ageSort=${param.ageSort}&doctorName=${param.doctorName}&appointmentDate=${param.appointmentDate}&timeCreatedSort=${param.timeCreatedSort}&status=${param.status}" aria-label="Next">
-                                            <span aria-hidden="true">»</span>
+                                            <span aria-hidden="true">ï¿½</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -218,7 +218,7 @@
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/jquery.slimscroll.js"></script>
         <script src="assets/js/select2.min.js"></script>
-        <!-- Thêm Moment.js và Bootstrap Datetimepicker -->
+        <!-- Thï¿½m Moment.js vï¿½ Bootstrap Datetimepicker -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
         <script src="assets/js/app.js"></script>
@@ -226,7 +226,7 @@
                                                                        $(document).ready(function () {
                                                                            // Kh?i t?o datetimepicker cho appointmentDate
                                                                            $('#appointmentDate').datetimepicker({
-                                                                               format: 'DD/MM/YYYY', // ??nh d?ng ngày
+                                                                               format: 'DD/MM/YYYY', // ??nh d?ng ngï¿½y
                                                                                useCurrent: false
                                                                            });
                                                                        });
