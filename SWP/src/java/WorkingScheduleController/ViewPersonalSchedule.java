@@ -1,93 +1,81 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package WorkingScheduleController;
 
 import dao.WorkingScheduleDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.LocalDate;
-import java.util.List;
+import model.ProfessionalLeave;
 import model.WorkingSchedule;
+import java.sql.Date;
+import java.sql.Time;
 
-/**
- *
- * @author laptop 368
- */
 @WebServlet(name = "ViewPersonalSchedule", urlPatterns = {"/viewpersonalschedule"})
 public class ViewPersonalSchedule extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ViewPersonalSchedule</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ViewPersonalSchedule at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         WorkingScheduleDAO workingDAO = new WorkingScheduleDAO();
+
         try {
             int professionalID = Integer.parseInt(request.getParameter("professionalID"));
+            String selectedDateStr = request.getParameter("selectedDate");
+
+            LocalDate selectedDate = (selectedDateStr != null && !selectedDateStr.isEmpty())
+                    ? LocalDate.parse(selectedDateStr)
+                    : LocalDate.now();
+
+            LocalDate firstMondayOfWeek = selectedDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+            LocalDate lastSundayOfWeek = firstMondayOfWeek.plusDays(6);
 
             List<WorkingSchedule> professionalList = workingDAO.getAllSchedulesByProfessionalID(professionalID);
-            request.setAttribute("professionalList", professionalList);
+            List<ProfessionalLeave> leaveList = workingDAO.getProfessionalLeavesByProfessionalID(professionalID);
+
+            List<Date> leaveDates = new ArrayList<>();
+            for (ProfessionalLeave leave : leaveList) {
+                if ("Approved".equals(leave.getStatus())) {
+                    leaveDates.add((Date) leave.getLeaveDate());
+                }
+            }
+
+            List<WorkingSchedule> updatedSchedule = new ArrayList<>();
+
+            for (WorkingSchedule schedule : professionalList) {
+                LocalDate scheduleDate = firstMondayOfWeek.plusDays(schedule.getDayOfWeek() - 2);
+                if (leaveDates.contains(Date.valueOf(scheduleDate))) {
+                    schedule.setStartTime(Time.valueOf("00:00:00"));
+                    schedule.setEndTime(Time.valueOf("00:00:00"));
+                    for (ProfessionalLeave leave : leaveList) {
+                        if (leave.getLeaveDate().equals(Date.valueOf(scheduleDate))) {
+                            schedule.setStatus(leave.getReason());
+                            break;
+                        }
+                    }
+                }
+                updatedSchedule.add(schedule);
+            }
+
+            request.setAttribute("leaveList", leaveList);
+            request.setAttribute("professionalList", updatedSchedule);
+            request.setAttribute("firstMondayOfWeek", firstMondayOfWeek);
+            request.setAttribute("selectedDate", selectedDate);
+
             request.getRequestDispatcher("viewPersonalSchedule.jsp").forward(request, response);
         } catch (NumberFormatException e) {
             e.printStackTrace();
             response.sendRedirect("error.jsp");
         }
     }
-    
+
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-      
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Handle POST if needed
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

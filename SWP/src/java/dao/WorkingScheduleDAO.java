@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import model.ProfessionalLeave;
 
 public class WorkingScheduleDAO {
 
@@ -250,12 +251,70 @@ public class WorkingScheduleDAO {
         }
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    public static void main(String[] args) {
+//        WorkingScheduleDAO dao = new WorkingScheduleDAO();
+//        List<WorkingSchedule> list = dao.getAllSchedulesByProfessionalID(2);
+//        for (WorkingSchedule ws : list) {
+//            System.out.println(ws);
+//        }
+//
+//    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Professional Leave
+    public List<ProfessionalLeave> getAllProfessionalLeaves() {
+        List<ProfessionalLeave> leaves = new ArrayList<>();
+        String sql = "SELECT leaveID, professionalID, leaveDate, reason, status FROM ProfessionalLeave";
+
+        try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+
+            while (rs.next()) {
+                leaves.add(new ProfessionalLeave(
+                        rs.getInt("leaveID"),
+                        rs.getInt("professionalID"),
+                        rs.getDate("leaveDate"),
+                        rs.getString("reason"),
+                        rs.getString("status")
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return leaves;
+    }
+
+    public List<ProfessionalLeave> getProfessionalLeavesByProfessionalID(int professionalID) {
+        List<ProfessionalLeave> leaves = new ArrayList<>();
+        String sql = "SELECT leaveID, professionalID, leaveDate, reason, status FROM ProfessionalLeave WHERE professionalID = ?";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, professionalID);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    leaves.add(new ProfessionalLeave(
+                            rs.getInt("leaveID"),
+                            rs.getInt("professionalID"),
+                            rs.getDate("leaveDate"),
+                            rs.getString("reason"),
+                            rs.getString("status")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return leaves;
+    }
+
     public static void main(String[] args) {
         WorkingScheduleDAO dao = new WorkingScheduleDAO();
-        List<WorkingSchedule> list = dao.getAllSchedulesByProfessionalID(2);
-        for (WorkingSchedule ws : list) {
+        List<ProfessionalLeave> list = dao.getProfessionalLeavesByProfessionalID(1);
+        for (ProfessionalLeave ws : list) {
             System.out.println(ws);
         }
 
     }
+
 }

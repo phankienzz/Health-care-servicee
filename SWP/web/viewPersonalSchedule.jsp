@@ -2,19 +2,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<%
-    // Lấy năm hiện tại hoặc từ request
-    String selectedYear = request.getParameter("year") != null ? request.getParameter("year") : String.valueOf(LocalDate.now().getYear());
-
-    // Tính ngày thứ Hai đầu tiên của năm
-    LocalDate firstMonday = LocalDate.of(Integer.parseInt(selectedYear), 1, 1)
-                            .with(TemporalAdjusters.firstInMonth(DayOfWeek.MONDAY));
-
-    // Lưu vào request để sử dụng trong JSTL
-    request.setAttribute("firstMonday", firstMonday);
-    request.setAttribute("selectedYear", selectedYear);
-%>
-
 <html>
     <head>
         <title>Doctor's Weekly Schedule</title>
@@ -34,32 +21,18 @@
             .shift {
                 height: 50px;
             }
+            .on-leave {
+                background-color: #ffcccc;
+            }
         </style>
     </head>
     <body>
         <h1>Doctor's Weekly Schedule</h1>
 
-        <form method="GET" action="viewPersonalSchedule.jsp">
-            <label for="year">Year:</label>
-            <select name="year" id="year" onchange="this.form.submit()">
-                <c:forEach var="year" begin="2020" end="2030">
-                    <option value="${year}" ${year == selectedYear ? 'selected' : ''}>${year}</option>
-                </c:forEach>
-            </select>
-
-            <label for="weekRange">Week:</label>
-            <select name="weekRange">
-                <c:forEach var="i" begin="0" end="51">
-                    <c:set var="weekStart" value="${firstMonday.plusWeeks(i)}" />
-                    <c:set var="weekEnd" value="${weekStart.plusDays(6)}" />
-                    <c:if test="${weekStart.year == selectedYear}">
-                        <option value="${weekStart} To ${weekEnd}">
-                            ${weekStart} To ${weekEnd}
-                        </option>
-                    </c:if>
-                </c:forEach>
-            </select>
-
+        <form method="GET" action="viewpersonalschedule">
+            <input type="hidden" name="professionalID" value="${param.professionalID}" />
+            <label for="selectedDate">Select Date:</label>
+            <input type="date" id="selectedDate" name="selectedDate" value="${selectedDate}">
             <button type="submit">Submit</button>
         </form>
 
@@ -67,12 +40,10 @@
             <thead>
                 <tr>
                     <th>Shift</th>
-                    <c:forEach var="day" begin="0" end="6">
-                        <th>
-                            <c:set var="date" value="${firstMonday.plusWeeks(0).plusDays(day)}" />
-                            ${date.getDayOfWeek()} (${date})
-                        </th>
-                    </c:forEach>
+                        <c:forEach var="day" begin="0" end="6">
+                            <c:set var="date" value="${firstMondayOfWeek.plusDays(day)}" />
+                        <th>${date.getDayOfWeek()} (${date})</th>
+                        </c:forEach>
                 </tr>
             </thead>
             <tbody>
@@ -80,12 +51,19 @@
                 <c:forEach var="shift" items="${shifts}">
                     <tr class="shift">
                         <td>${shift}</td>
-                        <c:forEach var="day" begin="2" end="8">
+                        <c:forEach var="day" begin="0" end="6">
                             <td>
                                 <c:forEach var="schedule" items="${professionalList}">
-                                    <c:set var="scheduleDate" value="${firstMonday.plusWeeks(0).plusDays(day)}" />
-                                    <c:if test="${schedule.dayOfWeek == day && schedule.shift == shift}">
-                                        ${schedule.startTime} - ${schedule.endTime}
+                                    <c:set var="scheduleDate" value="${firstMondayOfWeek.plusDays(day)}" />
+                                    <c:if test="${schedule.dayOfWeek == day + 2 && schedule.shift == shift}">
+                                        <c:choose>
+                                            <c:when test="${schedule.startTime == '00:00:00' && schedule.endTime == '00:00:00'}">
+                                                <span class="on-leave">On Leave: ${schedule.status}</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                ${schedule.startTime} - ${schedule.endTime}
+                                            </c:otherwise>
+                                        </c:choose>
                                     </c:if>
                                 </c:forEach>
                             </td>
@@ -95,5 +73,33 @@
             </tbody>
         </table>
 
+        <h1>Professional Leave List</h1>
+        <table border="1">
+            <tr>
+                <th>Leave ID</th>
+                <th>Professional ID</th>
+                <th>Leave Date</th>
+                <th>Reason</th>
+                <th>Status</th>
+            </tr>
+            <c:choose>
+                <c:when test="${not empty leaveList}">
+                    <c:forEach var="leave" items="${leaveList}">
+                        <tr>
+                            <td>${leave.leaveID}</td>
+                            <td>${leave.professionalID}</td>
+                            <td>${leave.leaveDate}</td>
+                            <td>${leave.reason}</td>
+                            <td>${leave.status}</td>
+                        </tr>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <tr>
+                        <td colspan="5">No records found</td>
+                    </tr>
+                </c:otherwise>
+            </c:choose>
+        </table>
     </body>
 </html>

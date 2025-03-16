@@ -120,6 +120,11 @@
                                 <input type="hidden" name="professionalID" value="${schedule.professionalID}">
                                 <button type="submit" class="manage-btn">View personal schedule</button>
                             </form>
+                            <form action="professionalleave" method="GET">
+                                <input type="hidden" name="fullName" value="${schedule.fullName}">
+                                <input type="hidden" name="professionalID" value="${schedule.professionalID}">
+                                <button type="submit" class="manage-btn">Manage Personal Leave</button>
+                            </form>
                         </div>
                         <table class="table table-bordered">
                             <thead>
