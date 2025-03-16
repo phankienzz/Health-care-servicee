@@ -19,27 +19,9 @@
     </head>
     <body>
         <div class="main-wrapper">
-            <div class="header">
-                <div class="header-left">
-                    <a href="dashboard.html" class="logo">
-                        <img src="assets/img/logo.png" width="35" height="35" alt=""> <span>Preclinic</span>
-                    </a>
-                </div>
-                <ul class="nav user-menu float-right">
-                    <li class="nav-item dropdown d-none d-sm-block">
-                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"><i class="fa fa-bell-o"></i> <span class="badge badge-pill bg-danger float-right">3</span></a>
-                    </li>
-                    <li class="submenu">
-                        <a href="#"><i class="fa fa-commenting-o"></i> <span> Blog</span> <span class="menu-arrow"></span></a>
-                        <ul style="display: none;">
-                            <li><a href="homeblogseverlet">Blog</a></li>
-                            <li><a href="blog-details.jsp">Blog View</a></li>
-                            <li><a class="active" href="add-blog.jsp">Add Blog</a></li>
-                            <li><a href="edit-blog.html">Edit Blog</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+            
+            <jsp:include page="headerStaff.jsp"></jsp:include>
+            <jsp:include page="sidebar.jsp"></jsp:include>
 
 
 

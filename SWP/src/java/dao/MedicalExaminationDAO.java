@@ -429,7 +429,7 @@ public class MedicalExaminationDAO extends DBContext {
         return 0;
     }
 
-    // Sửa phương thức addMedicalExamination để tự động tăng examinationID
+   
     public boolean addMedicalExamination(MedicalExamination exam) {
         String sql = "INSERT INTO MedicalExamination (examinationID, examinationDate, customerID, status, consultantID, notes, createdAt) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -466,7 +466,7 @@ public class MedicalExaminationDAO extends DBContext {
         }
     }
 
-    // Thêm phương thức để lấy examinationID lớn nhất và tăng lên 1
+   
     public int getNextExaminationId() {
         String sql = "SELECT MAX(examinationID) FROM MedicalExamination";
         try {
@@ -478,7 +478,7 @@ public class MedicalExaminationDAO extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 1; // Bắt đầu từ 1 nếu bảng rỗng
+        return 1; 
     }
 
     public int getCustomerIdByName(String fullName) {
@@ -529,7 +529,7 @@ public class MedicalExaminationDAO extends DBContext {
         return customers;
     }
 
-    // Lấy hồ sơ bệnh án theo examinationID
+
     public MedicalRecord getMedicalRecordByExamId(int examId) {
         String sql = "SELECT examinationID, diagnosis, treatmentPlan, medicationsPrescribed, "
                 + "FORMAT(createdAt, 'dd/MM/yyyy HH:mm') AS createdAt, notes "
@@ -554,7 +554,7 @@ public class MedicalExaminationDAO extends DBContext {
         return null;
     }
 
-    // Hủy cuộc hẹn (chỉ khi trạng thái là "Pending")
+
     public boolean cancelAppointment(int examId) {
         String sql = "UPDATE MedicalExamination SET status = 'Rejected' WHERE examinationID = ? AND status = 'Pending'";
         try {
