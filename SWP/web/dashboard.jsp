@@ -37,86 +37,86 @@
                                 <div class="dash-widget">
                                     <span class="dash-widget-bg2"><i class="fa fa-user-o"></i></span>
                                     <div class="dash-widget-info text-right">
-                                        <h3>1072</h3>
-                                        <span class="widget-title2">Visits <i class="fa fa-check" aria-hidden="true"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                                <div class="dash-widget">
-                                    <span class="dash-widget-bg1"><i class="fa fa-stethoscope" aria-hidden="true"></i></span>
-                                    <div class="dash-widget-info text-right">
-                                        <h3>98</h3>
-                                        <span class="widget-title1">Doctors <i class="fa fa-check" aria-hidden="true"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                                <div class="dash-widget">
-                                    <span class="dash-widget-bg3"><i class="fa fa-user-md" aria-hidden="true"></i></span>
-                                    <div class="dash-widget-info text-right">
-                                        <h3>72</h3>
-                                        <span class="widget-title3">Attend <i class="fa fa-check" aria-hidden="true"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                                <div class="dash-widget">
-                                    <span class="dash-widget-bg4"><i class="fa fa-heartbeat" aria-hidden="true"></i></span>
-                                    <div class="dash-widget-info text-right">
-                                        <h3>${pending}</h3>
-                                        <span class="widget-title4">Pending <i class="fa fa-check" aria-hidden="true"></i></span>
-                                    </div>
+                                        <h3>${visitCount}</h3>
+                                    <span class="widget-title2">Visits <i class="fa fa-check" aria-hidden="true"></i></span>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="chart-title">
-                                            <h4>Patient Total</h4>
-                                            <span class="float-right"><i class="fa fa-caret-up" aria-hidden="true"></i> 15% Higher than Last Month</span>
-                                        </div>	
-                                        <canvas id="linegraph"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="chart-title">
-                                            <h4>Patients In</h4>
-                                            <div class="float-right">
-                                                <ul class="chat-user-total">
-                                                    <li><i class="fa fa-circle current-users" aria-hidden="true"></i>ICU</li>
-                                                    <li><i class="fa fa-circle old-users" aria-hidden="true"></i> OPD</li>
-                                                </ul>
-                                            </div>
-                                        </div>	
-                                        <canvas id="bargraph"></canvas>
-                                    </div>
+                        <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                            <div class="dash-widget">
+                                <span class="dash-widget-bg1"><i class="fa fa-stethoscope" aria-hidden="true"></i></span>
+                                <div class="dash-widget-info text-right">
+                                    <h3>98</h3>
+                                    <span class="widget-title1">Doctors <i class="fa fa-check" aria-hidden="true"></i></span>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6 col-lg-8 col-xl-8">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4 class="card-title d-inline-block">Upcoming Appointments</h4> <a href="appointments.html" class="btn btn-primary float-right">View all</a>
-                                    </div>
-                                    <div class="card-body p-0">
-                                        <div class="table-responsive" style="max-height: 350px; overflow-y: auto;">
-                                            <table class="table mb-0">
-                                                <thead class="d-none">
-                                                    <tr>
-                                                        <th>Patient Name</th>
-                                                        <th>Doctor Name</th>
-                                                        <th>Timing</th>
-                                                        <th class="text-right">Status</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                        <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                            <div class="dash-widget">
+                                <span class="dash-widget-bg3"><i class="fa fa-user-md" aria-hidden="true"></i></span>
+                                <div class="dash-widget-info text-right">
+                                    <h3>72</h3>
+                                    <span class="widget-title3">Attend <i class="fa fa-check" aria-hidden="true"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                            <div class="dash-widget">
+                                <span class="dash-widget-bg4"><i class="fa fa-heartbeat" aria-hidden="true"></i></span>
+                                <div class="dash-widget-info text-right">
+                                    <h3>${pending}</h3>
+                                    <span class="widget-title4">Pending <i class="fa fa-check" aria-hidden="true"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="chart-title">
+                                        <h4>Patient Total</h4>
+                                        <span class="float-right"><i class="fa fa-caret-up" aria-hidden="true"></i> 15% Higher than Last Month</span>
+                                    </div>	
+                                    <canvas id="linegraph"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="chart-title">
+                                        <h4>Patients In</h4>
+                                        <div class="float-right">
+                                            <ul class="chat-user-total">
+                                                <li><i class="fa fa-circle current-users" aria-hidden="true"></i>ICU</li>
+                                                <li><i class="fa fa-circle old-users" aria-hidden="true"></i> OPD</li>
+                                            </ul>
+                                        </div>
+                                    </div>	
+                                    <canvas id="bargraph"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-8 col-xl-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title d-inline-block">Upcoming Appointments</h4> <a href="appointments.html" class="btn btn-primary float-right">View all</a>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive" style="max-height: 350px; overflow-y: auto;">
+                                        <table class="table mb-0">
+                                            <thead class="d-none">
+                                                <tr>
+                                                    <th>Patient Name</th>
+                                                    <th>Doctor Name</th>
+                                                    <th>Timing</th>
+                                                    <th class="text-right">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
                                                 <c:forEach var="apm" items="${listAppointment}">
                                                     <tr>
                                                         <td style="min-width: 200px;">

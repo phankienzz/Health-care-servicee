@@ -43,21 +43,15 @@ public class LogoutServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         if(session.getAttribute("staffAccount") != null){
-            session.invalidate();
-            response.sendRedirect("index_1.jsp");
+            session.removeAttribute("staffAccount");
+            response.sendRedirect("home");
             return;
         }
-        session.invalidate();
-//        String referer = request.getHeader("referer"); // Lấy URL trang trước đó
-//        if (referer != null && !referer.isEmpty()) {
-//            response.sendRedirect(referer);
-//        } else {
-//            response.sendRedirect("index_1.jsp");
-//        }
-
-
-        response.sendRedirect("index_1.jsp");
-        
+        if(session.getAttribute("customerAccount") != null){
+            session.removeAttribute("customerAccount");
+            response.sendRedirect("home");
+            return;
+        }
     }
 
     @Override

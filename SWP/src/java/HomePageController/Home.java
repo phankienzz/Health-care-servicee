@@ -50,6 +50,20 @@ public class Home extends HttpServlet {
         ValidFunction valid = new ValidFunction();
         HomePageDAO dao = new HomePageDAO();
         FeedbackDAO feedbackDAO = new FeedbackDAO();
+        VisitCounterDAO visitDAO = new VisitCounterDAO();
+
+        HttpSession session = request.getSession();
+
+        // Kiểm tra xem session đã có "visited" chưa
+        if (session.getAttribute("visited") == null) {
+            visitDAO.increaseVisitCount(); // Chỉ tăng khi chưa có
+            session.setAttribute("visited", true); // Đánh dấu đã ghé thăm
+        }
+        // Lưu số lượt truy cập trong session
+        int sessionVisitCount = (session.getAttribute("sessionVisitCount") == null) ? 1
+                : (int) session.getAttribute("sessionVisitCount") + 1;
+        session.setAttribute("sessionVisitCount", sessionVisitCount);
+
         List<Service> listService = dao.get4Service();
         List<Feedback> listFeedback = feedbackDAO.getAllFeedbacksByCustomer();
 
@@ -57,40 +71,8 @@ public class Home extends HttpServlet {
             feedback.setDate(valid.formatDateNews(feedback.getDate()));
         }
 
-        // Lấy session của người dùng
-        HttpSession session = request.getSession();
-
-        // Kiểm tra nếu session chưa có biến "visited"
-        if (session.getAttribute("visited") == null) {
-            // Nếu chưa có, tức là đây là lần đầu tiên truy cập trong phiên
-            VisitCounterDAO daoV = new VisitCounterDAO();
-            daoV.increaseVisitCount(); // Tăng số lượt truy cập trong database
-            int visitCount = daoV.getVisitCount(); // Lấy số lượt truy cập mới
-
-            // Đánh dấu rằng phiên này đã được tính lượt truy cập
-            session.setAttribute("visited", true);
-
-            // Lưu lượt truy cập vào ServletContext (tùy chọn)
-            Integer contextVisitCount = (Integer) getServletContext().getAttribute("visitCount");
-            if (contextVisitCount == null) {
-                contextVisitCount = 0;
-            }
-            contextVisitCount++;
-            getServletContext().setAttribute("visitCount", contextVisitCount);
-
-            // Gửi số lượt truy cập đến JSP
-            request.setAttribute("visitCount", visitCount);
-            request.setAttribute("contextVisitCount", contextVisitCount);
-        } else {
-            // Nếu đã có "visited" trong session, chỉ lấy số lượt truy cập hiện tại mà không tăng
-            VisitCounterDAO daoV = new VisitCounterDAO();
-            int visitCount = daoV.getVisitCount();
-            request.setAttribute("visitCount", visitCount);
-        }
-
         request.setAttribute("listService", listService);
         request.setAttribute("listFeedback", listFeedback);
-
         request.getRequestDispatcher("index_1.jsp").forward(request, response);
     }
 

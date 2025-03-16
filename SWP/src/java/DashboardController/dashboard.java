@@ -7,6 +7,7 @@ package DashboardController;
 import dao.DashboardDAO;
 import dao.MedicalExaminationDAO;
 import dao.ProfessionalDAO;
+import dao.VisitCounterDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -49,16 +50,19 @@ public class dashboard extends HttpServlet {
         DashboardDAO dashDAO = new DashboardDAO();
         ProfessionalDAO proDAO = new ProfessionalDAO();
         MedicalExaminationDAO meDAO = new MedicalExaminationDAO();
+        VisitCounterDAO visitDAO = new VisitCounterDAO();
 
         List<Customer> listCus = dashDAO.getNewCustomer();
         List<Professional> listDoc = proDAO.getAllProfessionals();
         List<MedicalExamination> listMe = meDAO.getAllMedicalExamination();
+        int visitCount = visitDAO.getVisitCount();
 
         int countPending = dashDAO.countPendingExaminations();
         request.setAttribute("listCustomer", listCus);
         request.setAttribute("listDoctor", listDoc);
         request.setAttribute("listAppointment", listMe);
         request.setAttribute("pending", countPending);
+        request.setAttribute("visitCount", visitCount);
 
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);
     }

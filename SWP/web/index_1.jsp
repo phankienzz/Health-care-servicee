@@ -47,9 +47,6 @@
 
                                 <p class="mb-4 pr-5" style="color: black;">A repudiandae ipsam labore ipsa voluptatum quidem quae laudantium quisquam
                                     aperiam maiores sunt fugit, deserunt rem suscipit placeat.</p>
-                                <p>Số lượt truy cập (Database):<strong style="color: red;"> ${visitCount}</strong></p>
-                            <p>Số lượt truy cập (Trong phiên hoạt động):<strong style="color: red;">${contextVisitCount}</strong></p>   
-
                             <div class="btn-container ">
                                 <a href="appointment" target="_blank"
                                    class="btn btn-main-2 btn-icon btn-round-full">Make appoinment <i
