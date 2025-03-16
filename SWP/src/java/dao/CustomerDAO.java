@@ -181,7 +181,29 @@ public class CustomerDAO extends DBContext {
         }
         return customers; // Trả về danh sách khách hàng
     }
+ public void insertGoogleUser(String email, String fullName, String picture) {
+    String sql = "INSERT INTO Customer (username, password, fullName, email, phone, address, accountStatus, dateOfBirth, gender) "
+               + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    try {
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setString(1, fullName);
+        st.setString(2, "google_oauth"); // Đánh dấu password không sử dụng
+        st.setString(3, fullName);
+        st.setString(4, email);
+        st.setString(5, "");  // Phone (Google không trả về)
+        st.setString(6, "");  // Address
+        st.setString(7, "Active");
+        st.setString(8, ""); // Date of Birth
+        st.setString(9, "Other"); // Giới tính
 
+        int rowsInserted = st.executeUpdate();
+        if (rowsInserted == 0) {
+            throw new SQLException("Failed to insert Google user into database.");
+        }
+    } catch (SQLException e) {
+        System.err.println("Database Insert Error: " + e.getMessage());
+    }
+}
     public List<Customer> getAllCustomerInactive() {
         List<Customer> customers = new ArrayList<>();
         String sql = "select * from Customer where accountStatus = 'Inactive'";
