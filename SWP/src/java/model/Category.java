@@ -55,7 +55,7 @@ public class Category {
     public void setStatus(int status) {
         this.status = status;
     }
-    
+
     @Override
     public String toString() {
         return "Category{" + "category_id=" + category_id + ", name=" + name + ", description=" + description + ", status=" + status + '}';

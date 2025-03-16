@@ -28,50 +28,41 @@ public class Manage_appointment extends HttpServlet {
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-        String patientName = request.getParameter("patientName");
-        String ageSort = request.getParameter("ageSort");
-        String doctorName = request.getParameter("doctorName");
-        String appointmentDate = request.getParameter("appointmentDate");
-        String timeCreatedSort = request.getParameter("timeCreatedSort");
-        String status = request.getParameter("status");
+        throws ServletException, IOException {
+    
+    String patientName = request.getParameter("patientName");
+    String doctorName = request.getParameter("doctorName");
+    String appointmentDate = request.getParameter("appointmentDate");
+    String timeCreatedSort = request.getParameter("timeCreatedSort");
+    String status = request.getParameter("status");
 
-       
-        int page = 1; 
-        int pageSize = 10; 
-        String pageStr = request.getParameter("page");
-        if (pageStr != null && !pageStr.isEmpty()) {
-            page = Integer.parseInt(pageStr);
-        }
-
-        
-        int totalRecords = medicalExaminationDAO.getTotalFilteredRecords(
-                patientName, ageSort, doctorName, appointmentDate, timeCreatedSort, status);
-        int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
-
-
-        if (page < 1) page = 1;
-        if (page > totalPages && totalPages > 0) page = totalPages;
-
-       
-        List<MedicalExamination> list = medicalExaminationDAO.getFilteredExaminations(
-                patientName, ageSort, doctorName, appointmentDate, timeCreatedSort, status, page, pageSize);
-
-       
-        List<Professional> allProfessionals = medicalExaminationDAO.getAllProfessionals();
-
-       
-        request.setAttribute("list", list);
-        request.setAttribute("allProfessionals", allProfessionals);
-        request.setAttribute("currentPage", page);
-        request.setAttribute("totalPages", totalPages);
-        request.setAttribute("pageSize", pageSize);
-
-       
-        request.getRequestDispatcher("manage_appointment.jsp").forward(request, response);
+    int page = 1; 
+    int pageSize = 10; 
+    String pageStr = request.getParameter("page");
+    if (pageStr != null && !pageStr.isEmpty()) {
+        page = Integer.parseInt(pageStr);
     }
 
-   
-    
+    // Bỏ ageSort trong getTotalFilteredRecords
+    int totalRecords = medicalExaminationDAO.getTotalFilteredRecords(
+            patientName, doctorName, appointmentDate, timeCreatedSort, status);
+    int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+
+    if (page < 1) page = 1;
+    if (page > totalPages && totalPages > 0) page = totalPages;
+
+    // Bỏ ageSort trong getFilteredExaminations
+    List<MedicalExamination> list = medicalExaminationDAO.getFilteredExaminations(
+            patientName, doctorName, appointmentDate, timeCreatedSort, status, page, pageSize);
+
+    List<Professional> allProfessionals = medicalExaminationDAO.getAllProfessionals();
+
+    request.setAttribute("list", list);
+    request.setAttribute("allProfessionals", allProfessionals);
+    request.setAttribute("currentPage", page);
+    request.setAttribute("totalPages", totalPages);
+    request.setAttribute("pageSize", pageSize);
+
+    request.getRequestDispatcher("manage_appointment.jsp").forward(request, response);
+}
 }

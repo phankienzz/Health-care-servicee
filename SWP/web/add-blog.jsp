@@ -11,7 +11,7 @@
         <link rel="stylesheet" type="text/css" href="assets/css/tagsinput.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
-
+        <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
 
 
@@ -19,40 +19,42 @@
     </head>
     <body>
         <div class="main-wrapper">
-            
+
             <jsp:include page="headerStaff.jsp"></jsp:include>
             <jsp:include page="sidebar.jsp"></jsp:include>
 
 
 
 
-            <div class="page-wrapper-profile">
-                <div class="content">
-                    <div class="row">
-                        <div class="col-lg-8 offset-lg-2">
-                            <h4 class="page-title">Add Blog</h4>
-                            <form method="post" action="addblog" enctype="multipart/form-data">
-                                <div class="form-group">
-                                    <label>Blog Name</label>
-                                    <input class="form-control" type="text" name="name" required>
-                                </div>
+                <div class="page-wrapper-profile">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-lg-8 offset-lg-2">
+                                <h4 class="page-title">Add Blog</h4>
+                                <form method="post" action="addblog" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label>Blog Name</label>
+                                        <input class="form-control" type="text" name="name" required>
+                                    </div>
 
-                                <div class="form-group">
-                                    <label>Description</label>
-                                    <textarea cols="30" rows="2" class="form-control" name="description" ></textarea>
-                                </div>
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <textarea cols="30" rows="2" class="form-control" name="description" ></textarea>
+                                    </div>
 
-                                <div class="form-group">
-                                    <label>Category</label>
-                                    <select class="form-control" name="categoryId" required>
+                                    <div class="form-group" >
+                                        <label>Category</label>
+                                    <c:if test="${empty categoryList}">
+                                        <p style="color: red;">No categories found. Please add some categories.</p>
+                                    </c:if>
+                                    <select class="form-control" name="categoryId" required >
                                         <option value="">Select Category</option>
-                                        <option value="1">General Health</option>
-                                        <option value="2">Cardiology</option>
-                                        <option value="3">Pediatrics</option>
-                                        <option value="4">Nutrition</option>
-                                        <option value="5">Mental Health</option>
+                                        <c:forEach  items="${categoryList}" var="cat">
+                                            <option value="${cat.category_id}">${cat.name}</option>
+                                        </c:forEach>
                                     </select>
                                 </div>
+
 
                                 <div class="form-group">
                                     <label>Blog Images</label>
