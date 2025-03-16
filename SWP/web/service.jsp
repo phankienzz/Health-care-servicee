@@ -104,8 +104,8 @@
             </form>
         </section>
 
-        <!-- Danh sách dịch vụ -->
-        <section class="section service-2">
+                        <!-- Danh sách dịch vụ -->
+                        <section class="section service-2">
             <div class="container">
                 <div class="row">
                     <c:forEach var="service" items="${serviceList}">
