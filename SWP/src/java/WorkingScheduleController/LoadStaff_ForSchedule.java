@@ -56,29 +56,29 @@ public class LoadStaff_ForSchedule extends HttpServlet {
 
         List<WorkingSchedule> professionalList;
 
-        switch (searchType) {
-            case "name":
-                professionalList = (searchName != null && !searchName.trim().isEmpty())
-                        ? workingDAO.searchSchedulesByName(val.normalizeName(searchName))
-                        : workingDAO.getAllSchedules();
-                break;
-            case "date":
-                professionalList = (workDate != null && !workDate.trim().isEmpty())
-                        ? workingDAO.getSchedulesByDate(workDate, shiftFilter)
-                        : workingDAO.getAllSchedules();
-                break;
-            case "dayandshift":
-                professionalList = (dayFilter != null && shiftFilter != null)
-                        ? workingDAO.getSchedulesByShiftAndDay(shiftFilter, Integer.parseInt(dayFilter))
-                        : workingDAO.getAllSchedules();
-                break;
-            default:
-                // Nếu không có tìm kiếm, lấy tất cả lịch làm việc
-                professionalList = workingDAO.getListProfessionalSchedules();
-                break;
-        }
+//        switch (searchType) {
+//            case "name":
+//                professionalList = (searchName != null && !searchName.trim().isEmpty())
+//                        ? workingDAO.searchSchedulesByName(val.normalizeName(searchName))
+//                        : workingDAO.getAllSchedules();
+//                break;
+//            case "date":
+//                professionalList = (workDate != null && !workDate.trim().isEmpty())
+//                        ? workingDAO.getSchedulesByDate(workDate, shiftFilter)
+//                        : workingDAO.getAllSchedules();
+//                break;
+//            case "dayandshift":
+//                professionalList = (dayFilter != null && shiftFilter != null)
+////                        ? workingDAO.getSchedulesByShiftAndDay(shiftFilter, Integer.parseInt(dayFilter))
+//                        : workingDAO.getAllSchedules();
+//                break;
+//            default:
+//                // Nếu không có tìm kiếm, lấy tất cả lịch làm việc
+//                professionalList = workingDAO.getListProfessionalSchedules();
+//                break;
+//        }
 
-        paginateAndForward(request, response, professionalList);
+//        paginateAndForward(request, response, professionalList);
     }
 
     private void paginateAndForward(HttpServletRequest request, HttpServletResponse response, List<WorkingSchedule> fullList)

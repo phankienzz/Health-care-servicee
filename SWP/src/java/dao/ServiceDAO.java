@@ -179,7 +179,7 @@ public class ServiceDAO extends DBContext {
 
     // Chuyển đổi `ResultSet` thành `Service` để tránh lặp code
     private Service mapResultSetToService(ResultSet rs) throws SQLException {
-        return new Service(
+        Service service = new Service(
                 rs.getInt("packageID"),
                 rs.getString("packageName"),
                 rs.getString("description"),
@@ -190,6 +190,8 @@ public class ServiceDAO extends DBContext {
                 rs.getString("status"),
                 rs.getString("createdAt")
         );
+        service.setIntroduce(rs.getString("introduce")); // Gán introduce bằng setter
+        return service;
     }
 
     public void addService(String packageName, String description, InputStream imageStream,
@@ -359,11 +361,46 @@ public class ServiceDAO extends DBContext {
         return false;
     }
 
-    public static void main(String[] args) {
-        ServiceDAO dao = new ServiceDAO();
-        List<Service> list = dao.getServiceExaminationID(1);
-        for (Service sv : list) {
-            System.out.println(sv);
+    // ✅ Cập nhật introduce của gói dịch vụ
+    public boolean updateIntroduce(int packageID, String introduce) {
+        String sql = "UPDATE ServicePackage SET introduce = ? WHERE packageID = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, introduce);
+            ps.setInt(2, packageID);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+// ✅ Xóa introduce của gói dịch vụ
+    public boolean deleteIntroduce(int packageID) {
+        String sql = "UPDATE ServicePackage SET introduce = NULL WHERE packageID = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, packageID);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+   public static void main(String[] args) {
+        ServiceDAO serviceDAO = new ServiceDAO();
+
+        // Giá trị giả lập để kiểm thử
+        int testPackageID = 1;  // Đảm bảo packageID này tồn tại trong database
+        String testIntroduce = "This is a test introduce update.";
+
+        // Gọi phương thức updateIntroduce để kiểm tra
+        boolean result = serviceDAO.updateIntroduce(testPackageID, testIntroduce);
+
+        // Kiểm tra kết quả
+        if (result) {
+            System.out.println("✅ Cập nhật introduce thành công!");
+        } else {
+            System.out.println("❌ Không thể cập nhật introduce. Kiểm tra lại dữ liệu!");
         }
     }
 }

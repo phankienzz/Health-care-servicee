@@ -1,75 +1,160 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Chi Tiết Dịch Vụ</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #e3f2fd;
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            max-width: 700px;
-            background: white;
-            padding: 30px;
-            margin-top: 50px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            color: #007bff;
-            text-align: center;
-            font-weight: bold;
-        }
-        .info {
-            font-size: 18px;
-            margin-bottom: 15px;
-        }
-        .info span {
-            font-weight: bold;
-            color: #0056b3;
-        }
-        .service-img {
-            display: block;
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-        .btn-custom {
-            width: 100%;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 10px;
-        }
-    </style>
-</head>
-<body>
+<html lang="zxx">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="description" content="Health & Care Medical template">
+        <meta name="author" content="themefisher.com">
+        <title>Novena - Health & Care</title>
 
-<div class="container">
-    <h2>Chi Tiết Dịch Vụ</h2>
-    
-    <!-- Hiển thị hình ảnh -->
-    <div class="text-center my-3">
-        <img src="getimage?packageID=${service.packageID}" alt="Service Image" class="service-img">
-    </div>
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
 
-    <div class="info"><span>Tên Gói:</span> ${service.packageName}</div>
-    <div class="info"><span>Mô Tả:</span> ${service.description}</div>
-    <div class="info"><span>Loại Dịch Vụ:</span> ${service.type}</div>
-    <div class="info"><span>Giá:</span> $${service.price}</div>
-    <div class="info"><span>Thời Gian:</span> ${service.duration} phút</div>
+        <!-- CSS -->
+        <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="plugins/icofont/icofont.min.css">
+        <link rel="stylesheet" href="plugins/slick-carousel/slick/slick.css">
+        <link rel="stylesheet" href="plugins/slick-carousel/slick/slick-theme.css">
+        <link rel="stylesheet" href="css/style.css">
 
-    <!-- Nút đặt dịch vụ -->
-    <a href="appoinment.html" class="btn btn-primary btn-custom mt-3">Đặt Dịch Vụ</a>
-    <!-- Nút quay lại danh sách -->
-    <a href="loadservice" class="btn btn-secondary btn-custom mt-3">Quay Lại Danh Sách</a>
+        <!-- Custom CSS -->
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f8f9fa;
+            }
+            .div_board {
+                display: flex;
+                justify-content: flex-start;
+                gap: 10px;
+                background-color: #ffffff;
+                padding: 10px 15px;
+                border-radius: 8px;
+                flex-wrap: wrap;
+            }
+            .item {
+                padding: 8px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+                background-color: #ffffff;
+                color: #007bff;
+                font-size: 14px;
+                font-weight: bold;
+                text-transform: uppercase;
+                transition: all 0.3s ease;
+                border: 1px solid #0056b3;
+            }
+            .item:hover, .item.active {
+                background-color: #ffcc00;
+                color: #000;
+                border: 1px solid #d4a100;
+            }
+            #service-detail {
+                background: #ffffff;
+                padding: 25px;
+                border-radius: 10px;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+                margin-top: 20px;
+            }
+            .service-img {
+                width: 100%;
+                max-width: 500px;
+                height: auto;
+                border-radius: 10px;
+                box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+            }
+            .info {
+                font-size: 16px;
+                margin: 10px 0;
+            }
+            .info span {
+                font-weight: bold;
+                color: #333;
+            }
+            .btn-custom {
+                padding: 10px 15px;
+                font-size: 16px;
+                border-radius: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <jsp:include page="headerHome.jsp"></jsp:include>
 
-</div>
+            <!-- Banner -->
+            <section class="page-title bg-1">
+                <div class="overlay"></div>
+                <div class="container text-center">
+                    <h1 class="text-white">Chi Tiết Dịch Vụ</h1>
+                </div>
+            </section>
 
-</body>
+            <!-- Menu Tabs -->
+            <div class="container mt-4">
+                <div class="col-xs-12">
+                    <div class="div_board">
+                        <span class="item active" data-target="introduce-section">Giới thiệu</span>
+                        <span class="item" data-target="experts-section">Chuyên gia</span>
+                        <span class="item" data-target="service-detail">Chi Tiết Dịch Vụ</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mô tả dịch vụ (introduce) -->
+            <div class="container" id="introduce-section" style="display: block;">
+                <div class="blog-content" style="max-width: 800px; margin: 0 auto; text-align: justify; padding: 15px;">
+                    <div class="blog-detail-content">
+                    ${service.introduce}
+                </div>
+            </div>
+        </div>
+
+        <!-- Chi Tiết Dịch Vụ -->
+        <div class="container" id="service-detail" style="display: none;">
+            <h2 class="text-center mb-4">Chi Tiết Dịch Vụ</h2>
+            <div class="text-center mb-3">
+                <img src="getimage?packageID=${service.packageID}" alt="Service Image" class="service-img">
+            </div>
+            <div class="info"><span>Tên Gói:</span> ${service.packageName}</div>
+            <div class="info"><span>Loại Dịch Vụ:</span> ${service.type}</div>
+            <div class="info"><span>Giá:</span> $${service.price}</div>
+            <div class="info"><span>Thời Gian:</span> ${service.duration} phút</div>
+            <div class="text-center mt-3">
+                <a href="appoinment.html" class="btn btn-primary btn-custom">Đặt Dịch Vụ</a>
+                <a href="loadservice" class="btn btn-secondary btn-custom">Quay Lại Danh Sách</a>
+            </div>
+        </div>
+
+
+        <jsp:include page="footer.jsp"></jsp:include>
+
+        <!-- Scripts -->
+        <script src="plugins/jquery/jquery.js"></script>
+        <script src="plugins/bootstrap/js/bootstrap.min.js"></script>
+        <script src="plugins/slick-carousel/slick/slick.min.js"></script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const items = document.querySelectorAll(".item");
+                const sections = document.querySelectorAll(".container[id]");
+
+                items.forEach(item => {
+                    item.addEventListener("click", function () {
+                        items.forEach(i => i.classList.remove("active"));
+                        this.classList.add("active");
+
+                        // Ẩn tất cả các section trước khi hiển thị
+                        sections.forEach(sec => sec.style.display = "none");
+
+                        // Hiển thị section tương ứng với tab được click
+                        const target = this.getAttribute("data-target");
+                        document.getElementById(target).style.display = "block";
+                    });
+                });
+            });
+        </script>
+
+    </body>
 </html>

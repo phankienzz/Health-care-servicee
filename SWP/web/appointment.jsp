@@ -140,14 +140,26 @@
 
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                           
+
                                             <input type="text" name="date" placeholder="Date" class="form-control datetimepicker"  required >
                                         </div>
                                     </div>
 
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <input name="time" type="time" class="form-control" required>
+                                            <select name="time" class="form-control" required>
+                                                <option value="">Select Time</option>
+                                                <option value="08:00">08:00</option>
+                                                <option value="09:00">09:00</option>
+                                                <option value="10:00">10:00</option>
+                                                <option value="11:00">11:00</option>
+                                                <option value="12:00">12:00</option>
+                                                <option value="13:00">13:00</option>
+                                                <option value="14:00">14:00</option>
+                                                <option value="15:00">15:00</option>
+                                                <option value="16:00">16:00</option>
+                                                <option value="17:00">17:00</option>
+                                            </select>
                                         </div>
                                     </div>
 
@@ -167,6 +179,11 @@
                                 <div class="form-group-2 mb-4">
                                     <textarea name="message" class="form-control" rows="6" placeholder="Your Message"></textarea>
                                 </div>
+
+                                <!-- Thêm hi?n th? l?i n?u có -->
+                                <c:if test="${not empty error}">
+                                    <div class="alert alert-danger">${error}</div>
+                                </c:if>
 
                                 <button type="submit" class="btn btn-main btn-round-full">Make Appointment</button>
                             </form>
@@ -290,7 +307,7 @@
         </footer>
 
 
-        
+
         <!-- 
         Essential Scripts
         =====================================-->
@@ -304,5 +321,41 @@
         <script src="assets/js/moment.min.js"></script>
         <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
         <script src="assets/js/app.js"></script>
+
+
+        <script>
+            $(document).ready(function () {
+                // Kh?i t?o datetimepicker
+                $('.datetimepicker').datetimepicker({
+                    format: 'DD/MM/YYYY',
+                    minDate: new Date(), // Không cho ch?n ngày tr??c ngày hi?n t?i
+                    useCurrent: false
+                });
+
+                // Validate form tr??c khi submit
+                $('#appointmentForm').on('submit', function (e) {
+                    var selectedDate = $('.datetimepicker').val();
+                    if (!selectedDate) {
+                        e.preventDefault();
+                        alert('Please select a date');
+                        return false;
+                    }
+
+                    // Parse ngày ???c ch?n
+                    var parts = selectedDate.split('/');
+                    var selected = new Date(parts[2], parts[1] - 1, parts[0]);
+                    var today = new Date();
+                    today.setHours(0, 0, 0, 0); // Reset gi? ?? so sánh chính xác
+
+                    if (selected < today) {
+                        e.preventDefault();
+                        alert('Please select a date from today onwards');
+                        $('.datetimepicker').val('');
+                        return false;
+                    }
+                });
+            });
+        </script>
+
 </body>
 </html>

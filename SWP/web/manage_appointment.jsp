@@ -44,14 +44,7 @@
                                     <label for="patientName">Patient Name</label>
                                     <input type="text" class="form-control" id="patientName" name="patientName" value="${param.patientName}" placeholder="Enter patient name">
                                 </div>
-                                <div class="col-md-2">
-                                    <label for="ageSort">Sort by Age</label>
-                                    <select class="form-control" id="ageSort" name="ageSort">
-                                        <option value="">No Sort</option>
-                                        <option value="asc" ${param.ageSort == 'asc' ? 'selected' : ''}>Ascending</option>
-                                        <option value="desc" ${param.ageSort == 'desc' ? 'selected' : ''}>Descending</option>
-                                    </select>
-                                </div>
+                              
                                 <div class="col-md-2">
                                     <label for="doctorName">Doctor Name</label>
                                     <select class="form-control" id="doctorName" name="doctorName">

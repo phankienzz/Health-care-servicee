@@ -279,7 +279,7 @@ public class MedicalExaminationDAO extends DBContext {
         }
     }
 
-    public List<MedicalExamination> getFilteredExaminations(String patientName, String ageSort, String doctorName,
+    public List<MedicalExamination> getFilteredExaminations(String patientName, String doctorName,
             String appointmentDate, String timeCreatedSort, String status, int page, int pageSize) {
         List<MedicalExamination> medicalExaminationList = new ArrayList<>();
         StringBuilder sql = new StringBuilder(
@@ -294,11 +294,8 @@ public class MedicalExaminationDAO extends DBContext {
                 + "           ROW_NUMBER() OVER ("
         );
 
-        if ("asc".equals(ageSort)) {
-            sql.append("ORDER BY age ASC");
-        } else if ("desc".equals(ageSort)) {
-            sql.append("ORDER BY age DESC");
-        } else if ("latest".equals(timeCreatedSort)) {
+        // Bỏ điều kiện ageSort, chỉ giữ timeCreatedSort
+        if ("latest".equals(timeCreatedSort)) {
             sql.append("ORDER BY m.createdAt DESC");
         } else if ("oldest".equals(timeCreatedSort)) {
             sql.append("ORDER BY m.createdAt ASC");
@@ -384,7 +381,7 @@ public class MedicalExaminationDAO extends DBContext {
         return medicalExaminationList;
     }
 
-    public int getTotalFilteredRecords(String patientName, String ageSort, String doctorName,
+    public int getTotalFilteredRecords(String patientName, String doctorName,
             String appointmentDate, String timeCreatedSort, String status) {
         StringBuilder sql = new StringBuilder(
                 "SELECT COUNT(*) AS total "
@@ -429,7 +426,6 @@ public class MedicalExaminationDAO extends DBContext {
         return 0;
     }
 
-   
     public boolean addMedicalExamination(MedicalExamination exam) {
         String sql = "INSERT INTO MedicalExamination (examinationID, examinationDate, customerID, status, consultantID, notes, createdAt) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -466,7 +462,6 @@ public class MedicalExaminationDAO extends DBContext {
         }
     }
 
-   
     public int getNextExaminationId() {
         String sql = "SELECT MAX(examinationID) FROM MedicalExamination";
         try {
@@ -478,7 +473,7 @@ public class MedicalExaminationDAO extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 1; 
+        return 1;
     }
 
     public int getCustomerIdByName(String fullName) {
@@ -529,7 +524,6 @@ public class MedicalExaminationDAO extends DBContext {
         return customers;
     }
 
-
     public MedicalRecord getMedicalRecordByExamId(int examId) {
         String sql = "SELECT examinationID, diagnosis, treatmentPlan, medicationsPrescribed, "
                 + "FORMAT(createdAt, 'dd/MM/yyyy HH:mm') AS createdAt, notes "
@@ -553,7 +547,6 @@ public class MedicalExaminationDAO extends DBContext {
         }
         return null;
     }
-
 
     public boolean cancelAppointment(int examId) {
         String sql = "UPDATE MedicalExamination SET status = 'Rejected' WHERE examinationID = ? AND status = 'Pending'";
@@ -607,11 +600,7 @@ public class MedicalExaminationDAO extends DBContext {
         return appointments;
     }
 
-    public static void main(String[] args) {
-        MedicalExaminationDAO dao = new MedicalExaminationDAO();
-        List<MedicalExamination> list = dao.getAllMedicalExamination();
-        for (MedicalExamination medicalExamination : list) {
-            System.out.println(medicalExamination.getCustomerId().getFullName()+", " + medicalExamination.getConsultantId().getFullName());
-        }
-    }
+    
+    
+    
 }
