@@ -64,15 +64,19 @@
 
                                 <div class="form-group">
                                     <label>Category</label>
+                                    <c:if test="${empty categoryList}">
+                                        <p style="color: red;">No categories found. Please add some categories.</p>
+                                    </c:if>
                                     <select class="form-control" name="categoryId" required>
                                         <option value="">Select Category</option>
-                                        <option value="1" ${blog.category_id == 1 ? 'selected' : ''}>General Health</option>
-                                        <option value="2" ${blog.category_id == 2 ? 'selected' : ''}>Cardiology</option>
-                                        <option value="3" ${blog.category_id == 3 ? 'selected' : ''}>Pediatrics</option>
-                                        <option value="4" ${blog.category_id == 4 ? 'selected' : ''}>Nutrition</option>
-                                        <option value="5" ${blog.category_id == 5 ? 'selected' : ''}>Mental Health</option>
+                                        <c:forEach items="${categoryList}" var="cat">
+                                            <option value="${cat.category_id}" ${cat.category_id == blog.category_id ? 'selected' : ''}>
+                                                ${cat.name}
+                                            </option>
+                                        </c:forEach>
                                     </select>
                                 </div>
+
 
                                 <div class="form-group">
                                     <label>Blog Images</label>

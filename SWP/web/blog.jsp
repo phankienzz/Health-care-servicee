@@ -38,7 +38,7 @@
                             <h4 class="page-title">Blog</h4>
                         </div>
                         <div class="col-sm-4 col-8 text-right m-b-30">
-                            <a class="btn btn-primary btn-rounded float-right" href="add-blog.jsp">
+                            <a class="btn btn-primary btn-rounded float-right" href="addblog">
                                 <i class="fa fa-plus"></i> Add Blog
                             </a>
                         </div>
@@ -63,7 +63,7 @@
 
 
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                
                     <script>
                         $(document).ready(function () {
                             $("#searchKeyword").keyup(function () {
