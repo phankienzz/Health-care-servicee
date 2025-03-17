@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -44,19 +45,29 @@ public class Manage_appointment extends HttpServlet {
         if (pageStr != null && !pageStr.isEmpty()) {
             page = Integer.parseInt(pageStr);
         }
-
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("staffID".equals(cookie.getName())) {
+                     doctorName = cookie.getValue();
+                    System.out.println("Doctor ID from Cookie: " + doctorName);
+                }
+            }
+        } else {
+            System.out.println("No cookies found!");
+        }
         // Tính tổng số bản ghi để xác định số trang
-        int totalRecords = medicalExaminationDAO.getTotalFilteredRecords(
-                patientName, ageSort, doctorName, appointmentDate, timeCreatedSort, status);
+        int totalRecords = medicalExaminationDAO.getTotalFilteredRecords2(
+                patientName, ageSort,Integer.parseInt(doctorName) , appointmentDate, timeCreatedSort, status);
         int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
 
         // Đảm bảo page không vượt quá giới hạn
         if (page < 1) page = 1;
         if (page > totalPages && totalPages > 0) page = totalPages;
-
+        
         // Lấy danh sách đã lọc với phân trang
-        List<MedicalExamination> list = medicalExaminationDAO.getFilteredExaminations(
-                patientName, ageSort, doctorName, appointmentDate, timeCreatedSort, status, page, pageSize);
+        List<MedicalExamination> list = medicalExaminationDAO.getFilteredExaminations2(
+                patientName, ageSort, Integer.parseInt(doctorName), appointmentDate, timeCreatedSort, status, page, pageSize);
 
         // Lấy danh sách tất cả bác sĩ để hiển thị trong dropdown
         List<Professional> allProfessionals = medicalExaminationDAO.getAllProfessionals();
