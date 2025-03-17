@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 import jakarta.servlet.http.Part;
 
 public class FileUploadHelper {
-    private static final String UPLOAD_DIR = "C:\\User\\Phan Huu Kien\\Desktop\\Health-care-servicee\\SWP\\web\\uploads";  // Thay đổi thư mục phù hợp
+    private static final String UPLOAD_DIR = "C:\\Users\\Phan Huu Kien\\Desktop\\Health-care-servicee\\SWP\\web\\uploads";  // Thay đổi thư mục phù hợp
 
     public static String saveProfilePicture(Part filePart) throws Exception {
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // Lấy tên file
@@ -34,7 +34,10 @@ public class FileUploadHelper {
             while ((bytesRead = fileContent.read(buffer)) != -1) {
                 fos.write(buffer, 0, bytesRead);
             }
+        }catch(Exception e){
+            e.printStackTrace();
         }
         return   fileName; // Trả về đường dẫn tương đối để lưu vào DB
     }
+   
 }

@@ -6,6 +6,7 @@ package CustomerController;
 
 import context.ValidFunction;
 import dao.CustomerDAO;
+import dao.ProfessionalDAO;
 import dao.StaffDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -92,6 +93,7 @@ public class LoginServlet extends HttpServlet {
                 }
             }else if ("staff".equals(userType)) {
             StaffDAO dao = new StaffDAO();
+             ProfessionalDAO dbHelper = new ProfessionalDAO();
             Staff staff = dao.staffLogin(user);
             
             if (staff == null || !valid.checkPassword(password, staff.getPassword()) ) {
@@ -117,6 +119,7 @@ public class LoginServlet extends HttpServlet {
                     response.addCookie(staffEmail);
                     response.addCookie(staffPassword);
                 }
+                session.setAttribute("specializations", dbHelper.getallSpecialization());
                 response.sendRedirect("roleStaff");
             }
         } else {

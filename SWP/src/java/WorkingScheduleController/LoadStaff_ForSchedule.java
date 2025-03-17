@@ -11,6 +11,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Collections;
 import model.WorkingSchedule;
 
 @WebServlet(name = "LoadStaff_ForSchedule", urlPatterns = {"/loadstaffforschedule"})
@@ -46,31 +48,23 @@ public class LoadStaff_ForSchedule extends HttpServlet {
         String shiftFilter = request.getParameter("shiftFilter");
         String searchType = request.getParameter("searchType");
 
-        // Nếu searchType null, gán giá trị mặc định
-        if (searchType == null) {
-            searchType = "";
-        }
-        if (dayFilter == null) {
-            dayFilter = null;
-        }
-
         List<WorkingSchedule> professionalList;
 
         switch (searchType) {
             case "name":
                 professionalList = (searchName != null && !searchName.trim().isEmpty())
                         ? workingDAO.searchSchedulesByName(val.normalizeName(searchName))
-                        : workingDAO.getAllSchedules();
+                        : workingDAO.getListProfessionalSchedules();
                 break;
             case "date":
                 professionalList = (workDate != null && !workDate.trim().isEmpty())
                         ? workingDAO.getSchedulesByDate(workDate, shiftFilter)
-                        : workingDAO.getAllSchedules();
+                        : workingDAO.getListProfessionalSchedules();
                 break;
             case "dayandshift":
                 professionalList = (dayFilter != null && shiftFilter != null)
                         ? workingDAO.getSchedulesByShiftAndDay(shiftFilter, Integer.parseInt(dayFilter))
-                        : workingDAO.getAllSchedules();
+                        : workingDAO.getListProfessionalSchedules();
                 break;
             default:
                 // Nếu không có tìm kiếm, lấy tất cả lịch làm việc
@@ -84,11 +78,20 @@ public class LoadStaff_ForSchedule extends HttpServlet {
     private void paginateAndForward(HttpServletRequest request, HttpServletResponse response, List<WorkingSchedule> fullList)
             throws ServletException, IOException {
         // Lấy danh sách các professionalID duy nhất và sắp xếp tăng dần
-        List<Integer> doctorIDs = fullList.stream()
-                .map(WorkingSchedule::getProfessionalID)
-                .distinct()
-                .sorted()
-                .collect(Collectors.toList());
+//        List<Integer> doctorIDs = fullList.stream()
+//        .map(WorkingSchedule::getProfessionalID) // Lấy professionalID
+//        .distinct() // Loại bỏ trùng lặp
+//        .sorted() // Sắp xếp tăng dần
+//        .collect(Collectors.toList()); // Chuyển về List
+
+        List<Integer> doctorIDs = new ArrayList<>();
+        for (WorkingSchedule schedule : fullList) {
+            int id = schedule.getProfessionalID();
+            if (!doctorIDs.contains(id)) { // Kiểm tra trùng lặp
+                doctorIDs.add(id);
+            }
+        }
+        Collections.sort(doctorIDs); // Sắp xếp tăng dần
 
         int totalDoctors = doctorIDs.size();
         int totalPages = (int) Math.ceil((double) totalDoctors / DOCTORS_PER_PAGE);
@@ -124,10 +127,17 @@ public class LoadStaff_ForSchedule extends HttpServlet {
         List<Integer> pageDoctorIDs = doctorIDs.subList(startIndex, endIndex);
 
         // Lọc và sắp xếp danh sách lịch làm việc
-        List<WorkingSchedule> paginatedList = fullList.stream()
-                .filter(schedule -> pageDoctorIDs.contains(schedule.getProfessionalID()))
-                .sorted(Comparator.comparing(WorkingSchedule::getProfessionalID))
-                .collect(Collectors.toList());
+//        List<WorkingSchedule> paginatedList = fullList.stream()
+//                .filter(schedule -> pageDoctorIDs.contains(schedule.getProfessionalID()))
+//                .sorted(Comparator.comparing(WorkingSchedule::getProfessionalID))
+//                .collect(Collectors.toList()); 
+        List<WorkingSchedule> paginatedList = new ArrayList<>();
+        for (WorkingSchedule schedule : fullList) {
+            if (pageDoctorIDs.contains(schedule.getProfessionalID())) { // Kiểm tra ID có trong danh sách trang hiện tại không
+                paginatedList.add(schedule);
+            }
+        }
+        paginatedList.sort(Comparator.comparing(WorkingSchedule::getProfessionalID)); // Sắp xếp danh sách
 
         // Gửi dữ liệu về JSP
         request.setAttribute("professionalList", paginatedList);

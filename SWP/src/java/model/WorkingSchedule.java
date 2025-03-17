@@ -124,8 +124,6 @@ public class WorkingSchedule {
     // Phương thức chuyển đổi dayOfWeek thành tên ngày
     public String getDayName() {
         switch (dayOfWeek) {
-            case 1:
-                return "Chủ nhật";
             case 2:
                 return "Thứ hai";
             case 3:
@@ -138,6 +136,8 @@ public class WorkingSchedule {
                 return "Thứ sáu";
             case 7:
                 return "Thứ bảy";
+            case 8:
+                return "Chủ nhật";
             default:
                 return "Không xác định";
         }

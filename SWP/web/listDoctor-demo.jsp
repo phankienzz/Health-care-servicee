@@ -9,209 +9,97 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <title>Preclinic - Medical & Hospital - Bootstrap 4 Admin Template</title>
-        <style>
-            body {
-                background-color: #f0f8ff;
-                font-family: Arial, sans-serif;
-            }
-            .container {
-                max-width: 900px;
-                background: #ffffff;
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            }
-            h2 {
-                color: #007bff;
-                text-align: center;
-                margin-bottom: 20px;
-            }
-            .table {
-                margin-top: 20px;
-                border: 1px solid #ddd;
-            }
-            .table th {
-                background-color: #007bff;
-                color: white;
-                text-align: center;
-            }
-            .table tbody tr:nth-child(odd) {
-                background-color: #e3f2fd;
-            }
-            .doctor-header {
-                background-color: #0056b3;
-                color: white;
-                font-size: 18px;
-                font-weight: bold;
-                padding: 10px;
-                margin-top: 20px;
-                border-radius: 5px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 10px 15px;
-            }
-            .manage-btn {
-                background-color: #28a745;
-                color: white;
-                border: none;
-                padding: 5px 10px;
-                border-radius: 5px;
-                cursor: pointer;
-                font-size: 14px;
-            }
-            .manage-btn:hover {
-                background-color: #218838;
-            }
-            .search-container {
-                margin-bottom: 15px;
-                background-color: #e9ecef;
-                padding: 15px;
-                border-radius: 5px;
-            }
-            .filter-container {
-                margin-bottom: 20px;
-                background-color: #f8f9fa;
-                padding: 15px;
-                border-radius: 5px;
-                border-top: 3px solid #6c757d;
-            }
-            .search-btn {
-                background-color: #007bff;
-                color: white;
-            }
-            .search-btn:hover {
-                background-color: #0069d9;
-            }
-            .filter-btn {
-                background-color: #6c757d;
-                color: white;
-            }
-            .filter-btn:hover {
-                background-color: #5a6268;
-            }
-            .reset-btn {
-                background-color: #dc3545;
-                color: white;
-                margin-left: 10px;
-            }
-            .reset-btn:hover {
-                background-color: #c82333;
-            }
-            .control-label {
-                font-weight: bold;
-            }
-            .btn-sm {
-                padding: 0.25rem 0.5rem;
-                font-size: 0.875rem;
-                border-radius: 0.2rem;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="assets/css/css_list_doctor.css">
     </head>
     <body>
         <div class="main-wrapper">
             <jsp:include page="headerStaff.jsp"></jsp:include>
             <jsp:include page="sidebar.jsp"></jsp:include>
-                <div class="container mt-5">
-                    <h2>Danh Sách Lịch Làm Việc</h2>
+            <div class="container mt-5">
+                <h2>Danh Sách Lịch Làm Việc</h2>
 
-                    <!-- Search Container -->
-                    <div class="search-container">
-                        <form action="loadstaffforschedule" method="POST" class="row g-3">
+                <!-- Search by Name (Top-left corner) -->
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <form action="loadstaffforschedule" method="POST" class="d-flex align-items-end gap-2">
                             <input type="hidden" name="searchType" value="name">
-
-                            <div class="col-md-8">
+                            <div class="flex-grow-1">
                                 <label for="doctorName" class="form-label control-label">
                                     <i class="fas fa-search"></i> Tìm kiếm theo tên
                                 </label>
                                 <input type="text" class="form-control" id="doctorName" name="searchName" placeholder="Nhập tên bác sĩ" value="${param.searchName}">
-                        </div>
-
-                        <div class="col-md-4 d-flex align-items-end gap-2">
-                            <button type="submit" class="btn search-btn w-50">
-                                <i class="fas fa-search"></i> Tìm kiếm
+                            </div>
+                            <button type="submit" class="btn search-btn">
+                                <i class="fas fa-search"></i>
                             </button>
-                            <a href="loadstaffforschedule" class="btn reset-btn w-50">
-                                <i class="fas fa-sync-alt"></i> Làm mới
+                            <a href="loadstaffforschedule" class="btn reset-btn">
+                                <i class="fas fa-sync-alt"></i>
                             </a>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
 
-                <!-- Search by Date and shift-->
-                <div class="search-container">
-                    <form action="loadstaffforschedule" method="POST" class="row g-3">
-                        <input type="hidden" name="searchType" value="date">
+                <!-- Search by Date and Shift + Filter by Day and Shift -->
+                <div class="row mb-4 g-3">
+                    <!-- Search by Date and Shift -->
+                    <div class="col-md-6">
+                        <form action="loadstaffforschedule" method="POST" class="row g-2 align-items-end">
+                            <input type="hidden" name="searchType" value="date">
+                            <div class="col-5">
+                                <label for="workDate" class="form-label control-label">Tìm kiếm theo ngày</label>
+                                <input type="date" class="form-control" id="workDate" name="workDate" required="" value="${param.workDate}">
+                            </div>
+                            <div class="col-5">
+                                <label for="shift" class="form-label">Ca trong ngày</label>
+                                <select class="form-select" id="shift" name="shiftFilter">
+                                    <option value="">Tất cả</option>
+                                    <option value="MORNING" ${param.shiftFilter == 'MORNING' ? 'selected' : ''}>MORNING</option>
+                                    <option value="AFTERNOON" ${param.shiftFilter == 'AFTERNOON' ? 'selected' : ''}>AFTERNOON</option>
+                                    <option value="EVENING" ${param.shiftFilter == 'EVENING' ? 'selected' : ''}>EVENING</option>
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <button type="submit" class="btn search-btn w-100">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
 
-                        <div class="col-md-4">
-                            <label for="workDate" class="form-label control-label">Tìm kiếm theo ngày</label>
-                            <input type="date" class="form-control" id="workDate" name="workDate" required="" value="${param.workDate}">                       
-                        </div>
-
-                        <div class="col-md-4">
-                            <label for="shift" class="form-label">Ca trong ngày</label>
-                            <select class="form-select" id="shift" name="shiftFilter">
-                                <option value="">Tất cả</option>
-                                <option value="MORNING" ${param.shiftFilter == 'MORNING' ? 'selected' : ''}>MORNING</option>
-                                <option value="AFTERNOON" ${param.shiftFilter == 'AFTERNOON' ? 'selected' : ''}>AFTERNOON</option>
-                                <option value="EVENING" ${param.shiftFilter == 'EVENING' ? 'selected' : ''}>EVENING</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-4 d-flex align-items-end">
-                            <button type="submit" class="btn search-btn w-100">
-                                <i class="fas fa-search"></i> Tìm kiếm
-                            </button>
-                        </div>
-                    </form>
+                    <!-- Filter by Day and Shift -->
+                    <div class="col-md-6">
+                        <form action="loadstaffforschedule" method="POST" class="row g-2 align-items-end">
+                            <input type="hidden" name="searchType" value="dayandshift">
+                            <div class="col-5">
+                                <label for="dayName" class="form-label">Ngày trong tuần</label>
+                                <select class="form-select" id="dayName" name="dayFilter" required="">
+                                    <option value="">Chọn ngày</option>
+                                    <option value="2" ${param.dayFilter == '2' ? 'selected' : ''}>Monday</option>
+                                    <option value="3" ${param.dayFilter == '3' ? 'selected' : ''}>Tuesday</option>
+                                    <option value="4" ${param.dayFilter == '4' ? 'selected' : ''}>Wednesday</option>
+                                    <option value="5" ${param.dayFilter == '5' ? 'selected' : ''}>Thursday</option>
+                                    <option value="6" ${param.dayFilter == '6' ? 'selected' : ''}>Friday</option>
+                                    <option value="7" ${param.dayFilter == '7' ? 'selected' : ''}>Saturday</option>
+                                    <option value="8" ${param.dayFilter == '8' ? 'selected' : ''}>Sunday</option>
+                                </select>
+                            </div>
+                            <div class="col-5">
+                                <label for="shift" class="form-label">Ca trong ngày</label>
+                                <select class="form-select" id="shift" name="shiftFilter">
+                                    <option value="">Tất cả</option>
+                                    <option value="MORNING" ${param.shiftFilter == 'MORNING' ? 'selected' : ''}>MORNING</option>
+                                    <option value="AFTERNOON" ${param.shiftFilter == 'AFTERNOON' ? 'selected' : ''}>AFTERNOON</option>
+                                    <option value="EVENING" ${param.shiftFilter == 'EVENING' ? 'selected' : ''}>EVENING</option>
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <button type="submit" class="btn filter-btn w-100">
+                                    <i class="fas fa-filter"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-
-                <!-- Filter Container -->
-                <div class="filter-container">
-                    <form action="loadstaffforschedule" method="POST" class="row g-3">
-                        <input type="hidden" name="searchType" value="dayandshift">
-
-                        <div class="col-12">
-                            <label class="form-label control-label">
-                                <i class="fas fa-filter"></i> Lọc lịch làm việc
-                            </label>
-                        </div>
-
-                        <div class="col-md-5">
-                            <label for="dayName" class="form-label">Ngày trong tuần</label>
-                            <select class="form-select" id="dayName" name="dayFilter" required="">
-                                <option value="">Chọn ngày</option>
-                                <option value="2" ${param.dayFilter == '2' ? 'selected' : ''}>Monday</option>
-                                <option value="3" ${param.dayFilter == '3' ? 'selected' : ''}>Tuesday</option>
-                                <option value="4" ${param.dayFilter == '4' ? 'selected' : ''}>Wednesday</option>
-                                <option value="5" ${param.dayFilter == '5' ? 'selected' : ''}>Thursday</option>
-                                <option value="6" ${param.dayFilter == '6' ? 'selected' : ''}>Friday</option>
-                                <option value="7" ${param.dayFilter == '7' ? 'selected' : ''}>Saturday</option>
-                                <option value="1" ${param.dayFilter == '1' ? 'selected' : ''}>Sunday</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label for="shift" class="form-label">Ca trong ngày</label>
-                            <select class="form-select" id="shift" name="shiftFilter">
-                                <option value="">Tất cả</option>
-                                <option value="MORNING" ${param.shiftFilter == 'MORNING' ? 'selected' : ''}>MORNING</option>
-                                <option value="AFTERNOON" ${param.shiftFilter == 'AFTERNOON' ? 'selected' : ''}>AFTERNOON</option>
-                                <option value="EVENING" ${param.shiftFilter == 'EVENING' ? 'selected' : ''}>EVENING</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-3 d-flex align-items-end">
-                            <button type="submit" class="btn filter-btn w-100">
-                                <i class="fas fa-filter"></i> Lọc
-                            </button>
-                        </div>
-
-                        <!-- Hidden input để giữ lại tên tìm kiếm khi lọc -->
-                        <input type="hidden" name="searchName" value="${param.searchName}">
-                    </form>
-                </div>
-
 
                 <c:set var="prevID" value="-1" />
                 <c:forEach var="schedule" items="${professionalList}">
@@ -246,7 +134,18 @@
                                 <td>${schedule.startTime}</td>
                                 <td>${schedule.endTime}</td>
                                 <td>
-                                    ${schedule.status} 
+                                    <c:choose>
+                                        <c:when test="${schedule.status == 'On'}">
+                                            <a href="saveSchedule?update=statusUpdate&professionalID=${schedule.professionalID}&dayOfWeek=${schedule.dayOfWeek}&shift=${schedule.shift}&status=On" 
+                                               class="btn btn-success btn-sm" 
+                                               onclick="return confirm('Bạn có chắc chắn muốn tắt trạng thái này không?')">On</a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="saveSchedule?update=statusUpdate&professionalID=${schedule.professionalID}&dayOfWeek=${schedule.dayOfWeek}&shift=${schedule.shift}&status=Off" 
+                                               class="btn btn-danger btn-sm" 
+                                               onclick="return confirm('Bạn có chắc chắn muốn bật trạng thái này không?')">Off</a>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </td>
                             </tr>
                             <c:set var="prevID" value="${schedule.professionalID}" />
@@ -277,7 +176,7 @@
                                     <input type="hidden" name="workDate" value="${param.workDate}">
                                     <input type="hidden" name="dayFilter" value="${param.dayFilter}">
                                     <input type="hidden" name="shiftFilter" value="${param.shiftFilter}">
-                                    <button type="submit" class="page-link">&laquo; Trước</button>
+                                    <button type="submit" class="page-link">« Trước</button>
                                 </form>
                             </li>
                         </c:if>
@@ -305,7 +204,7 @@
                                     <input type="hidden" name="workDate" value="${param.workDate}">
                                     <input type="hidden" name="dayFilter" value="${param.dayFilter}">
                                     <input type="hidden" name="shiftFilter" value="${param.shiftFilter}">
-                                    <button type="submit" class="page-link">Sau &raquo;</button>
+                                    <button type="submit" class="page-link">Sau »</button>
                                 </form>
                             </li>
                         </c:if>
