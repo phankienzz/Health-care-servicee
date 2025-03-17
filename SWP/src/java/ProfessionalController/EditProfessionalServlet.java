@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package ProfessionalController;
 
 import dao.ProfessionalDAO;
@@ -142,7 +138,7 @@ if (roleID == -1) {
         if (success) {
              session.setAttribute("specializations", professionalDAO.getallSpecialization());
             session.setAttribute("professionals", list);
-            response.sendRedirect("manage-doctor.jsp");
+            request.getRequestDispatcher("manage-doctor.jsp").forward(request, response);
         } else {
             request.setAttribute("errorMessage", "Update failed!");
             request.getRequestDispatcher("edit-doctor.jsp").forward(request, response);
@@ -185,3 +181,4 @@ private boolean isValidImageFile(String fileName) {
     }// </editor-fold>
 
 }
+

@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import model.Doctor;
 import model.Professional;
 import model.Staff;
 
@@ -294,6 +295,35 @@ public class ProfessionalDAO {
                  rs.getInt("roleId")
         );
     }
+     public List<Doctor> getAvailableDoctors(Connection conn, String date, String time) throws SQLException {
+        List<Doctor> doctors = new ArrayList<>();
+        String sql = "SELECT p.professionalID, s.fullName, p.specialization, p.profilePicture "
+                + "FROM Professional p "
+                + "JOIN Staff s ON p.staffID = s.staffID "
+                + "WHERE p.status = 'Active' "
+                + "AND NOT EXISTS ( "
+                + "    SELECT 1 FROM WorkingSchedule ws "
+                + "    WHERE ws.professionalID = p.professionalID "
+                + "    AND ws.dayOfWeek = DATEPART(WEEKDAY, ?) "
+                + "    AND ? BETWEEN ws.startTime AND ws.endTime "
+                + ")";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, date);
+            stmt.setString(2, time);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    doctors.add(new Doctor(
+                            rs.getInt("professionalID"),
+                            rs.getString("fullName"),
+                            rs.getString("specialization"),
+                            rs.getString("profilePicture")
+                    ));
+                }
+            }
+        }
+        return doctors;
+    }
 
     
     public List<Professional> getAllDoctors() {
@@ -346,28 +376,7 @@ public class ProfessionalDAO {
     ProfessionalDAO dao = new ProfessionalDAO();
     
     // Kiểm tra kết nối CSDL trước khi truy vấn
-    if (dao.conn == null) {
-        System.out.println("❌ Lỗi kết nối đến CSDL! Vui lòng kiểm tra lại DBContext.");
-        return;
-    } else {
-        System.out.println("✅ Kết nối CSDL thành công!");
-    }
-
-    // Lấy danh sách bác sĩ từ database
-    List<Professional> doctors = dao.getAllDoctors();
-
-    // Kiểm tra danh sách bác sĩ có dữ liệu hay không
-    if (doctors == null || doctors.isEmpty()) {
-        System.out.println("⚠️ Không tìm thấy bác sĩ nào! Hãy kiểm tra dữ liệu trong bảng Professional.");
-    } else {
-        System.out.println("✅ Danh sách bác sĩ:");
-        for (Professional doc : doctors) {
-            System.out.println("🆔 ID: " + doc.getStaffID()+ 
-                               " | 👨‍⚕️ Tên: " + doc.getFullName() + 
-                               " | 📞 SĐT: " + doc.getPhone() + 
-                               " | 🎓 Chuyên môn: " + doc.getSpecialization());
-        }
-    }
+       System.out.println(dao.getProfessionalbyID(18).getProfilePicture());
 }
 
 }

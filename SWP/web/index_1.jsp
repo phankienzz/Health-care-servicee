@@ -647,7 +647,7 @@
                     <img src="images/service/download.png" alt="Zalo">
                 </a>
                 <a href="https://www.messenger.com/t/61573434115221/?messaging_source=source%3Apages%3Amessage_shortlink&source_id=1441792&recurring_notification=0" class="icon">
-                    <img src="images/service/facebook.png" alt="Messenger">
+                    <img src="images/service/4a4c224a0c6667178bebdfa3b6bdb92b.jpg" alt="Messenger">
                 </a>
             </div>
             <!-- footer Start -->
