@@ -81,7 +81,7 @@ public class roleStaff extends HttpServlet {
                 return;
             }
             if(p.getPermissionID() == 18){
-                response.sendRedirect("loadmange");
+                response.sendRedirect("loadmanage");
                 return;
             }
             

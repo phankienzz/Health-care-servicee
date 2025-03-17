@@ -75,7 +75,7 @@
 
                                             <h2 class="mt-3 mb-3"><a href="detailNews?newsID=${news.post_id}">${news.title}</a></h2>
 
-                                            <p class="mb-4">${news.detail}</p>
+                                            <p class="mb-4">${news.content}</p>
 
                                             <a href="detailNews?newsID=${news.post_id}" target="_blank" class="btn btn-main btn-icon btn-round-full">Read More <i class="icofont-simple-right ml-2  "></i></a>
                                         </div>

@@ -127,6 +127,10 @@
         <servlet-name>Appointment</servlet-name>
         <servlet-class>Appointment.Appointment</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ListAppointment</servlet-name>
+        <servlet-class>Appointment.ListAppointment</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RequestPassword</servlet-name>
         <url-pattern>/requestPassword</url-pattern>
@@ -146,6 +150,10 @@
     <servlet-mapping>
         <servlet-name>Appointment</servlet-name>
         <url-pattern>/appointment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListAppointment</servlet-name>
+        <url-pattern>/ListAppointment</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>home</welcome-file>
@@ -186,4 +194,54 @@
         <servlet-name>EditProfileServlet</servlet-name>
         <url-pattern>/editprofile</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>AddProfessionalServlet</servlet-name>
+        <servlet-class>ProfessionalController.AddProfessionalServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddProfessionalServlet</servlet-name>
+        <url-pattern>/AddProfessionalServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>DeleteProfessionalServlet</servlet-name>
+        <servlet-class>ProfessionalController.DeleteProfessionalServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteProfessionalServlet</servlet-name>
+        <url-pattern>/DeleteProfessionalServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>EditProfessionalServlet</servlet-name>
+        <servlet-class>ProfessionalController.EditProfessionalServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditProfessionalServlet</servlet-name>
+        <url-pattern>/EditProfessionalServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ForgotPassword</servlet-name>
+        <servlet-class>controller.ForgotPassword</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ForgotPassword</servlet-name>
+        <url-pattern>/forgotpassword</url-pattern>
+    </servlet-mapping>
+    
+  <servlet>
+        <servlet-name>RegisterGoogleServlet</servlet-name>
+        <servlet-class>controller.RegisterGoogleServlet</servlet-class>
+    </servlet>
+        <servlet-mapping>
+            <servlet-name>RegisterGoogleServlet</servlet-name>
+            <url-pattern>/RegisterGoogleServlet</url-pattern>
+        </servlet-mapping>
+     <servlet>
+        <servlet-name>GoogleLoginServlet</servlet-name>
+        <servlet-class>controller.GoogleLoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GoogleLoginServlet</servlet-name>
+        <url-pattern>/GoogleLoginServlet</url-pattern>
+    </servlet-mapping>
+    
 </web-app>

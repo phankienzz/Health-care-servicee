@@ -400,12 +400,8 @@ public class NewsDAO extends DBContext {
     }
 
     public void deleteBlogPost(int postId) throws SQLException {
-        // Step 1: Delete all StaffReplies related to the comments of the post
-        String deleteStaffRepliesSql = "DELETE FROM dbo.StaffReplies WHERE comment_id IN (SELECT comment_id FROM dbo.Comments WHERE post_id = ?)";
-        try (PreparedStatement deleteStaffRepliesStmt = connection.prepareStatement(deleteStaffRepliesSql)) {
-            deleteStaffRepliesStmt.setInt(1, postId);
-            deleteStaffRepliesStmt.executeUpdate();
-        }
+        
+       
 
         // Step 2: Delete all comments related to the post
         String deleteCommentsSql = "DELETE FROM dbo.Comments WHERE post_id = ?";

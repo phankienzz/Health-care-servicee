@@ -18,9 +18,9 @@
     </head>
     <body>
         <div class="main-wrapper">
-            <!-- Header -->
-            <jsp:include page="headerStaff.jsp"></jsp:include>
+             <jsp:include page="headerStaff.jsp"></jsp:include>
             <jsp:include page="sidebar.jsp"></jsp:include>
+
             <!-- Page Content -->
             <div class="page-wrapper">
                 <div class="content">

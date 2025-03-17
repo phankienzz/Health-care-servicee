@@ -54,7 +54,31 @@
             .pagination li i {
                 font-size: 16px;
                 padding-top: 6px
+                    
             }
+            .btn-facebook {
+    background-color: #3b5998;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* Nút Zalo */
+.btn-zalo {
+    background-color: #4CAF50;  /* Màu Zalo */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* Thêm hiệu ứng hover */
+.btn-facebook:hover, .btn-zalo:hover {
+    opacity: 0.8;
+}
         </style>
     </head>
 
@@ -353,6 +377,10 @@
                                         </div>
                                     </a>
                                 </li>
+                                
+                                <a href="https://zalo.me/yournumber" target="_blank" class="btn btn-zalo">
+    <i class="fab fa-zalo"></i> Quản lý Zalo
+</a>
                                 <li>
                                     <a href="chat.html">
                                         <div class="list-item">

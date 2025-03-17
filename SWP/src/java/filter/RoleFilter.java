@@ -112,6 +112,12 @@ public class RoleFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession();
+        String requestURI = req.getRequestURI();
+        if (requestURI.contains("/GoogleLoginServlet")) {
+            // Bỏ qua bộ lọc nếu yêu cầu là đăng nhập Google
+            chain.doFilter(request, response);
+            return;
+        }
         if (session.getAttribute("staffAccount") == null && session.getAttribute("customerAccount") == null) {
             res.sendRedirect("login.jsp");
         }
@@ -119,6 +125,7 @@ public class RoleFilter implements Filter {
             res.sendRedirect("errorPermission.jsp");
 
         }
+        
         if (session.getAttribute("staffAccount") != null) {
             String uri = req.getServletPath();
             Staff s = (Staff) session.getAttribute("staffAccount");

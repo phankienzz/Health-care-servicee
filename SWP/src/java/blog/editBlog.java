@@ -1,5 +1,6 @@
 package blog;
 
+import dao.CategoryDAO;
 import dao.NewsDAO;
 import model.News;
 import jakarta.servlet.ServletException;
@@ -12,6 +13,8 @@ import jakarta.servlet.http.Part;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import model.Category;
 
 @WebServlet(name = "editBlog", urlPatterns = {"/editblog"})
 @MultipartConfig(
@@ -40,7 +43,11 @@ public class editBlog extends HttpServlet {
                 return;
             }
 
+            CategoryDAO categoryDAO = new CategoryDAO();
+            List<Category> categoryList = categoryDAO.getAllCategories();
+
             request.setAttribute("blog", blog);
+            request.setAttribute("categoryList", categoryList);
             request.getRequestDispatcher("edit-blog.jsp").forward(request, response);
 
         } catch (NumberFormatException e) {
@@ -66,15 +73,15 @@ public class editBlog extends HttpServlet {
             String categoryIdStr = request.getParameter("categoryId");
 
             // Validate inputs
-            if (title == null || title.trim().isEmpty() ||
-                description == null || description.trim().isEmpty() ||
-                detail == null || detail.trim().isEmpty() ||
-                statusStr == null || categoryIdStr == null || categoryIdStr.trim().isEmpty()) {
+            if (title == null || title.trim().isEmpty()
+                    || description == null || description.trim().isEmpty()
+                    || detail == null || detail.trim().isEmpty()
+                    || statusStr == null || categoryIdStr == null || categoryIdStr.trim().isEmpty()) {
                 response.sendRedirect("edit-blog.jsp?error=All+fields+are+required");
                 return;
             }
 
-            int status = Integer.parseInt(statusStr); 
+            int status = Integer.parseInt(statusStr);
             int categoryId = Integer.parseInt(categoryIdStr);
 
             title = title.trim();
@@ -86,8 +93,8 @@ public class editBlog extends HttpServlet {
 
             if (filePart != null && filePart.getSize() > 0) {
                 String contentType = filePart.getContentType();
-                if (!contentType.equals("image/png") && !contentType.equals("image/jpeg") &&
-                    !contentType.equals("image/gif") && !contentType.equals("image/jpg")) {
+                if (!contentType.equals("image/png") && !contentType.equals("image/jpeg")
+                        && !contentType.equals("image/gif") && !contentType.equals("image/jpg")) {
                     response.sendRedirect("edit-blog.jsp?error=Only+PNG,+JPEG,+JPG,+and+GIF+files+are+allowed");
                     return;
                 }
