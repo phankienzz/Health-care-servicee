@@ -62,17 +62,14 @@ public class AddFeedback extends HttpServlet {
         FeedbackDAO dao = new FeedbackDAO();
         boolean isAdded = dao.addFeedback(invoiceID, rating, comment);
         if (isAdded) {
-            response.getWriter().write("Feedback đã được gửi thành công!");
+            request.setAttribute("msg", "Cảm ơn bạn đã để lại phản hồi.");
         } else {
-            response.getWriter().write("Có lỗi xảy ra khi gửi Feedback.");
+            request.setAttribute("msg", "Có lỗi xảy ra khi gửi Feedback. Vui lòng thử lại.");
         }
+        request.getRequestDispatcher("feedback.jsp").forward(request, response);
+
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

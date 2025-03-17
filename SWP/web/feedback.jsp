@@ -159,7 +159,15 @@
                 </div>
             </section>
             <!-- contact form start -->
-
+        <c:if test="${msg != null}">
+            <section class="section pb-0 feed">
+                <div class="container"> 
+                    <h2>${msg}</h2>
+                    <button class="back-home" onclick="goHome()">Trở về trang chủ</button>
+                </div>
+            </section>
+        </c:if>
+        <c:if test="${msg == null}">
             <section class="section pb-0 feed">
                 <div class="container"> 
                     <h2>Cảm ơn bạn đã sử dụng dịch vụ!</h2>
@@ -198,33 +206,35 @@
                     </div>
                 </div>
             </section>
+        </c:if>
 
-            <section class="feedback-section section">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-8 col-md-10 col-sm-12 mb-4">
-                            <div class="section-title text-center">
-                                <h2 class="text-md mb-2">Customer Feedback</h2>
-                                <div class="divider mx-auto my-4"></div>
-                                <p class="mb-5">See what our customers are saying about us!</p>
-                            </div>
-                        </div>
-                    </div>
 
-                <c:forEach var="f" items="${listFeed}">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-8 col-md-10 col-sm-12 mb-4">
-                            <div class="feedback-card p-4 text-center shadow rounded" style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal;">
-                                <!--<img src="avatar3.jpg" alt="Mark Wilson" class="rounded-circle mb-3" width="100" height="100">-->
-                                <h5 class="mt-3">${f.invoice.examinationID.customerId.fullName}</h5>
-                                <p class="feedback-text" style="font-size: 20px; line-height: 1.6; word-break: break-word;">"${f.comment}"</p>
-                                <strong>Rate: ${f.rating}★</strong>
+        <!--            <section class="feedback-section section">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8 col-md-10 col-sm-12 mb-4">
+                                    <div class="section-title text-center">
+                                        <h2 class="text-md mb-2">Customer Feedback</h2>
+                                        <div class="divider mx-auto my-4"></div>
+                                        <p class="mb-5">See what our customers are saying about us!</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+        
+        <%--<c:forEach var="f" items="${listFeed}">--%>
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10 col-sm-12 mb-4">
+                    <div class="feedback-card p-4 text-center shadow rounded" style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal;">
+                        <img src="avatar3.jpg" alt="Mark Wilson" class="rounded-circle mb-3" width="100" height="100">
+                        <h5 class="mt-3">${f.invoice.examinationID.customerId.fullName}</h5>
+                        <p class="feedback-text" style="font-size: 20px; line-height: 1.6; word-break: break-word;">"${f.comment}"</p>
+                        <strong>Rate: ${f.rating}★</strong>
                     </div>
-                </c:forEach>
+                </div>
             </div>
-        </section>
+        <%--</c:forEach>--%>
+    </div>
+</section>-->
         <!-- footer Start -->
         <jsp:include page="footer.jsp"></jsp:include>
 
