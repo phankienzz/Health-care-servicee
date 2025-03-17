@@ -52,50 +52,46 @@ public class ProfessionalDAO {
     }
 
     // CREATE Professional
-   public boolean addProfessional(Professional professional) {
-    String sql = "INSERT INTO Staff (fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture)\n"
-            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
-            + "INSERT INTO Professional (specialization, officeHours, qualification, biography, profilePicture, status, createdAt, staffID)\n"
-            + "VALUES (?, ?, ?, ?, ?, ?, GETDATE(), SCOPE_IDENTITY());";
-    
-    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-        // Lấy roleID từ roleName
-        int roleID = getRoleIDByName(professional.getSpecialization());
+    public boolean addProfessional(Professional professional) {
+        String sql = "INSERT INTO Staff (fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture)\n"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
+                + "INSERT INTO Professional (specialization, officeHours, qualification, biography, profilePicture, status, createdAt, staffID)\n"
+                + "VALUES (?, ?, ?, ?, ?, ?, GETDATE(), SCOPE_IDENTITY());";
 
-        if (roleID == -1) {
-            System.out.println("Không tìm thấy Role ID cho " + professional.getSpecialization());
-            return false;
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            // Lấy roleID từ roleName
+            int roleID = getRoleIDByName(professional.getSpecialization());
+
+            if (roleID == -1) {
+                System.out.println("Không tìm thấy Role ID cho " + professional.getSpecialization());
+                return false;
+            }
+
+            stmt.setString(1, professional.getFullName());
+            stmt.setString(2, professional.getEmail());
+            stmt.setString(3, professional.getPassword());
+            stmt.setString(4, professional.getPhone());
+            stmt.setString(5, professional.getGender());
+            stmt.setDate(6, convertStringToSqlDate(professional.getDateOfBirth()));
+            stmt.setString(7, professional.getAddress());
+            stmt.setDate(8, convertStringToSqlDate(professional.getHireDate()));
+            stmt.setInt(9, roleID); // Gán roleID từ bảng Role
+            stmt.setString(10, professional.getStatus());
+            stmt.setBytes(11, professional.getProfilePicture().getBytes());
+            stmt.setString(12, professional.getSpecialization());
+            stmt.setString(13, professional.getOfficeHours());
+            stmt.setString(14, professional.getQualification());
+            stmt.setString(15, professional.getBiography());
+            stmt.setBytes(16, professional.getProfilePicture().getBytes());
+            stmt.setString(17, professional.getStatus());
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
-        stmt.setString(1, professional.getFullName());
-        stmt.setString(2, professional.getEmail());
-        stmt.setString(3, professional.getPassword());
-        stmt.setString(4, professional.getPhone());
-        stmt.setString(5, professional.getGender());
-        stmt.setDate(6, convertStringToSqlDate(professional.getDateOfBirth()));
-        stmt.setString(7, professional.getAddress());
-        stmt.setDate(8, convertStringToSqlDate(professional.getHireDate()));
-        stmt.setInt(9, roleID); // Gán roleID từ bảng Role
-        stmt.setString(10, professional.getStatus());
-        stmt.setBytes(11, professional.getProfilePicture().getBytes());
-        stmt.setString(12, professional.getSpecialization());
-        stmt.setString(13, professional.getOfficeHours());
-        stmt.setString(14, professional.getQualification());
-        stmt.setString(15, professional.getBiography());
-        stmt.setBytes(16, professional.getProfilePicture().getBytes());
-        stmt.setString(17, professional.getStatus());
-
-        return stmt.executeUpdate() > 0;
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return false;
     }
-    return false;
-}
-    
-    
-    
-    
-    
+
 //    public boolean addProfessional(Professional professional) {
 //        String sql = "INSERT INTO Staff (fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture)\n"
 //                + "VALUES (?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?);"
@@ -127,22 +123,20 @@ public class ProfessionalDAO {
 //        return false;
 //    }
     public int getRoleIDByName(String roleName) {
-    String sql = "SELECT roleID FROM MedicalSystem.dbo.Role WHERE roleName = ?";
-    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-        stmt.setString(1, roleName);
-        ResultSet rs = stmt.executeQuery();
-        if (rs.next()) {
-            return rs.getInt("roleID"); // Trả về roleID nếu tìm thấy
+        String sql = "SELECT roleID FROM MedicalSystem.dbo.Role WHERE roleName = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, roleName);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("roleID"); // Trả về roleID nếu tìm thấy
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return -1; // Trả về -1 nếu không tìm thấy roleName
     }
-    return -1; // Trả về -1 nếu không tìm thấy roleName
-}
-   
-    
-    
-    public Professional getProfessionalbyID(int id){
+
+    public Professional getProfessionalbyID(int id) {
         Professional pro = null;
         String sql = "SELECT \n"
                 + "    s.staffID,\n"
@@ -278,7 +272,6 @@ public class ProfessionalDAO {
                 rs.getInt("staffID"),
                 rs.getString("fullName"),
                 rs.getString("email"),
-                
                 rs.getString("password"),
                 rs.getDate("dateOfBirth"),
                 rs.getString("gender"),
@@ -292,10 +285,11 @@ public class ProfessionalDAO {
                 rs.getString("qualification"),
                 rs.getString("biography"),
                 rs.getDate("createdAt"),
-                 rs.getInt("roleId")
+                rs.getInt("roleId")
         );
     }
-     public List<Doctor> getAvailableDoctors(Connection conn, String date, String time) throws SQLException {
+
+    public List<Doctor> getAvailableDoctors(Connection conn, String date, String time) throws SQLException {
         List<Doctor> doctors = new ArrayList<>();
         String sql = "SELECT p.professionalID, s.fullName, p.specialization, p.profilePicture "
                 + "FROM Professional p "
@@ -361,23 +355,14 @@ public class ProfessionalDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return list;
     }
-    return list;
-}
 
-    
-    
-    
-    
-    
-   public static void main(String[] args) {
-    // Khởi tạo DAO
-    ProfessionalDAO dao = new ProfessionalDAO();
-    
-    // Kiểm tra kết nối CSDL trước khi truy vấn
-       System.out.println(dao.getProfessionalbyID(18).getProfilePicture());
-}
+    public static void main(String[] args) {
+        // Khởi tạo DAO
+        ProfessionalDAO dao = new ProfessionalDAO();
 
+        // Kiểm tra kết nối CSDL trước khi truy vấn
+        System.out.println(dao.getProfessionalbyID(18).getProfilePicture());
+    }
 }

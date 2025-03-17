@@ -9,7 +9,6 @@ import java.util.Date;
  */
 public class Professional extends Staff {
 
-    
     private String specialization;
     private String officeHours;
     private String qualification;
@@ -21,10 +20,10 @@ public class Professional extends Staff {
     }
 
     // Constructor có tham số
-    public Professional(int staffID, String fullName, String email, String password,Date dateOfBirth, String gender, String address, String phone, Date hireDate, String status, byte[] profilePicture, String specialization, String officeHours, String qualification, String biography, Date createdAt,int roleID) {
+    public Professional(int staffID, String fullName, String email, String password, Date dateOfBirth, String gender, String address, String phone, Date hireDate, String status, byte[] profilePicture, String specialization, String officeHours, String qualification, String biography, Date createdAt, int roleID) {
         // Chuyển Date thành String khi gọi super() cho dateOfBirth và hireDate
         //int staffID, String fullName, String email, String password, String phone, String gender, String dateOfBirth, String address, String hireDate, int roleID, String status, String profilePicture
-        super(staffID, fullName, email, password, phone,gender,dateOfBirth.toString(),address, hireDate.toString(), roleID, status, new String(profilePicture, StandardCharsets.ISO_8859_1));  // convert to String
+        super(staffID, fullName, email, password, phone, gender, dateOfBirth.toString(), address, hireDate.toString(), roleID, status, new String(profilePicture, StandardCharsets.ISO_8859_1));  // convert to String
         this.specialization = specialization;
         this.officeHours = officeHours;
         this.qualification = qualification;
@@ -32,10 +31,12 @@ public class Professional extends Staff {
         this.createdAt = createdAt;
         this.status = status;
     }
-  public int getRoleID(){
-      return super.getRoleID();
-  }
-    public int getStaffID(){
+
+    public int getRoleID() {
+        return super.getRoleID();
+    }
+
+    public int getStaffID() {
         return super.getStaffID();
     }
 
@@ -43,17 +44,14 @@ public class Professional extends Staff {
         return super.getFullName();
     }
 
-    @Override
     public String getEmail() {
         return super.getEmail();
     }
 
-    @Override
     public String getPhone() {
         return super.getPhone();
     }
 
-    @Override
     public String getAddress() {
         return super.getAddress();
     }
@@ -62,7 +60,6 @@ public class Professional extends Staff {
         return super.getDateOfBirth();
     }
 
-    @Override
     public String getGender() {
         return super.getGender();
     }
@@ -71,7 +68,6 @@ public class Professional extends Staff {
     public String getSpecialization() {
         return specialization;
     }
-    
 
     public void setSpecialization(String specialization) {
         this.specialization = specialization;
@@ -101,12 +97,10 @@ public class Professional extends Staff {
         this.biography = biography;
     }
 
-    @Override
     public String getStatus() {
         return status;
     }
 
-    @Override
     public void setStatus(String status) {
         this.status = status;
     }
@@ -121,10 +115,5 @@ public class Professional extends Staff {
 
     public String getDepartment() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public String toString() {
-        return "Professional{" + "specialization=" + specialization + ", officeHours=" + officeHours + ", qualification=" + qualification + ", biography=" + biography + ", status=" + status + ", createdAt=" + createdAt + '}';
     }
 }

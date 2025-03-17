@@ -86,7 +86,8 @@ public class HomePageDAO extends DBContext {
                 rs.getString("officeHours"),
                 rs.getString("qualification"),
                 rs.getString("biography"),
-                rs.getDate("createdAt")
+                rs.getDate("createdAt"),
+                rs.getInt("roleId")
         );
     }
 
@@ -99,10 +100,10 @@ public class HomePageDAO extends DBContext {
 
         List<Professional> list = dao.getAllDoctors();
         for (Professional doc : list) {
-                System.out.println("🆔 ID: " + doc.getStaffID()
-                        + " | ?‍⚕️ Tên: " + doc.getFullName()
-                        + " | 📞 SĐT: " + doc.getPhone()
-                        + " | 🎓 Chuyên môn: " + doc.getSpecialization());
-            }
+            System.out.println("🆔 ID: " + doc.getStaffID()
+                    + " | ?‍⚕️ Tên: " + doc.getFullName()
+                    + " | 📞 SĐT: " + doc.getPhone()
+                    + " | 🎓 Chuyên môn: " + doc.getSpecialization());
+        }
     }
 }
