@@ -149,8 +149,7 @@
                                                         <div class="dropdown-menu dropdown-menu-right">
                                                             <a class="dropdown-item" href="editInvoice?invoiceID=${invoice.invoiceID}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                                             <a class="dropdown-item" href="viewInvoice?invoiceID=${invoice.invoiceID}"><i class="fa fa-eye m-r-5"></i> View</a>
-                                                            <a class="dropdown-item" href="#"><i class="fa fa-file-pdf-o m-r-5"></i> Download</a>
-                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_invoice"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_invoice" data-id="${invoice.invoiceID}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -394,9 +393,13 @@
                         <div class="modal-body text-center">
                             <img src="assets/img/sent.png" alt="" width="50" height="46">
                             <h3>Are you sure want to delete this Invoice?</h3>
-                            <div class="m-t-20"> <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </div>
+                            <form id="deleteForm" action="deleteInvoice" method="GET">
+                                <input type="hidden" name="invoiceID" id="deleteInvoiceID">
+                                <div class="m-t-20">
+                                    <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -413,6 +416,15 @@
         <script src="assets/js/moment.min.js"></script>
         <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
         <script src="assets/js/app.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#delete_invoice').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget); // Lấy nút vừa bấm
+                    var invoiceID = button.data('id'); //
+                    $('#deleteInvoiceID').val(invoiceID); // Gán vào input trong form
+                });
+            });
+        </script>
     </body>
 
 
