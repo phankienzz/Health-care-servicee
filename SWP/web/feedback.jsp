@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page language="java" %>
 <!DOCTYPE html>
@@ -161,8 +162,8 @@
 
             <section class="section pb-0 feed">
                 <div class="container"> 
-                    <h2>Cảm ơn bạn đã mua hàng!</h2>
-                    <p>Vui lòng để lại phản hồi của bạn để chúng tôi cải thiện dịch vụ.</p>
+                    <h2>Cảm ơn bạn đã sử dụng dịch vụ!</h2>
+                    <p>Vui lòng để lại phản hồi của bạn để chúng tôi cải chất lượng thiện dịch vụ.</p>
 
                     <!-- Nút mở hộp thoại feedback -->
                     <button class="open-feedback" onclick="openFeedback()">Để lại phản hồi</button>
@@ -176,13 +177,14 @@
                             </div>
                             <h2>Phản hồi của bạn</h2>
 
-                            <form id="feedbackForm" action="SubmitFeedbackServlet" method="post" onsubmit="return validateFeedback()">
+                            <form id="feedbackForm" action="addFeedback" method="post" onsubmit="return validateFeedback()">
+                                <input type="hidden" name="invoiceId" value="7">
                                 <div class="stars">
-                                    <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
-                                    <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
-                                    <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
-                                    <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
                                     <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+                                    <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                                    <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                                    <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                                    <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
                                 </div>
 
                                 <!-- Thông báo lỗi khi chưa chọn sao -->
@@ -197,68 +199,33 @@
                 </div>
             </section>
 
-            <section class="contact-form-wrap section">
+            <section class="feedback-section section">
                 <div class="container">
-                    <!--                        <div class="row justify-content-center">
-                                                <div class="col-lg-6">
-                                                    <div class="section-title text-center">
-                                                        <h2 class="text-md mb-2">Contact us</h2>
-                                                        <div class="divider mx-auto my-4"></div>
-                                                        <p class="mb-5">Laboriosam exercitationem molestias beatae eos pariatur, similique, excepturi mollitia sit perferendis maiores ratione aliquam?</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                                    <form id="contact-form" class="contact__form " method="post" action="mail.php">
-                                                         form message 
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <div class="alert alert-success contact__msg" style="display: none" role="alert">
-                                                                    Your message was sent successfully.
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                            
-                                                        <div class="row">
-                                                            <div class="col-lg-6">
-                                                                <div class="form-group">
-                                                                    <input name="name" id="name" type="text" class="form-control" placeholder="Your Full Name" >
-                                                                </div>
-                                                            </div>
-                            
-                                                            <div class="col-lg-6">
-                                                                <div class="form-group">
-                                                                    <input name="email" id="email" type="email" class="form-control" placeholder="Your Email Address">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-6">
-                                                                <div class="form-group">
-                                                                    <input name="subject" id="subject" type="text" class="form-control" placeholder="Your Query Topic">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-6">
-                                                                <div class="form-group">
-                                                                    <input name="phone" id="phone" type="text" class="form-control" placeholder="Your Phone Number">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                            
-                                                        <div class="form-group-2 mb-4">
-                                                            <textarea name="message" id="message" class="form-control" rows="8" placeholder="Your Message"></textarea>
-                                                        </div>
-                            
-                                                        <div class="text-center">
-                                                            <input class="btn btn-main btn-round-full" name="submit" type="submit" value="Send Messege"></input>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>-->
-                </div>
-            </section>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8 col-md-10 col-sm-12 mb-4">
+                            <div class="section-title text-center">
+                                <h2 class="text-md mb-2">Customer Feedback</h2>
+                                <div class="divider mx-auto my-4"></div>
+                                <p class="mb-5">See what our customers are saying about us!</p>
+                            </div>
+                        </div>
+                    </div>
 
-
-            <!-- footer Start -->
+                <c:forEach var="f" items="${listFeed}">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8 col-md-10 col-sm-12 mb-4">
+                            <div class="feedback-card p-4 text-center shadow rounded" style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal;">
+                                <!--<img src="avatar3.jpg" alt="Mark Wilson" class="rounded-circle mb-3" width="100" height="100">-->
+                                <h5 class="mt-3">${f.invoice.examinationID.customerId.fullName}</h5>
+                                <p class="feedback-text" style="font-size: 20px; line-height: 1.6; word-break: break-word;">"${f.comment}"</p>
+                                <strong>Rate: ${f.rating}★</strong>
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+        </section>
+        <!-- footer Start -->
         <jsp:include page="footer.jsp"></jsp:include>
 
 
@@ -311,12 +278,22 @@
             function validateFeedback() {
                 let ratingChecked = document.querySelector('input[name="rating"]:checked');
                 let errorText = document.getElementById("ratingError");
+                let comment = document.querySelector('textarea[name="comment"]').value.trim();
 
+                // Kiểm tra số sao
                 if (!ratingChecked) {
                     errorText.style.display = "block"; // Hiển thị lỗi nếu chưa chọn sao
                     return false; // Ngăn không cho submit form
                 }
-                return true; // Cho phép submit form nếu đã chọn sao
+                errorText.style.display = "none"; // Ẩn lỗi nếu chọn đúng
+
+                // Kiểm tra nhận xét
+                if (comment === "") {
+                    alert("Vui lòng nhập nhận xét của bạn!");
+                    return false; // Ngăn không cho submit form
+                }
+
+                return true; // Cho phép submit form nếu hợp lệ
             }
         </script>
         <script src="plugins/jquery/jquery.js"></script>

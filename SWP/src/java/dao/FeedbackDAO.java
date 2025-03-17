@@ -7,6 +7,7 @@ package dao;
 import context.DBContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Customer;
@@ -107,11 +108,41 @@ public class FeedbackDAO extends DBContext {
         return feedbackList;
     }
 
+    public boolean addFeedback(int invoiceID, int rating, String comment) {
+        String sql = "INSERT INTO Feedback (invoiceID, rating, comment) VALUES (?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(sql);) {
+
+            stmt.setInt(1, invoiceID);
+            stmt.setInt(2, rating);
+            stmt.setString(3, comment);
+
+            int rowsInserted = stmt.executeUpdate();
+            return rowsInserted > 0; // Trả về true nếu thêm thành công
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; // Trả về false nếu xảy ra lỗi
+    }
+
     public static void main(String[] args) {
         FeedbackDAO feedbackDAO = new FeedbackDAO();
-        List<Feedback> feedbacks = feedbackDAO.getAllFeedbackByCustomer();
-        for (Feedback fb : feedbacks) {
-            System.out.println(fb);
+//        List<Feedback> feedbacks = feedbackDAO.getAllFeedbackByCustomer();
+//        for (Feedback fb : feedbacks) {
+//            System.out.println(fb);
+//        }
+
+        int invoiceID = 7; 
+        int rating = 5; 
+        String comment = "Dịch vụ rất tuyệt vời!"; 
+
+        // Gọi hàm DAO để thêm feedback
+        boolean isInserted = feedbackDAO.addFeedback(invoiceID, rating, comment);
+
+        // In kết quả kiểm tra
+        if (isInserted) {
+            System.out.println("Feedback đã được chèn thành công vào cơ sở dữ liệu!");
+        } else {
+            System.out.println("Có lỗi xảy ra khi chèn Feedback.");
         }
     }
 }
