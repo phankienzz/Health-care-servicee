@@ -13,6 +13,7 @@ public class Service {
     private int duration;
     private String status;
     private String createdAt;
+    private String introduce; // Thuộc tính mới được thêm
 
     public Service() {
     }
@@ -27,8 +28,10 @@ public class Service {
         this.duration = duration;
         this.status = status;
         this.createdAt = createdAt;
+        this.introduce = null; // Gán giá trị mặc định là null để không ảnh hưởng constructor hiện tại
     }
 
+    // Getters và Setters cho các thuộc tính hiện có
     public int getPackageID() {
         return packageID;
     }
@@ -101,10 +104,18 @@ public class Service {
         this.createdAt = createdAt;
     }
 
+    // Getter và Setter cho thuộc tính introduce
+    public String getIntroduce() {
+        return introduce;
+    }
+
+    public void setIntroduce(String introduce) {
+        this.introduce = introduce;
+    }
+
     @Override
     public String toString() {
-        return "Service{" + "packageID=" + packageID + ", packageName=" + packageName + ", description=" + description + ", serviceImage=" + serviceImage + ", type=" + type + ", price=" + price + ", duration=" + duration + ", status=" + status + ", createdAt=" + createdAt + '}';
+        return "Service{" + "packageID=" + packageID + ", packageName=" + packageName + ", description=" + description + ", serviceImage=" + serviceImage + ", type=" + type + ", price=" + price + ", duration=" + duration + ", status=" + status + ", createdAt=" + createdAt + ", introduce=" + introduce + '}';
     }
-    
     
 }

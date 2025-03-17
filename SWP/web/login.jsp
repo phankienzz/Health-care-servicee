@@ -9,6 +9,13 @@
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <script>
+           
+               function toggleForm() {
+                const userType = document.getElementById('userType').value;
+                document.getElementById('userForm').style.display = userType === 'user' ? 'block' : 'none';
+                document.getElementById('employeeForm').style.display = userType === 'employee' ? 'block' : 'none';
+            }
+
             function togglePasswordVisibility(passwordFieldId, toggleButtonId) {
                 const passwordField = document.getElementById(passwordFieldId);
                 const icon = document.getElementById(toggleButtonId).querySelector('i');
@@ -23,6 +30,22 @@
                     icon.classList.add('fa-eye');
                 }
             }
+            function handleEmailLogin(event) {
+                event.preventDefault();
+                const formData = new FormData(event.target);
+                fetch('LoginServlet', {
+                    method: 'POST',
+                    body: new URLSearchParams(formData)
+                }).then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                window.location.href = 'home.jsp';
+                            } else {
+                                alert('Email login failed. Please check your credentials.');
+                            }
+                        }).catch(error => console.error('Error:', error));
+            }
+
         </script>
     </head>
 
@@ -81,14 +104,15 @@
                                     </div>
                                 </div>
                             </div>
+                                     <div class="form-group text-right">
+                                <a href="forgot-password.jsp" class="small">Forgot your password?</a>
+                            </div>
 
                             <div class="form-group checkbox" id="rememberMeChkBox">
                                 <label><input type="checkbox" name="rememberMe" <% if (!savedUsername.isEmpty()) { %> checked <% } %>> Remember me</label>
                             </div>
 
-                            <div class="form-group text-right">
-                                <a href="forgot-password.jsp" class="small">Forgot your password?</a>
-                            </div>
+                         
 
                             <div class="form-group text-center">
                                 <button type="submit" class="btn btn-primary btn-block">Login</button>
@@ -99,9 +123,11 @@
                             </div>
                         </form>
                     </div>
-                    <div class="mt-4 text-center">
-                        <button type="button" class="btn btn-danger btn-block mb-2" id="googleLoginBtn">
-                            <i class="fa fa-google me-2"></i>Login with Google
+                     <div class="mt-4 text-center">
+                        <button type="button" class="btn btn-danger btn-block mb-2" 
+                                onclick="window.location.href = 'https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:9999/SWP/GoogleLoginServlet&response_type=code&client_id=322004880766-ljaf0a60isb2782d47uegdvjbfgjoc9t.apps.googleusercontent.com&approval_prompt=force'">
+                            <i class="fa fa-google me-2"></i>
+                             Google
                         </button>
                     </div>
 

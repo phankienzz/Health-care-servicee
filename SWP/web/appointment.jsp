@@ -23,165 +23,94 @@
         <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
-        <style>
-            
-
-            .doctor-image-wrapper {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin:100px 0 0 50px;
-            }
-
-            #doctorImage {
-                width: 250px;
-                height: 300px;
-                object-fit: cover;
-               
-                border: 4px solid #ffffff;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-
-            .emergency {
-                margin: 20px 0 0 80px;
-                
-                font-size: 16px;
-                font-weight: 600;
-                color: #007bff;
-            }
-        </style>
 
 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+
+
+        <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+        <!--[if lt IE 9]>
+                    <script src="assets/js/html5shiv.min.js"></script>
+                    <script src="assets/js/respond.min.js"></script>
+            <![endif]-->
     </head>
 
-    <body id="top">
 
-        <header>
-            <div class="header-top-bar">
+    <style>
+
+
+        .doctor-image-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin:100px 0 0 50px;
+        }
+
+        #doctorImage {
+            width: 250px;
+            height: 300px;
+            object-fit: cover;
+
+            border: 4px solid #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .emergency {
+            margin: 20px 0 0 80px;
+
+            font-size: 16px;
+            font-weight: 600;
+            color: #007bff;
+        }
+    </style>
+
+
+</head>
+
+<body id="top">
+
+    <header>
+        <jsp:include page="headerHome.jsp"></jsp:include>
+
+
+
+            <section class="appoinment section">
                 <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-lg-6">
-                            <ul class="top-bar-info list-inline-item pl-0 mb-0">
-                                <li class="list-inline-item"><a href="mailto:support@gmail.com"><i class="icofont-support-faq mr-2"></i>support@novena.com</a></li>
-                                <li class="list-inline-item"><i class="icofont-location-pin mr-2"></i>Address Ta-134/A, New York, USA </li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="text-lg-right top-right-bar mt-2 mt-lg-0">
-                                <a href="tel:+23-345-67890" >
-                                    <span>Call Now : </span>
-                                    <span class="h4">823-4565-13456</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <nav class="navbar navbar-expand-lg navigation" id="navbar">
-                <div class="container">
-                    <a class="navbar-brand" href="index_1.jsp">
-                        <img src="images/logo.png" alt="" class="img-fluid">
-                    </a>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="mt-3">
+                                <div class="appoinment-content">
+                                    <div class="doctor-image-wrapper">
+                                        <img id="doctorImage" src="images/about/img-3.jpg" alt="Doctor Image" class="img-fluid">
+                                    </div>
 
-                    <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarmain" aria-controls="navbarmain" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="icofont-navigation-menu"></span>
-                    </button>
-
-                    <div class="collapse navbar-collapse" id="navbarmain">
-                        <ul class="navbar-nav ml-auto">
-                            <li class="nav-item active">
-                                <a class="nav-link" href="index_1.jsp">Home</a>
-                            </li>
-                            <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-                            <li class="nav-item"><a class="nav-link" href="service.html">Services</a></li>
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="department.html" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Department <i class="icofont-thin-down"></i></a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdown02">
-                                    <li><a class="dropdown-item" href="department.html">Departments</a></li>
-                                    <li><a class="dropdown-item" href="department-single.html">Department Single</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="doctor.html" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Doctors <i class="icofont-thin-down"></i></a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdown03">
-                                    <li><a class="dropdown-item" href="doctor.html">Doctors</a></li>
-                                    <li><a class="dropdown-item" href="doctor-single.html">Doctor Single</a></li>
-                                    <li><a class="dropdown-item" href="appoinment.html">Appoinment</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="blog-sidebar.html" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Blog <i class="icofont-thin-down"></i></a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdown05">
-                                    <li><a class="dropdown-item" href="blog-sidebar.html">Blog with Sidebar</a></li>
-
-                                    <li><a class="dropdown-item" href="blog-single.html">Blog Single</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </header>
-
-
-
-        <section class="page-title bg-1">
-            <div class="overlay"></div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="block text-center">
-                            <span class="text-white">Book your Seat</span>
-                            <h1 class="text-capitalize mb-5 text-lg">Appoinment</h1>
-
-                            <!-- <ul class="list-inline breadcumb-nav">
-                              <li class="list-inline-item"><a href="index.html" class="text-white">Home</a></li>
-                              <li class="list-inline-item"><span class="text-white">/</span></li>
-                              <li class="list-inline-item"><a href="#" class="text-white-50">Book your Seat</a></li>
-                            </ul> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="appoinment section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div class="mt-3">
-                            <div class="appoinment-content">
-                                <div class="doctor-image-wrapper">
-                                    <img id="doctorImage" src="images/about/img-3.jpg" alt="Doctor Image" class="img-fluid">
                                 </div>
-                                                      
-                            </div>
-                            
-                             <div class="emergency">
+
+                                <div class="emergency">
                                     <p id="doctorSpecialization" class="mb-2">Specialization</p>
                                 </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-lg-8">
-                        <div class="appoinment-wrap mt-5 mt-lg-0 pl-lg-5">
-                            <h2 class="mb-2 title-color">Book an appointment</h2>
-                            <p class="mb-4">Mollitia dicta commodi est recusandae iste, natus eum asperiores corrupti qui velit. Iste dolorum atque similique praesentium soluta.</p>
-                            <form id="appointmentForm" class="appointment" method="post" action="appointment">
-                                <div class="row">
+                        <div class="col-lg-8">
+                            <div class="appoinment-wrap mt-5 mt-lg-0 pl-lg-5">
+                                <h2 class="mb-2 title-color">Book an appointment</h2>
+                                <p class="mb-4">Mollitia dicta commodi est recusandae iste, natus eum asperiores corrupti qui velit. Iste dolorum atque similique praesentium soluta.</p>
+                                <form id="appointmentForm" class="appointment" method="post" action="appointment">
+                                    <div class="row">
 
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <div style="border: 1px solid #ced4da;">
-                                                <div class="dropdown" style="margin-bottom: 8px;">
-                                                    <button class="btn btn-outline-secondary dropdown-toggle form-control" type="button" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">
-                                                        Select Services
-                                                    </button>
-                                                    <div class="dropdown-menu p-2" style="max-height: 150px; overflow-y: auto; width: 100%;">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <div style="border: 1px solid #ced4da;">
+                                                    <div class="dropdown" style="margin-bottom: 8px;">
+                                                        <button class="btn btn-outline-secondary dropdown-toggle form-control" type="button" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">
+                                                            Select Services
+                                                        </button>
+                                                        <div class="dropdown-menu p-2" style="max-height: 150px; overflow-y: auto; width: 100%;">
                                                         <c:forEach var="service" items="${services}">
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox" name="serviceIds[]" value="${service.packageID}" id="service_${service.packageID}">
@@ -211,13 +140,26 @@
 
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <input name="date" type="date" class="form-control " required>
+
+                                            <input type="text" name="date" placeholder="Date" class="form-control datetimepicker"  required >
                                         </div>
                                     </div>
 
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <input name="time" type="time" class="form-control" required>
+                                            <select name="time" class="form-control" required>
+                                                <option value="">Select Time</option>
+                                                <option value="08:00">08:00</option>
+                                                <option value="09:00">09:00</option>
+                                                <option value="10:00">10:00</option>
+                                                <option value="11:00">11:00</option>
+                                                <option value="12:00">12:00</option>
+                                                <option value="13:00">13:00</option>
+                                                <option value="14:00">14:00</option>
+                                                <option value="15:00">15:00</option>
+                                                <option value="16:00">16:00</option>
+                                                <option value="17:00">17:00</option>
+                                            </select>
                                         </div>
                                     </div>
 
@@ -237,6 +179,11 @@
                                 <div class="form-group-2 mb-4">
                                     <textarea name="message" class="form-control" rows="6" placeholder="Your Message"></textarea>
                                 </div>
+
+                                <!-- Thêm hi?n th? l?i n?u có -->
+                                <c:if test="${not empty error}">
+                                    <div class="alert alert-danger">${error}</div>
+                                </c:if>
 
                                 <button type="submit" class="btn btn-main btn-round-full">Make Appointment</button>
                             </form>
@@ -360,11 +307,55 @@
         </footer>
 
 
+
         <!-- 
         Essential Scripts
         =====================================-->
 
+        <div class="sidebar-overlay" data-reff=""></div>
+        <script src="assets/js/jquery-3.2.1.min.js"></script>
+        <script src="assets/js/popper.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.slimscroll.js"></script>
+        <script src="assets/js/select2.min.js"></script>
+        <script src="assets/js/moment.min.js"></script>
+        <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+        <script src="assets/js/app.js"></script>
 
-       
-    </body>
+
+        <script>
+            $(document).ready(function () {
+                // Kh?i t?o datetimepicker
+                $('.datetimepicker').datetimepicker({
+                    format: 'DD/MM/YYYY',
+                    minDate: new Date(), // Không cho ch?n ngày tr??c ngày hi?n t?i
+                    useCurrent: false
+                });
+
+                // Validate form tr??c khi submit
+                $('#appointmentForm').on('submit', function (e) {
+                    var selectedDate = $('.datetimepicker').val();
+                    if (!selectedDate) {
+                        e.preventDefault();
+                        alert('Please select a date');
+                        return false;
+                    }
+
+                    // Parse ngày ???c ch?n
+                    var parts = selectedDate.split('/');
+                    var selected = new Date(parts[2], parts[1] - 1, parts[0]);
+                    var today = new Date();
+                    today.setHours(0, 0, 0, 0); // Reset gi? ?? so sánh chính xác
+
+                    if (selected < today) {
+                        e.preventDefault();
+                        alert('Please select a date from today onwards');
+                        $('.datetimepicker').val('');
+                        return false;
+                    }
+                });
+            });
+        </script>
+
+</body>
 </html>

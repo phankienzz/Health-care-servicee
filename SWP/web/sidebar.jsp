@@ -73,18 +73,17 @@
                             <a href="dashboard.jsp"><i class="fa fa-dashboard"></i> <span>Usage Statistic</span></a>
                         </li>
                     </c:if>
-
+                    <c:if test="${viewStaff}">
+                        <li>
+                            <a href="staff"><i class="fa fa-user"> </i> <span>Staff</span>  </a>
+                        </li>
+                    </c:if>
                     <c:if test="${viewStaff}">
                         <li>
                             <a href="manage-doctor.jsp"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
                         </li>
                     </c:if>
 
-                    <c:if test="${viewStaff}">
-                        <li>
-                            <a href="staff"><i class="fa fa-user"> </i> <span>Staff</span>  </a>
-                        </li>
-                    </c:if>
                     <c:if test="${viewPatient}">
                         <li>
                             <a href="patient"><i class="fa fa-wheelchair"></i> <span>Patients</span></a>
@@ -93,7 +92,7 @@
 
                     <c:if test="${viewAppointment}">
                         <li>
-                            <a href="manage_appointment"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
+                            <a href="view-appointment.jsp"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
                         </li>
                     </c:if>
 

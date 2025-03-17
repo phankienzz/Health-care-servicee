@@ -42,7 +42,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt, d);
                 invoiceList.add(inv);
             }
 
@@ -50,6 +50,59 @@ public class InvoiceDAO extends DBContext {
         }
         return invoiceList; // Trả về danh sách khách hàng
     }
+
+    public List<Invoice> getTop3Invoice() {
+        List<Invoice> invoiceList = new ArrayList<>();
+        CustomerDAO customerDAO = new CustomerDAO();
+        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
+        DiscountDAO disDAO = new DiscountDAO();
+        String sql = "SELECT TOP 3 *\n"
+                + "    FROM [MedicalSystem].[dbo].[Invoice]\n"
+                + "    ORDER BY createdAt DESC";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int invoiceID = rs.getInt("invoiceID");
+                int examinationID = rs.getInt("examinationID");
+                MedicalExamination med = medDAO.getMedicalExaminationByID(examinationID);
+                double totalAmount = rs.getDouble("totalAmount");
+                String paymentStatus = rs.getString("paymentStatus");
+                String paymentDate = rs.getString("paymentDate");
+                String paymentMethod = rs.getString("paymentMethod");
+                String createdAt = rs.getString("createdAt");
+                int discountID = rs.getInt("discountID");
+                Discount d = disDAO.getDiscountByID(discountID);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt, d);
+                invoiceList.add(inv);
+            }
+
+        } catch (SQLException e) {
+        }
+        return invoiceList; // Trả về danh sách khách hàng
+    }
+
+    public double OrderbyDate(String month, String year) {
+        double s = 0;
+        String sql = "with t as (select month([paymentDate]) as  [month],  year([paymentDate]) as [year],  SUM(totalAmount) AS revenue from Invoice group by month([paymentDate]), year([paymentDate]) ) select revenue from t where [month] = ? and [year] = ?";
+        //thuc thi cau truy van;
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, month);
+            pre.setString(2, year);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                s = rs.getDouble("revenue");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return s;
+
+    }
+
     public Invoice getInvoiceByID(int invoiceID) {
         String sql = "select * from Invoice where invoiceID = ?";
         MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
@@ -68,23 +121,23 @@ public class InvoiceDAO extends DBContext {
                         rs.getString("paymentMethod"),
                         rs.getString("createdAt"),
                         disDAO.getDiscountByID(rs.getInt("discountID")));
-                        
+
             }
         } catch (SQLException e) {
             System.out.println(e);
         }
         return null;
     }
-    
-    public void createInvoice(int examinationID, double totalAmount, String discountID ) {
-        String sql = "insert Invoice(examinationID, totalAmount, paymentStatus,createdAt, discountID)\n" +
-                    "values (?,?,N'Pending',CURRENT_TIMESTAMP,?)  update MedicalExamination set status = N'Payment' where examinationID = ?";
+
+    public void createInvoice(int examinationID, double totalAmount, String discountID) {
+        String sql = "insert Invoice(examinationID, totalAmount, paymentStatus,createdAt, discountID)\n"
+                + "values (?,?,N'Pending',CURRENT_TIMESTAMP,?)  update MedicalExamination set status = N'Payment' where examinationID = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, examinationID);
             st.setDouble(2, totalAmount);
             st.setString(3, discountID);
-             st.setInt(4, examinationID);
+            st.setInt(4, examinationID);
             st.executeUpdate();
         } catch (SQLException e) {
         }
@@ -113,7 +166,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt, d);
                 invoiceList.add(inv);
             }
 
@@ -145,7 +198,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt, d);
                 invoiceList.add(inv);
             }
 
@@ -153,6 +206,7 @@ public class InvoiceDAO extends DBContext {
         }
         return invoiceList; // Trả về danh sách khách hàng
     }
+
     public List<Invoice> getInvoiceByBetweenDatePaging(String from, String to, int start, int total) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
@@ -178,7 +232,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt, d);
                 invoiceList.add(inv);
             }
 
@@ -186,7 +240,7 @@ public class InvoiceDAO extends DBContext {
         }
         return invoiceList; // Trả về danh sách khách hàng
     }
-    
+
     public List<Invoice> getInvoiceByFromDate(String from) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
@@ -209,7 +263,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt, d);
                 invoiceList.add(inv);
             }
 
@@ -217,8 +271,8 @@ public class InvoiceDAO extends DBContext {
         }
         return invoiceList; // Trả về danh sách khách hàng
     }
-    
-    public List<Invoice> getInvoiceByFromDatePaging(String from , int start, int total) {
+
+    public List<Invoice> getInvoiceByFromDatePaging(String from, int start, int total) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
         MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
@@ -242,7 +296,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt, d);
                 invoiceList.add(inv);
             }
 
@@ -250,7 +304,7 @@ public class InvoiceDAO extends DBContext {
         }
         return invoiceList; // Trả về danh sách khách hàng
     }
-    
+
     public List<Invoice> getInvoiceByToDate(String to) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
@@ -273,7 +327,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt, d);
                 invoiceList.add(inv);
             }
 
@@ -281,8 +335,8 @@ public class InvoiceDAO extends DBContext {
         }
         return invoiceList; // Trả về danh sách khách hàng
     }
-    
-    public List<Invoice> getInvoiceByToDatePaging(String to , int start, int total) {
+
+    public List<Invoice> getInvoiceByToDatePaging(String to, int start, int total) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
         MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
@@ -306,7 +360,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt, d);
                 invoiceList.add(inv);
             }
 
@@ -314,7 +368,7 @@ public class InvoiceDAO extends DBContext {
         }
         return invoiceList; // Trả về danh sách khách hàng
     }
-    
+
     public List<Invoice> getInvoiceByStatus(String status) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
@@ -337,7 +391,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt, d);
                 invoiceList.add(inv);
             }
 
@@ -345,10 +399,8 @@ public class InvoiceDAO extends DBContext {
         }
         return invoiceList; // Trả về danh sách khách hàng
     }
-    
-   
-    
-    public List<Invoice> getInvoiceByStatusPaging(String status , int start, int total) {
+
+    public List<Invoice> getInvoiceByStatusPaging(String status, int start, int total) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
         MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
@@ -372,7 +424,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt, d);
                 invoiceList.add(inv);
             }
 
@@ -380,8 +432,8 @@ public class InvoiceDAO extends DBContext {
         }
         return invoiceList; // Trả về danh sách khách hàng
     }
-    
-     public List<Invoice> getInvoiceByStatusandDate(String from, String to, String status) {
+
+    public List<Invoice> getInvoiceByStatusandDate(String from, String to, String status) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
         MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
@@ -405,7 +457,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt, d);
                 invoiceList.add(inv);
             }
 
@@ -413,8 +465,8 @@ public class InvoiceDAO extends DBContext {
         }
         return invoiceList; // Trả về danh sách khách hàng
     }
-     
-     public List<Invoice> getInvoiceByStatusandDatePaging(String from, String to,String status , int start, int total) {
+
+    public List<Invoice> getInvoiceByStatusandDatePaging(String from, String to, String status, int start, int total) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
         MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
@@ -440,7 +492,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt, d);
                 invoiceList.add(inv);
             }
 
@@ -448,8 +500,8 @@ public class InvoiceDAO extends DBContext {
         }
         return invoiceList; // Trả về danh sách khách hàng
     }
-     
-     public List<Invoice> getInvoiceByStatusandFromDate(String from, String status) {
+
+    public List<Invoice> getInvoiceByStatusandFromDate(String from, String status) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
         MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
@@ -471,7 +523,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt, d);
                 invoiceList.add(inv);
             }
 
@@ -479,8 +531,8 @@ public class InvoiceDAO extends DBContext {
         }
         return invoiceList; // Trả về danh sách khách hàng
     }
-     
-      public List<Invoice> getInvoiceByStatusandFromDatePaging(String from,String status , int start, int total) {
+
+    public List<Invoice> getInvoiceByStatusandFromDatePaging(String from, String status, int start, int total) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
         MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
@@ -505,7 +557,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt, d);
                 invoiceList.add(inv);
             }
 
@@ -513,8 +565,8 @@ public class InvoiceDAO extends DBContext {
         }
         return invoiceList; // Trả về danh sách khách hàng
     }
-     
-     public List<Invoice> getInvoiceByStatusandToDate(String to, String status) {
+
+    public List<Invoice> getInvoiceByStatusandToDate(String to, String status) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
         MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
@@ -536,7 +588,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt, d);
                 invoiceList.add(inv);
             }
 
@@ -544,9 +596,8 @@ public class InvoiceDAO extends DBContext {
         }
         return invoiceList; // Trả về danh sách khách hàng
     }
-     
-     
-     public List<Invoice> getInvoiceByStatusandToDatePaging(String to,String status , int start, int total) {
+
+    public List<Invoice> getInvoiceByStatusandToDatePaging(String to, String status, int start, int total) {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
         MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
@@ -571,7 +622,7 @@ public class InvoiceDAO extends DBContext {
                 String createdAt = rs.getString("createdAt");
                 int discountID = rs.getInt("discountID");
                 Discount d = disDAO.getDiscountByID(discountID);
-                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt,d);
+                Invoice inv = new Invoice(invoiceID, med, totalAmount, paymentStatus, paymentDate, paymentMethod, createdAt, d);
                 invoiceList.add(inv);
             }
 
@@ -579,10 +630,20 @@ public class InvoiceDAO extends DBContext {
         }
         return invoiceList; // Trả về danh sách khách hàng
     }
-     
-     public static void main(String[] args) {
-        InvoiceDAO dao = new InvoiceDAO();
-        dao.getInvoiceByFromDate("10/02/2025");
-         System.out.println(dao.getInvoiceByFromDate("10/02/2025").get(0).getCreatedAt());
+
+    public void updateInvoiceOnline(int invoiceID) {
+        String sql = "update invoice set paymentDate = SYSDATETIME(),paymentMethod=N'Credit Card', paymentStatus = N'Paid' where invoiceID = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, invoiceID);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public static void main(String[] args) {
+        double a = 190000891.5;
+        System.out.println(a);
     }
 }

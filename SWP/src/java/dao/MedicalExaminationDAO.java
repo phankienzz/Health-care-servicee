@@ -51,6 +51,305 @@ public class MedicalExaminationDAO extends DBContext {
         return null;
     }
 
+    public int getTotalFilteredRecords(String patientName, String ageSort, String doctorName,
+            String appointmentDate, String timeCreatedSort, String status) {
+        StringBuilder sql = new StringBuilder(
+                "SELECT COUNT(*) AS total "
+                + "FROM MedicalExamination m "
+                + "JOIN Customer c ON m.customerID = c.customerID "
+                + "JOIN Staff s ON m.consultantID = s.staffID "
+                + "WHERE 1=1"
+        );
+
+        List<Object> params = new ArrayList<>();
+
+        if (patientName != null && !patientName.trim().isEmpty()) {
+            sql.append(" AND c.fullName LIKE ?");
+            params.add("%" + patientName + "%");
+        }
+        if (doctorName != null && !doctorName.trim().isEmpty()) {
+            sql.append(" AND s.fullName = ?");
+            params.add(doctorName);
+        }
+        if (appointmentDate != null && !appointmentDate.trim().isEmpty()) {
+            sql.append(" AND CAST(m.examinationDate AS DATE) = ?");
+            params.add(appointmentDate);
+        }
+        if (status != null && !status.trim().isEmpty()) {
+            sql.append(" AND m.status = ?");
+            params.add(status);
+        }
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql.toString());
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<MedicalExamination> getFilteredExaminations(String patientName, String ageSort, String doctorName,
+            String appointmentDate, String timeCreatedSort, String status, int page, int pageSize) {
+        List<MedicalExamination> medicalExaminationList = new ArrayList<>();
+        StringBuilder sql = new StringBuilder(
+                "WITH FilteredExaminations AS ( "
+                + "    SELECT m.examinationID, "
+                + "           FORMAT(m.examinationDate, 'dd/MM/yyyy HH:mm') AS examinationDate, "
+                + "           m.customerID, m.status, m.consultantID, m.notes, "
+                + "           FORMAT(m.createdAt, 'dd/MM/yyyy HH:mm') AS createdAt, "
+                + "           c.fullName AS customerName, "
+                + "           DATEDIFF(YEAR, c.dateOfBirth, GETDATE()) AS age, "
+                + "           s.fullName AS staffName, "
+                + "           ROW_NUMBER() OVER ("
+        );
+
+        if ("asc".equals(ageSort)) {
+            sql.append("ORDER BY age ASC");
+        } else if ("desc".equals(ageSort)) {
+            sql.append("ORDER BY age DESC");
+        } else if ("latest".equals(timeCreatedSort)) {
+            sql.append("ORDER BY m.createdAt DESC");
+        } else if ("oldest".equals(timeCreatedSort)) {
+            sql.append("ORDER BY m.createdAt ASC");
+        } else {
+            sql.append("ORDER BY m.examinationID");
+        }
+
+        sql.append(") AS RowNum "
+                + "    FROM MedicalExamination m "
+                + "    JOIN Customer c ON m.customerID = c.customerID "
+                + "    JOIN Staff s ON m.consultantID = s.staffID "
+                + "    WHERE 1=1"
+        );
+
+        List<Object> params = new ArrayList<>();
+
+        if (patientName != null && !patientName.trim().isEmpty()) {
+            sql.append(" AND c.fullName LIKE ?");
+            params.add("%" + patientName + "%");
+        }
+        if (doctorName != null && !doctorName.trim().isEmpty()) {
+            sql.append(" AND s.fullName = ?");
+            params.add(doctorName);
+        }
+        if (appointmentDate != null && !appointmentDate.trim().isEmpty()) {
+            sql.append(" AND CONVERT(date, m.examinationDate, 103) = CONVERT(date, ?, 103)");
+            params.add(appointmentDate);
+        }
+        if (status != null && !status.trim().isEmpty()) {
+            sql.append(" AND m.status = ?");
+            params.add(status);
+        }
+
+        sql.append(") SELECT * FROM FilteredExaminations "
+                + "WHERE RowNum BETWEEN ? AND ?");
+
+        int startRow = (page - 1) * pageSize + 1;
+        int endRow = page * pageSize;
+        params.add(startRow);
+        params.add(endRow);
+
+        try {
+            if (connection == null) {
+                System.out.println("Database connection is null!");
+                return medicalExaminationList;
+            }
+
+            System.out.println("SQL Query: " + sql.toString());
+            System.out.println("Params: " + params);
+
+            PreparedStatement ps = connection.prepareStatement(sql.toString());
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Customer customer = new Customer();
+                customer.setCustomerID(rs.getInt("customerID"));
+                customer.setFullName(rs.getString("customerName"));
+                customer.setDateOfBirth(String.valueOf(rs.getInt("age")));
+
+                Professional professional = new Professional();
+                professional.setStaffID(rs.getInt("consultantID"));
+                professional.setFullName(rs.getString("staffName"));
+
+                MedicalExamination exam = new MedicalExamination();
+                exam.setExaminationID(rs.getInt("examinationID"));
+                exam.setExaminationDate(rs.getString("examinationDate"));
+                exam.setCustomerId(customer);
+                exam.setStatus(rs.getString("status"));
+                exam.setConsultantId(professional);
+                exam.setNote(rs.getString("notes"));
+                exam.setCreatedAt(rs.getString("createdAt"));
+                exam.setList(getServicesByExaminationId(rs.getInt("examinationID")));
+
+                medicalExaminationList.add(exam);
+            }
+            System.out.println("Records retrieved: " + medicalExaminationList.size());
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return medicalExaminationList;
+    }
+
+    public int getTotalFilteredRecords2(String patientName, String ageSort, int doctorName,
+            String appointmentDate, String timeCreatedSort, String status) {
+        StringBuilder sql = new StringBuilder(
+                "SELECT COUNT(*) AS total "
+                + "FROM MedicalExamination m "
+                + "JOIN Customer c ON m.customerID = c.customerID "
+                + "JOIN Staff s ON m.consultantID = s.staffID "
+                + "WHERE 1=1"
+        );
+
+        List<Object> params = new ArrayList<>();
+
+        if (patientName != null && !patientName.trim().isEmpty()) {
+            sql.append(" AND c.fullName LIKE ?");
+            params.add("%" + patientName + "%");
+        }
+
+        sql.append(" AND s.staffID = ?");
+        params.add(doctorName);
+
+        if (appointmentDate != null && !appointmentDate.trim().isEmpty()) {
+            sql.append(" AND CAST(m.examinationDate AS DATE) = ?");
+            params.add(appointmentDate);
+        }
+        if (status != null && !status.trim().isEmpty()) {
+            sql.append(" AND m.status = ?");
+            params.add(status);
+        }
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql.toString());
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<MedicalExamination> getFilteredExaminations2(String patientName, String ageSort, int doctorName,
+            String appointmentDate, String timeCreatedSort, String status, int page, int pageSize) {
+        List<MedicalExamination> medicalExaminationList = new ArrayList<>();
+        StringBuilder sql = new StringBuilder(
+                "WITH FilteredExaminations AS ( "
+                + "    SELECT m.examinationID, "
+                + "           FORMAT(m.examinationDate, 'dd/MM/yyyy HH:mm') AS examinationDate, "
+                + "           m.customerID, m.status, m.consultantID, m.notes, "
+                + "           FORMAT(m.createdAt, 'dd/MM/yyyy HH:mm') AS createdAt, "
+                + "           c.fullName AS customerName, "
+                + "           DATEDIFF(YEAR, c.dateOfBirth, GETDATE()) AS age, "
+                + "           s.fullName AS staffName, "
+                + "           ROW_NUMBER() OVER ("
+        );
+
+        if ("asc".equals(ageSort)) {
+            sql.append("ORDER BY age ASC");
+        } else if ("desc".equals(ageSort)) {
+            sql.append("ORDER BY age DESC");
+        } else if ("latest".equals(timeCreatedSort)) {
+            sql.append("ORDER BY m.createdAt DESC");
+        } else if ("oldest".equals(timeCreatedSort)) {
+            sql.append("ORDER BY m.createdAt ASC");
+        } else {
+            sql.append("ORDER BY m.examinationID");
+        }
+
+        sql.append(") AS RowNum "
+                + "    FROM MedicalExamination m "
+                + "    JOIN Customer c ON m.customerID = c.customerID "
+                + "    JOIN Staff s ON m.consultantID = s.staffID "
+                + "    WHERE 1=1"
+        );
+
+        List<Object> params = new ArrayList<>();
+
+        if (patientName != null && !patientName.trim().isEmpty()) {
+            sql.append(" AND c.fullName LIKE ?");
+            params.add("%" + patientName + "%");
+        }
+
+        sql.append(" AND s.staffID = ?");
+        params.add(doctorName);
+
+        if (appointmentDate != null && !appointmentDate.trim().isEmpty()) {
+            sql.append(" AND CONVERT(date, m.examinationDate, 103) = CONVERT(date, ?, 103)");
+            params.add(appointmentDate);
+        }
+        if (status != null && !status.trim().isEmpty()) {
+            sql.append(" AND m.status = ?");
+            params.add(status);
+        }
+
+        sql.append(") SELECT * FROM FilteredExaminations "
+                + "WHERE RowNum BETWEEN ? AND ?");
+
+        int startRow = (page - 1) * pageSize + 1;
+        int endRow = page * pageSize;
+        params.add(startRow);
+        params.add(endRow);
+
+        try {
+            if (connection == null) {
+                System.out.println("Database connection is null!");
+                return medicalExaminationList;
+            }
+
+            System.out.println("SQL Query: " + sql.toString());
+            System.out.println("Params: " + params);
+            PreparedStatement ps = connection.prepareStatement(sql.toString());
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Customer customer = new Customer();
+                customer.setCustomerID(rs.getInt("customerID"));
+                customer.setFullName(rs.getString("customerName"));
+                customer.setDateOfBirth(String.valueOf(rs.getInt("age")));
+
+                Professional professional = new Professional();
+                professional.setStaffID(rs.getInt("consultantID"));
+                professional.setFullName(rs.getString("staffName"));
+
+                MedicalExamination exam = new MedicalExamination();
+                exam.setExaminationID(rs.getInt("examinationID"));
+                exam.setExaminationDate(rs.getString("examinationDate"));
+                exam.setCustomerId(customer);
+                exam.setStatus(rs.getString("status"));
+                exam.setConsultantId(professional);
+                exam.setNote(rs.getString("notes"));
+                exam.setCreatedAt(rs.getString("createdAt"));
+                exam.setList(getServicesByExaminationId(rs.getInt("examinationID")));
+
+                medicalExaminationList.add(exam);
+            }
+            System.out.println("Records retrieved: " + medicalExaminationList.size());
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return medicalExaminationList;
+    }
+
     public List<MedicalExamination> getAllMedicalExamination() {
         List<MedicalExamination> medicalExaminationList = new ArrayList<>();
         ServiceDAO dao = new ServiceDAO();
@@ -279,7 +578,7 @@ public class MedicalExaminationDAO extends DBContext {
         }
     }
 
-    public List<MedicalExamination> getFilteredExaminations(String patientName, String ageSort, String doctorName,
+    public List<MedicalExamination> getFilteredExaminations(String patientName, String doctorName,
             String appointmentDate, String timeCreatedSort, String status, int page, int pageSize) {
         List<MedicalExamination> medicalExaminationList = new ArrayList<>();
         StringBuilder sql = new StringBuilder(
@@ -294,11 +593,8 @@ public class MedicalExaminationDAO extends DBContext {
                 + "           ROW_NUMBER() OVER ("
         );
 
-        if ("asc".equals(ageSort)) {
-            sql.append("ORDER BY age ASC");
-        } else if ("desc".equals(ageSort)) {
-            sql.append("ORDER BY age DESC");
-        } else if ("latest".equals(timeCreatedSort)) {
+        // Bỏ điều kiện ageSort, chỉ giữ timeCreatedSort
+        if ("latest".equals(timeCreatedSort)) {
             sql.append("ORDER BY m.createdAt DESC");
         } else if ("oldest".equals(timeCreatedSort)) {
             sql.append("ORDER BY m.createdAt ASC");
@@ -384,7 +680,7 @@ public class MedicalExaminationDAO extends DBContext {
         return medicalExaminationList;
     }
 
-    public int getTotalFilteredRecords(String patientName, String ageSort, String doctorName,
+    public int getTotalFilteredRecords(String patientName, String doctorName,
             String appointmentDate, String timeCreatedSort, String status) {
         StringBuilder sql = new StringBuilder(
                 "SELECT COUNT(*) AS total "
@@ -429,7 +725,6 @@ public class MedicalExaminationDAO extends DBContext {
         return 0;
     }
 
-    // Sửa phương thức addMedicalExamination để tự động tăng examinationID
     public boolean addMedicalExamination(MedicalExamination exam) {
         String sql = "INSERT INTO MedicalExamination (examinationID, examinationDate, customerID, status, consultantID, notes, createdAt) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -466,7 +761,6 @@ public class MedicalExaminationDAO extends DBContext {
         }
     }
 
-    // Thêm phương thức để lấy examinationID lớn nhất và tăng lên 1
     public int getNextExaminationId() {
         String sql = "SELECT MAX(examinationID) FROM MedicalExamination";
         try {
@@ -478,7 +772,7 @@ public class MedicalExaminationDAO extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 1; // Bắt đầu từ 1 nếu bảng rỗng
+        return 1;
     }
 
     public int getCustomerIdByName(String fullName) {
@@ -529,7 +823,6 @@ public class MedicalExaminationDAO extends DBContext {
         return customers;
     }
 
-    // Lấy hồ sơ bệnh án theo examinationID
     public MedicalRecord getMedicalRecordByExamId(int examId) {
         String sql = "SELECT examinationID, diagnosis, treatmentPlan, medicationsPrescribed, "
                 + "FORMAT(createdAt, 'dd/MM/yyyy HH:mm') AS createdAt, notes "
@@ -554,7 +847,6 @@ public class MedicalExaminationDAO extends DBContext {
         return null;
     }
 
-    // Hủy cuộc hẹn (chỉ khi trạng thái là "Pending")
     public boolean cancelAppointment(int examId) {
         String sql = "UPDATE MedicalExamination SET status = 'Rejected' WHERE examinationID = ? AND status = 'Pending'";
         try {

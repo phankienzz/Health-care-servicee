@@ -14,6 +14,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.Permission;
 import model.Role;
 import model.Staff;
 
@@ -51,29 +53,54 @@ public class roleStaff extends HttpServlet {
         RoleDAO rDAO = new RoleDAO();
         Role r = rDAO.getRoleByID(s.getRoleID());
         session.setAttribute("role", r);
-        if(s.getRoleID() == 1){
-            response.sendRedirect("appointment");
-        }
-        if(s.getRoleID() == 2){
-            response.sendRedirect("invoice");
-        }
-        if(s.getRoleID() == 3){
-            response.sendRedirect("homeblogseverlet");
-        }
-        if(s.getRoleID() == 4){
-            response.sendRedirect("schedule.html");
-        }
-        if(s.getRoleID() == 5){
-            response.sendRedirect("schedule.html");
-        }
-        if(s.getRoleID() == 6){
-            response.sendRedirect("dashboard.jsp");
-        }
-        if(s.getRoleID() == 7){
-            response.sendRedirect("staff");
-        }
-        if(s.getRoleID() == 8){
-            response.sendRedirect("dashboard.jsp");
+        List<Permission> listPer = r.getPermission();
+        for(Permission p : listPer){
+            if(p.getPermissionID() == 21){
+                response.sendRedirect("dashboard.jsp");
+                return;
+            }
+            if(p.getPermissionID() == 22){
+                response.sendRedirect("dashboard.jsp");
+                return;
+            }
+            if(p.getPermissionID() == 24){
+                response.sendRedirect("staff");
+                return;
+            }
+           
+            if(p.getPermissionID() == 28){
+                response.sendRedirect("patient");
+                return;
+            }
+            if(p.getPermissionID() == 1){
+                response.sendRedirect("manage_appointment");
+                return;
+            }
+            if(p.getPermissionID() == 15){
+                response.sendRedirect("loadstaffforschedule");
+                return;
+            }
+            if(p.getPermissionID() == 18){
+                response.sendRedirect("loadmanage");
+                return;
+            }
+            
+            if(p.getPermissionID() == 4){
+                response.sendRedirect("invoice");
+                return;
+            }
+            if(p.getPermissionID() == 29){
+                response.sendRedirect("dashboard.jsp");
+                return;
+            }
+            if(p.getPermissionID() == 8){
+                response.sendRedirect("homeblogseverlet");
+                return;
+            }
+            if(p.getPermissionID() == 27){
+                response.sendRedirect("rolePermission");
+                return;
+            }
         }
         
     } 

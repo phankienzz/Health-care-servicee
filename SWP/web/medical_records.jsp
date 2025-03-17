@@ -14,8 +14,29 @@
     </head>
     <body>
         <div class="main-wrapper">
-            
-            <jsp:include page="editseting.jsp"></jsp:include>
+            <div class="header">
+                <div class="header-left">
+                    <a href="customer-dashboard.jsp" class="logo">
+                        <img src="assets/img/logo.png" width="35" height="35" alt=""> <span>Preclinic</span>
+                    </a>
+                </div>
+                            <ul class="nav user-menu float-right">
+                                <li class="nav-item dropdown has-arrow">
+                                    <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
+                                        <span class="user-img"><img class="rounded-circle" src="assets/img/user.jpg" width="40" alt="Customer">
+                                            <span class="status online"></span></span>
+                                        <span>${sessionScope.customerAccount.fullName}</span>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="profile.jsp">My Profile</a>
+                                         <a class="dropdown-item" href="customer-medical-records">Medical record</a>
+                                        <a class="dropdown-item" href="logout">Logout</a>
+                                    </div>
+                                </li>
+                            </ul>
+
+                
+                </div>
 
                 <div class="page-wrapper">
                     <div class="content container-fluid">
@@ -67,7 +88,26 @@
                                                         </c:forEach>
                                                     </td>
                                                     <td>${exam.examinationDate}</td>
-                                                    <td><span class="badge badge-info">${exam.status}</span></td>
+                                                    <td><c:choose>
+                                                            <c:when test="${exam.status == 'Pending'}">
+                                                                <span class="badge" style="background-color: #ff9800; color: white;">${exam.status}</span>
+                                                            </c:when>
+                                                            <c:when test="${exam.status == 'In process'}">
+                                                                <span class="badge" style="background-color: #2196f3; color: white;">${exam.status}</span>
+                                                            </c:when>
+                                                            <c:when test="${exam.status == 'Confirmed'}">
+                                                                <span class="badge" style="background-color: #4caf50; color: white;">${exam.status}</span>
+                                                            </c:when>
+                                                            <c:when test="${exam.status == 'Completed'}">
+                                                                <span class="badge" style="background-color: #8bc34a; color: white;">${exam.status}</span>
+                                                            </c:when>
+                                                            <c:when test="${exam.status == 'Rejected'}">
+                                                                <span class="badge" style="background-color: #f44336; color: white;">${exam.status}</span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="badge" style="background-color: #757575; color: white;">${exam.status}</span>
+                                                            </c:otherwise>
+                                                        </c:choose></td>
                                                     <td>
                                                         <a href="view-medical-record?examId=${exam.examinationID}" class="btn btn-sm btn-info">View Details</a>
                                                         <c:if test="${exam.status == 'Pending'}">
@@ -89,9 +129,9 @@
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>

@@ -62,8 +62,12 @@ public class ChangePassword extends HttpServlet {
         } else {
             CustomerDAO dao = new CustomerDAO();
             int customerID = customer.getCustomerID();
+            ValidFunction valid = new ValidFunction();
 
-            if (!dao.checkOldPassword(customerID, oldPassword)) {
+
+            String hashedOldPassword = dao.getCustomerHashedPassword(customerID);
+
+            if (hashedOldPassword == null || !valid.checkPassword(oldPassword, hashedOldPassword)) {
                 request.setAttribute("error", "Old Password is not correct");
                 request.getRequestDispatcher("change-password.jsp").forward(request, response);
                 return;
@@ -75,13 +79,22 @@ public class ChangePassword extends HttpServlet {
                 return;
             }
 
-            dao.changeCustomerPassword(customerID, newPassword);
+            if (!valid.isValidPassword(newPassword)) {
+                request.setAttribute("error", "Password must contain at least 8 characters, including digits, special characters, and uppercase letters.");
+                request.getRequestDispatcher("change-password.jsp").forward(request, response);
+                return;
+            }
 
-            customer.setPassword(newPassword);
+
+            String hashedNewPassword = valid.hashPassword(newPassword);
+            dao.changeCustomerPassword(customerID, hashedNewPassword);
+
+
+            customer.setPassword(hashedNewPassword);
 
             response.sendRedirect("profile.jsp");
+
         }
 
     }
-
 }

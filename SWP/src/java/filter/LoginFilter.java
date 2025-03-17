@@ -100,11 +100,21 @@ public class LoginFilter implements Filter {
             FilterChain chain)
             throws IOException, ServletException {
         
+        
+        // Kiểm tra xem yêu cầu có phải là yêu cầu đăng nhập Google (OAuth) không
+        
         if (debug) {
             log("LoginFilter:doFilter()");
         }
         HttpServletRequest req = (HttpServletRequest)request;
+       
         HttpServletResponse res = (HttpServletResponse)response;
+         String requestURI = req.getRequestURI();
+        if (requestURI.contains("/GoogleLoginServlet")) {
+            // Bỏ qua bộ lọc nếu yêu cầu là đăng nhập Google
+            chain.doFilter(request, response);
+            return;
+        }
         HttpSession session = req.getSession();
         if(session.getAttribute("staffAccount")==null && session.getAttribute("customerAccount") == null){
             res.sendRedirect("login.jsp");
