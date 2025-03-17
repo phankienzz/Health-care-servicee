@@ -376,9 +376,23 @@ public class WorkingScheduleDAO {
         return hasSchedule;
     }
 
+    public void updateLeaveStatus(int leaveID, String status) {
+        String sql = "UPDATE ProfessionalLeave SET status = ? WHERE leaveID = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, status);
+            st.setInt(2, leaveID);
+            int rowsAffected = st.executeUpdate();
+            if (rowsAffected == 0) {
+                System.err.println("No rows updated for leaveID: " + leaveID);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error updating leave status for leaveID " + leaveID + ": " + e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
         WorkingScheduleDAO dao = new WorkingScheduleDAO();
-        List<ProfessionalLeave> list = dao.getProfessionalLeavesByProfessionalID(1);
+        List<ProfessionalLeave> list = dao.getProfessionalLeavesByProfessionalID(2);
         for (ProfessionalLeave ws : list) {
             System.out.println(ws);
         }

@@ -38,7 +38,9 @@
             }
             #leave-section {
                 display: flex;
-                justify-content: space-between;
+                justify-content: center;
+                align-items: flex-start;
+                gap: 20px;
             }
             #leaveForm {
                 background-color: #d9f2ff;
@@ -49,6 +51,35 @@
             }
             #leaveTable {
                 width: 50%;
+                background-color: #ffffff;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+            #leaveTable th {
+                background-color: #b3e0ff;
+                color: #005580;
+                padding: 12px;
+                font-weight: bold;
+            }
+            #leaveTable td {
+                padding: 8px;
+                vertical-align: middle;
+            }
+            #leaveTable th:nth-child(3), #leaveTable td:nth-child(3) { /* Cột Leave Date */
+                width: 150px; /* Tăng chiều rộng cho cột Leave Date */
+                min-width: 150px; /* Đảm bảo không bị co lại */
+            }
+            #leaveTable th:nth-child(4), #leaveTable td:nth-child(4) { /* Cột Reason */
+                width: 250px; /* Tăng chiều rộng cho cột Reason */
+                min-width: 250px; /* Đảm bảo không bị co lại */
+                text-align: left; /* Căn trái nội dung Reason */
+                word-wrap: break-word; /* Cho phép xuống dòng */
+            }
+            #leaveTable select {
+                padding: 5px;
+                border: 1px solid #99ccff;
+                border-radius: 4px;
+                background-color: #f0faff;
+                width: 100px;
             }
             input, button {
                 margin: 5px 0;
@@ -65,20 +96,31 @@
             button:hover {
                 background-color: #005580;
             }
+            #leaveTable button {
+                width: 80px;
+                padding: 6px;
+                font-size: 14px;
+            }
             #dateForm {
                 display: flex;
-                justify-content: center;
+                align-items: center;
+                justify-content: flex-start;
                 gap: 10px;
                 margin-bottom: 20px;
             }
-            #dateForm input[type="date"], #dateForm button {
-                padding: 8px 12px;
-                border: 1px solid #99ccff;
-                border-radius: 5px;
+            #dateForm input[type="date"] {
+                padding: 5px 10px;
+                width: 150px;
+                font-size: 14px;
             }
             #dateForm button {
+                padding: 5px 15px;
+                font-size: 14px;
                 background-color: #007acc;
                 color: white;
+                border: none;
+                border-radius: 5px;
+                width: auto;
                 cursor: pointer;
             }
             #dateForm button:hover {
@@ -89,7 +131,7 @@
     <body>
         <h1>Doctor's Weekly Schedule</h1>
 
-        <form id="dateForm" method="GET" action="viewpersonalschedule">
+        <form id="dateForm" method="GET" action="professionalleave">
             <input type="hidden" name="professionalID" value="${param.professionalID}" />
             <label for="selectedDate">Select Date:</label>
             <input type="date" id="selectedDate" name="selectedDate" value="${selectedDate}">
@@ -136,30 +178,49 @@
         <h1>Professional Leave List</h1>
 
         <div id="leave-section">
-            <table id="leaveTable">
-                <tr>
-                    <th>Leave Date</th>
-                    <th>Reason</th>
-                    <th>Status</th>
-                </tr>
-                <c:choose>
-                    <c:when test="${not empty leaveList}">
-                        <c:forEach var="leave" items="${leaveList}">
+            <form method="POST" action="professionalleave">
+                <table id="leaveTable">
+                    <tr>
+                        <th>Leave ID</th>
+                        <th>Professional ID</th>
+                        <th>Leave Date</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    <c:choose>
+                        <c:when test="${not empty leaveList}">
+                            <c:forEach var="leave" items="${leaveList}">
+                                <tr>
+                                    <td>${leave.leaveID}</td>
+                                    <td>${leave.professionalID}</td>
+                                    <td>${leave.leaveDate}</td>
+                                    <td>${leave.reason}</td>
+                                    <td>
+                                        <select name="status">
+                                            <option value="Pending" ${leave.status == 'Pending' ? 'selected' : ''}>Pending</option>
+                                            <option value="Approved" ${leave.status == 'Approved' ? 'selected' : ''}>Approved</option>
+                                            <option value="Rejected" ${leave.status == 'Rejected' ? 'selected' : ''}>Rejected</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="leaveID" value="${leave.leaveID}" />
+                                        <input type="hidden" name="professionalID" value="${leave.professionalID}" />
+                                         <input type="hidden" name="leaveDate" value="${leave.leaveDate}" />
+                                        <button type="submit" value="${leave.leaveID}">Update</button>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
                             <tr>
-                                <td>${leave.leaveDate}</td>
-                                <td>${leave.reason}</td>
-                                <td>${leave.status}</td>
+                                <td colspan="6">No records found</td>
                             </tr>
-                        </c:forEach>
-                    </c:when>
-                    <c:otherwise>
-                        <tr>
-                            <td colspan="5">No records found</td>
-                        </tr>
-                    </c:otherwise>
-                </c:choose>
-            </table>
+                        </c:otherwise>
+                    </c:choose>
+                </table>
+            </form>
         </div>
-    </body>
 
+    </body>
 </html>

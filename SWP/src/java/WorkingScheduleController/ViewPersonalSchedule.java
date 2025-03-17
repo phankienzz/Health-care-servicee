@@ -113,7 +113,6 @@ public class ViewPersonalSchedule extends HttpServlet {
         if (message != null) {
             request.setAttribute("errorMessage", message);
         }
-
         doGet(request, response);
     }
 }

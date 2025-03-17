@@ -130,7 +130,22 @@ public class ProfessionalLeaveServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        WorkingScheduleDAO workingDAO = new WorkingScheduleDAO();
+        int professionalID = Integer.parseInt(request.getParameter("professionalID"));
+        request.setAttribute("professionalID", professionalID);
+        int leaveID = Integer.parseInt(request.getParameter("leaveID"));
+        String status = request.getParameter("status");
+        String leaveDateStr = request.getParameter("leaveDate");
+        LocalDate leaveDate = LocalDate.parse(leaveDateStr);
+
+        if (leaveDate.isBefore(LocalDate.now())) {
+            workingDAO.updateLeaveStatus(leaveID, "Missed time!");
+            doGet(request, response);
+        } else {
+            workingDAO.updateLeaveStatus(leaveID, status);
+            doGet(request, response);
+        }
+
     }
 
     /**

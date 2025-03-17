@@ -171,7 +171,6 @@
                     <option value="">-- Select Reason --</option>
                     <option value="Work Related">Work-Related</option>
                     <option value="Personal reason">Personal</option>
-                    <option value="other">Other</option>
                 </select><br>
 
                 <label>Note:</label>
