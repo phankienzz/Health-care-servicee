@@ -59,13 +59,14 @@ public class Home extends HttpServlet {
             visitDAO.increaseVisitCount(); // Chỉ tăng khi chưa có
             session.setAttribute("visited", true); // Đánh dấu đã ghé thăm
         }
-        // Lưu số lượt truy cập trong session
+        
+        // Lưu số lượt truy cập trong session:test
         int sessionVisitCount = (session.getAttribute("sessionVisitCount") == null) ? 1
                 : (int) session.getAttribute("sessionVisitCount") + 1;
         session.setAttribute("sessionVisitCount", sessionVisitCount);
 
         List<Service> listService = dao.get4Service();
-        List<Feedback> listFeedback = feedbackDAO.getAllFeedbacksByCustomer();
+        List<Feedback> listFeedback = feedbackDAO.getAllFeedback5StarByCustomer();
 
         for (Feedback feedback : listFeedback) {
             feedback.setDate(valid.formatDateNews(feedback.getDate()));

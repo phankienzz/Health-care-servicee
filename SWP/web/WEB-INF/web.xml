@@ -96,9 +96,7 @@
         <url-pattern>/edit-invoice.jsp</url-pattern>
         <url-pattern>/create-invoice.jsp</url-pattern>
         <url-pattern>/invoices.jsp</url-pattern>
-        
     </filter-mapping>
-    
     <filter-mapping>
         <filter-name>LoginFilter</filter-name>
         <url-pattern>/adminIndex.jsp</url-pattern>

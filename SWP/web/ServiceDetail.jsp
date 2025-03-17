@@ -78,16 +78,25 @@
                 font-size: 16px;
                 border-radius: 5px;
             }
+            .section{
+                padding: 30px 0;
+            }
         </style>
     </head>
     <body>
         <jsp:include page="headerHome.jsp"></jsp:include>
-
             <!-- Banner -->
             <section class="page-title bg-1">
                 <div class="overlay"></div>
-                <div class="container text-center">
-                    <h1 class="text-white">Chi Tiết Dịch Vụ</h1>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="block text-center">
+                                <span class="text-white">Our Service</span>
+                                <h1 class="text-capitalize mb-5 text-lg">Detail Service</h1>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -102,6 +111,7 @@
                 </div>
             </div>
 
+
             <!-- Mô tả dịch vụ (introduce) -->
             <div class="container" id="introduce-section" style="display: block;">
                 <div class="blog-content" style="max-width: 800px; margin: 0 auto; text-align: justify; padding: 15px;">
@@ -110,6 +120,53 @@
                 </div>
             </div>
         </div>
+
+        <!-- Chuyên gia -->
+        <section class="section doctors">
+
+            <div class="container" id="experts-section" style="display: none;">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 text-center">
+                        <div class="section-title">
+                            <h2>Chuyên gia</h2>
+                            <div class="divider mx-auto my-4"></div>
+                        </div>
+                    </div>
+                </div>
+<!--                <div class="col-12 text-center  mb-5">
+                    <div class="btn-group btn-group-toggle " data-toggle="buttons">
+                        <label class="btn active ">
+                            <input type="radio" name="shuffle-filter" value="all" checked="checked" />All Doctor
+                        </label>
+                        <c:forEach var="pro" items="${listPro}">
+                            <label class="btn">
+                                <input type="radio" name="shuffle-filter" value="cat6" />${pro.biography}
+                            </label>
+                        </c:forEach>
+
+                    </div>
+                </div>-->
+                <div class="row shuffle-wrapper portfolio-gallery">
+                    <c:forEach var="pro" items="${listPro}">
+                        <div class="col-lg-3 col-sm-6 col-md-6 mb-4 shuffle-item" data-groups="[&quot;cat1&quot;,&quot;cat2&quot;]">
+                            <div class="position-relative doctor-inner-box">
+                                <div class="doctor-profile">
+                                    <div class="doctor-img">
+                                        <img src="assets2/images/team/1.jpg" alt="doctor-image" class="img-fluid w-100">
+                                    </div>
+                                </div>
+                                <div class="content mt-3">
+                                    <h4 class="mb-0"><a href="doctor-single.html">${pro.getName()}</a></h4>
+                                    <p>${pro.specialization}</p>
+                                </div> 
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
+        </section>
+        
+        
 
         <!-- Chi Tiết Dịch Vụ -->
         <div class="container" id="service-detail" style="display: none;">
@@ -154,6 +211,7 @@
                     });
                 });
             });
+
         </script>
 
     </body>
