@@ -112,6 +112,12 @@ public class StaffFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession();
+        String requestURI = req.getRequestURI();
+        if (requestURI.contains("/GoogleLoginServlet")) {
+            // Bỏ qua bộ lọc nếu yêu cầu là đăng nhập Google
+            chain.doFilter(request, response);
+            return;
+        }
         if (session.getAttribute("staffAccount") == null && session.getAttribute("customerAccount") == null) {
             res.sendRedirect("login.jsp");
         }

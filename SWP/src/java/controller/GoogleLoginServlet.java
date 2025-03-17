@@ -13,9 +13,9 @@ import org.apache.http.client.ClientProtocolException;
 import constant.Iconstant;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
+
 import model.Customer;
 import dao.CustomerDAO;
-import model.GoogleAccount;
 
 @WebServlet(name = "GoogleLoginServlet", urlPatterns = {"/GoogleLoginServlet"})
 public class GoogleLoginServlet extends HttpServlet {
@@ -141,7 +141,7 @@ public class GoogleLoginServlet extends HttpServlet {
     }
 
     public static void main(String[] args) throws IOException {
-        String code = "?access_token=4/0ASVgi3JQPj-V1Uj2xjtcHVQQK3pdILP3s6htPVfJimeBWx19pZAkrlJFyYCokRKRCaDlrQ";
+        String code = "?code=4%2F0AQSTgQHG4KHD5pfYvGEWGx_D_w1OmBeAux_uKAfb7CHnkxHgDW5__lvMKd2daGlI-jVpjA&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=consent";
         Customer user = getUserInfo(code);
     }
 }

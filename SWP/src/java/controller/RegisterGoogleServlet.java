@@ -135,23 +135,24 @@ public class RegisterGoogleServlet extends HttpServlet {
             CustomerDAO customerDAO = new CustomerDAO();
             Customer existingCustomer = customerDAO.getCustomerByEmail(user.getEmail());
              String contextPath = request.getContextPath(); // Lấy context path
-            if (existingCustomer != null) {
-                request.getSession().setAttribute("customerAccount", existingCustomer);
-
-           
-            response.sendRedirect(contextPath + "/index_1.jsp"); // Redirect với context path
-            return;
+            if (existingCustomer == null) {
+               customerDAO.insertGoogleUser(user.getEmail(), user.getUsername(), user.getProfilePicture());
+                response.sendRedirect(contextPath + "/login.jsp");
 //                existingCustomer = customerDAO.getCustomerByEmail(user.getEmail());
 //                if (existingCustomer == null) {
 //                    ///handleError(request, response, "Lỗi thêm user mới", "error.jsp");
 //                    out.print(4);
 //                    return;
 //                }
-            }
-            out.print(5);
-                customerDAO.insertGoogleUser(user.getEmail(), user.getUsername(), user.getProfilePicture());
-                response.sendRedirect(contextPath + "/login.jsp");
+            }else{
+           
+                request.getSession().setAttribute("customerAccount", existingCustomer);
 
+           
+            response.sendRedirect(contextPath + "/index_1.jsp"); // Redirect với context path
+
+            }
+                         
 //        } catch (IOException e) {
 //            handleError(request, response, "Lỗi Google API: " + e.getMessage(), "error.jsp");
         } catch (Exception e) {

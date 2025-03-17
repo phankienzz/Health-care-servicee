@@ -594,8 +594,8 @@ public class CustomerDAO extends DBContext {
 //        for (Customer customer : list) {
 //            System.out.println(customer);
 //        }
-        Customer c = dao.getCustomerByIdAndName(2, "b");
-        System.out.println(c);
+        
+        dao.insertGoogleUser("sss", null, null);
     }
 
 }
