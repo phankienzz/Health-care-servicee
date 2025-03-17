@@ -167,14 +167,6 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label>Other Information</label>
-                                                    <textarea class="form-control"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                                 <c:if test="${error != null}">
