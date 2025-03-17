@@ -33,7 +33,6 @@ public class ViewPersonalSchedule extends HttpServlet {
                     : LocalDate.now();
 
             LocalDate firstMondayOfWeek = selectedDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-            LocalDate lastSundayOfWeek = firstMondayOfWeek.plusDays(6);
 
             List<WorkingSchedule> professionalList = workingDAO.getAllSchedulesByProfessionalID(professionalID);
             List<ProfessionalLeave> leaveList = workingDAO.getProfessionalLeavesByProfessionalID(professionalID);
@@ -46,7 +45,6 @@ public class ViewPersonalSchedule extends HttpServlet {
             }
 
             List<WorkingSchedule> updatedSchedule = new ArrayList<>();
-
             for (WorkingSchedule schedule : professionalList) {
                 LocalDate scheduleDate = firstMondayOfWeek.plusDays(schedule.getDayOfWeek() - 2);
                 if (leaveDates.contains(Date.valueOf(scheduleDate))) {
@@ -62,6 +60,7 @@ public class ViewPersonalSchedule extends HttpServlet {
                 updatedSchedule.add(schedule);
             }
 
+            request.setAttribute("professionalID", professionalID);
             request.setAttribute("leaveList", leaveList);
             request.setAttribute("professionalList", updatedSchedule);
             request.setAttribute("firstMondayOfWeek", firstMondayOfWeek);
@@ -69,13 +68,52 @@ public class ViewPersonalSchedule extends HttpServlet {
 
             request.getRequestDispatcher("viewPersonalSchedule.jsp").forward(request, response);
         } catch (NumberFormatException e) {
-            e.printStackTrace();
-            response.sendRedirect("error.jsp");
+            request.setAttribute("errorMessage", "Invalid professional ID format.");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Handle POST if needed
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String message = null;
+        WorkingScheduleDAO dao = new WorkingScheduleDAO();
+        try {
+            int professionalID = Integer.parseInt(request.getParameter("professionalID"));
+            String leaveDateStr = request.getParameter("leaveDate");
+            String reason = request.getParameter("reason");
+            String note = request.getParameter("note");
+
+            if (leaveDateStr == null || leaveDateStr.isEmpty()) {
+                message = "Leave date is required.";
+            } else if (reason == null || reason.isEmpty()) {
+                message = "Reason is required.";
+            } else if ("personal".equals(reason) && (note == null || note.trim().isEmpty())) {
+                message = "Note is required when the reason is personal.";
+            } else {
+                LocalDate leaveDate = LocalDate.parse(leaveDateStr);
+                if (leaveDate.isBefore(LocalDate.now())) {
+                    message = "Leave date cannot be in the past.";
+                } else {
+                    if (!dao.isWorkingOnDate(professionalID, Date.valueOf(leaveDate))) {
+                        message = "No schedule on this day.";
+                    } else {
+                        String combinedReason = "(" + reason + ") " + (note != null ? note.trim() : "");
+                        dao.addProfessionalLeave(professionalID, Date.valueOf(leaveDate), combinedReason);
+                        request.setAttribute("successMessage", "Leave request submitted successfully.");
+                    }
+                }
+            }
+        } catch (NumberFormatException e) {
+            message = "Invalid professional ID.";
+        } catch (Exception e) {
+            message = "Error processing request: " + e.getMessage();
+        }
+
+        if (message != null) {
+            request.setAttribute("errorMessage", message);
+        }
+
+        doGet(request, response);
     }
 }

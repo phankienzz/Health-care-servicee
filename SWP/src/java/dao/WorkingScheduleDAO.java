@@ -3,6 +3,7 @@ package dao;
 import context.DBContext;
 import model.WorkingSchedule;
 import java.sql.*;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -306,6 +307,73 @@ public class WorkingScheduleDAO {
             e.printStackTrace();
         }
         return leaves;
+    }
+
+    public void addProfessionalLeave(int professionalID, Date leaveDate, String reason) {
+        String sql = "INSERT INTO ProfessionalLeave (professionalID, leaveDate, reason, status) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, professionalID);
+            st.setDate(2, leaveDate);
+            st.setString(3, reason);
+            st.setString(4, "Pending"); // Default status for new leave requests
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isWorkingOnDate(int professionalID, Date date) {
+        boolean hasSchedule = false;
+
+        // Chuyển đổi từ java.sql.Date sang LocalDate
+        LocalDate localDate = date.toLocalDate();
+
+        // Xác định thứ trong tuần (2-8, với Chủ Nhật là 8)
+        DayOfWeek dayOfWeek = localDate.getDayOfWeek();
+        int dayCode = (dayOfWeek == DayOfWeek.SUNDAY) ? 8 : dayOfWeek.getValue();
+
+        // Câu lệnh SQL để kiểm tra lịch làm việc
+        String sql = "SELECT COUNT(*) FROM WorkingSchedule WHERE professionalID = ? AND dayOfWeek = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, professionalID);
+            ps.setInt(2, dayCode);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    hasSchedule = rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return hasSchedule;
+    }
+
+    public boolean isLeaveOnDate(int professionalID, Date date) {
+        boolean hasSchedule = false;
+
+        // Chuyển đổi từ java.sql.Date sang LocalDate
+        LocalDate localDate = date.toLocalDate();
+
+        // Câu lệnh SQL để kiểm tra lịch làm việc
+        String sql = "SELECT COUNT(*) FROM ProfessionalLeave WHERE professionalID = ? AND leaveDate = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, professionalID);
+            ps.setDate(2, date);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    hasSchedule = rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return hasSchedule;
     }
 
     public static void main(String[] args) {

@@ -11,7 +11,7 @@ import java.util.Date;
  * @author laptop 368
  */
 public class ProfessionalLeave {
-     private int leaveID;
+    private int leaveID;
     private int professionalID;
     private Date leaveDate;
     private String reason;
