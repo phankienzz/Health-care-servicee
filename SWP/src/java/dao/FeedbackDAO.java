@@ -23,13 +23,13 @@ public class FeedbackDAO extends DBContext {
     public List<Feedback> getAllFeedback5StarByCustomer() {
         List<Feedback> feedbackList = new ArrayList<>();
         String query = "SELECT f.feedbackID, c.customerID, c.fullName, c.email, "
-                + "f.rating, f.comment, f.date, f.serviceType, "
+                + "f.rating, f.comment, f.date, "
                 + "i.invoiceID, me.examinationID "
                 + "FROM Feedback f "
                 + "JOIN Invoice i ON f.invoiceID = i.invoiceID "
                 + "JOIN MedicalExamination me ON i.examinationID = me.examinationID "
                 + "JOIN Customer c ON me.customerID = c.customerID "
-                + "where rating = 5"
+                + "WHERE f.rating = 5 "
                 + "ORDER BY f.date DESC";
 
         try (PreparedStatement stmt = connection.prepareStatement(query); ResultSet rs = stmt.executeQuery()) {
@@ -55,7 +55,6 @@ public class FeedbackDAO extends DBContext {
                 feedback.setRating(rs.getInt("rating"));
                 feedback.setComment(rs.getString("comment"));
                 feedback.setDate(rs.getString("date"));
-                feedback.setServiceType(rs.getString("serviceType"));
 
                 feedbackList.add(feedback);
             }
@@ -64,11 +63,11 @@ public class FeedbackDAO extends DBContext {
         }
         return feedbackList;
     }
-    
+
     public List<Feedback> getAllFeedbackByCustomer() {
         List<Feedback> feedbackList = new ArrayList<>();
         String query = "SELECT f.feedbackID, c.customerID, c.fullName, c.email, "
-                + "f.rating, f.comment, f.date, f.serviceType, "
+                + "f.rating, f.comment, f.date, "
                 + "i.invoiceID, me.examinationID "
                 + "FROM Feedback f "
                 + "JOIN Invoice i ON f.invoiceID = i.invoiceID "
@@ -99,7 +98,6 @@ public class FeedbackDAO extends DBContext {
                 feedback.setRating(rs.getInt("rating"));
                 feedback.setComment(rs.getString("comment"));
                 feedback.setDate(rs.getString("date"));
-                feedback.setServiceType(rs.getString("serviceType"));
 
                 feedbackList.add(feedback);
             }

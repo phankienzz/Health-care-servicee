@@ -15,18 +15,16 @@ public class Feedback {
     private int rating;
     private String comment;
     private String date;
-    private String serviceType;
 
     public Feedback() {
     }
 
-    public Feedback(int feedbackID, Invoice invoice, int rating, String comment, String date, String serviceType) {
+    public Feedback(int feedbackID, Invoice invoice, int rating, String comment, String date) {
         this.feedbackID = feedbackID;
         this.invoice = invoice;
         this.rating = rating;
         this.comment = comment;
         this.date = date;
-        this.serviceType = serviceType;
     }
 
     public int getFeedbackID() {
@@ -69,16 +67,6 @@ public class Feedback {
         this.date = date;
     }
 
-    public String getServiceType() {
-        return serviceType;
-    }
-
-    public void setServiceType(String serviceType) {
-        this.serviceType = serviceType;
-    }
-
-    
-
     @Override
     public String toString() {
         return "Feedback{"
@@ -90,7 +78,6 @@ public class Feedback {
                 + ", rating=" + rating
                 + ", comment='" + comment + '\''
                 + ", date='" + date + '\''
-                + ", serviceType='" + serviceType + '\''
                 + '}';
     }
 
