@@ -91,8 +91,9 @@
 
                                             <!-- Birth Date -->
                                             <div class="col-md-6">
+                                                <label >Birth Date</label>
                                                 <div class="form-group form-focus">
-                                                    <label class="focus-label">Birth Date</label>
+                                                    
                                                     <div class="cal-icon">
                                                         <input type="text" name="dateOfBirth" class="form-control datetimepicker" 
                                                                value="${sessionScope.customerAccount.dateOfBirth != null ? sessionScope.customerAccount.dateOfBirth : ''}">

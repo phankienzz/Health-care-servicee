@@ -251,8 +251,8 @@
                                     <label class="focus-label">Status</label>
                                     <select name="status" class="select floating">
                                         <option value="" ${status == '' ? 'selected' : ''}>All</option>
-                                        <option value="active" ${ status == 'active' ? 'selected' : ''}>Active</option>
-                                        <option value="inactive" ${status == 'inactive' ? 'selected' : ''}>Inactive</option>
+                                        <option value="Active" ${ status == 'Active' ? 'selected' : ''}>Active</option>
+                                        <option value="Inactive" ${status == 'Inactive' ? 'selected' : ''}>Inactive</option>
                                     </select>
                                 </div>
                             </div>

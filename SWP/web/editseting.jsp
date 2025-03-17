@@ -40,7 +40,7 @@
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="profile.jsp">My Profile</a>
-                        <a class="dropdown-item" href="edit-profile.jsp">Settings</a>
+                        <a class="dropdown-item" href="customer-medical-records">Medical record</a>
                         
                         <a class="dropdown-item" href="logout">Logout</a>
                     </div>

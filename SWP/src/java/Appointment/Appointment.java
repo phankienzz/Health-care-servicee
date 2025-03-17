@@ -9,9 +9,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Customer;
@@ -29,14 +29,6 @@ public class Appointment extends HttpServlet {
     private ProfessionalDAO professionalDAO = new ProfessionalDAO();
     private MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
 
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -49,14 +41,6 @@ public class Appointment extends HttpServlet {
         request.getRequestDispatcher("appointment.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -69,59 +53,100 @@ public class Appointment extends HttpServlet {
         }
 
         // Retrieve form data
-        String[] serviceIds = request.getParameterValues("serviceIds[]"); // Array of selected service IDs
+        String[] serviceIds = request.getParameterValues("serviceIds[]");
         String doctorId = request.getParameter("doctorId");
-        String examinationDate = request.getParameter("date") + " " + request.getParameter("time"); // Combine date and time
+        String dateStr = request.getParameter("date"); // Expected format: dd/MM/yyyy
+        String timeStr = request.getParameter("time"); // Expected format: HH:mm
         String name = request.getParameter("name");
         String phone = request.getParameter("phone");
         String message = request.getParameter("message");
 
-        // Get current timestamp for createdAt
-        String createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        // Define formatters
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        // Fetch Professional object based on doctorId
-        Professional doctor = professionalDAO.getProfessionalbyID(Integer.parseInt(doctorId));
+        try {
+            // Combine date and time and parse it
+            String examinationDateTimeStr = dateStr + " " + timeStr;
+            LocalDateTime examinationDateTime = LocalDateTime.parse(examinationDateTimeStr, inputFormatter);
+            
+            // Get current date/time
+            LocalDateTime now = LocalDateTime.now();
+            
+            // Validate date - must not be in the past
+            if (examinationDateTime.isBefore(now)) {
+                request.setAttribute("error", "Appointment date must be in the future. Please select a valid date.");
+                // Preserve form data
+                preserveFormData(request, serviceIds, doctorId, dateStr, timeStr, name, phone, message);
+                // Reload services and doctors
+                request.setAttribute("services", serviceDAO.getAllService());
+                request.setAttribute("doctors", professionalDAO.getAllDoctors());
+                request.getRequestDispatcher("appointment.jsp").forward(request, response);
+                return;
+            }
 
-        // Fetch selected services
-        List<Service> selectedServices = new ArrayList<>();
-        if (serviceIds != null) {
-            for (String serviceId : serviceIds) {
-                Service service = serviceDAO.getServiceById(Integer.parseInt(serviceId));
-                if (service != null) {
-                    selectedServices.add(service);
+            String examinationDate = examinationDateTime.format(outputFormatter);
+            String createdAt = LocalDateTime.now().format(outputFormatter);
+
+            // Fetch Professional object
+            Professional doctor = professionalDAO.getProfessionalbyID(Integer.parseInt(doctorId));
+
+            // Fetch selected services
+            List<Service> selectedServices = new ArrayList<>();
+            if (serviceIds != null) {
+                for (String serviceId : serviceIds) {
+                    Service service = serviceDAO.getServiceById(Integer.parseInt(serviceId));
+                    if (service != null) {
+                        selectedServices.add(service);
+                    }
                 }
             }
-        }
 
-        // Create MedicalExamination object
-        MedicalExamination examination = new MedicalExamination();
-        examination.setExaminationID(0); // Assuming ID is auto-generated by the database
-        examination.setExaminationDate(examinationDate);
-        examination.setCustomerId(customerProfile);
-        examination.setStatus("Pending"); // Default status
-        examination.setConsultantId(doctor);
-        examination.setNote(message);
-        examination.setCreatedAt(createdAt);
-        examination.setList(selectedServices);
+            // Create MedicalExamination object
+            MedicalExamination examination = new MedicalExamination();
+            examination.setExaminationID(0);
+            examination.setExaminationDate(examinationDate);
+            examination.setCustomerId(customerProfile);
+            examination.setStatus("Pending");
+            examination.setConsultantId(doctor);
+            examination.setNote(message);
+            examination.setCreatedAt(createdAt);
+            examination.setList(selectedServices);
 
-        // Save to database using DAO
-        boolean success = medicalExaminationDAO.saveMedicalExamination(examination);
+            // Save to database
+            boolean success = medicalExaminationDAO.saveMedicalExamination(examination);
 
-        if (success) {
-            // Redirect to a success page or show a success message
-            response.sendRedirect("confirmation.jsp");
-        } else {
-            // Handle failure (e.g., show error message)
-            request.setAttribute("error", "Failed to book appointment. Please try again.");
+            if (success) {
+                response.sendRedirect("confirmation.jsp");
+            } else {
+                request.setAttribute("error", "Failed to book appointment. Please try again.");
+                preserveFormData(request, serviceIds, doctorId, dateStr, timeStr, name, phone, message);
+                request.setAttribute("services", serviceDAO.getAllService());
+                request.setAttribute("doctors", professionalDAO.getAllDoctors());
+                request.getRequestDispatcher("appointment.jsp").forward(request, response);
+            }
+
+        } catch (DateTimeParseException e) {
+            request.setAttribute("error", "Invalid date or time format. Please use correct format (dd/MM/yyyy and HH:mm)");
+            preserveFormData(request, serviceIds, doctorId, dateStr, timeStr, name, phone, message);
+            request.setAttribute("services", serviceDAO.getAllService());
+            request.setAttribute("doctors", professionalDAO.getAllDoctors());
             request.getRequestDispatcher("appointment.jsp").forward(request, response);
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+    // Helper method to preserve form data when validation fails
+    private void preserveFormData(HttpServletRequest request, String[] serviceIds, String doctorId, 
+            String dateStr, String timeStr, String name, String phone, String message) {
+        request.setAttribute("selectedServiceIds", serviceIds);
+        request.setAttribute("selectedDoctorId", doctorId);
+        request.setAttribute("date", dateStr);
+        request.setAttribute("time", timeStr);
+        request.setAttribute("name", name);
+        request.setAttribute("phone", phone);
+        request.setAttribute("message", message);
+    }
+
     @Override
     public String getServletInfo() {
         return "Handles appointment booking for medical examinations";
