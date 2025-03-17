@@ -42,18 +42,23 @@
                                         <textarea cols="30" rows="2" class="form-control" name="description" ></textarea>
                                     </div>
 
-                                    <div class="form-group" >
+                                    <div class="form-group">
                                         <label>Category</label>
                                     <c:if test="${empty categoryList}">
                                         <p style="color: red;">No categories found. Please add some categories.</p>
                                     </c:if>
-                                    <select class="form-control" name="categoryId" required >
+                                    <select class="form-control" name="categoryId" required>
                                         <option value="">Select Category</option>
-                                        <c:forEach  items="${categoryList}" var="cat">
-                                            <option value="${cat.category_id}">${cat.name}</option>
+                                        <c:forEach items="${categoryList}" var="cat">
+                                            <c:if test="${cat.status == 1}">
+                                                <option value="${cat.category_id}" <c:if test="${cat.category_id == selectedCategoryId}">selected</c:if>>
+                                                    ${cat.name}
+                                                </option>
+                                            </c:if>
                                         </c:forEach>
                                     </select>
                                 </div>
+
 
 
                                 <div class="form-group">

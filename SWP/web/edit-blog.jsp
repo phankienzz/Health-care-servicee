@@ -70,11 +70,14 @@
                                     <select class="form-control" name="categoryId" required>
                                         <option value="">Select Category</option>
                                         <c:forEach items="${categoryList}" var="cat">
-                                            <option value="${cat.category_id}" ${cat.category_id == blog.category_id ? 'selected' : ''}>
-                                                ${cat.name}
-                                            </option>
+                                            <c:if test="${cat.status == 1}">
+                                                <option value="${cat.category_id}" ${cat.category_id == blog.category_id ? 'selected' : ''}>
+                                                    ${cat.name}
+                                                </option>
+                                            </c:if>
                                         </c:forEach>
                                     </select>
+
                                 </div>
 
 
@@ -88,7 +91,7 @@
 
                                 <div class="form-group">
                                     <label>Blog Content</label>
-                                    <textarea cols="30" rows="6" class="form-control" name="detail" id="detail" required>${blog.detail}</textarea>
+                                    <textarea cols="30" rows="6" class="form-control" name="detail" id="detail" >${blog.detail}</textarea>
                                 </div>
 
                                 <div class="form-group">

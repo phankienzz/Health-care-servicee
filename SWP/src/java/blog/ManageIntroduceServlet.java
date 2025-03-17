@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/manageIntroduce")
 public class ManageIntroduceServlet extends HttpServlet {
+
     private ServiceDAO serviceDAO;
 
     @Override
@@ -22,22 +23,20 @@ public class ManageIntroduceServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Lấy danh sách tất cả dịch vụ
         List<Service> serviceList = serviceDAO.getAllService();
         request.setAttribute("serviceList", serviceList);
 
         // Kiểm tra nếu đang ở chế độ chỉnh sửa
-        String edit = request.getParameter("edit");
-        if ("true".equals(edit)) {
-            int packageID = Integer.parseInt(request.getParameter("packageID"));
+        String packageIDParam = request.getParameter("packageID");
+        if (packageIDParam != null) {
+            int packageID = Integer.parseInt(packageIDParam);
             Service selectedService = serviceDAO.getServiceById(packageID);
             request.setAttribute("selectedService", selectedService);
-            request.setAttribute("editMode", true);
+
+            request.getRequestDispatcher("edit-introduce.jsp").forward(request, response);
+            return;
         }
 
-        // Chuyển tiếp đến JSP
         request.getRequestDispatcher("manage-introduce.jsp").forward(request, response);
     }
-    
-    
 }

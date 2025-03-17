@@ -105,7 +105,7 @@
             <!-- Mô tả dịch vụ (introduce) -->
             <div class="container" id="introduce-section" style="display: block;">
                 <div class="blog-content" style="max-width: 800px; margin: 0 auto; text-align: justify; padding: 15px;">
-                    <div class="blog-detail-content">
+                    <div class="blog-detail-content" style="word-wrap: break-word; overflow-wrap: break-word; overflow: hidden; text-overflow: ellipsis;">
                     ${service.introduce}
                 </div>
             </div>

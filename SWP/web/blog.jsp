@@ -25,45 +25,47 @@
             <![endif]-->
     </head>
 
-   
+
     <body>
         <div class="main-wrapper">
-            
+
             <jsp:include page="headerStaff.jsp"></jsp:include>
             <jsp:include page="sidebar.jsp"></jsp:include>
-            <div class="page-wrapper">
-                <div class="content">
-                    <div class="row">
-                        <div class="col-sm-8 col-4">
-                            <h4 class="page-title">Blog</h4>
+                <div class="page-wrapper">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-sm-8 col-4">
+                                <h4 class="page-title">Blog</h4>
+                            </div>
+                            <div class="col-sm-4 col-8 text-right m-b-30">
+                                <a class="btn btn-primary btn-rounded float-right" href="addblog">
+                                    <i class="fa fa-plus"></i> Add Blog
+                                </a>
+                            </div>
                         </div>
-                        <div class="col-sm-4 col-8 text-right m-b-30">
-                            <a class="btn btn-primary btn-rounded float-right" href="addblog">
-                                <i class="fa fa-plus"></i> Add Blog
-                            </a>
-                        </div>
-                    </div>
 
 
 
-                    <form action="homeblogseverlet" method="get" class="d-flex mb-3">
-                        <select name="category" class="form-select me-2">
-                            <option value="" ${selectedCategory == -1 ? 'selected' : ''}>All Categories</option>
-                            <option value="1" ${selectedCategory == 1 ? 'selected' : ''}>General Health</option>
-                            <option value="2" ${selectedCategory == 2 ? 'selected' : ''}>Cardiology</option>
-                            <option value="3" ${selectedCategory == 3 ? 'selected' : ''}>Pediatrics</option>
-                            <option value="4" ${selectedCategory == 4 ? 'selected' : ''}>Nutrition</option>
-                            <option value="5" ${selectedCategory == 5 ? 'selected' : ''}>Mental Health</option>
+                        <form action="homeblogseverlet" method="get" class="d-flex mb-3">
+                            <select name="category" class="form-select me-2">
+                                <option value="" <c:if test="${selectedCategory == -1}">selected</c:if>>All Categories</option>
+                            <c:forEach var="category" items="${categoryList}">
+                                <c:if test="${category.status == 1}">
+                                    <option value="${category.category_id}" <c:if test="${selectedCategory == category.category_id}">selected</c:if>>
+                                        ${category.name}
+                                    </option>
+                                </c:if>
+                            </c:forEach>
                         </select>
-
-
                         <button type="submit" class="btn btn-primary">Filter</button>
                     </form>
 
 
 
+
+
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                
+
                     <script>
                         $(document).ready(function () {
                             $("#searchKeyword").keyup(function () {
