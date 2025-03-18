@@ -21,91 +21,48 @@ import model.MedicalExamination;
  */
 public class FeedbackDAO extends DBContext {
 
-    public List<Feedback> getAllFeedback5StarByCustomer() {
-        List<Feedback> feedbackList = new ArrayList<>();
-        String query = "SELECT f.feedbackID, c.customerID, c.fullName, c.email, "
-                + "f.rating, f.comment, f.date, "
-                + "i.invoiceID, me.examinationID "
-                + "FROM Feedback f "
-                + "JOIN Invoice i ON f.invoiceID = i.invoiceID "
-                + "JOIN MedicalExamination me ON i.examinationID = me.examinationID "
-                + "JOIN Customer c ON me.customerID = c.customerID "
-                + "WHERE f.rating = 5 "
-                + "ORDER BY f.date DESC";
-
-        try (PreparedStatement stmt = connection.prepareStatement(query); ResultSet rs = stmt.executeQuery()) {
-
+    public List<Feedback> getAllFeedbackByCustomer() {
+        List<Feedback> list = new ArrayList<>();
+        InvoiceDAO inDAO = new InvoiceDAO();
+        String sql = "select * from Feedback";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                // Tạo đối tượng Customer
-                Customer customer = new Customer();
-                customer.setCustomerID(rs.getInt("customerID"));
-                customer.setFullName(rs.getString("fullName"));
-                customer.setEmail(rs.getString("email"));
+                list.add(new Feedback(
+                        rs.getInt("feedbackID"),
+                        inDAO.getInvoiceByID(rs.getInt("invoiceID")),
+                        rs.getInt("rating"),
+                        rs.getString("comment"),
+                        rs.getString("date")));
 
-                MedicalExamination examination = new MedicalExamination();
-                examination.setExaminationID(rs.getInt("examinationID"));
-                examination.setCustomerId(customer);
-
-                Invoice invoice = new Invoice();
-                invoice.setInvoiceID(rs.getInt("invoiceID"));
-                invoice.setExaminationID(examination);
-
-                Feedback feedback = new Feedback();
-                feedback.setFeedbackID(rs.getInt("feedbackID"));
-                feedback.setInvoice(invoice);
-                feedback.setRating(rs.getInt("rating"));
-                feedback.setComment(rs.getString("comment"));
-                feedback.setDate(rs.getString("date"));
-
-                feedbackList.add(feedback);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return feedbackList;
+        return list;
     }
 
-    public List<Feedback> getAllFeedbackByCustomer() {
-        List<Feedback> feedbackList = new ArrayList<>();
-        String query = "SELECT f.feedbackID, c.customerID, c.fullName, c.email, "
-                + "f.rating, f.comment, f.date, "
-                + "i.invoiceID, me.examinationID "
-                + "FROM Feedback f "
-                + "JOIN Invoice i ON f.invoiceID = i.invoiceID "
-                + "JOIN MedicalExamination me ON i.examinationID = me.examinationID "
-                + "JOIN Customer c ON me.customerID = c.customerID "
-                + "ORDER BY f.date DESC";
-
-        try (PreparedStatement stmt = connection.prepareStatement(query); ResultSet rs = stmt.executeQuery()) {
-
+    public List<Feedback> getAllFeedback5StarByCustomer() {
+        List<Feedback> list = new ArrayList<>();
+        InvoiceDAO inDAO = new InvoiceDAO();
+        String sql = "select * from Feedback where rating = 5";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                // Tạo đối tượng Customer
-                Customer customer = new Customer();
-                customer.setCustomerID(rs.getInt("customerID"));
-                customer.setFullName(rs.getString("fullName"));
-                customer.setEmail(rs.getString("email"));
+                list.add(new Feedback(
+                        rs.getInt("feedbackID"),
+                        inDAO.getInvoiceByID(rs.getInt("invoiceID")),
+                        rs.getInt("rating"),
+                        rs.getString("comment"),
+                        rs.getString("date")));
 
-                MedicalExamination examination = new MedicalExamination();
-                examination.setExaminationID(rs.getInt("examinationID"));
-                examination.setCustomerId(customer);
-
-                Invoice invoice = new Invoice();
-                invoice.setInvoiceID(rs.getInt("invoiceID"));
-                invoice.setExaminationID(examination);
-
-                Feedback feedback = new Feedback();
-                feedback.setFeedbackID(rs.getInt("feedbackID"));
-                feedback.setInvoice(invoice);
-                feedback.setRating(rs.getInt("rating"));
-                feedback.setComment(rs.getString("comment"));
-                feedback.setDate(rs.getString("date"));
-
-                feedbackList.add(feedback);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return feedbackList;
+        return list;
     }
 
     public boolean addFeedback(int invoiceID, int rating, String comment) {
@@ -126,23 +83,24 @@ public class FeedbackDAO extends DBContext {
 
     public static void main(String[] args) {
         FeedbackDAO feedbackDAO = new FeedbackDAO();
-//        List<Feedback> feedbacks = feedbackDAO.getAllFeedbackByCustomer();
-//        for (Feedback fb : feedbacks) {
-//            System.out.println(fb);
-//        }
-
-        int invoiceID = 7; 
-        int rating = 5; 
-        String comment = "Dịch vụ rất tuyệt vời!"; 
-
-        // Gọi hàm DAO để thêm feedback
-        boolean isInserted = feedbackDAO.addFeedback(invoiceID, rating, comment);
-
-        // In kết quả kiểm tra
-        if (isInserted) {
-            System.out.println("Feedback đã được chèn thành công vào cơ sở dữ liệu!");
-        } else {
-            System.out.println("Có lỗi xảy ra khi chèn Feedback.");
+        List<Feedback> feedbacks = feedbackDAO.getAllFeedback5StarByCustomer();
+        for (Feedback fb : feedbacks) {
+            System.out.println(fb.getInvoice().getExaminationID().getCustomerId().getFullName() + ", " + fb.getComment() + ", "
+                    + fb.getRating() +", " + fb.getDate());
         }
+
+//        int invoiceID = 7;
+//        int rating = 5;
+//        String comment = "Dịch vụ rất tuyệt vời!";
+//
+//        // Gọi hàm DAO để thêm feedback
+//        boolean isInserted = feedbackDAO.addFeedback(invoiceID, rating, comment);
+//
+//        // In kết quả kiểm tra
+//        if (isInserted) {
+//            System.out.println("Feedback đã được chèn thành công vào cơ sở dữ liệu!");
+//        } else {
+//            System.out.println("Có lỗi xảy ra khi chèn Feedback.");
+//        }
     }
 }

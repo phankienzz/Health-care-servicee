@@ -41,31 +41,6 @@ public class EditComment extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String commentIdStr = request.getParameter("comment_id");
-
-        if (commentIdStr == null || commentIdStr.isEmpty()) {
-            response.sendRedirect("error.jsp?message=Comment ID không hợp lệ");
-            return;
-        }
-
-        try {
-            int commentId = Integer.parseInt(commentIdStr);
-            CommentDAO commentDAO = new CommentDAO();
-            Comment comment = commentDAO.getCommentById(commentId);
-
-            if (comment == null) {
-                response.sendRedirect("error.jsp?message=Không tìm thấy bình luận");
-                return;
-            }
-
-            request.setAttribute("comment", comment);
-            request.setAttribute("editMode", true); // Xác định là đang edit
-            System.out.println("Debug: comment.content = " + comment.getContent());
-
-            request.getRequestDispatcher("detail-news.jsp").forward(request, response);
-        } catch (NumberFormatException e) {
-            response.sendRedirect("error.jsp?message=Comment ID không hợp lệ");
-        }
     }
 
     @Override
@@ -73,12 +48,6 @@ public class EditComment extends HttpServlet {
             throws ServletException, IOException {
         String commentIdStr = request.getParameter("comment_id");
         String content = request.getParameter("content");
-
-        System.out.println("Debug: param.comment_id = " + commentIdStr);
-        System.out.println("Debug: content = " + content);
-        System.out.println("Debug: comment_id nhận từ request = " + request.getParameter("comment_id"));
-        System.out.println("Debug: content nhận từ request = " + request.getParameter("content"));
-
         if (commentIdStr == null || commentIdStr.isEmpty()) {
             response.getWriter().println("Comment ID is missing or invalid.");
             return;
@@ -87,20 +56,13 @@ public class EditComment extends HttpServlet {
         int commentId = Integer.parseInt(commentIdStr);
         CommentDAO commentDAO = new CommentDAO();
         Comment comment = commentDAO.getCommentById(commentId);
-        if (comment == null) {
-            System.out.println("Debug: Không tìm thấy comment trong DB!");
-        } else {
-            System.out.println("Debug: Đã tìm thấy comment!");
-            System.out.println("Debug: comment_id = " + comment.getComment_id());
-            System.out.println("Debug: content = " + comment.getContent());
-        }
         if (comment != null) {
             comment.setContent(content);
             boolean isUpdated = commentDAO.updateComment(comment);
             if (isUpdated) {
                 response.sendRedirect("detailNews?newsID=" + comment.getPost_id() + "&commentSuccess=true");
             } else {
-                response.getWriter().println("Failed to update comment.");
+                response.sendRedirect("detailNews?newsID=" + comment.getPost_id() + "&commentSuccess=false");
             }
         } else {
             response.getWriter().println("Comment not found.");

@@ -25,23 +25,6 @@ import model.Staff;
 @WebServlet(name = "comment", urlPatterns = {"/comment"})
 public class comment extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet comment</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet comment at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -97,12 +80,12 @@ public class comment extends HttpServlet {
                     if (parentComment != null) {
                         request.setAttribute("parent_comment_name", parentComment.getCustomerID() != null
                                 ? parentComment.getCustomerID().getFullName()
-                                : "[Staff]" + parentComment.getStaff_id().getFullName());
+                                : parentComment.getStaff_id().getFullName());
                     }
                 }
                 boolean isAdded = dao.addComment(comment);
                 if (isAdded) {
-                    response.sendRedirect("detailNews?newsID=" + postId + "&commentSuccess=true&parent_comment_id=" + parentCommentId);
+                    response.sendRedirect("detailNews?newsID=" + postId + "&commentSuccess=true");
                 } else {
                     request.setAttribute("errorMessage", "Unable to add your comment. Please try again.");
                     request.getRequestDispatcher("detailNews?newsID=" + postId).forward(request, response);

@@ -53,13 +53,23 @@
             html{
                 scroll-behavior: smooth;
             }
+            .comment-container {
+                max-height: 500px; /* Chiều cao tối đa */
+                overflow-y: auto; /* Hiển thị thanh cuộn khi nội dung vượt quá */
+                padding-right: 10px; /* Để tránh bị che mất nội dung do thanh cuộn */
+                border: 1px solid #ddd; /* Viền để phân tách danh sách */
+                border-radius: 5px; /* Bo tròn góc */
+                padding: 10px;
+            }
+
         </style>
         <script>
-            function showReplies(parentId, depth) {
-                // Logic để hiển thị thêm bình luận.
-                // Ví dụ: Bạn có thể thực hiện một yêu cầu AJAX để tải thêm bình luận từ server và hiển thị chúng.
-                // Hoặc thay đổi CSS để hiển thị các phần tử đã bị ẩn.
-            }
+            document.addEventListener("DOMContentLoaded", function () {
+                var commentContainer = document.querySelector(".comment-container");
+                if (commentContainer) {
+                    commentContainer.scrollTop = commentContainer.scrollHeight;
+                }
+            });
         </script>
 
     </head>
@@ -110,77 +120,79 @@
                             <div class="col-lg-12">
                                 <div class="comment-area mt-4 mb-5">
                                     <h4 class="mb-4">${comments.size()} Comments on ${newsDetail.title}</h4>
-                                    <ul class="comment-tree list-unstyled">
-                                        <c:forEach var="comment" items="${comments}">
-                                            <c:if test="${comment.parent_comment_id == 0}">
-                                                <li class="mb-4">
-                                                    <div class="comment-area-box">
-                                                        <div class="comment-thumb float-left">
-                                                            <c:if test="${comment.customerID != null}">
-                                                                <img style="width: 50px; height: 50px; border-radius: 50%;" 
-                                                                     alt="" 
-                                                                     src="pictureprofile?customerID=${comment.customerID.customerID}" 
-                                                                     class="img-fluid">
-                                                            </c:if>
-                                                            <c:if test="${comment.staff_id != null}">
-                                                                <img style="width: 50px; height: 50px; border-radius: 50%;" 
-                                                                     alt="" 
-                                                                     src="pictureprofile?staffID=${comment.staff_id.staffID}" 
-                                                                     class="img-fluid">
-                                                            </c:if>
-                                                        </div>
-
-                                                        <div class="comment-info">
-                                                            <h5 class="mb-1 d-flex justify-content-between align-items-center">
+                                    <div class="comment-container">
+                                        <ul class="comment-tree list-unstyled">
+                                            <c:forEach var="comment" items="${comments}">
+                                                <c:if test="${comment.parent_comment_id == 0}">
+                                                    <li class="mb-4">
+                                                        <div class="comment-area-box">
+                                                            <div class="comment-thumb float-left">
                                                                 <c:if test="${comment.customerID != null}">
-                                                                    ${comment.customerID.fullName}
+                                                                    <img style="width: 50px; height: 50px; border-radius: 50%;" 
+                                                                         alt="" 
+                                                                         src="pictureprofile?customerID=${comment.customerID.customerID}" 
+                                                                         class="img-fluid">
                                                                 </c:if>
                                                                 <c:if test="${comment.staff_id != null}">
-                                                                    <span style="color: #009efb;">[Staff] ${comment.staff_id.fullName}</span>
+                                                                    <img style="width: 50px; height: 50px; border-radius: 50%;" 
+                                                                         alt="" 
+                                                                         src="pictureprofile?staffID=${comment.staff_id.staffID}" 
+                                                                         class="img-fluid">
                                                                 </c:if>
-                                                                <c:if test="${sessionScope.customerAccount != null 
-                                                                              && sessionScope.customerAccount.customerID == comment.customerID.customerID 
-                                                                              || sessionScope.staffAccount != null 
-                                                                              && sessionScope.staffAccount.staffID == comment.staff_id.staffID}">                                                               
-                                                                      <span>
-                                                                          <a href="detailNews?newsID=${newsDetail.post_id}&editMode=true&comment_id=${comment.comment_id}&content=${comment.content}#comment-form" class="mr-2"><i
-                                                                                  class="icofont-edit text-muted"></i>Edit</a>
-                                                                          <a href="deleteComment?comment_id=${comment.comment_id}" 
-                                                                             onclick="return confirm('Are you sure to delete this comment?');">
-                                                                              <i class="icofont-trash text-muted"></i>Delete
-                                                                          </a>
-                                                                      </span>
-                                                                </c:if>
-                                                            </h5>
-                                                            <span>${comment.create_at}</span>
-                                                        </div>
+                                                            </div>
 
-                                                        <div class="comment-meta mt-2">
-                                                            <c:if test="${sessionScope.customerAccount == null && sessionScope.staffAccount == null}">
-                                                                <a href="login.jsp" onclick="return confirm('Bạn cần đăng nhập để trả lời bình luận!');">
-                                                                    <i class="icofont-reply mr-2 text-muted"></i>Reply
-                                                                </a>
-                                                            </c:if>
-                                                            <c:if test="${sessionScope.customerAccount != null || sessionScope.staffAccount != null}">
-                                                                <a href="?newsID=${newsDetail.post_id}&parent_comment_id=${comment.comment_id}#comment-form">
-                                                                    <i class="icofont-reply mr-2 text-muted"></i>Reply
-                                                                </a>
-                                                            </c:if>
+                                                            <div class="comment-info">
+                                                                <h5 class="mb-1 d-flex justify-content-between align-items-center">
+                                                                    <c:if test="${comment.customerID != null}">
+                                                                        ${comment.customerID.fullName}
+                                                                    </c:if>
+                                                                    <c:if test="${comment.staff_id != null}">
+                                                                        <span style="color: #009efb;">[Staff] ${comment.staff_id.fullName}</span>
+                                                                    </c:if>
+                                                                    <c:if test="${sessionScope.customerAccount != null 
+                                                                                  && sessionScope.customerAccount.customerID == comment.customerID.customerID 
+                                                                                  || sessionScope.staffAccount != null 
+                                                                                  && sessionScope.staffAccount.staffID == comment.staff_id.staffID}">                                                               
+                                                                          <span>
+                                                                              <a href="detailNews?newsID=${newsDetail.post_id}&editMode=true&comment_id=${comment.comment_id}&content=${comment.content}#comment-form" class="mr-2"><i
+                                                                                      class="icofont-edit text-muted"></i>Edit</a>
+                                                                              <a href="deleteComment?comment_id=${comment.comment_id}" 
+                                                                                 onclick="return confirm('Are you sure to delete this comment?');">
+                                                                                  <i class="icofont-trash text-muted"></i>Delete
+                                                                              </a>
+                                                                          </span>
+                                                                    </c:if>
+                                                                </h5>
+                                                                <span>${comment.create_at}</span>
+                                                            </div>
+
+                                                            <div class="comment-meta mt-2">
+                                                                <c:if test="${sessionScope.customerAccount == null && sessionScope.staffAccount == null}">
+                                                                    <a href="login.jsp" onclick="return confirm('Bạn cần đăng nhập để trả lời bình luận!');">
+                                                                        <i class="icofont-reply mr-2 text-muted"></i>Reply
+                                                                    </a>
+                                                                </c:if>
+                                                                <c:if test="${sessionScope.customerAccount != null || sessionScope.staffAccount != null}">
+                                                                    <a href="?newsID=${newsDetail.post_id}&parent_comment_id=${comment.comment_id}#comment-form">
+                                                                        <i class="icofont-reply mr-2 text-muted"></i>Reply
+                                                                    </a>
+                                                                </c:if>
+                                                            </div>
+                                                            <div class="comment-content mt-3">
+                                                                <p>${comment.content}</p>
+                                                            </div>
                                                         </div>
-                                                        <div class="comment-content mt-3">
-                                                            <p>${comment.content}</p>
-                                                        </div>
-                                                    </div>
-                                                    <ul class="child-comments list-unstyled ml-5">
-                                                        <jsp:include page="comment-reply.jsp">
-                                                            <jsp:param name="parentId" value="${comment.comment_id}"/>
-                                                            <jsp:param name="depth" value="1" />
-                                                        </jsp:include>
-                                                    </ul>
-                                                </li>
-                                            </c:if>
-                                        </c:forEach>
-                                    </ul>
+                                                        <ul class="child-comments list-unstyled ml-5">
+                                                            <jsp:include page="comment-reply.jsp">
+                                                                <jsp:param name="parentId" value="${comment.comment_id}"/>
+                                                                <jsp:param name="depth" value="1" />
+                                                            </jsp:include>
+                                                        </ul>
+                                                    </li>
+                                                </c:if>
+                                            </c:forEach>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
 
@@ -195,13 +207,10 @@
                                     </c:otherwise>
                                 </c:choose>
                                 <c:if test="${sessionScope.customerAccount != null || sessionScope.staffAccount != null}">
-<!--                                    <p>Debug: comment_id trong form = <c:out value="${param.comment_id != null ? param.comment_id : (editMode ? comment.comment_id : 0)}"/></p>
-                                    <p>Debug: param.comment_id = <c:out value="${param.comment_id}" /></p>
-                                    <p>Debug: param.content = <c:out value="${param.content}" /></p>-->
                                     <form action="<c:out value='${editMode ? "editComment" : "comment"}'/>" method="post" class="comment-form my-5" id="comment-form">
                                         <h4 class="mb-4">
                                             <c:choose>
-                                                <c:when test="${not empty parent_comment_name}">
+                                                <c:when test="${parent_comment_name != null}">
                                                     Reply to <b>${parent_comment_name}</b>
                                                     <a href="detailNews?newsID=${newsDetail.post_id}" class="text-danger ml-2">Cancel Reply</a>
                                                 </c:when>
@@ -240,9 +249,12 @@
                                             <input type="hidden" name="staffId" value="${sessionScope.staffAccount.staffID}">
                                         </c:if>
                                         <input type="hidden" name="parent_comment_id" value="${editMode ? comment.parent_comment_id : (requestScope.parent_comment_id != null ? requestScope.parent_comment_id : 0)}">
-                                        <input type="hidden" name="comment_id" value="${not empty param.comment_id ? param.comment_id : (editMode ? comment.comment_id : 0)}">
+                                        <input type="hidden" name="comment_id" value="${param.comment_id != null ? param.comment_id : (editMode ? comment.comment_id : 0)}">
                                         <input class="btn btn-main-2 btn-round-full" type="submit" name="submit-comment" id="submit_comment" value="${editMode ? "Update Comment" : "Submit"}">
                                     </form>
+<!--                                        <p>comment_id trong form = <c:out value="${param.comment_id != null ? param.comment_id : (editMode ? comment.comment_id : 0)}"/></p>
+                                        <p>param.comment_id = <c:out value="${param.comment_id}" /></p>
+                                        <p>param.content = <c:out value="${param.content}" /></p>-->
                                 </c:if>
                                 <c:if test="${sessionScope.customerAccount == null && sessionScope.staffAccount == null}">
                                     <p>Please <a href="login.jsp">login</a> to write a comment.</p>

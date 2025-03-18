@@ -89,12 +89,12 @@
                         </div>
                     </c:if>
                 </div>
-                <ul class="child-comments list-unstyled ml-5">
+                <!--<ul class="child-comments list-unstyled ml-5">-->
                 <jsp:include page="comment-reply.jsp">
                     <jsp:param name="parentId" value="${reply.comment_id}" />
                     <jsp:param name="depth" value="${param.depth + 1}" />
                 </jsp:include>
-                </ul>
+                <!--</ul>-->
             </li>
         </c:if>
     </c:forEach>
