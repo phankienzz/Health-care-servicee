@@ -126,6 +126,29 @@
             #dateForm button:hover {
                 background-color: #005580;
             }
+            .filter-section {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                gap: 10px;
+                margin-bottom: 15px;
+            }
+            .filter-section select {
+                padding: 5px 10px;
+                border: 1px solid #99ccff;
+                border-radius: 4px;
+                background-color: #f0faff;
+                width: 120px;
+            }
+            .filter-section button {
+                padding: 5px 15px;
+                background-color: #007acc;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                width: auto;
+                cursor: pointer;
+            }
         </style>
     </head>
     <body>
@@ -177,50 +200,83 @@
 
         <h1>Professional Leave List</h1>
 
+        <c:if test="${not empty errorMessage}">
+            <div style="color: red; margin-bottom: 10px;">
+                ${errorMessage}
+            </div>
+        </c:if>
+
+        <!-- Hiển thị thông báo thành công -->
+        <c:if test="${not empty successMessage}">
+            <div style="color: green; margin-bottom: 10px;">
+                ${successMessage}
+            </div>
+        </c:if>
+
+        <!-- Add Status Filter -->
+        <div class="filter-section">
+            <form method="GET" action="professionalleave">
+                <input type="hidden" name="professionalID" value="${param.professionalID}" />
+                <input type="hidden" name="selectedDate" value="${selectedDate}" />
+                <label for="statusFilter">Filter by Status:</label>
+                <select name="statusFilter" id="statusFilter">
+                    <option value="All" ${param.statusFilter == 'All' || empty param.statusFilter ? 'selected' : ''}>All</option>
+                    <option value="Missed time!" ${param.statusFilter == 'Missed time!' ? 'selected' : ''}>Missed time!</option>
+                    <option value="Pending" ${param.statusFilter == 'Pending' ? 'selected' : ''}>Pending</option>
+                    <option value="Approved" ${param.statusFilter == 'Approved' ? 'selected' : ''}>Approved</option>
+                    <option value="Rejected" ${param.statusFilter == 'Rejected' ? 'selected' : ''}>Rejected</option>
+                </select>
+                <button type="submit">Filter</button>
+            </form>
+        </div>
+
         <div id="leave-section">
-            <form method="POST" action="professionalleave">
-                <table id="leaveTable">
-                    <tr>
-                        <th>Leave ID</th>
-                        <th>Professional ID</th>
-                        <th>Leave Date</th>
-                        <th>Reason</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                    <c:choose>
-                        <c:when test="${not empty leaveList}">
-                            <c:forEach var="leave" items="${leaveList}">
+            <table id="leaveTable">
+                <tr>
+                    <th>Leave ID</th>
+                    <th>Professional ID</th>
+                    <th>Leave Date</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                <c:choose>
+                    <c:when test="${not empty leaveList}">
+                        <c:forEach var="leave" items="${leaveList}">
+                            <c:if test="${param.statusFilter == 'All' || empty param.statusFilter || leave.status == param.statusFilter}">
                                 <tr>
                                     <td>${leave.leaveID}</td>
                                     <td>${leave.professionalID}</td>
                                     <td>${leave.leaveDate}</td>
                                     <td>${leave.reason}</td>
                                     <td>
-                                        <select name="status">
-                                            <option value="Pending" ${leave.status == 'Pending' ? 'selected' : ''}>Pending</option>
-                                            <option value="Approved" ${leave.status == 'Approved' ? 'selected' : ''}>Approved</option>
-                                            <option value="Rejected" ${leave.status == 'Rejected' ? 'selected' : ''}>Rejected</option>
-                                        </select>
+                                        <form method="POST" action="professionalleave">
+                                            <select name="status">
+                                                <option value="Missed time!" ${leave.status == 'Missed time!' ? 'selected' : ''}>Missed time!</option>
+                                                <option value="Pending" ${leave.status == 'Pending' ? 'selected' : ''}>Pending</option>
+                                                <option value="Approved" ${leave.status == 'Approved' ? 'selected' : ''}>Approved</option>
+                                                <option value="Rejected" ${leave.status == 'Rejected' ? 'selected' : ''}>Rejected</option>
+                                            </select>
+                                            <input type="hidden" name="oldStatus" value="${leave.status}" />
+                                            <input type="hidden" name="leaveID" value="${leave.leaveID}" />
+                                            <input type="hidden" name="professionalID" value="${leave.professionalID}" />
+                                            <input type="hidden" name="leaveDate" value="${leave.leaveDate}" />
                                     </td>
                                     <td>
-                                        <input type="hidden" name="leaveID" value="${leave.leaveID}" />
-                                        <input type="hidden" name="professionalID" value="${leave.professionalID}" />
-                                         <input type="hidden" name="leaveDate" value="${leave.leaveDate}" />
-                                        <button type="submit" value="${leave.leaveID}">Update</button>
+                                        <button type="submit">Update</button>
                                     </td>
+                                    </form>
                                 </tr>
-                            </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                            <tr>
-                                <td colspan="6">No records found</td>
-                            </tr>
-                        </c:otherwise>
-                    </c:choose>
-                </table>
-            </form>
+                            </c:if>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <tr>
+                            <td colspan="6">No records found</td>
+                        </tr>
+                    </c:otherwise>
+                </c:choose>
+            </table>
         </div>
-
     </body>
 </html>
