@@ -86,19 +86,19 @@
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group">
                                             <label>Status</label>
-                                            <select class="select" name="status" onchange="this.form.submit()">
-                                                <option value="Pending" <c:if test="${invoice.paymentStatus == 'Pending'}">selected</c:if> >Pending</option>
-                                                <option value="Paid" <c:if test="${invoice.paymentStatus == 'Paid'}">selected</c:if> >Paid</option>
+                                            <select class="select" name="status" ${invoice.paymentStatus == 'Paid' ? 'disabled' : ''} onchange="this.form.submit()">
+                                                <option value="Pending" <c:if test="${status == 'Pending'}">selected</c:if> >Pending</option>
+                                                <option value="Paid" <c:if test="${status == 'Paid'}">selected</c:if> >Paid</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-sm-6 col-md-3">
                                             <div class="form-group">
                                                 <label>Discount</label>
-                                                <select class="select" name="discount" onchange="this.form.submit()">
+                                                <select class="select" name="discount" ${invoice.paymentStatus == 'Paid' ? 'disabled' : ''} onchange="this.form.submit()">
                                                     <option value="0">Select Discount</option>
                                                 <c:forEach var="dis" items="${listDis}">
-                                                    <option value="${dis.discountID}" <c:if test="${invoice.discountID.discountID == discountID}">selected</c:if> >${dis.discountName}</option>
+                                                    <option value="${dis.discountID}" <c:if test="${invoice.discountID.discountID == dis.discountID}">selected</c:if> >${dis.discountName}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
@@ -154,14 +154,14 @@
                                                     <tr>
                                                         <td colspan="5" class="text-right"> Discount %</td>
                                                         <td style="text-align: right; padding-right: 30px;width: 230px">
-                                                            <input class="form-control text-right form-amt" value="${discount}" readonly="" type="text">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="5" style="text-align: right; font-weight: bold">
-                                                            Grand Total
-                                                        </td>
-                                                        <td style="text-align: right; padding-right: 30px; font-weight: bold; font-size: 16px;width: 230px">
+                                                            <input class="form-control text-right form-amt" value="<c:if test="${invoice.discountID== null}">0.0</c:if>${invoice.discountID.percentage}" readonly="" type="text">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="5" style="text-align: right; font-weight: bold">
+                                                                Grand Total
+                                                            </td>
+                                                            <td style="text-align: right; padding-right: 30px; font-weight: bold; font-size: 16px;width: 230px">
                                                             ${invoice.totalAmount}
                                                         </td>
                                                     </tr>
@@ -178,7 +178,7 @@
                                     </c:if>
                                 <div class="text-center m-t-20">
                                     <a href="invoice" class="btn btn-grey submit-btn m-r-10">Back</a>
-                                    <a href="createInvoice?medicalExaminationID=${medicalExaminationID}&&discount=${discountID}" class="btn btn-primary submit-btn">Create</a>
+                                    <a href="editInvoice?invoiceID=${invoice.invoiceID}&discount=${invoice.discountID.discountID}&paymentStatus=${status}" class="btn btn-primary submit-btn">Update</a>
                                 </div>
                             </form>
                         </div>
