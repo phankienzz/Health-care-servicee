@@ -164,7 +164,7 @@
                 <input type="hidden" id="professionalID" name="professionalID" value="${param.professionalID}" readonly><br>
 
                 <label for="leaveDate">Leave Date:</label>
-                <input type="date" id="leaveDate" name="leaveDate"><br>
+                <input type="date" id="leaveDate" required="" name="leaveDate"><br>
 
                 <label for="reason">Reason:</label>
                 <select id="reason" name="reason" required="">
