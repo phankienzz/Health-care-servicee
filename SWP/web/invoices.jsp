@@ -66,17 +66,30 @@
         <div class="main-wrapper">
             <jsp:include page="headerStaff.jsp"></jsp:include>
             <jsp:include page="sidebar.jsp"></jsp:include>
+
+            <c:set var="addInvoice" value="false"/>
+            <c:set var="editInvoice" value="false"/>
+            <c:forEach var="permission" items="${listPermission}">
+                <c:if test="${permission.permissionID == 5}">
+                    <c:set var="addInvoice" value="true"/>
+                </c:if>
+                <c:if test="${permission.permissionID == 6}">
+                    <c:set var="editInvoice" value="true"/>
+                </c:if>
+            </c:forEach>
             <div class="page-wrapper">
                 <div class="content">
                     <div class="row">
                         <div class="col-sm-5 col-4">
                             <h4 class="page-title">Invoices</h4>
                         </div>
-                        <div class="col-sm-7 col-8 text-right m-b-30">
-                            <a href="createInvoice" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Create New Invoice</a>
-                        </div>
+                        <c:if test="${addInvoice}">
+                            <div class="col-sm-7 col-8 text-right m-b-30">
+                                <a href="createInvoice" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Create New Invoice</a>
+                            </div>
+                        </c:if>
                     </div>
-                    
+
                     <form action="invoice" method="get">
                         <div class="row filter-row">
                             <div class="col-sm-6 col-md-3">
@@ -84,49 +97,49 @@
                                     <label class="focus-label">From</label>
                                     <div class="cal-icon">
                                         <input name="from" class="form-control floating datetimepicker" type="text" <c:if test="${from != null}"> value ="${from}"</c:if>>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <div class="form-group form-focus">
-                                    <label class="focus-label">To</label>
-                                    <div class="cal-icon">
-                                        <input name="to" class="form-control floating datetimepicker" type="text" <c:if test="${to != null}"> value ="${to}"</c:if>>
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="form-group form-focus">
+                                        <label class="focus-label">To</label>
+                                        <div class="cal-icon">
+                                            <input name="to" class="form-control floating datetimepicker" type="text" <c:if test="${to != null}"> value ="${to}"</c:if>>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <div class="form-group form-focus select-focus">
-                                    <label class="focus-label">Status</label>
-                                    <select name="status" class="select floating">
-                                        <option value="">Select Status</option>
-                                        <option value="Pending" <c:if test="${status == 'Pending'}"> selected</c:if>>Pending</option>
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="focus-label">Status</label>
+                                        <select name="status" class="select floating">
+                                            <option value="">Select Status</option>
+                                            <option value="Pending" <c:if test="${status == 'Pending'}"> selected</c:if>>Pending</option>
                                         <option value="Paid" <c:if test="${status == 'Paid'}"> selected</c:if>>Paid</option>
-                                    </select>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <input type="submit" class="btn btn-success btn-block" value="Search" />
                                 </div>
                             </div>
-                            <div class="col-sm-6 col-md-3">
-                                <input type="submit" class="btn btn-success btn-block" value="Search" />
-                            </div>
-                        </div>
-                    </form>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="table-responsive">
-                                <table class="table table-striped custom-table mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Invoice Number</th>
-                                            <th>Patient</th>
-                                            <th>Created Date</th>
-                                            <th>Payment Date</th>
-                                            <th>Amount</th>
-                                            <th>Status</th>
-                                            <th class="text-right">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                        </form>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-striped custom-table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Invoice Number</th>
+                                                <th>Patient</th>
+                                                <th>Created Date</th>
+                                                <th>Payment Date</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                                <th class="text-right">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
                                         <c:set var="i" value="${(currentPage-1)*5+1}"/>
                                         <c:forEach var="invoice" items="${listInvoice}">
                                             <tr>
@@ -147,7 +160,9 @@
                                                     <div class="dropdown dropdown-action">
                                                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                                                         <div class="dropdown-menu dropdown-menu-right">
-                                                            <a class="dropdown-item" href="editInvoice?invoiceID=${invoice.invoiceID}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                            <c:if test="${editInvoice}">
+                                                                <a class="dropdown-item" href="editInvoice?invoiceID=${invoice.invoiceID}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                            </c:if>
                                                             <a class="dropdown-item" href="viewInvoice?invoiceID=${invoice.invoiceID}"><i class="fa fa-eye m-r-5"></i> View</a>
                                                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_invoice" data-id="${invoice.invoiceID}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                                         </div>

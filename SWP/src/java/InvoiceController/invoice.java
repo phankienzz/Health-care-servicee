@@ -6,6 +6,7 @@ package InvoiceController;
 
 import context.ValidFunction;
 import dao.InvoiceDAO;
+import dao.RoleDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,8 +14,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Invoice;
+import model.Permission;
+import model.Role;
+import model.Staff;
 
 /**
  *
@@ -133,6 +138,14 @@ public class invoice extends HttpServlet {
             }
             i++;
 
+        }
+        RoleDAO roleDAO = new RoleDAO();
+        HttpSession session = request.getSession();
+        if (session.getAttribute("staffAccount") != null) {
+            Staff s = (Staff) session.getAttribute("staffAccount");
+            Role role = roleDAO.getRoleByID(s.getRoleID());
+            List<Permission> listPermission = role.getPermission();
+            request.setAttribute("listPermission", listPermission);
         }
         request.setAttribute("listInvoice", invoices);
         request.setAttribute("show", invoices.size());
