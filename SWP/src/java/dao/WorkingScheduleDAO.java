@@ -325,23 +325,22 @@ public class WorkingScheduleDAO {
     public boolean isWorkingOnDate(int professionalID, Date date) {
         boolean hasSchedule = false;
 
-        // Chuyển đổi từ java.sql.Date sang LocalDate
+        // Chuyển đổi Date sang LocalDate
         LocalDate localDate = date.toLocalDate();
 
-        // Xác định thứ trong tuần (2-8, với Chủ Nhật là 8)
-        DayOfWeek dayOfWeek = localDate.getDayOfWeek();
-        int dayCode = (dayOfWeek == DayOfWeek.SUNDAY) ? 8 : dayOfWeek.getValue();
+        // Tính toán dayCode theo quy ước của bạn (2 = Thứ Hai, 8 = Chủ Nhật)
+        int dayCode = (localDate.getDayOfWeek().getValue() == 7) ? 8 : localDate.getDayOfWeek().getValue() + 1;
 
-        // Câu lệnh SQL để kiểm tra lịch làm việc
-        String sql = "SELECT COUNT(*) FROM WorkingSchedule WHERE professionalID = ? AND dayOfWeek = ?";
+        // Câu lệnh SQL
+        String sql = "SELECT COUNT(*) FROM WorkingSchedule WHERE professionalID = ? AND dayOfWeek = ? AND status = 'On'";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, professionalID);
             ps.setInt(2, dayCode);
-
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    hasSchedule = rs.getInt(1) > 0;
+                    int count = rs.getInt(1);
+                    hasSchedule = count > 0;
                 }
             }
         } catch (SQLException e) {
@@ -392,8 +391,9 @@ public class WorkingScheduleDAO {
 
     public static void main(String[] args) {
         WorkingScheduleDAO dao = new WorkingScheduleDAO();
-        List<ProfessionalLeave> list = dao.getProfessionalLeavesByProfessionalID(2);
-        for (ProfessionalLeave ws : list) {
+        System.out.println(dao.isWorkingOnDate(4,Date.valueOf("2025-03-19") ));
+        List<WorkingSchedule> list = dao.getAllSchedulesByProfessionalID(1);
+        for (WorkingSchedule ws : list) {
             System.out.println(ws);
         }
 
