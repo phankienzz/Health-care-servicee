@@ -166,7 +166,7 @@
                         <div class="text-right">
                             <form action="vnpay" method="post" id="frmCreateOrder">
                                 <input type="hidden" name="invoiceID" value="${invoice.invoiceID}" />
-                                <input type="hidden" name="amount" value="${invoice.totalAmount}" />
+                                <input type="hidden" name="amount" value="${invoice.totalAmount*25530}" />
                                 <button type="submit" class="btn btn-primary btn-lg">
                                     <i class="fa fa-credit-card"></i> Thanh toán 
                                 </button>

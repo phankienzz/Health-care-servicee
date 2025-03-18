@@ -642,6 +642,43 @@ public class InvoiceDAO extends DBContext {
         }
     }
 
+    public void updateInvoiceDicount(int invoiceID, String discountID) {
+        String sql = "update invoice set discountID = ?  where invoiceID = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, discountID);
+            pre.setInt(2, invoiceID);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void updateInvoiceOffline(int invoiceID, String discountID) {
+        String sql = "update invoice set discountID = ?, paymentDate = SYSDATETIME(),paymentMethod=N'Cash', paymentStatus = N'Paid'  where invoiceID = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, discountID);
+            pre.setInt(2, invoiceID);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void deleteInvoice(int invoiceID) {
+        String sql = "delete Feedback where invoiceID = ?"
+                + "  delete invoice where invoiceID = ? ";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, invoiceID);
+            pre.setInt(2, invoiceID);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
     public static void main(String[] args) {
         double a = 190000891.5;
         System.out.println(a);
