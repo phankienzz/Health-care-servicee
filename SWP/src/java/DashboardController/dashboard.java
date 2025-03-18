@@ -4,6 +4,7 @@
  */
 package DashboardController;
 
+import context.ValidFunction;
 import dao.DashboardDAO;
 import dao.MedicalExaminationDAO;
 import dao.ProfessionalDAO;
@@ -47,6 +48,7 @@ public class dashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ValidFunction valid = new ValidFunction();
         DashboardDAO dashDAO = new DashboardDAO();
         ProfessionalDAO proDAO = new ProfessionalDAO();
         MedicalExaminationDAO meDAO = new MedicalExaminationDAO();
@@ -56,13 +58,17 @@ public class dashboard extends HttpServlet {
         List<Professional> listDoc = proDAO.getAllProfessionals();
         List<MedicalExamination> listMe = meDAO.getAllMedicalExamination();
         int visitCount = visitDAO.getVisitCount();
-
         int countPending = dashDAO.countPendingExaminations();
+
+        for (MedicalExamination med : listMe) {
+            med.setExaminationDate(valid.convertDateString(med.getExaminationDate(), "dd/MM/yyyy HH:mm"));
+        }
         request.setAttribute("listCustomer", listCus);
         request.setAttribute("listDoctor", listDoc);
         request.setAttribute("listAppointment", listMe);
         request.setAttribute("pending", countPending);
         request.setAttribute("visitCount", visitCount);
+        request.setAttribute("docCount", proDAO.getAllProfessionals().size());
 
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);
     }

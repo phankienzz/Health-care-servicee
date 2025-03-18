@@ -46,7 +46,7 @@
                             <div class="dash-widget">
                                 <span class="dash-widget-bg1"><i class="fa fa-stethoscope" aria-hidden="true"></i></span>
                                 <div class="dash-widget-info text-right">
-                                    <h3>98</h3>
+                                    <h3>${docCount}</h3>
                                     <span class="widget-title1">Doctors <i class="fa fa-check" aria-hidden="true"></i></span>
                                 </div>
                             </div>
@@ -488,7 +488,11 @@
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/jquery.slimscroll.js"></script>
         <script src="assets/js/Chart.bundle.js"></script>
+        
+        <!-- 2 cái bảng thống kê-->
         <script src="assets/js/chart.js"></script>
+        
+        
         <script src="assets/js/app.js"></script>
 
     </body>

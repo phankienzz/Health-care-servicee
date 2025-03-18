@@ -155,7 +155,6 @@
     </head>
 
     <body id="top">
-
         <jsp:include page="headerHome.jsp"></jsp:include>
 
             <!-- Slider Start -->
