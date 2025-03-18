@@ -1,9 +1,11 @@
 package model;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class Comments {
+
     private int commentId;
     private String senderEmail;
     private String receiveEmail;
@@ -16,8 +18,8 @@ public class Comments {
     private Integer StaffID; // Có thể null
 
     // Constructor đầy đủ
-    public Comments(int commentId, String senderEmail, String receiveEmail, String commentText, 
-                    Date date, String topic, Integer replyId, Integer CustomerID, Integer StaffID) {
+    public Comments(int commentId, String senderEmail, String receiveEmail, String commentText,
+            Date date, String topic, Integer replyId, Integer CustomerID, Integer StaffID) {
         this.commentId = commentId;
         this.senderEmail = senderEmail;
         this.receiveEmail = receiveEmail;
@@ -31,8 +33,8 @@ public class Comments {
     }
 
     // Constructor nếu không có replyId
-    public Comments(int commentId, String senderEmail, String receiveEmail, String commentText, 
-                    Date date, String topic, Integer CustomerID, Integer StaffID) {
+    public Comments(int commentId, String senderEmail, String receiveEmail, String commentText,
+            Date date, String topic, Integer CustomerID, Integer StaffID) {
         this(commentId, senderEmail, receiveEmail, commentText, date, topic, null, CustomerID, StaffID);
     }
 
