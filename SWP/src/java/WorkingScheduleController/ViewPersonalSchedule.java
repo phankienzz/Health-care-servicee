@@ -34,7 +34,7 @@ public class ViewPersonalSchedule extends HttpServlet {
 
             LocalDate firstMondayOfWeek = selectedDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
 
-            List<WorkingSchedule> professionalList = workingDAO.getAllSchedulesByProfessionalID(professionalID);
+            List<WorkingSchedule> professionalList = workingDAO.getOnSchedulesByProfessionalID(professionalID);
             List<ProfessionalLeave> leaveList = workingDAO.getProfessionalLeavesByProfessionalID(professionalID);
 
             List<Date> leaveDates = new ArrayList<>();
