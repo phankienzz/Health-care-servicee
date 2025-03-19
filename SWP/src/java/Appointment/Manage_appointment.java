@@ -33,11 +33,10 @@ public class Manage_appointment extends HttpServlet {
         // Lấy tham số từ form lọc
         String patientName = request.getParameter("patientName");
         String ageSort = request.getParameter("ageSort");
-        String doctorName = request.getParameter("doctorName");
         String appointmentDate = request.getParameter("appointmentDate");
         String timeCreatedSort = request.getParameter("timeCreatedSort");
         String status = request.getParameter("status");
-
+        String doctorName= "";
         // Tham số phân trang
         int page = 1; // Trang mặc định
         int pageSize = 10; // Số bản ghi mỗi trang (có thể thay đổi)
@@ -64,6 +63,7 @@ public class Manage_appointment extends HttpServlet {
         // Đảm bảo page không vượt quá giới hạn
         if (page < 1) page = 1;
         if (page > totalPages && totalPages > 0) page = totalPages;
+        
         
         // Lấy danh sách đã lọc với phân trang
         List<MedicalExamination> list = medicalExaminationDAO.getFilteredExaminations2(

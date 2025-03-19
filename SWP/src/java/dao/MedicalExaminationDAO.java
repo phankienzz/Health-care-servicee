@@ -5,6 +5,7 @@
 package dao;
 
 import context.DBContext;
+import static context.DBContext.connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

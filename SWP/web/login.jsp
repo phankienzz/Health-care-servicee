@@ -123,11 +123,12 @@
                             </div>
                         </form>
                     </div>
-                     <div class="mt-4 text-center">
-                        <button type="button" class="btn btn-danger btn-block mb-2" 
-                                onclick="window.location.href = 'https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:9999/SWP/GoogleLoginServlet&response_type=code&client_id=322004880766-ljaf0a60isb2782d47uegdvjbfgjoc9t.apps.googleusercontent.com&approval_prompt=force'">
-                            <i class="fa fa-google me-2"></i>
-                             Google
+                    <div class="mt-4 text-center">
+                        <button type="button" class="btn btn-danger btn-block mb-2" id="googleLoginBtn">
+                            <a href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:8081/SWP/LoginGoogle&response_type=code&client_id=125097471726-ugd65uqmj26a8gf1358ugh1301v7enlo.apps.googleusercontent.com&approval_prompt=force">
+                                <i class="fa fa-google me-2"></i>Login with Google
+                            </a>
+                            
                         </button>
                     </div>
 

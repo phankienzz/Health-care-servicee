@@ -61,6 +61,7 @@ public class LoginServlet extends HttpServlet {
         if ("customer".equals(userType)) {
                 CustomerDAO dao = new CustomerDAO();
                 Customer customerAccount = dao.customerLogin(user);
+                response.addCookie(new Cookie("userID", String.valueOf(customerAccount.getCustomerID())));
                 try {
                     if (customerAccount != null && valid.checkPassword(password, customerAccount.getPassword())) {
                         session.setAttribute("customerAccount", customerAccount);
@@ -95,7 +96,8 @@ public class LoginServlet extends HttpServlet {
             StaffDAO dao = new StaffDAO();
              ProfessionalDAO dbHelper = new ProfessionalDAO();
             Staff staff = dao.staffLogin(user);
-            
+                response.addCookie(new Cookie("staffID", String.valueOf(staff.getStaffID())));
+                response.addCookie(new Cookie("email", staff.getEmail()));
             if (staff == null || !valid.checkPassword(password, staff.getPassword()) ) {
                 request.setAttribute("error", "Invalid email or password!");
                 request.setAttribute("userType", "staff");
