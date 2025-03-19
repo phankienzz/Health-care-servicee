@@ -5,6 +5,7 @@
 package dao;
 
 import context.DBContext;
+import static context.DBContext.connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +13,9 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.Customer;
 import model.MedicalExamination;
 import model.MedicalRecord;
@@ -355,7 +358,7 @@ public class MedicalExaminationDAO extends DBContext {
         ServiceDAO dao = new ServiceDAO();
         CustomerDAO cusDAO = new CustomerDAO();
         ProfessionalDAO proDAO = new ProfessionalDAO();
-        String sql = "SELECT * FROM MedicalExamination";
+        String sql = "SELECT * FROM MedicalExamination ";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -897,6 +900,37 @@ public class MedicalExaminationDAO extends DBContext {
             e.printStackTrace();
         }
         return appointments;
+    }
+
+    public Map<Integer, Integer> getMonthlyAppointmentStatistics(int year) {
+        Map<Integer, Integer> stats = new HashMap<>();
+        String sql = "SELECT MONTH(examinationDate) AS Month, COUNT(customerID) AS NumberOfAppointments "
+                + "FROM MedicalExamination WHERE YEAR(examinationDate) = ? "
+                + "GROUP BY MONTH(examinationDate) ORDER BY Month";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, year);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int month = rs.getInt("Month");
+                int count = rs.getInt("NumberOfAppointments");
+                stats.put(month, count);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return stats;
+    }
+
+    public static void main(String[] args) {
+        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
+        int year = 2024; // Thay đổi năm nếu muốn test các năm khác
+        Map<Integer, Integer> stats = medDAO.getMonthlyAppointmentStatistics(year);
+        System.out.println("Thống kê khách hàng đăng ký theo tháng năm " + year + ":");
+        for (int i = 1; i <= 12; i++) {
+            System.out.println("Tháng " + i + ": " + stats.getOrDefault(i, 0) + " khách hàng");
+        }
     }
 
 }

@@ -13,7 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.Customer;
 
 /**
@@ -94,7 +96,7 @@ public class CustomerDAO extends DBContext {
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             System.out.println("Updating customer ID: " + customer.getCustomerID());
-            
+
             // Chỉ băm lại mật khẩu nếu nó thực sự thay đổi
             String hashedPassword = customer.getPassword();
             if (!hashedPassword.startsWith("$2a$")) { // Nếu mật khẩu chưa băm (băm bcrypt có $2a$)
@@ -662,14 +664,34 @@ public class CustomerDAO extends DBContext {
         }
     }
 
+    public Map<Integer, Integer> getCustomerStatistics(int year) {
+        Map<Integer, Integer> customerStats = new HashMap<>();
+        String sql = "SELECT MONTH(registrationDate) AS Month, COUNT(*) AS CustomerCount "
+                + "FROM Customer WHERE YEAR(registrationDate) = ? "
+                + "GROUP BY MONTH(registrationDate) ORDER BY Month";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, year);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int month = rs.getInt("Month");
+                int count = rs.getInt("CustomerCount");
+                customerStats.put(month, count);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customerStats;
+    }
     public static void main(String[] args) {
-        CustomerDAO dao = new CustomerDAO();
-//        List<Customer> list = dao.getCustomerByName("Alice");
-//        for (Customer customer : list) {
-//            System.out.println(customer);
-//        }
-        Customer c = dao.getCustomerByIdAndName(2, "b");
-        System.out.println(c);
+        CustomerDAO customerDAO = new CustomerDAO();
+        int year = 2024; // Thay đổi năm nếu muốn test các năm khác
+        Map<Integer, Integer> stats = customerDAO.getCustomerStatistics(year);
+        System.out.println("Thống kê khách hàng đăng ký theo tháng năm " + year + ":");
+        for (int i = 1; i <= 12; i++) {
+            System.out.println("Tháng " + i + ": " + stats.getOrDefault(i, 0) + " khách hàng");
+        }
     }
 
 }

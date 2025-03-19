@@ -57,18 +57,23 @@ public class dashboard extends HttpServlet {
         List<Customer> listCus = dashDAO.getNewCustomer();
         List<Professional> listDoc = proDAO.getAllProfessionals();
         List<MedicalExamination> listMe = meDAO.getAllMedicalExamination();
-        int visitCount = visitDAO.getVisitCount();
+//        int visitCount = visitDAO.getVisitCount();
         int countPending = dashDAO.countPendingExaminations();
 
         for (MedicalExamination med : listMe) {
             med.setExaminationDate(valid.convertDateString(med.getExaminationDate(), "dd/MM/yyyy HH:mm"));
         }
+
+        request.setAttribute("todayCount", visitDAO.getVisitCount("DAY"));
+        request.setAttribute("monthCount", visitDAO.getVisitCount("MONTH"));
+        request.setAttribute("yearCount", visitDAO.getVisitCount("YEAR"));
+
         request.setAttribute("listCustomer", listCus);
         request.setAttribute("listDoctor", listDoc);
         request.setAttribute("listAppointment", listMe);
         request.setAttribute("pending", countPending);
-        request.setAttribute("visitCount", visitCount);
-        request.setAttribute("docCount", proDAO.getAllProfessionals().size());
+//        request.setAttribute("visitCount", visitCount);
+        request.setAttribute("docCount", listDoc != null ? listDoc.size() : 0);
 
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);
     }

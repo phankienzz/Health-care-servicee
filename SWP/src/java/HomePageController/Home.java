@@ -27,23 +27,6 @@ import model.Service;
 @WebServlet(name = "Home", urlPatterns = {"/home"})
 public class Home extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Home</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Home at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -52,18 +35,13 @@ public class Home extends HttpServlet {
         FeedbackDAO feedbackDAO = new FeedbackDAO();
         VisitCounterDAO visitDAO = new VisitCounterDAO();
 
+        // Kiểm tra session để tránh tăng lượt truy cập 2 lần
         HttpSession session = request.getSession();
-
-        // Kiểm tra xem session đã có "visited" chưa
         if (session.getAttribute("visited") == null) {
-            visitDAO.increaseVisitCount(); // Chỉ tăng khi chưa có
+            visitDAO.updateVisitCount(); // Chỉ tăng khi chưa có session
             session.setAttribute("visited", true); // Đánh dấu đã ghé thăm
         }
-        
-        // Lưu số lượt truy cập trong session:test
-        int sessionVisitCount = (session.getAttribute("sessionVisitCount") == null) ? 1
-                : (int) session.getAttribute("sessionVisitCount") + 1;
-        session.setAttribute("sessionVisitCount", sessionVisitCount);
+        System.out.println("HomeServlet được gọi!");
 
         List<Service> listService = dao.get4Service();
         List<Feedback> listFeedback = feedbackDAO.getAllFeedback5StarByCustomer();
@@ -80,7 +58,6 @@ public class Home extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     @Override
