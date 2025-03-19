@@ -27,22 +27,6 @@ import model.News;
 @WebServlet(name = "detailNews", urlPatterns = {"/detailNews"})
 public class detailNews extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet detailNews</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet detailNews at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -82,7 +66,6 @@ public class detailNews extends HttpServlet {
             if (parentCommentIdStr != null && !parentCommentIdStr.isEmpty()) {
                 parentCommentId = Integer.parseInt(parentCommentIdStr);
                 Comment parentComment = commentDAO.getCommentById(parentCommentId);
-
                 if (parentComment != null) {
                     if (parentComment.getCustomerID() != null) {
                         request.setAttribute("parent_comment_name", parentComment.getCustomerID().getFullName());
@@ -107,7 +90,6 @@ public class detailNews extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     @Override
