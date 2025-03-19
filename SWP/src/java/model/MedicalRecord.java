@@ -12,11 +12,14 @@ public class MedicalRecord {
     
     
     private int examinationID;
+    private int recordID;
     private String diagnosis;
     private String treatmentPlan;
     private String medicationsPrescribed;
     private String createdAt; // Sử dụng String để hiển thị định dạng dd/MM/yyyy HH:mm
     private String notes;
+    private String doctorName;
+    private String phone;
 
     public MedicalRecord() {
     }
@@ -29,6 +32,43 @@ public class MedicalRecord {
         this.createdAt = createdAt;
         this.notes = notes;
     }
+    public MedicalRecord(int examinationID,int recordID, String diagnosis, String treatmentPlan, String medicationsPrescribed, String notes) {
+        this.examinationID = examinationID;
+        this.diagnosis = diagnosis;
+        this.treatmentPlan = treatmentPlan;
+        this.medicationsPrescribed = medicationsPrescribed;
+        this.createdAt = createdAt;
+        this.notes = notes;
+        this.recordID=recordID;
+        
+    }
+    public MedicalRecord(int examinationID,int recordID, String diagnosis, String treatmentPlan, String medicationsPrescribed, String notes, String name, String phone) {
+        this.examinationID = examinationID;
+        this.diagnosis = diagnosis;
+        this.treatmentPlan = treatmentPlan;
+        this.medicationsPrescribed = medicationsPrescribed;
+        this.createdAt = createdAt;
+        this.notes = notes;
+        this.recordID=recordID;
+        this.doctorName=name;
+        this.phone = phone;
+    }
+
+    public String getDoctorName() {
+        return doctorName;
+    }
+
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public int getExaminationID() {
         return examinationID;
@@ -36,6 +76,14 @@ public class MedicalRecord {
 
     public void setExaminationID(int examinationID) {
         this.examinationID = examinationID;
+    }
+
+    public int getRecordID() {
+        return recordID;
+    }
+
+    public void setRecordID(int recordID) {
+        this.recordID = recordID;
     }
 
     public String getDiagnosis() {

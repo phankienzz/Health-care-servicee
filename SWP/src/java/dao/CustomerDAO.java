@@ -5,6 +5,9 @@
 package dao;
 
 import context.DBContext;
+import context.ValidFunction;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -49,6 +52,82 @@ public class CustomerDAO extends DBContext {
 
         }
         return null;
+    }
+
+    public void insertGoogleUser(String email, String fullName, String picture) {
+        String sql = "INSERT INTO Customer (username, password, fullName, email, phone, address, accountStatus, dateOfBirth, gender) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, fullName);
+            st.setString(2, "google_oauth"); // Đánh dấu password không sử dụng
+            st.setString(3, fullName);
+            st.setString(4, email);
+            st.setString(5, "");  // Phone (Google không trả về)
+            st.setString(6, "");  // Address
+            st.setString(7, "Active");
+            st.setString(8, ""); // Date of Birth
+            st.setString(9, "Other"); // Giới tính
+
+            int rowsInserted = st.executeUpdate();
+            if (rowsInserted == 0) {
+                throw new SQLException("Failed to insert Google user into database.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Database Insert Error: " + e.getMessage());
+        }
+    }
+
+    public boolean updateCustomerbyId(Customer customer) {
+        String sql = "UPDATE [dbo].[Customer] SET "
+                + "[username] = ?, "
+                + "[password] = ?, "
+                + "[fullName] = ?, "
+                + "[email] = ?, "
+                + "[phone] = ?, "
+                + "[address] = ?, "
+                + "[accountStatus] = ?, "
+                + "[dateOfBirth] = ?, "
+                + "[gender] = ? "
+                + (customer.getProfilePicture() != null ? ", [profilePicture] = ? " : "")
+                + "WHERE [customerID] = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            System.out.println("Updating customer ID: " + customer.getCustomerID());
+            
+            // Chỉ băm lại mật khẩu nếu nó thực sự thay đổi
+            String hashedPassword = customer.getPassword();
+            if (!hashedPassword.startsWith("$2a$")) { // Nếu mật khẩu chưa băm (băm bcrypt có $2a$)
+                hashedPassword = new ValidFunction().hashPassword(hashedPassword);
+            }
+
+            stmt.setString(1, customer.getUsername());
+            stmt.setString(2, hashedPassword);
+            stmt.setString(3, customer.getFullName());
+            stmt.setString(4, customer.getEmail());
+            stmt.setString(5, customer.getPhone());
+            stmt.setString(6, customer.getAddress());
+            stmt.setString(7, customer.getAccountStatus());
+            stmt.setString(8, customer.getDateOfBirth());
+            stmt.setString(9, customer.getGender());
+
+            int paramIndex = 10;
+            if (customer.getProfilePicture() != null) {
+                File file = new File(customer.getProfilePicture());
+                try (InputStream profilePictureStream = new FileInputStream(file)) {
+                    stmt.setBlob(paramIndex++, profilePictureStream);
+                }
+            }
+
+            stmt.setInt(paramIndex, customer.getCustomerID());
+
+            int result = stmt.executeUpdate();
+            System.out.println("Rows updated: " + result);
+            return result > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public List<Customer> getAllCustomer() {
@@ -267,8 +346,8 @@ public class CustomerDAO extends DBContext {
         }
         return null;
     }
-    
-    public Customer getCustomerByID(int customerID,String status) {
+
+    public Customer getCustomerByID(int customerID, String status) {
         String sql = "select * from Customer where customerID = ? and accountStatus = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -359,8 +438,8 @@ public class CustomerDAO extends DBContext {
         }
         return listCustomer; // Trả về danh sách khách hàng
     }
-    
-    public List<Customer> getCustomerByName(String name, int index, int pageSize,String status) {
+
+    public List<Customer> getCustomerByName(String name, int index, int pageSize, String status) {
         List<Customer> listCustomer = new ArrayList<>();
         String sql = "select * from Customer where fullName like ? and accountStatus = ? order by customerID offset ? rows fetch next ? rows only";
         try {
@@ -422,8 +501,8 @@ public class CustomerDAO extends DBContext {
         }
         return null;
     }
-    
-    public Customer getCustomerByIdAndName(int id, String name,String status) {
+
+    public Customer getCustomerByIdAndName(int id, String name, String status) {
         String sql = "select * FROM Customer WHERE customerID = ? and fullName like ? and accountStatus = ?";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);

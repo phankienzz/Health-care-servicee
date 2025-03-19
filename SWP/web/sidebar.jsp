@@ -65,7 +65,7 @@
                     <li class="menu-title">Main</li>
                         <c:if test="${viewRevenue}">
                         <li>
-                            <a href="dashboard.jsp"><i class="fa fa-dashboard"></i> <span>Revenue Statistic</span></a>
+                            <a href="dashRevenue"><i class="fa fa-dashboard"></i> <span>Revenue Statistic</span></a>
                         </li>
                     </c:if>
                     <c:if test="${viewUsage}">
@@ -92,7 +92,7 @@
 
                     <c:if test="${viewAppointment}">
                         <li>
-                            <a href="manage_appointment"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
+                            <a href="view-appointment.jsp"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
                         </li>
                     </c:if>
 
@@ -129,7 +129,7 @@
                             <a href="#"><i class="fa fa-commenting-o"></i> <span> Blog</span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
                                 <li><a href="homeblogseverlet">Blog</a></li>
-                                <li><a href="add-blog.jsp">Add Blog</a></li>
+                                <li><a href="categoryList">Category</a></li>
                             </ul>
                         </li>
                     </c:if>

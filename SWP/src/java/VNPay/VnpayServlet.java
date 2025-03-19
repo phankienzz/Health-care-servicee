@@ -46,10 +46,10 @@ public class VnpayServlet extends HttpServlet {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
-        long amount = Integer.parseInt(request.getParameter("amount"))*100;
+        long amount = Math.round(Double.parseDouble(request.getParameter("amount"))*100);
         String bankCode = request.getParameter("bankCode");
-        
-        String vnp_TxnRef = Config.getRandomNumber(8);
+        String invoiceID = request.getParameter("invoiceID");
+        String vnp_TxnRef = Config.getRandomNumber(8) + invoiceID;
         String vnp_IpAddr = Config.getIpAddress(request);
 
         String vnp_TmnCode = Config.vnp_TmnCode;

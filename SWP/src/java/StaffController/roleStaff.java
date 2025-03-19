@@ -56,7 +56,7 @@ public class roleStaff extends HttpServlet {
         List<Permission> listPer = r.getPermission();
         for(Permission p : listPer){
             if(p.getPermissionID() == 21){
-                response.sendRedirect("dashboard.jsp");
+                response.sendRedirect("dashRevenue");
                 return;
             }
             if(p.getPermissionID() == 22){
@@ -81,7 +81,7 @@ public class roleStaff extends HttpServlet {
                 return;
             }
             if(p.getPermissionID() == 18){
-                response.sendRedirect("loadmange");
+                response.sendRedirect("loadmanage");
                 return;
             }
             
