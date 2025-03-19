@@ -10,7 +10,12 @@
                 font-family: Arial, sans-serif;
                 background-color: #e6f7ff;
                 margin: 0;
+                padding: 0;
+            }
+            .content-wrapper {
                 padding: 20px;
+                margin-left: 250px; /* Adjust based on your sidebar width */
+                margin-top: 70px; /* Add top margin to prevent header overlap */
             }
             h1 {
                 color: #005580;
@@ -149,134 +154,150 @@
                 width: auto;
                 cursor: pointer;
             }
+            /* Make sure the leave table is responsively sized */
+            @media (max-width: 1200px) {
+                #leave-section {
+                    flex-direction: column;
+                }
+                #leaveTable {
+                    width: 100%;
+                }
+            }
         </style>
     </head>
     <body>
-        <h1>Doctor's Weekly Schedule</h1>
+        <!-- Include header and sidebar -->
+        <jsp:include page="headerStaff.jsp"></jsp:include>
+        <jsp:include page="sidebar.jsp"></jsp:include>
 
-        <form id="dateForm" method="GET" action="professionalleave">
-            <input type="hidden" name="professionalID" value="${param.professionalID}" />
-            <label for="selectedDate">Select Date:</label>
-            <input type="date" id="selectedDate" name="selectedDate" value="${selectedDate}">
-            <button type="submit">Submit</button>
-        </form>
+            <!-- Wrap content in a div with proper margin for sidebar and header -->
+            <div class="content-wrapper">
+                <h1>Doctor's Weekly Schedule</h1>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Shift</th>
-                        <c:forEach var="day" begin="0" end="6">
-                            <c:set var="date" value="${firstMondayOfWeek.plusDays(day)}" />
-                        <th>${date.getDayOfWeek()} (${date})</th>
-                        </c:forEach>
-                </tr>
-            </thead>
-            <tbody>
-                <c:set var="shifts" value="${'MORNING,AFTERNOON,EVENING'.split(',')}" />
-                <c:forEach var="shift" items="${shifts}">
-                    <tr class="shift">
-                        <td>${shift}</td>
-                        <c:forEach var="day" begin="0" end="6">
-                            <td>
-                                <c:forEach var="schedule" items="${professionalList}">
-                                    <c:set var="scheduleDate" value="${firstMondayOfWeek.plusDays(day)}" />
-                                    <c:if test="${schedule.dayOfWeek == day + 2 && schedule.shift == shift}">
-                                        <c:choose>
-                                            <c:when test="${schedule.startTime == '00:00:00' && schedule.endTime == '00:00:00'}">
-                                                <span class="on-leave">On Leave: ${schedule.status}</span>
-                                            </c:when>
-                                            <c:otherwise>
-                                                ${schedule.startTime} - ${schedule.endTime}
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </c:if>
-                                </c:forEach>
-                            </td>
-                        </c:forEach>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
-
-        <h1>Professional Leave List</h1>
-
-        <c:if test="${not empty errorMessage}">
-            <div style="color: red; margin-bottom: 10px;">
-                ${errorMessage}
-            </div>
-        </c:if>
-
-        <!-- Hiển thị thông báo thành công -->
-        <c:if test="${not empty successMessage}">
-            <div style="color: green; margin-bottom: 10px;">
-                ${successMessage}
-            </div>
-        </c:if>
-
-        <!-- Add Status Filter -->
-        <div class="filter-section">
-            <form method="GET" action="professionalleave">
-                <input type="hidden" name="professionalID" value="${param.professionalID}" />
-                <input type="hidden" name="selectedDate" value="${selectedDate}" />
-                <label for="statusFilter">Filter by Status:</label>
-                <select name="statusFilter" id="statusFilter">
-                    <option value="All" ${param.statusFilter == 'All' || empty param.statusFilter ? 'selected' : ''}>All</option>
-                    <option value="Missed time!" ${param.statusFilter == 'Missed time!' ? 'selected' : ''}>Missed time!</option>
-                    <option value="Pending" ${param.statusFilter == 'Pending' ? 'selected' : ''}>Pending</option>
-                    <option value="Approved" ${param.statusFilter == 'Approved' ? 'selected' : ''}>Approved</option>
-                    <option value="Rejected" ${param.statusFilter == 'Rejected' ? 'selected' : ''}>Rejected</option>
-                </select>
-                <button type="submit">Filter</button>
+                <form id="dateForm" method="GET" action="professionalleave">
+                    <input type="hidden" name="professionalID" value="${param.professionalID}" />
+                <label for="selectedDate">Select Date:</label>
+                <input type="date" id="selectedDate" name="selectedDate" value="${selectedDate}">
+                <button type="submit">Submit</button>
             </form>
-        </div>
 
-        <div id="leave-section">
-            <table id="leaveTable">
-                <tr>
-                    <th>Leave ID</th>
-                    <th>Professional ID</th>
-                    <th>Leave Date</th>
-                    <th>Reason</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-                <c:choose>
-                    <c:when test="${not empty leaveList}">
-                        <c:forEach var="leave" items="${leaveList}">
-                            <c:if test="${param.statusFilter == 'All' || empty param.statusFilter || leave.status == param.statusFilter}">
-                                <tr>
-                                    <td>${leave.leaveID}</td>
-                                    <td>${leave.professionalID}</td>
-                                    <td>${leave.leaveDate}</td>
-                                    <td>${leave.reason}</td>
-                                    <td>
-                                        <form method="POST" action="professionalleave">
-                                            <select name="status">
-                                                <option value="Missed time!" ${leave.status == 'Missed time!' ? 'selected' : ''}>Missed time!</option>
-                                                <option value="Pending" ${leave.status == 'Pending' ? 'selected' : ''}>Pending</option>
-                                                <option value="Approved" ${leave.status == 'Approved' ? 'selected' : ''}>Approved</option>
-                                                <option value="Rejected" ${leave.status == 'Rejected' ? 'selected' : ''}>Rejected</option>
-                                            </select>
-                                            <input type="hidden" name="oldStatus" value="${leave.status}" />
-                                            <input type="hidden" name="leaveID" value="${leave.leaveID}" />
-                                            <input type="hidden" name="professionalID" value="${leave.professionalID}" />
-                                            <input type="hidden" name="leaveDate" value="${leave.leaveDate}" />
-                                    </td>
-                                    <td>
-                                        <button type="submit">Update</button>
-                                    </td>
-                                    </form>
-                                </tr>
-                            </c:if>
-                        </c:forEach>
-                    </c:when>
-                    <c:otherwise>
-                        <tr>
-                            <td colspan="6">No records found</td>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Shift</th>
+                            <c:forEach var="day" begin="0" end="6">
+                                <c:set var="date" value="${firstMondayOfWeek.plusDays(day)}" />
+                            <th>${date.getDayOfWeek()} (${date})</th>
+                            </c:forEach>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:set var="shifts" value="${'MORNING,AFTERNOON,EVENING'.split(',')}" />
+                    <c:forEach var="shift" items="${shifts}">
+                        <tr class="shift">
+                            <td>${shift}</td>
+                            <c:forEach var="day" begin="0" end="6">
+                                <td>
+                                    <c:forEach var="schedule" items="${professionalList}">
+                                        <c:set var="scheduleDate" value="${firstMondayOfWeek.plusDays(day)}" />
+                                        <c:if test="${schedule.dayOfWeek == day + 2 && schedule.shift == shift}">
+                                            <c:choose>
+                                                <c:when test="${schedule.startTime == '00:00:00' && schedule.endTime == '00:00:00'}">
+                                                    <span class="on-leave">On Leave: ${schedule.status}</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${schedule.startTime} - ${schedule.endTime}
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:if>
+                                    </c:forEach>
+                                </td>
+                            </c:forEach>
                         </tr>
-                    </c:otherwise>
-                </c:choose>
+                    </c:forEach>
+                </tbody>
             </table>
+
+            <h1>Professional Leave List</h1>
+
+            <c:if test="${not empty errorMessage}">
+                <div style="color: red; margin-bottom: 10px;">
+                    ${errorMessage}
+                </div>
+            </c:if>
+
+            <!-- Hiển thị thông báo thành công -->
+            <c:if test="${not empty successMessage}">
+                <div style="color: green; margin-bottom: 10px;">
+                    ${successMessage}
+                </div>
+            </c:if>
+
+            <!-- Add Status Filter -->
+            <div class="filter-section">
+                <form method="GET" action="professionalleave">
+                    <input type="hidden" name="professionalID" value="${param.professionalID}" />
+                    <input type="hidden" name="selectedDate" value="${selectedDate}" />
+                    <label for="statusFilter">Filter by Status:</label>
+                    <select name="statusFilter" id="statusFilter">
+                        <option value="All" ${param.statusFilter == 'All' || empty param.statusFilter ? 'selected' : ''}>All</option>
+                        <option value="Missed time!" ${param.statusFilter == 'Missed time!' ? 'selected' : ''}>Missed time!</option>
+                        <option value="Pending" ${param.statusFilter == 'Pending' ? 'selected' : ''}>Pending</option>
+                        <option value="Approved" ${param.statusFilter == 'Approved' ? 'selected' : ''}>Approved</option>
+                        <option value="Rejected" ${param.statusFilter == 'Rejected' ? 'selected' : ''}>Rejected</option>
+                    </select>
+                    <button type="submit">Filter</button>
+                </form>
+            </div>
+
+            <div id="leave-section">
+                <table id="leaveTable">
+                    <tr>
+                        <th>Leave ID</th>
+                        <th>Professional ID</th>
+                        <th>Leave Date</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    <c:choose>
+                        <c:when test="${not empty leaveList}">
+                            <c:forEach var="leave" items="${leaveList}">
+                                <c:if test="${param.statusFilter == 'All' || empty param.statusFilter || leave.status == param.statusFilter}">
+                                    <tr>
+                                        <td>${leave.leaveID}</td>
+                                        <td>${leave.professionalID}</td>
+                                        <td>${leave.leaveDate}</td>
+                                        <td>${leave.reason}</td>
+                                        <td>
+                                            <form method="POST" action="professionalleave">
+                                                <select name="status">
+                                                    <option value="Missed time!" ${leave.status == 'Missed time!' ? 'selected' : ''}>Missed time!</option>
+                                                    <option value="Pending" ${leave.status == 'Pending' ? 'selected' : ''}>Pending</option>
+                                                    <option value="Approved" ${leave.status == 'Approved' ? 'selected' : ''}>Approved</option>
+                                                    <option value="Rejected" ${leave.status == 'Rejected' ? 'selected' : ''}>Rejected</option>
+                                                </select>
+                                                <input type="hidden" name="oldStatus" value="${leave.status}" />
+                                                <input type="hidden" name="leaveID" value="${leave.leaveID}" />
+                                                <input type="hidden" name="professionalID" value="${leave.professionalID}" />
+                                                <input type="hidden" name="leaveDate" value="${leave.leaveDate}" />
+                                        </td>
+                                        <td>
+                                            <button type="submit">Update</button>
+                                        </td>
+                                        </form>
+                                    </tr>
+                                </c:if>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <tr>
+                                <td colspan="6">No records found</td>
+                            </tr>
+                        </c:otherwise>
+                    </c:choose>
+                </table>
+            </div>
         </div>
     </body>
 </html>
