@@ -37,8 +37,9 @@
                             </div>
                             <div class="col-sm-7 col-8 text-right m-b-30">
                                 <div class="btn-group btn-group-sm">
-                                    <button class="btn btn-white">PDF</button>
-                                    <button class="btn btn-white"><i class="fa fa-print fa-lg"></i> Print</button>
+                                    <form action="xuatPDF" method="get">
+                                        <input name="invoiceID" value="${invoice.invoiceID}" hidden=""/>
+                                    <button class="btn btn-white"><i class="fa fa-print fa-lg"></i> PDF</button>
                                 </div>
                             </div>
                         </div>

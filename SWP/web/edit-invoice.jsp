@@ -177,7 +177,7 @@
                                     <h4><i style="color: green">${mess}</i></h4>
                                     </c:if>
                                 <div class="text-center m-t-20">
-                                    <a href="invoice" class="btn btn-grey submit-btn m-r-10">Back</a>
+                                    <a href="xuatPDFEmail?invoiceID=${invoice.invoiceID}" class="btn btn-grey submit-btn m-r-10">Send</a>
                                     <a href="editInvoice?invoiceID=${invoice.invoiceID}&discount=${invoice.discountID.discountID}&paymentStatus=${status}" class="btn btn-primary submit-btn">Update</a>
                                 </div>
                             </form>
