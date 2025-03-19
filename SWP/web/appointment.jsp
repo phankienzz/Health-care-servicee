@@ -180,7 +180,7 @@
                                     <textarea name="message" class="form-control" rows="6" placeholder="Your Message"></textarea>
                                 </div>
 
-                                <!-- Thêm hi?n th? l?i n?u có -->
+
                                 <c:if test="${not empty error}">
                                     <div class="alert alert-danger">${error}</div>
                                 </c:if>
@@ -335,6 +335,8 @@
                 // Validate form tr??c khi submit
                 $('#appointmentForm').on('submit', function (e) {
                     var selectedDate = $('.datetimepicker').val();
+                    var selectedServices = $('input[name="serviceIds[]"]:checked').length;
+
                     if (!selectedDate) {
                         e.preventDefault();
                         alert('Please select a date');
@@ -353,9 +355,16 @@
                         $('.datetimepicker').val('');
                         return false;
                     }
+
+                    if (selectedServices === 0) {
+                        e.preventDefault();
+                        alert('Please select at least one service');
+                        return false;
+                    }
                 });
             });
         </script>
+
 
 </body>
 </html>

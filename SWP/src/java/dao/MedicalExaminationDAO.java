@@ -92,30 +92,39 @@ public class MedicalExaminationDAO extends DBContext {
         }
     }
 
-    public boolean saveMedicalExamination(MedicalExamination examination) {
+       public boolean saveMedicalExamination(MedicalExamination examination) {
         String sql = "INSERT INTO MedicalExamination (examinationDate, customerID, status, consultantID, notes) VALUES (?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, examination.getExaminationDate());
+
             ps.setInt(2, examination.getCustomerId().getCustomerID());
             ps.setString(3, examination.getStatus());
             ps.setInt(4, examination.getConsultantId().getStaffID());
             ps.setString(5, examination.getNote());
 
+            System.out.println("Thực thi SQL: " + ps.toString());
+
             int rowsAffected = ps.executeUpdate();
+            System.out.println("Số hàng bị ảnh hưởng: " + rowsAffected);
+
             if (rowsAffected > 0) {
                 ResultSet rs = ps.getGeneratedKeys();
                 if (rs.next()) {
                     int generatedId = rs.getInt(1);
+                    System.out.println("ID được tạo: " + generatedId);
                     saveExaminationServices(generatedId, examination.getList());
                     return true;
                 }
             }
             return false;
         } catch (SQLException e) {
+            System.out.println("Lỗi SQL: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
+
+
     }
 
     public List<MedicalExamination> getAllExamination() {
@@ -600,7 +609,47 @@ public class MedicalExaminationDAO extends DBContext {
         return appointments;
     }
 
-    
-    
-    
+    public static void main(String[] args) {
+        try {
+            // Initialize DAO
+            MedicalExaminationDAO dao = new MedicalExaminationDAO();
+
+            // Create test data
+            Customer customer = new Customer();
+            customer.setCustomerID(1); // Assuming customer ID 1 exists in your DB
+
+            Professional professional = new Professional();
+            professional.setStaffID(16); // Try with an existing staff ID first
+            // For new doctor test, use: professional.setStaffID(newDoctorId);
+
+            List<Service> services = new ArrayList<>();
+            Service service = new Service();
+            service.setPackageID(1); // Assuming service ID 1 exists
+            services.add(service);
+
+            MedicalExamination examination = new MedicalExamination();
+            examination.setExaminationDate("20/03/2025 10:00");
+            examination.setCustomerId(customer);
+            examination.setStatus("Pending");
+            examination.setConsultantId(professional);
+            examination.setNote("Test examination");
+            examination.setList(services);
+
+            // Test the save method
+            boolean result = dao.saveMedicalExamination(examination);
+
+            System.out.println("Database Connection: " + new DBContext().connection);
+            System.out.println("Save Result: " + result);
+            if (result) {
+                System.out.println("Medical Examination saved successfully!");
+            } else {
+                System.out.println("Failed to save Medical Examination");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error occurred: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 }
