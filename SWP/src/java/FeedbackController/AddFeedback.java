@@ -5,6 +5,7 @@
 package FeedbackController;
 
 import dao.FeedbackDAO;
+import dao.InvoiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -28,17 +29,43 @@ public class AddFeedback extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int invoiceID = Integer.parseInt(request.getParameter("invoiceId"));
-        int rating = Integer.parseInt(request.getParameter("rating"));
-        String comment = request.getParameter("comment");
-        FeedbackDAO dao = new FeedbackDAO();
-        boolean isAdded = dao.addFeedback(invoiceID, rating, comment);
+        try {
+            // Lấy dữ liệu từ form
+            int customerId = Integer.parseInt(request.getParameter("customerId"));
+            int rating = Integer.parseInt(request.getParameter("rating"));
+            String comment = request.getParameter("comment");
 
-        if (isAdded) {
-            request.getSession().setAttribute("msg", "Cảm ơn bạn đã để lại phản hồi.");
-        } else {
-            request.getSession().setAttribute("msg", "Có lỗi xảy ra khi gửi Feedback. Vui lòng thử lại sau.");
+            // Khởi tạo DAO
+            InvoiceDAO inDAO = new InvoiceDAO();
+            FeedbackDAO feedbackDAO = new FeedbackDAO();
+
+            // Lấy invoiceID dựa trên customerID
+            int invoiceID = inDAO.getInvoiceByCustomerID(customerId);
+            if (invoiceID == -1) {
+                // Trường hợp không tìm thấy invoiceID
+                request.getSession().setAttribute("msg", "Không tìm thấy hóa đơn cho khách hàng này.");
+                response.sendRedirect("loadfeedback");
+                return;
+            }
+
+            // Thêm feedback
+            boolean isAdded = feedbackDAO.addFeedback(invoiceID, rating, comment);
+
+            // Kiểm tra kết quả và gửi phản hồi
+            if (isAdded) {
+                request.getSession().setAttribute("msg", "Cảm ơn bạn đã để lại phản hồi.");
+            } else {
+                request.getSession().setAttribute("msg", "Có lỗi xảy ra khi gửi Feedback. Vui lòng thử lại sau.");
+            }
+        } catch (NumberFormatException e) {
+            request.getSession().setAttribute("msg", "Dữ liệu không hợp lệ. Vui lòng thử lại.");
+            e.printStackTrace();
+        } catch (Exception e) {
+            // Xử lý lỗi chung
+            request.getSession().setAttribute("msg", "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.");
+            e.printStackTrace();
         }
+        // Chuyển hướng về trang phản hồi
         response.sendRedirect("loadfeedback");
     }
 

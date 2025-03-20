@@ -191,7 +191,9 @@
                             <h2>Phản hồi của bạn</h2>
 
                             <form id="feedbackForm" action="addFeedback" method="post" onsubmit="return validateFeedback()">
-                                <input type="text" name="invoiceId" value="7">
+                                <input type="text" name="invoiceId" value="">
+                                    <!--<input type="text" name="customerId" value="${sessionScope.customerAccount.customerID}">-->
+
                                 <div class="stars">
                                     <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
                                     <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>

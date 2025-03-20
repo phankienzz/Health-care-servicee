@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package VNPay;
 
 import context.ValidFunction;
@@ -19,31 +18,25 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author Gigabyte
  */
-@WebServlet(name="vnpayReturn", urlPatterns={"/vnpayReturn"})
+@WebServlet(name = "vnpayReturn", urlPatterns = {"/vnpayReturn"})
 public class vnpayReturn extends HttpServlet {
-   
-    
 
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         String invoiceID = request.getParameter(("vnp_TxnRef")).substring(8);
         String vnp_ResponseCode = request.getParameter("vnp_ResponseCode");
         InvoiceDAO invDAO = new InvoiceDAO();
-        if ("00".equals(vnp_ResponseCode)){
+        if ("00".equals(vnp_ResponseCode)) {
             invDAO.updateInvoiceOnline(Integer.parseInt(invoiceID));
-        } 
+        }
         ValidFunction valid = new ValidFunction();
-        response.sendRedirect("viewInvoiceCustomer?invoiceID="+invoiceID+"&success="+valid.hashPassword(vnp_ResponseCode));
-    } 
-
-    
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        
+        response.sendRedirect("viewInvoiceCustomer?invoiceID=" + invoiceID + "&success=" + valid.hashPassword(vnp_ResponseCode));
     }
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
+    }
 }

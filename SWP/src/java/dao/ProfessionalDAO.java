@@ -77,72 +77,51 @@ public class ProfessionalDAO {
             stmt.setDate(8, convertStringToSqlDate(professional.getHireDate()));
             stmt.setInt(9, roleID); // Gán roleID từ bảng Role
             stmt.setString(10, professional.getStatus());
-            stmt.setBytes(11, professional.getProfilePicture().getBytes());
+            stmt.setBytes(11, professional.getProfilePicture());
             stmt.setString(12, professional.getSpecialization());
             stmt.setString(13, professional.getOfficeHours());
             stmt.setString(14, professional.getQualification());
             stmt.setString(15, professional.getBiography());
-            stmt.setBytes(16, professional.getProfilePicture().getBytes());
+            stmt.setBytes(16, professional.getProfilePicture());
             stmt.setString(17, professional.getStatus());
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        stmt.setString(1, professional.getFullName());
-        stmt.setString(2, professional.getEmail());
-        stmt.setString(3, professional.getPassword());
-        stmt.setString(4, professional.getPhone());
-        stmt.setString(5, professional.getGender());
-        stmt.setDate(6, convertStringToSqlDate(professional.getDateOfBirth()));
-        stmt.setString(7, professional.getAddress());
-        stmt.setDate(8, convertStringToSqlDate(professional.getHireDate()));
-        stmt.setInt(9, roleID); // Gán roleID từ bảng Role
-        stmt.setString(10, professional.getStatus());
-        stmt.setBytes(11, professional.getProfilePicture());
-        stmt.setString(12, professional.getSpecialization());
-        stmt.setString(13, professional.getOfficeHours());
-        stmt.setString(14, professional.getQualification());
-        stmt.setString(15, professional.getBiography());
-        stmt.setBytes(16, professional.getProfilePicture());
-        stmt.setString(17, professional.getStatus());
-
-        return stmt.executeUpdate() > 0;
-    } catch (SQLException e) {
-        e.printStackTrace();
+        //    public boolean addProfessional(Professional professional) {
+        //        String sql = "INSERT INTO Staff (fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture)\n"
+        //                + "VALUES (?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?);"
+        //                + "INSERT INTO Professional (specialization, officeHours, qualification, biography, profilePicture, status, createdAt, staffID)\n"
+        //                + "VALUES (?, ?, ?, ?, ?, ?, GETDATE(), SCOPE_IDENTITY());";
+        //        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        //            stmt.setString(1, professional.getFullName());
+        //            stmt.setString(2, professional.getEmail());
+        //            stmt.setString(3, professional.getPassword());
+        //            stmt.setDate(6, convertStringToSqlDate(professional.getDateOfBirth()));
+        //            stmt.setString(5, professional.getGender());
+        //            stmt.setString(7, professional.getAddress());
+        //            stmt.setString(4, professional.getPhone());
+        //            stmt.setDate(8, convertStringToSqlDate(professional.getHireDate()));
+        //            stmt.setInt(9, professional.getRoleID());
+        //            stmt.setString(10, professional.getStatus());
+        //            stmt.setBytes(11, professional.getProfilePicture().getBytes());
+        //            stmt.setString(12, professional.getSpecialization());
+        //            stmt.setString(13, professional.getOfficeHours());
+        //            stmt.setString(14, professional.getQualification());
+        //            stmt.setString(15, professional.getBiography());
+        //            stmt.setBytes(16, professional.getProfilePicture().getBytes());
+        //            stmt.setString(17, professional.getStatus());
+        //
+        //            return stmt.executeUpdate() > 0;
+        //        } catch (SQLException e) {
+        //            e.printStackTrace();
+        //        }
+        //        return false;
+        //    }
+        return false;
     }
-
-//    public boolean addProfessional(Professional professional) {
-//        String sql = "INSERT INTO Staff (fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture)\n"
-//                + "VALUES (?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?);"
-//                + "INSERT INTO Professional (specialization, officeHours, qualification, biography, profilePicture, status, createdAt, staffID)\n"
-//                + "VALUES (?, ?, ?, ?, ?, ?, GETDATE(), SCOPE_IDENTITY());";
-//        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-//            stmt.setString(1, professional.getFullName());
-//            stmt.setString(2, professional.getEmail());
-//            stmt.setString(3, professional.getPassword());
-//            stmt.setDate(6, convertStringToSqlDate(professional.getDateOfBirth()));
-//            stmt.setString(5, professional.getGender());
-//            stmt.setString(7, professional.getAddress());
-//            stmt.setString(4, professional.getPhone());
-//            stmt.setDate(8, convertStringToSqlDate(professional.getHireDate()));
-//            stmt.setInt(9, professional.getRoleID());
-//            stmt.setString(10, professional.getStatus());
-//            stmt.setBytes(11, professional.getProfilePicture().getBytes());
-//            stmt.setString(12, professional.getSpecialization());
-//            stmt.setString(13, professional.getOfficeHours());
-//            stmt.setString(14, professional.getQualification());
-//            stmt.setString(15, professional.getBiography());
-//            stmt.setBytes(16, professional.getProfilePicture().getBytes());
-//            stmt.setString(17, professional.getStatus());
-//
-//            return stmt.executeUpdate() > 0;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return false;
-//    }
+        
     public int getRoleIDByName(String roleName) {
         String sql = "SELECT roleID FROM MedicalSystem.dbo.Role WHERE roleName = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
