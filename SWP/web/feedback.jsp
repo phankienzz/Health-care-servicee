@@ -139,6 +139,11 @@
             button:hover {
                 background-color: #218838;
             }
+
+            .pagination {
+                justify-content: center;
+                margin-top: 30px;
+            }
         </style>
     </head>
 
@@ -159,16 +164,16 @@
                 </div>
             </section>
             <!-- contact form start -->
-        <c:if test="${msg != null}">
+        <c:if test="${not empty msg}">
             <section class="section pb-0 feed">
-                <div class="container"> 
+                <div class="container">
                     <h2>${msg}</h2>
                     <button class="back-home" onclick="goHome()">Trở về trang chủ</button>
                 </div>
             </section>
         </c:if>
-        <c:if test="${msg == null}">
-            <section class="section pb-0 feed">
+        <c:if test="${empty msg && sessionScope.customerAccount != null}">
+            <section class="section pb-50 feed">
                 <div class="container"> 
                     <h2>Cảm ơn bạn đã sử dụng dịch vụ!</h2>
                     <p>Vui lòng để lại phản hồi của bạn để chúng tôi cải chất lượng thiện dịch vụ.</p>
@@ -186,7 +191,7 @@
                             <h2>Phản hồi của bạn</h2>
 
                             <form id="feedbackForm" action="addFeedback" method="post" onsubmit="return validateFeedback()">
-                                <input type="hidden" name="invoiceId" value="7">
+                                <input type="text" name="invoiceId" value="7">
                                 <div class="stars">
                                     <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
                                     <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
@@ -207,34 +212,65 @@
                 </div>
             </section>
         </c:if>
+        <c:if test="${sessionScope.customerAccount == null}">
+            <section class="section pb-50 feed">
+                <div class="container"> 
+                    <h3>Bạn cần <a style="color: red;" href="login.jsp">đăng nhập</a> để để lại phản hồi.</h3>
+                </div>
+            </section>
+        </c:if>
 
-
-        <!--            <section class="feedback-section section">
-                        <div class="container">
-                            <div class="row justify-content-center">
-                                <div class="col-lg-8 col-md-10 col-sm-12 mb-4">
-                                    <div class="section-title text-center">
-                                        <h2 class="text-md mb-2">Customer Feedback</h2>
-                                        <div class="divider mx-auto my-4"></div>
-                                        <p class="mb-5">See what our customers are saying about us!</p>
-                                    </div>
-                                </div>
-                            </div>
-        
-        <%--<c:forEach var="f" items="${listFeed}">--%>
-            <div class="row justify-content-center">
-                <div class="col-lg-8 col-md-10 col-sm-12 mb-4">
-                    <div class="feedback-card p-4 text-center shadow rounded" style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal;">
-                        <img src="avatar3.jpg" alt="Mark Wilson" class="rounded-circle mb-3" width="100" height="100">
-                        <h5 class="mt-3">${f.invoice.examinationID.customerId.fullName}</h5>
-                        <p class="feedback-text" style="font-size: 20px; line-height: 1.6; word-break: break-word;">"${f.comment}"</p>
-                        <strong>Rate: ${f.rating}★</strong>
+        <hr>
+        <section class="feedback-section section">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-md-10 col-sm-12">
+                        <div class="section-title text-center">
+                            <h2 class="text-md mb-2">Customer Feedback</h2>
+                            <p class="mb-5">See what our customers are saying about us!</p>
+                        </div>
                     </div>
                 </div>
+
+                <c:forEach var="f" items="${listFeed}">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8 col-md-10 col-sm-12 mb-4">
+                            <div class="feedback-card p-4 text-center shadow rounded" style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal;">
+                                <!--<img src="avatar3.jpg" alt="Mark Wilson" class="rounded-circle mb-3" width="100" height="100">-->
+                                <h5 class="mt-3">${f.invoice.examinationID.customerId.fullName}</h5>
+                                <p class="feedback-text" style="font-size: 20px; line-height: 1.6; word-break: break-word;">"${f.comment}"</p>
+                                <strong>Rate: ${f.rating}★</strong>
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
             </div>
-        <%--</c:forEach>--%>
-    </div>
-</section>-->
+            <div class="row">
+                <div class="col-12">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            <c:if test="${currentPage > 1}">
+                                <li class="page-item">
+                                    <a class="page-link" href="loadfeedback?page=${currentPage - 1}">Previous</a>
+                                </li>
+                            </c:if>
+
+                            <c:forEach var="i" begin="1" end="${endPage}">
+                                <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                    <a class="page-link" href="loadfeedback?page=${i}">${i}</a>
+                                </li>
+                            </c:forEach>
+
+                            <c:if test="${currentPage < endPage}">
+                                <li class="page-item">
+                                    <a class="page-link" href="loadfeedback?page=${currentPage + 1}">Next</a>
+                                </li>
+                            </c:if>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </section>
         <!-- footer Start -->
         <jsp:include page="footer.jsp"></jsp:include>
 

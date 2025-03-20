@@ -54,7 +54,8 @@
                 scroll-behavior: smooth;
             }
             .comment-container {
-                max-height: 500px; /* Chiều cao tối đa */
+                /*width:  1000px;*/
+                max-height: 600px; /* Chiều cao tối đa */
                 overflow-y: auto; /* Hiển thị thanh cuộn khi nội dung vượt quá */
                 padding-right: 10px; /* Để tránh bị che mất nội dung do thanh cuộn */
                 border: 1px solid #ddd; /* Viền để phân tách danh sách */
@@ -67,7 +68,7 @@
             document.addEventListener("DOMContentLoaded", function () {
                 var commentContainer = document.querySelector(".comment-container");
                 if (commentContainer) {
-                    commentContainer.scrollTop = commentContainer.scrollHeight;
+                    commentContainer.scrollTop = commentContainer.scrollTop;
                 }
             });
         </script>
@@ -136,7 +137,7 @@
                                                                 <c:if test="${comment.staff_id != null}">
                                                                     <img style="width: 50px; height: 50px; border-radius: 50%;" 
                                                                          alt="" 
-                                                                         src="pictureprofile?staffID=${comment.staff_id.staffID}" 
+                                                                         src="" 
                                                                          class="img-fluid">
                                                                 </c:if>
                                                             </div>
@@ -185,7 +186,6 @@
                                                         <ul class="child-comments list-unstyled ml-5">
                                                             <jsp:include page="comment-reply.jsp">
                                                                 <jsp:param name="parentId" value="${comment.comment_id}"/>
-                                                                <jsp:param name="depth" value="1" />
                                                             </jsp:include>
                                                         </ul>
                                                     </li>
@@ -260,7 +260,6 @@
                                     <p>Please <a href="login.jsp">login</a> to write a comment.</p>
                                 </c:if>
                             </div>
-
                         </div>
                     </div>
 
@@ -377,8 +376,6 @@
         <script src="assets2/plugins/counterup/jquery.counterup.min.js"></script>
         <!-- Google Map -->
         <script src="assets2/plugins/google-map/map.js"></script>
-        <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkeLMlsiwzp6b3Gnaxd86lvakimwGA6UA&callback=initMap"></script>
         <script src="assets2/js/script.js"></script>
         <script src="assets2/js/contact.js"></script>
     </body>

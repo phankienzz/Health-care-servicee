@@ -27,7 +27,6 @@ import model.News;
 @WebServlet(name = "detailNews", urlPatterns = {"/detailNews"})
 public class detailNews extends HttpServlet {
 
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -52,11 +51,10 @@ public class detailNews extends HttpServlet {
 
         List<Comment> comments = commentDAO.getCommentsByPostId(newsID);
         List<Category> listCate = dao.getAllCategoryNews();
-        
+
         for (Comment comment : comments) {
             comment.setCreate_at(valid.formatDateNews(comment.getCreate_at()));
         }
-
         news.setCreated_at(valid.formatDateNews(news.getCreated_at()));
         news.setUpdated_at(valid.formatDateTime(news.getUpdated_at(), "dd/MM/yyyy HH:mm"));
 

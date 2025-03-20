@@ -111,8 +111,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="service-block mb-5">
                                 <div class="image-container">
-                                    <img src="${empty service.packageID ? 'images/default-image.jpg' : 'getimage?packageID='}${service.packageID}" 
-                                         alt="Service Image">
+                                    <img src="${empty service.packageID ? 'images/default-image.jpg' : 'getimage?packageID='}${service.packageID}" alt="Service Image">
                                 </div>
                                 <div class="content">
                                     <h4 class="mt-4 mb-2 title-color">

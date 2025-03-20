@@ -151,6 +151,12 @@
                 display: none;
 
             }
+
+            .client-info p {
+                word-wrap: break-word; /* Xuống dòng khi gặp từ quá dài */
+                white-space: normal; /* Giữ nguyên các dòng */
+                overflow-wrap: break-word;
+            }
         </style>
     </head>
 
@@ -483,7 +489,7 @@
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-lg-12 testimonial-wrap-2">
-                            <c:forEach var="feedback" items="${listFeedback}">
+                        <c:forEach var="feedback" items="${listFeedback}">
                             <div class="testimonial-block style-2  gray-bg">
                                 <i class="icofont-quote-right"></i>
 
@@ -575,12 +581,11 @@
 
 
         <div class="floating-icons">
-
             <a href="https://zalo.me/0886840889" class="icon">
-                <img src="images/service/download.png" alt="Zalo">
+                <img src="https://help.zalo.me/wp-content/uploads/2023/08/cropped-logoZalo.png" alt="Zalo">
             </a>
             <a href="https://www.messenger.com/t/61573434115221/?messaging_source=source%3Apages%3Amessage_shortlink&source_id=1441792&recurring_notification=0" class="icon">
-                <img src="images/service/4a4c224a0c6667178bebdfa3b6bdb92b.jpg" alt="Messenger">
+                <img src="https://th.bing.com/th/id/R.5e81e292523d1f3a099da156223d8cc7?rik=Nj1WZ7uxItlDzA&pid=ImgRaw&r=0" alt="Messenger">
             </a>
         </div>
         <!-- footer Start -->

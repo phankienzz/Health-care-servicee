@@ -55,6 +55,12 @@
                 font-size: 16px;
                 padding-top: 6px
             }
+            .comment-text {
+                max-width: 300px;  /* Giới hạn chiều rộng */
+                word-wrap: break-word; /* Xuống dòng khi quá dài */
+                white-space: normal; /* Cho phép xuống dòng */
+            }
+
         </style>
     </head>
 
@@ -70,7 +76,7 @@
                             </div>
                         </div>
 
-                        <form action="patient" method="get">
+                        <form action="feedback" method="get">
                             <div class="row filter-row">
                                 <!--                                <div class="col-sm-6 col-md-3">
                                                                     <div class="form-group form-focus">
@@ -87,19 +93,19 @@
                             <div class="col-sm-6 col-md-2">
                                 <div class="form-group form-focus select-focus">
                                     <label class="focus-label">Rating</label>
-                                    <select name="status" class="select floating">
-                                        <option value="" ${status == '' ? 'selected' : ''}>All</option>
-                                        <option value="1" ${ status == 'Active' ? 'selected' : ''}>1</option>
-                                        <option value="2" ${status == 'Inactive' ? 'selected' : ''}>2</option>
-                                        <option value="3" ${ status == 'Active' ? 'selected' : ''}>3</option>
-                                        <option value="4" ${ status == 'Active' ? 'selected' : ''}>4</option>
-                                        <option value="5" ${ status == 'Active' ? 'selected' : ''}>5</option>
+                                    <select name="rate" class="select floating"  onchange="this.form.submit()">
+                                        <option value="" ${rate == '' ? 'selected' : ''}>All</option>
+                                        <option value="1" ${rate == 1 ? 'selected' : ''}>1</option>
+                                        <option value="2" ${rate == 2 ? 'selected' : ''}>2</option>
+                                        <option value="3" ${rate == 3 ? 'selected' : ''}>3</option>
+                                        <option value="4" ${rate == 4 ? 'selected' : ''}>4</option>
+                                        <option value="5" ${rate == 5 ? 'selected' : ''}>5</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-sm-6 col-md-3">
-                                <input type="submit" value="Search" class="btn btn-success btn-block"/>
-                            </div>
+                            <!--                            <div class="col-sm-6 col-md-3">
+                                                            <input type="submit" value="Search" class="btn btn-success btn-block"/>
+                                                        </div>-->
                         </div>
                     </form>
 
@@ -116,27 +122,27 @@
                                             <!--<th>Feedback ID</th>-->
                                             <th>Name</th>
                                             <th>Feedback</th>
-                                            <th>Date</th>
                                             <th>Rating</th>
-                                            <th class="text-right">Action</th>
+                                            <th>Date</th>
+                                            <!--<th class="text-right">Action</th>-->
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach var="feed" items="${listFeed}">
+                                        <c:forEach var="feed" items="${listFeedback}">
                                             <tr>
                                                 <!--<td>${feed.feedbackID}</td>-->
                                                 <td><img width="35" height="35" src="" class="rounded-circle m-r-5" alt="">${feed.invoice.examinationID.customerId.fullName}</td>
-                                                <td>${feed.comment}</td>
-                                                <td>${feed.date}</td>
+                                                <td class="comment-text">${feed.comment}</td>
                                                 <td>${feed.rating}★</td>
-                                                <td class="text-right">
-                                                    <div class="dropdown dropdown-action">
-                                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                            <a class="dropdown-item" href=""><i class="fa fa-eye m-r-5"></i>View</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
+                                                <td>${feed.date}</td>
+                                                <!--                                                <td class="text-right">
+                                                                                                    <div class="dropdown dropdown-action">
+                                                                                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                                                                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                                                                            <a class="dropdown-item" href=""><i class="fa fa-eye m-r-5"></i>View</a>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </td>-->
                                             </tr>
                                         </c:forEach>
                                     </tbody>
@@ -146,25 +152,23 @@
                     </div>
 
                     <div class="clearfix">
-                        <div class="hint-text">Showing <b>${currentEntries}</b> out of <b>${totalPatient}  </b> entries</div>
+                        <div class="hint-text">Showing <b>${currentEntries}</b> out of <b>${totalFeedback}  </b> entries</div>
                         <ul class="pagination">
-                            <c:if test="${page > 1}">
+                            <c:if test="${currentPage > 1}">
                                 <li class="page-item">
-                                    <a class="page-link" href="patient?page=${page - 1}&patientID=${param.patientID}&patientName=${param.patientName}&status=${param.status}">Previous</a>
+                                    <a class="page-link" href="feedback?page=${currentPage - 1}&rate=${param.rate}">Previous</a>
                                 </li>
                             </c:if>
 
-
-
                             <c:forEach var="i" begin="1" end="${endPage}">
-                                <li class="page-item ${i == page ? 'active' : ''}">
-                                    <a class="page-link" href="patient?page=${i}&patientID=${param.patientID}&patientName=${param.patientName}&status=${param.status}">${i}</a>
+                                <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                    <a class="page-link" href="feedback?page=${i}&rate=${param.rate}">${i}</a>
                                 </li>
                             </c:forEach>
 
-                            <c:if test="${page < endPage}">
+                            <c:if test="${currentPage < endPage}">
                                 <li class="page-item">
-                                    <a class="page-link" href="patient?page=${page + 1}&patientID=${param.patientID}&patientName=${param.patientName}&status=${param.status}">Next</a>
+                                    <a class="page-link" href="feedback?page=${currentPage + 1}&rate=${param.rate}">Next</a>
                                 </li>
                             </c:if>
                         </ul>

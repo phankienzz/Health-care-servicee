@@ -24,29 +24,12 @@ import context.ValidFunction;
 @WebServlet(name = "newsServlet", urlPatterns = {"/allNews"})
 public class newsServlet extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet newsServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet newsServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ValidFunction valid = new ValidFunction();
         NewsDAO dao = new NewsDAO();
-        String indexPage = request.getParameter("page");
+        String pageStr = request.getParameter("page");
         String categoryID = request.getParameter("categoryID");
         String search = request.getParameter("search");
         String sort = request.getParameter("sort");
@@ -57,13 +40,13 @@ public class newsServlet extends HttpServlet {
         if (search == null) {
             search = "";
         }
-        if (indexPage == null || indexPage.trim().isEmpty()) {
-            indexPage = "1";
+        if (pageStr == null || pageStr.trim().isEmpty()) {
+            pageStr = "1";
         }
 
         int page;
         try {
-            page = Integer.parseInt(indexPage.trim());
+            page = Integer.parseInt(pageStr.trim());
             if (page <= 0) {
                 page = 1;
             }
@@ -87,10 +70,6 @@ public class newsServlet extends HttpServlet {
         }
 
         int endPage = (int) Math.ceil((double) totalNews / pageSize);
-        if (page > endPage && endPage > 0) {
-            response.sendRedirect("allNews?page=" + endPage + "&search=" + search + "&categoryID=" + categoryID + "&sort=" + sort);
-            return;
-        }
 
         for (News news : pagingPage) {
             news.setCreated_at(valid.formatDateNews(news.getCreated_at()));
@@ -112,7 +91,6 @@ public class newsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     @Override

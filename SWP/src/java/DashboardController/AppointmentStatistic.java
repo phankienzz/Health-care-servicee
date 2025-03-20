@@ -51,13 +51,11 @@ public class AppointmentStatistic extends HttpServlet {
         int year = Integer.parseInt(request.getParameter("year"));
         Map<Integer, Integer> stats = medDAO.getMonthlyAppointmentStatistics(year);
 
-        // Đảm bảo dữ liệu đủ 12 tháng (nếu tháng nào không có thì gán 0)
         List<Integer> counts = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
             counts.add(stats.getOrDefault(i, 0));
         }
 
-        // Tạo JSON trả về
         Map<String, Object> result = new HashMap<>();
         result.put("month", new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"});
         result.put("appointmentCount", counts);

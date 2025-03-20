@@ -24,6 +24,13 @@
         <!-- Main Stylesheet -->
         <link rel="stylesheet" href="assets2/css/style.css">
 
+        <style>
+            .client-info p {
+                word-wrap: break-word; /* Xuống dòng khi gặp từ quá dài */
+                white-space: normal; /* Giữ nguyên các dòng */
+                overflow-wrap: break-word;
+            }
+        </style>
     </head>
 
     <body id="top">
@@ -195,71 +202,19 @@
                     </div>
                     <div class="row align-items-center">
                         <div class="col-lg-6 testimonial-wrap offset-lg-6">
-                            <div class="testimonial-block">
-                                <div class="client-info ">
-                                    <h4>Amazing service!</h4>
-                                    <span>John Partho</span>
+                            <c:forEach var="feedback" items="${listFeedback}">
+                                <div class="testimonial-block">
+                                    <div class="client-info ">
+                                        <h4>${feedback.invoice.examinationID.customerId.fullName}</h4>
+                                        <span>${feedback.date}</span>
+                                    </div>
+                                    <p>
+                                        ${feedback.comment}
+                                    </p>
+                                    <strong>Rate: ${feedback.rating}★</strong>
+                                    <i class="icofont-quote-right"></i>
                                 </div>
-                                <p>
-                                    They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium,
-                                    iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat. Quibusdam laboriosam
-                                    eveniet nostrum nemo commodi numquam quod.
-                                </p>
-                                <i class="icofont-quote-right"></i>
-
-                            </div>
-
-                            <div class="testimonial-block">
-                                <div class="client-info">
-                                    <h4>Expert doctors!</h4>
-                                    <span>Mullar Sarth</span>
-                                </div>
-                                <p>
-                                    They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium,
-                                    iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat. Quibusdam laboriosam
-                                    eveniet nostrum nemo commodi numquam quod.
-                                </p>
-                                <i class="icofont-quote-right"></i>
-                            </div>
-
-                            <div class="testimonial-block">
-                                <div class="client-info">
-                                    <h4>Good Support!</h4>
-                                    <span>Kolis Mullar</span>
-                                </div>
-                                <p>
-                                    They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium,
-                                    iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat. Quibusdam laboriosam
-                                    eveniet nostrum nemo commodi numquam quod.
-                                </p>
-                                <i class="icofont-quote-right"></i>
-                            </div>
-
-                            <div class="testimonial-block">
-                                <div class="client-info">
-                                    <h4>Nice Environment!</h4>
-                                    <span>Partho Sarothi</span>
-                                </div>
-                                <p>
-                                    They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium,
-                                    iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat. Quibusdam laboriosam
-                                    eveniet nostrum nemo commodi numquam quod.
-                                </p>
-                                <i class="icofont-quote-right"></i>
-                            </div>
-
-                            <div class="testimonial-block">
-                                <div class="client-info">
-                                    <h4>Modern Service!</h4>
-                                    <span>Kolis Mullar</span>
-                                </div>
-                                <p>
-                                    They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium,
-                                    iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat. Quibusdam laboriosam
-                                    eveniet nostrum nemo commodi numquam quod.
-                                </p>
-                                <i class="icofont-quote-right"></i>
-                            </div>
+                            </c:forEach>
                         </div>
                     </div>
                 </div>

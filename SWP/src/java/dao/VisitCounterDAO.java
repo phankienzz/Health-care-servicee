@@ -21,30 +21,8 @@ import java.util.Map;
  */
 public class VisitCounterDAO extends DBContext {
 
-//    public int getVisitCount() {
-//        int count = 0;
-//        String sql = "SELECT visitCount FROM VisitCounter WHERE id = 1";
-//        try {
-//            PreparedStatement st = connection.prepareStatement(sql);
-//            ResultSet rs = st.executeQuery();
-//            if (rs.next()) {
-//                count = rs.getInt("visitCount");
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return count;
-//    }
-//
-//    public void increaseVisitCount() {
-//        String sql = "UPDATE VisitCounter SET visitCount = visitCount + 1 WHERE id = 1";
-//        try {
-//            PreparedStatement st = connection.prepareStatement(sql);
-//            st.executeUpdate();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
     public void updateVisitCount() {
         String sql = "IF EXISTS (SELECT 1 FROM VisitCounter WHERE visitDate = CAST(GETDATE() AS DATE)) "
                 + "UPDATE VisitCounter SET visitCount = visitCount + 1 WHERE visitDate = CAST(GETDATE() AS DATE) "
@@ -88,39 +66,6 @@ public class VisitCounterDAO extends DBContext {
         }
         return visitData;
     }
-
-    //
-//    public List<Map<String, Object>> getFilteredVisitStatistics(String filterType) {
-//        List<Map<String, Object>> visitData = new ArrayList<>();
-//        String sql = "";
-//
-//        if ("day".equals(filterType)) {
-//            sql = "SELECT visitDate AS label, SUM(visitCount) AS totalVisits FROM VisitCounter "
-//                    + "WHERE visitDate >= DATEADD(DAY, -7, GETDATE()) "
-//                    + "GROUP BY visitDate ORDER BY visitDate ASC";
-//        } else if ("month".equals(filterType)) {
-//            sql = "SELECT FORMAT(visitDate, 'yyyy-MM') AS label, SUM(visitCount) AS totalVisits FROM VisitCounter "
-//                    + "WHERE visitDate >= DATEADD(MONTH, -6, GETDATE()) "
-//                    + "GROUP BY FORMAT(visitDate, 'yyyy-MM') ORDER BY label ASC";
-//        } else if ("year".equals(filterType)) {
-//            sql = "SELECT YEAR(visitDate) AS label, SUM(visitCount) AS totalVisits FROM VisitCounter "
-//                    + "GROUP BY YEAR(visitDate) ORDER BY label ASC";
-//        }
-//
-//        try (PreparedStatement stmt = connection.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
-//
-//            while (rs.next()) {
-//                Map<String, Object> data = new HashMap<>();
-//                data.put("date", rs.getString("label"));
-//                data.put("count", rs.getInt("totalVisits"));
-//                visitData.add(data);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return visitData;
-//    }
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     public List<Map<String, Object>> getFilteredVisitStatistics(String filterType) {
         List<Map<String, Object>> visitData = new ArrayList<>();

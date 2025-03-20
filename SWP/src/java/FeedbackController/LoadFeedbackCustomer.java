@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package FeedbackController;
 
 import dao.FeedbackDAO;
@@ -13,55 +12,56 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 
 /**
  *
  * @author Hoang
  */
-@WebServlet(name="LoadFeedbackCustomer", urlPatterns={"/loadfeedback"})
+@WebServlet(name = "LoadFeedbackCustomer", urlPatterns = {"/loadfeedback"})
 public class LoadFeedbackCustomer extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LoadFeedbackCustomer</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LoadFeedbackCustomer at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         FeedbackDAO dao = new FeedbackDAO();
-        List<model.Feedback> list = dao.getAllFeedbackByCustomer();
+        String pageStr = request.getParameter("page");
+        if (pageStr == null || pageStr.isEmpty()) {
+            pageStr = "1";
+        }
+        int page;
+        try {
+            page = Integer.parseInt(pageStr);
+        } catch (NumberFormatException e) {
+            page = 1; // Đặt mặc định về trang đầu tiên nếu không hợp lệ
+        }
+
+        int pageSize = 5;
+        int totalFeedback = dao.getAllFeedbackByCustomer().size();
+        List<model.Feedback> list = dao.getAllFeedbackByCustomer(page, pageSize);
+        int endPage = (int) Math.ceil((double) totalFeedback / pageSize);
+        
+        HttpSession session = request.getSession();
+        String msg = (String) session.getAttribute("msg");
+        session.removeAttribute("msg"); // Xóa msg sau khi lấy
+        
+        request.setAttribute("msg", msg);
         request.setAttribute("listFeed", list);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("endPage", endPage);
+
         request.getRequestDispatcher("feedback.jsp").forward(request, response);
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
+            throws ServletException, IOException {
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

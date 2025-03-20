@@ -9,7 +9,6 @@ import dao.FeedbackDAO;
 import dao.HomePageDAO;
 import dao.VisitCounterDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -41,7 +40,6 @@ public class Home extends HttpServlet {
             visitDAO.updateVisitCount(); // Chỉ tăng khi chưa có session
             session.setAttribute("visited", true); // Đánh dấu đã ghé thăm
         }
-        System.out.println("HomeServlet được gọi!");
 
         List<Service> listService = dao.get4Service();
         List<Feedback> listFeedback = feedbackDAO.getAllFeedback5StarByCustomer();

@@ -24,9 +24,34 @@ public class FeedbackDAO extends DBContext {
     public List<Feedback> getAllFeedbackByCustomer() {
         List<Feedback> list = new ArrayList<>();
         InvoiceDAO inDAO = new InvoiceDAO();
-        String sql = "select * from Feedback";
+        String sql = "select * from Feedback order by date desc";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                list.add(new Feedback(
+                        rs.getInt("feedbackID"),
+                        inDAO.getInvoiceByID(rs.getInt("invoiceID")),
+                        rs.getInt("rating"),
+                        rs.getString("comment"),
+                        rs.getString("date")));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public List<Feedback> getAllFeedbackByCustomer(int index, int pageSize) {
+        List<Feedback> list = new ArrayList<>();
+        InvoiceDAO inDAO = new InvoiceDAO();
+        String sql = "select * from Feedback order by date desc offset ? rows  fetch  next ? rows only";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            int offset = (index - 1) * pageSize;
+            st.setInt(1, offset);
+            st.setInt(2, pageSize);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 list.add(new Feedback(
@@ -64,6 +89,219 @@ public class FeedbackDAO extends DBContext {
         }
         return list;
     }
+    
+    public List<Feedback> getAllFeedback5StarByCustomer(int index, int pageSize) {
+        List<Feedback> list = new ArrayList<>();
+        InvoiceDAO inDAO = new InvoiceDAO();
+        String sql = "select * from Feedback where rating = 5 order by date desc offset ? rows  fetch  next ? rows only";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            int offset = (index - 1) * pageSize;
+            st.setInt(1, offset);
+            st.setInt(2, pageSize);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                list.add(new Feedback(
+                        rs.getInt("feedbackID"),
+                        inDAO.getInvoiceByID(rs.getInt("invoiceID")),
+                        rs.getInt("rating"),
+                        rs.getString("comment"),
+                        rs.getString("date")));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<Feedback> getAllFeedback4StarByCustomer() {
+        List<Feedback> list = new ArrayList<>();
+        InvoiceDAO inDAO = new InvoiceDAO();
+        String sql = "select * from Feedback where rating = 4";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                list.add(new Feedback(
+                        rs.getInt("feedbackID"),
+                        inDAO.getInvoiceByID(rs.getInt("invoiceID")),
+                        rs.getInt("rating"),
+                        rs.getString("comment"),
+                        rs.getString("date")));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public List<Feedback> getAllFeedback4StarByCustomer(int index, int pageSize) {
+        List<Feedback> list = new ArrayList<>();
+        InvoiceDAO inDAO = new InvoiceDAO();
+        String sql = "select * from Feedback where rating = 4 order by date desc offset ? rows  fetch  next ? rows only";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            int offset = (index - 1) * pageSize;
+            st.setInt(1, offset);
+            st.setInt(2, pageSize);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                list.add(new Feedback(
+                        rs.getInt("feedbackID"),
+                        inDAO.getInvoiceByID(rs.getInt("invoiceID")),
+                        rs.getInt("rating"),
+                        rs.getString("comment"),
+                        rs.getString("date")));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<Feedback> getAllFeedback3StarByCustomer() {
+        List<Feedback> list = new ArrayList<>();
+        InvoiceDAO inDAO = new InvoiceDAO();
+        String sql = "select * from Feedback where rating = 3";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                list.add(new Feedback(
+                        rs.getInt("feedbackID"),
+                        inDAO.getInvoiceByID(rs.getInt("invoiceID")),
+                        rs.getInt("rating"),
+                        rs.getString("comment"),
+                        rs.getString("date")));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public List<Feedback> getAllFeedback3StarByCustomer(int index, int pageSize) {
+        List<Feedback> list = new ArrayList<>();
+        InvoiceDAO inDAO = new InvoiceDAO();
+        String sql = "select * from Feedback where rating = 3 order by date desc offset ? rows  fetch  next ? rows only";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            int offset = (index - 1) * pageSize;
+            st.setInt(1, offset);
+            st.setInt(2, pageSize);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                list.add(new Feedback(
+                        rs.getInt("feedbackID"),
+                        inDAO.getInvoiceByID(rs.getInt("invoiceID")),
+                        rs.getInt("rating"),
+                        rs.getString("comment"),
+                        rs.getString("date")));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<Feedback> getAllFeedback2StarByCustomer() {
+        List<Feedback> list = new ArrayList<>();
+        InvoiceDAO inDAO = new InvoiceDAO();
+        String sql = "select * from Feedback where rating = 2";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                list.add(new Feedback(
+                        rs.getInt("feedbackID"),
+                        inDAO.getInvoiceByID(rs.getInt("invoiceID")),
+                        rs.getInt("rating"),
+                        rs.getString("comment"),
+                        rs.getString("date")));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public List<Feedback> getAllFeedback2StarByCustomer(int index, int pageSize) {
+        List<Feedback> list = new ArrayList<>();
+        InvoiceDAO inDAO = new InvoiceDAO();
+        String sql = "select * from Feedback where rating = 2 order by date desc offset ? rows  fetch  next ? rows only";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            int offset = (index - 1) * pageSize;
+            st.setInt(1, offset);
+            st.setInt(2, pageSize);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                list.add(new Feedback(
+                        rs.getInt("feedbackID"),
+                        inDAO.getInvoiceByID(rs.getInt("invoiceID")),
+                        rs.getInt("rating"),
+                        rs.getString("comment"),
+                        rs.getString("date")));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<Feedback> getAllFeedback1StarByCustomer() {
+        List<Feedback> list = new ArrayList<>();
+        InvoiceDAO inDAO = new InvoiceDAO();
+        String sql = "select * from Feedback where rating = 1";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                list.add(new Feedback(
+                        rs.getInt("feedbackID"),
+                        inDAO.getInvoiceByID(rs.getInt("invoiceID")),
+                        rs.getInt("rating"),
+                        rs.getString("comment"),
+                        rs.getString("date")));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public List<Feedback> getAllFeedback1StarByCustomer(int index, int pageSize) {
+        List<Feedback> list = new ArrayList<>();
+        InvoiceDAO inDAO = new InvoiceDAO();
+        String sql = "select * from Feedback where rating = 1 order by date desc offset ? rows  fetch  next ? rows only";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            int offset = (index - 1) * pageSize;
+            st.setInt(1, offset);
+            st.setInt(2, pageSize);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                list.add(new Feedback(
+                        rs.getInt("feedbackID"),
+                        inDAO.getInvoiceByID(rs.getInt("invoiceID")),
+                        rs.getInt("rating"),
+                        rs.getString("comment"),
+                        rs.getString("date")));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
     public boolean addFeedback(int invoiceID, int rating, String comment) {
         String sql = "INSERT INTO Feedback (invoiceID, rating, comment) VALUES (?, ?, ?)";
@@ -86,7 +324,7 @@ public class FeedbackDAO extends DBContext {
         List<Feedback> feedbacks = feedbackDAO.getAllFeedback5StarByCustomer();
         for (Feedback fb : feedbacks) {
             System.out.println(fb.getInvoice().getExaminationID().getCustomerId().getFullName() + ", " + fb.getComment() + ", "
-                    + fb.getRating() +", " + fb.getDate());
+                    + fb.getRating() + ", " + fb.getDate());
         }
 
 //        int invoiceID = 7;

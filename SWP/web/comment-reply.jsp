@@ -7,7 +7,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<%--<c:if test="${param.depth <= 2}">--%>   
     <c:forEach var="reply" items="${comments}">
         <c:if test="${reply.parent_comment_id == param.parentId}">
             <li class="mb-3">
@@ -98,12 +97,6 @@
             </li>
         </c:if>
     </c:forEach>
-<%--</c:if>--%>
-<%--<c:if test="${param.depth > 2}">--%>
-<!--    <li class="mb-3">
-        <p class="text-muted"> <a href="javascript:void(0);" onclick="showReplies(${param.parentId}, ${param.depth});">Show more</a></p>
-    </li>-->
-<%--</c:if>--%>
 
 
 
