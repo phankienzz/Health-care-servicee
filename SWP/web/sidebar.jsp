@@ -96,7 +96,7 @@
 
                     <c:if test="${viewAppointment}">
                         <li>
-                            <a href="view-appointment.jsp"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
+                            <a href="manage_appointment.jsp"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
                         </li>
                     </c:if>
                         <c:if test="${viewComment}">
