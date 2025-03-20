@@ -122,6 +122,7 @@ public class ValidFunction {
     }
     
     public static void main(String[] args) {
-        
+        ValidFunction valid = new ValidFunction();
+        System.out.println(valid.hashPassword("00"));
     }
 }

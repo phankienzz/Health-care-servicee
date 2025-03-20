@@ -47,7 +47,7 @@ public class viewInvoiceCustomer extends HttpServlet {
         }
         String success = request.getParameter("success");
         if (success != null ) {
-            if ("00".equals(success)) {
+            if (valid.checkPassword("00", success)) {
                 request.setAttribute("success", "Payment invoice successfully");
             } else {
                 request.setAttribute("success", "Payment invoice unsuccessfully");

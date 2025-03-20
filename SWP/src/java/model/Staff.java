@@ -20,19 +20,12 @@ public class Staff {
     private String hireDate;
     private int roleID;
     private String status;
-    private String profilePicture;
+    private byte[] profilePicture;
 
     public Staff() {
     }
 
-    public Staff(int staffID, String fullName) {
-        this.staffID = staffID;
-        this.fullName = fullName;
-    }
-    
-    
-
-    public Staff(int staffID, String fullName, String email, String password, String phone, String gender, String dateOfBirth, String address, String hireDate, int roleID, String status, String profilePicture) {
+    public Staff(int staffID, String fullName, String email, String password, String phone, String gender, String dateOfBirth, String address, String hireDate, int roleID, String status, byte[] profilePicture) {
         this.staffID = staffID;
         this.fullName = fullName;
         this.email = email;
@@ -135,13 +128,14 @@ public class Staff {
         this.status = status;
     }
 
-    public String getProfilePicture() {
+    public byte[] getProfilePicture() {
         return profilePicture;
     }
 
-    public void setProfilePicture(String profilePicture) {
+    public void setProfilePicture(byte[] profilePicture) {
         this.profilePicture = profilePicture;
     }
 
+    
     
 }

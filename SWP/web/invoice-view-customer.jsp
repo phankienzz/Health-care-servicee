@@ -37,27 +37,29 @@
                             </div>
                             <div class="col-sm-7 col-8 text-right m-b-30">
                                 <div class="btn-group btn-group-sm">
-                                    <button class="btn btn-white">PDF</button>
-                                    <button class="btn btn-white"><i class="fa fa-print fa-lg"></i> Print</button>
-                                </div>
+                                    <form action="xuatPDF" method="get">
+                                        <input name="invoiceID" value="${invoice.invoiceID}" hidden=""/>
+                                    </form>
+                                <button class="btn btn-white"><i class="fa fa-print fa-lg"></i> PDF</button>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row custom-invoice">
-                                            <div class="col-6 col-sm-6 m-b-20">
-                                                <img src="assets/img/logo-dark.png" class="inv-logo" alt="">
-                                                <ul class="list-unstyled">
-                                                    <li>PreClinic</li>
-                                                    <li>FPT Univercity,</li>
-                                                    <li>Hòa Lạc, Hà Nội, Việt Nam</li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-6 col-sm-6 m-b-20">
-                                                <div class="invoice-details">
-                                                    <h3 class="text-uppercase">Invoice #${invoice.invoiceID}</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row custom-invoice">
+                                        <div class="col-6 col-sm-6 m-b-20">
+                                            <img src="assets/img/logo-dark.png" class="inv-logo" alt="">
+                                            <ul class="list-unstyled">
+                                                <li>PreClinic</li>
+                                                <li>FPT Univercity,</li>
+                                                <li>Hòa Lạc, Hà Nội, Việt Nam</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-6 col-sm-6 m-b-20">
+                                            <div class="invoice-details">
+                                                <h3 class="text-uppercase">Invoice #${invoice.invoiceID}</h3>
                                                 <ul class="list-unstyled">
                                                     <li>Created Date: <span>${createdDate}</span></li>
 

@@ -89,7 +89,28 @@ public class ProfessionalDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+
+        stmt.setString(1, professional.getFullName());
+        stmt.setString(2, professional.getEmail());
+        stmt.setString(3, professional.getPassword());
+        stmt.setString(4, professional.getPhone());
+        stmt.setString(5, professional.getGender());
+        stmt.setDate(6, convertStringToSqlDate(professional.getDateOfBirth()));
+        stmt.setString(7, professional.getAddress());
+        stmt.setDate(8, convertStringToSqlDate(professional.getHireDate()));
+        stmt.setInt(9, roleID); // Gán roleID từ bảng Role
+        stmt.setString(10, professional.getStatus());
+        stmt.setBytes(11, professional.getProfilePicture());
+        stmt.setString(12, professional.getSpecialization());
+        stmt.setString(13, professional.getOfficeHours());
+        stmt.setString(14, professional.getQualification());
+        stmt.setString(15, professional.getBiography());
+        stmt.setBytes(16, professional.getProfilePicture());
+        stmt.setString(17, professional.getStatus());
+
+        return stmt.executeUpdate() > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
 
 //    public boolean addProfessional(Professional professional) {
@@ -242,8 +263,8 @@ public class ProfessionalDAO {
             stmt.setString(3, professional.getQualification());
             stmt.setString(4, professional.getBiography());
             stmt.setInt(7, professional.getStaffID());
-            stmt.setBytes(6, professional.getProfilePicture().getBytes());
-            stmt.setBytes(12, professional.getProfilePicture().getBytes());
+            stmt.setBytes(6, professional.getProfilePicture());
+            stmt.setBytes(12, professional.getProfilePicture());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();

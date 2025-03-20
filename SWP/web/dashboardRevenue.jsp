@@ -40,7 +40,7 @@
                             <div class="dash-widget">
                                 <span class="dash-widget-bg2"><i class="fa fa-money-bill"></i></span>
                                 <div class="dash-widget-info text-right">
-                                    <h3>${sumAmount}VNĐ</h3>
+                                    <h3>${sumAmount}$</h3>
                                     <span class="widget-title2">Sum Revenue <i class="fa fa-check"></i></span>
                                 </div>
                             </div>

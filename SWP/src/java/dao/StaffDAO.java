@@ -6,12 +6,14 @@ package dao;
 
 import context.DBContext;
 import context.ValidFunction;
+import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Staff;
+import java.sql.Blob;
 
 /**
  *
@@ -27,6 +29,9 @@ public class StaffDAO extends DBContext {
             st.setString(1, email);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
+                Blob blob = rs.getBlob("profilePicture");
+                byte[] profilePicture = (blob != null) ? blob.getBytes(1, (int) blob.length()) : null; // Chuyển BLOB thành byte[]
+
                 return new Staff(
                         rs.getInt("staffID"),
                         rs.getString("fullName"),
@@ -39,7 +44,7 @@ public class StaffDAO extends DBContext {
                         rs.getString("hireDate"),
                         rs.getInt("roleID"),
                         rs.getString("status"),
-                        rs.getString("profilePicture"));
+                        profilePicture);
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -57,6 +62,9 @@ public class StaffDAO extends DBContext {
             st.setInt(2, total);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
+                Blob blob = rs.getBlob("profilePicture");
+                byte[] profilePicture = (blob != null) ? blob.getBytes(1, (int) blob.length()) : null; // Chuyển BLOB thành byte[]
+
                 int staffID = rs.getInt("staffID");
                 String fullName = rs.getString("fullName");
                 String email = rs.getString("email");
@@ -68,7 +76,6 @@ public class StaffDAO extends DBContext {
                 String hireDate = rs.getString("hireDate");
                 int roleID = rs.getInt("roleID");
                 String status = rs.getString("status");
-                String profilePicture = rs.getString("profilePicture");
                 Staff staff = new Staff(staffID, fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture);
                 staffList.add(staff); // Thêm customer vào danh sách
             }
@@ -85,6 +92,9 @@ public class StaffDAO extends DBContext {
             st.setInt(1, staffID);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
+                Blob blob = rs.getBlob("profilePicture");
+                byte[] profilePicture = (blob != null) ? blob.getBytes(1, (int) blob.length()) : null; // Chuyển BLOB thành byte[]
+
                 return new Staff(
                         rs.getInt("staffID"),
                         rs.getString("fullName"),
@@ -97,7 +107,7 @@ public class StaffDAO extends DBContext {
                         rs.getString("hireDate"),
                         rs.getInt("roleID"),
                         rs.getString("status"),
-                        rs.getString("profilePicture"));
+                        profilePicture);
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -122,8 +132,13 @@ public class StaffDAO extends DBContext {
         }
     }
 
-    public void updateStaffInfo(int staffID, String fullName, String email, String phone, String dateOfBirth, String gender, String address) {
-        String sql = "update staff set fullName = ?, email = ?, phone= ?, dateOfBirth = CONVERT(DATETIME, ?, 103), gender = ?, address = ? where staffID = ?";
+    public void updateStaffInfo(int staffID, String fullName, String email, String phone, String dateOfBirth, String gender, String address,InputStream profilePicture) {
+        String sql;
+        if (profilePicture != null) {
+            sql = "update staff set fullName = ?, email = ?, phone= ?, dateOfBirth = CONVERT(DATETIME, ?, 103), gender = ?, address = ?,profilePicture=? where staffID = ?";
+        } else {
+            sql = "update staff set fullName = ?, email = ?, phone= ?, dateOfBirth = CONVERT(DATETIME, ?, 103), gender = ?, address = ? where staffID = ?";
+        }
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, fullName);
@@ -132,7 +147,12 @@ public class StaffDAO extends DBContext {
             pre.setString(4, dateOfBirth);
             pre.setString(5, gender);
             pre.setString(6, address);
-            pre.setInt(7, staffID);
+            if (profilePicture != null) {
+                pre.setBlob(7, profilePicture);
+                pre.setInt(8, staffID);
+            } else {
+                pre.setInt(7, staffID);
+            }
             pre.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -147,6 +167,9 @@ public class StaffDAO extends DBContext {
             st.setString(1, "%" + name + "%");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
+                Blob blob = rs.getBlob("profilePicture");
+                byte[] profilePicture = (blob != null) ? blob.getBytes(1, (int) blob.length()) : null; // Chuyển BLOB thành byte[]
+
                 int staffID = rs.getInt("staffID");
                 String fullName = rs.getString("fullName");
                 String email = rs.getString("email");
@@ -158,7 +181,6 @@ public class StaffDAO extends DBContext {
                 String hireDate = rs.getString("hireDate");
                 int roleID = rs.getInt("roleID");
                 String status = rs.getString("status");
-                String profilePicture = rs.getString("profilePicture");
                 Staff staff = new Staff(staffID, fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture);
                 listStaff.add(staff); // Thêm customer vào danh sách
             }
@@ -177,6 +199,9 @@ public class StaffDAO extends DBContext {
             st.setInt(1, number_roleID);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
+                Blob blob = rs.getBlob("profilePicture");
+                byte[] profilePicture = (blob != null) ? blob.getBytes(1, (int) blob.length()) : null; // Chuyển BLOB thành byte[]
+
                 int staffID = rs.getInt("staffID");
                 String fullName = rs.getString("fullName");
                 String email = rs.getString("email");
@@ -188,7 +213,6 @@ public class StaffDAO extends DBContext {
                 String hireDate = rs.getString("hireDate");
                 int roleID = rs.getInt("roleID");
                 String status = rs.getString("status");
-                String profilePicture = rs.getString("profilePicture");
                 Staff staff = new Staff(staffID, fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture);
                 listStaff.add(staff); // Thêm customer vào danh sách
             }
@@ -208,6 +232,9 @@ public class StaffDAO extends DBContext {
             st.setInt(2, number_roleID);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
+                Blob blob = rs.getBlob("profilePicture");
+                byte[] profilePicture = (blob != null) ? blob.getBytes(1, (int) blob.length()) : null; // Chuyển BLOB thành byte[]
+
                 int staffID = rs.getInt("staffID");
                 String fullName = rs.getString("fullName");
                 String email = rs.getString("email");
@@ -219,7 +246,6 @@ public class StaffDAO extends DBContext {
                 String hireDate = rs.getString("hireDate");
                 int roleID = rs.getInt("roleID");
                 String status = rs.getString("status");
-                String profilePicture = rs.getString("profilePicture");
                 Staff staff = new Staff(staffID, fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture);
                 listStaff.add(staff); // Thêm customer vào danh sách
             }
@@ -229,6 +255,7 @@ public class StaffDAO extends DBContext {
         return listStaff; // Trả về danh sách khách hàng
 
     }
+
     public List<Staff> getStaffByNameandRolePaging(int role, String name, int start, int total) {
         List<Staff> listStaff = new ArrayList<>();
         String sql = "select * from staff where fullName like ? and roleID = ? ORDER BY staffID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
@@ -240,6 +267,9 @@ public class StaffDAO extends DBContext {
             st.setInt(4, total);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
+                Blob blob = rs.getBlob("profilePicture");
+                byte[] profilePicture = (blob != null) ? blob.getBytes(1, (int) blob.length()) : null; // Chuyển BLOB thành byte[]
+
                 int staffID = rs.getInt("staffID");
                 String fullName = rs.getString("fullName");
                 String email = rs.getString("email");
@@ -251,7 +281,6 @@ public class StaffDAO extends DBContext {
                 String hireDate = rs.getString("hireDate");
                 int roleID = rs.getInt("roleID");
                 String status = rs.getString("status");
-                String profilePicture = rs.getString("profilePicture");
                 Staff staff = new Staff(staffID, fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture);
                 listStaff.add(staff); // Thêm customer vào danh sách
             }
@@ -272,6 +301,9 @@ public class StaffDAO extends DBContext {
             st.setInt(3, total);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
+                Blob blob = rs.getBlob("profilePicture");
+                byte[] profilePicture = (blob != null) ? blob.getBytes(1, (int) blob.length()) : null; // Chuyển BLOB thành byte[]
+
                 int staffID = rs.getInt("staffID");
                 String fullName = rs.getString("fullName");
                 String email = rs.getString("email");
@@ -283,7 +315,6 @@ public class StaffDAO extends DBContext {
                 String hireDate = rs.getString("hireDate");
                 int roleID = rs.getInt("roleID");
                 String status = rs.getString("status");
-                String profilePicture = rs.getString("profilePicture");
                 Staff staff = new Staff(staffID, fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture);
                 listStaff.add(staff); // Thêm customer vào danh sách
             }
@@ -304,6 +335,9 @@ public class StaffDAO extends DBContext {
             st.setInt(3, total);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
+                Blob blob = rs.getBlob("profilePicture");
+                byte[] profilePicture = (blob != null) ? blob.getBytes(1, (int) blob.length()) : null; // Chuyển BLOB thành byte[]
+
                 int staffID = rs.getInt("staffID");
                 String fullName = rs.getString("fullName");
                 String email = rs.getString("email");
@@ -315,7 +349,6 @@ public class StaffDAO extends DBContext {
                 String hireDate = rs.getString("hireDate");
                 int roleID = rs.getInt("roleID");
                 String status = rs.getString("status");
-                String profilePicture = rs.getString("profilePicture");
                 Staff staff = new Staff(staffID, fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture);
                 listStaff.add(staff); // Thêm customer vào danh sách
             }
@@ -344,6 +377,9 @@ public class StaffDAO extends DBContext {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
+                Blob blob = rs.getBlob("profilePicture");
+                byte[] profilePicture = (blob != null) ? blob.getBytes(1, (int) blob.length()) : null; // Chuyển BLOB thành byte[]
+
                 int staffID = rs.getInt("staffID");
                 String fullName = rs.getString("fullName");
                 String email = rs.getString("email");
@@ -355,7 +391,6 @@ public class StaffDAO extends DBContext {
                 String hireDate = rs.getString("hireDate");
                 int roleID = rs.getInt("roleID");
                 String status = rs.getString("status");
-                String profilePicture = rs.getString("profilePicture");
                 Staff staff = new Staff(staffID, fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture);
                 listStaff.add(staff); // Thêm customer vào danh sách
             }
@@ -415,6 +450,6 @@ public class StaffDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-       
+
     }
 }
