@@ -31,7 +31,7 @@ public class vnpayReturn extends HttpServlet {
             invDAO.updateInvoiceOnline(Integer.parseInt(invoiceID));
         }
         ValidFunction valid = new ValidFunction();
-        response.sendRedirect("viewInvoiceCustomer?invoiceID=" + invoiceID + "&success=" + valid.hashPassword(vnp_ResponseCode));
+        response.sendRedirect("loadfeedback?invoiceID=" + invoiceID + "&success=" + valid.hashPassword(vnp_ResponseCode));
     }
 
     @Override

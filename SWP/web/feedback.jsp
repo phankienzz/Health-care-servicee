@@ -191,7 +191,7 @@
                             <h2>Phản hồi của bạn</h2>
 
                             <form id="feedbackForm" action="addFeedback" method="post" onsubmit="return validateFeedback()">
-                                <input type="text" name="invoiceId" value="">
+                                <input type="text" name="invoiceId" value="${invoiceID}">
                                     <!--<input type="text" name="customerId" value="${sessionScope.customerAccount.customerID}">-->
 
                                 <div class="stars">

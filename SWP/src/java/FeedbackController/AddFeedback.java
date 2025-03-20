@@ -30,28 +30,14 @@ public class AddFeedback extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // Lấy dữ liệu từ form
-            int customerId = Integer.parseInt(request.getParameter("customerId"));
+            int invoiceID = Integer.parseInt(request.getParameter("invoiceId"));
             int rating = Integer.parseInt(request.getParameter("rating"));
             String comment = request.getParameter("comment");
 
-            // Khởi tạo DAO
-            InvoiceDAO inDAO = new InvoiceDAO();
             FeedbackDAO feedbackDAO = new FeedbackDAO();
 
-            // Lấy invoiceID dựa trên customerID
-            int invoiceID = inDAO.getInvoiceByCustomerID(customerId);
-            if (invoiceID == -1) {
-                // Trường hợp không tìm thấy invoiceID
-                request.getSession().setAttribute("msg", "Không tìm thấy hóa đơn cho khách hàng này.");
-                response.sendRedirect("loadfeedback");
-                return;
-            }
-
-            // Thêm feedback
             boolean isAdded = feedbackDAO.addFeedback(invoiceID, rating, comment);
 
-            // Kiểm tra kết quả và gửi phản hồi
             if (isAdded) {
                 request.getSession().setAttribute("msg", "Cảm ơn bạn đã để lại phản hồi.");
             } else {
@@ -61,11 +47,9 @@ public class AddFeedback extends HttpServlet {
             request.getSession().setAttribute("msg", "Dữ liệu không hợp lệ. Vui lòng thử lại.");
             e.printStackTrace();
         } catch (Exception e) {
-            // Xử lý lỗi chung
             request.getSession().setAttribute("msg", "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.");
             e.printStackTrace();
         }
-        // Chuyển hướng về trang phản hồi
         response.sendRedirect("loadfeedback");
     }
 
