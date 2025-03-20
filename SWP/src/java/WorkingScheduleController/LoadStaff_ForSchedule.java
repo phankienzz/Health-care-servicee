@@ -11,8 +11,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.WorkingSchedule;
 
 @WebServlet(name = "LoadStaff_ForSchedule", urlPatterns = {"/loadstaffforschedule"})
@@ -44,6 +48,17 @@ public class LoadStaff_ForSchedule extends HttpServlet {
         // Lấy dữ liệu từ request
         String searchName = request.getParameter("searchName");
         String workDate = request.getParameter("workDate");
+        if (workDate != null && !workDate.trim().isEmpty()) {
+            try {
+                SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd"); // Đổi thành yyyy-MM-dd
+                workDate = outputFormat.format(inputFormat.parse(workDate));
+                System.out.println("Formatted workDate: " + workDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
         String dayFilter = request.getParameter("dayFilter");
         String shiftFilter = request.getParameter("shiftFilter");
         String searchType = request.getParameter("searchType");

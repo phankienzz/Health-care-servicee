@@ -8,6 +8,7 @@
         <title>Danh Sách Lịch Làm Việc</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
         <title>Preclinic - Medical & Hospital - Bootstrap 4 Admin Template</title>
         <link rel="stylesheet" type="text/css" href="assets/css/css_list_doctor.css">
     </head>
@@ -15,19 +16,19 @@
         <div class="main-wrapper">
             <jsp:include page="headerStaff.jsp"></jsp:include>
             <jsp:include page="sidebar.jsp"></jsp:include>
-            <div class="container mt-5">
-                <h2>Danh Sách Lịch Làm Việc</h2>
+                <div class="container mt-5">
+                    <h2>Danh Sách Lịch Làm Việc</h2>
 
-                <!-- Search by Name (Top-left corner) -->
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <form action="loadstaffforschedule" method="POST" class="d-flex align-items-end gap-2">
-                            <input type="hidden" name="searchType" value="name">
-                            <div class="flex-grow-1">
-                                <label for="doctorName" class="form-label control-label">
-                                    <i class="fas fa-search"></i> Tìm kiếm theo tên
-                                </label>
-                                <input type="text" class="form-control" id="doctorName" name="searchName" placeholder="Nhập tên bác sĩ" value="${param.searchName}">
+                    <!-- Search by Name (Top-left corner) -->
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <form action="loadstaffforschedule" method="POST" class="d-flex align-items-end gap-2">
+                                <input type="hidden" name="searchType" value="name">
+                                <div class="flex-grow-1">
+                                    <label for="doctorName" class="form-label control-label">
+                                        <i class="fas fa-search"></i> Tìm kiếm theo tên
+                                    </label>
+                                    <input type="text" class="form-control" id="doctorName" name="searchName" placeholder="Nhập tên bác sĩ" value="${param.searchName}">
                             </div>
                             <button type="submit" class="btn search-btn">
                                 <i class="fas fa-search"></i>
@@ -47,7 +48,8 @@
                             <input type="hidden" name="searchType" value="date">
                             <div class="col-5">
                                 <label for="workDate" class="form-label control-label">Tìm kiếm theo ngày</label>
-                                <input type="date" class="form-control" id="workDate" name="workDate" required="" value="${param.workDate}">
+<!--                                <input type="date" class="form-control" id="workDate" name="workDate" required="" value="${param.workDate}">-->
+                                <input type="text" class="form-control datetimepicker" placeholder="DD/MM/YYYY" id="workDate" name="workDate" required="" value="${param.workDate}">
                             </div>
                             <div class="col-5">
                                 <label for="shift" class="form-label">Ca trong ngày</label>
@@ -234,5 +236,6 @@
         <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
         <script src="assets/js/app.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
     </body>
 </html>
