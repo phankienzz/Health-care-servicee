@@ -41,7 +41,8 @@ public class LoadFeedbackCustomer extends HttpServlet {
         int totalFeedback = dao.getAllFeedbackByCustomer().size();
         List<model.Feedback> list = dao.getAllFeedbackByCustomer(page, pageSize);
         int endPage = (int) Math.ceil((double) totalFeedback / pageSize);
-
+        
+        
         // Lấy invoiceID từ request
         String invoiceID = request.getParameter("invoiceID");
 

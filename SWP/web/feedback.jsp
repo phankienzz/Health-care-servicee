@@ -176,41 +176,42 @@
             <section class="section pb-50 feed">
                 <div class="container"> 
                     <h2>Cảm ơn bạn đã sử dụng dịch vụ!</h2>
-                    <p>Vui lòng để lại phản hồi của bạn để chúng tôi cải chất lượng thiện dịch vụ.</p>
 
-                    <!-- Nút mở hộp thoại feedback -->
-                    <button class="open-feedback" onclick="openFeedback()">Để lại phản hồi</button>
-                    <button class="back-home" onclick="goHome()">Trở về trang chủ</button>
+                    <c:if test="${not empty invoiceID}">
+                        <p>Vui lòng để lại phản hồi của bạn để chúng tôi cải thiện chất lượng dịch vụ.</p>
+                        <button class="open-feedback" onclick="openFeedback()">Để lại phản hồi</button>
 
-                    <!-- Hộp thoại feedback -->
-                    <div id="feedbackModal" class="modal">
-                        <div class="modal-content">
-                            <div class="closed">
-                                <span style="cursor: pointer;" onclick="closeFeedback()">&times;</span>
-                            </div>
-                            <h2>Phản hồi của bạn</h2>
-
-                            <form id="feedbackForm" action="addFeedback" method="post" onsubmit="return validateFeedback()">
-                                <input type="text" name="invoiceId" value="${invoiceID}">
-                                    <!--<input type="text" name="customerId" value="${sessionScope.customerAccount.customerID}">-->
-
-                                <div class="stars">
-                                    <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
-                                    <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
-                                    <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
-                                    <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
-                                    <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                        <div id="feedbackModal" class="modal">
+                            <div class="modal-content">
+                                <div class="closed">
+                                    <span style="cursor: pointer;" onclick="closeFeedback()">&times;</span>
                                 </div>
+                                <h2>Phản hồi của bạn</h2>
 
-                                <!-- Thông báo lỗi khi chưa chọn sao -->
-                                <p class="error" id="ratingError">Chọn số sao tương ứng với mức độ hài lòng nhé !</p>
+                                <form id="feedbackForm" action="addFeedback" method="post" onsubmit="return validateFeedback()">
+                                    <input type="hidden" name="invoiceId" value="${invoiceID}">
+                                    <div class="stars">
+                                        <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+                                        <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                                        <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                                        <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                                        <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                                    </div>
 
-                                <textarea name="comment" placeholder="Nhập phản hồi của bạn..."></textarea>
-                                <br>
-                                <button type="submit">Gửi phản hồi</button>
-                            </form>
+                                    <p class="error" id="ratingError">Chọn số sao tương ứng với mức độ hài lòng nhé!</p>
+                                    <textarea name="comment" placeholder="Nhập phản hồi của bạn..."></textarea>
+                                    <br>
+                                    <button type="submit">Gửi phản hồi</button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
+                    </c:if>
+
+                    <c:if test="${empty invoiceID}">
+                        <!--<p>Bạn không có hóa đơn nào để phản hồi.</p>-->
+                    </c:if>
+
+                    <button class="back-home" onclick="goHome()">Trở về trang chủ</button>
                 </div>
             </section>
         </c:if>

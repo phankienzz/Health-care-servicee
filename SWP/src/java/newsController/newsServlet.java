@@ -70,6 +70,10 @@ public class newsServlet extends HttpServlet {
         }
 
         int endPage = (int) Math.ceil((double) totalNews / pageSize);
+        if (page > endPage && endPage > 0) {
+            response.sendRedirect("allNews?page=" + endPage + "&search=" + search + "&categoryID=" + categoryID + "&sort=" + sort);
+            return;
+        }
 
         for (News news : pagingPage) {
             news.setCreated_at(valid.formatDateNews(news.getCreated_at()));
