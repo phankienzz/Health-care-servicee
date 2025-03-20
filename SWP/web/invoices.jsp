@@ -170,7 +170,16 @@
                                                 </td>
                                             </tr>
                                         </c:forEach>
-
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th>Total Amount: ${totalAmount}</th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
                                     </tbody>
                                 </table>
                             </div>

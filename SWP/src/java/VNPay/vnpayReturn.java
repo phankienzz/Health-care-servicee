@@ -5,6 +5,7 @@
 
 package VNPay;
 
+import context.ValidFunction;
 import dao.InvoiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -33,7 +34,8 @@ public class vnpayReturn extends HttpServlet {
         if ("00".equals(vnp_ResponseCode)){
             invDAO.updateInvoiceOnline(Integer.parseInt(invoiceID));
         } 
-        response.sendRedirect("viewInvoiceCustomer?invoiceID="+invoiceID+"&success="+vnp_ResponseCode);
+        ValidFunction valid = new ValidFunction();
+        response.sendRedirect("viewInvoiceCustomer?invoiceID="+invoiceID+"&success="+valid.hashPassword(vnp_ResponseCode));
     } 
 
     

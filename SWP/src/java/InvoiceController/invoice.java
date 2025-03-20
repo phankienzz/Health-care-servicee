@@ -87,6 +87,11 @@ public class invoice extends HttpServlet {
             listInvoice = invoiceDAO.getInvoiceByFromDate(from);
             request.setAttribute("from", from);
         }
+        double totalAmount = 0;
+        for(Invoice in : listInvoice){
+            totalAmount += in.getTotalAmount();
+        }
+        request.setAttribute("totalAmount", totalAmount);
         int page = 1;
         int recordsPerPage = 5;
 
@@ -139,6 +144,8 @@ public class invoice extends HttpServlet {
             i++;
 
         }
+        
+        
         RoleDAO roleDAO = new RoleDAO();
         HttpSession session = request.getSession();
         if (session.getAttribute("staffAccount") != null) {
