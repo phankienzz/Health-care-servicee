@@ -1,7 +1,7 @@
- <%-- 
-    Document   : register
-    Created on : Jan 14, 2025, 1:30:08 AM
-    Author     : jaxbo
+<%-- 
+   Document   : register
+   Created on : Jan 14, 2025, 1:30:08 AM
+   Author     : jaxbo
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -65,30 +65,26 @@
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
-                                <input type="password" name="password" class="form-control" pattern=".{8,}" title="Mật khẩu phải nhiều hơn 8 ký tự">
+                                <!--<input type="password" name="password" class="form-control" pattern=".{8,}" title="Mật khẩu phải nhiều hơn 8 ký tự">-->
+                                <input type="password" name="password" class="form-control" title="">
                             </div>
                             <div class="form-group">
                                 <label>Confirm Password</label>
                                 <input type="password" name="confirm_password" class="form-control">
                             </div>
-                            <!--                            <div class="form-group checkbox">
-                                                            <label>
-                                                                <input type="checkbox"> I have read and agree the Terms & Conditions
-                                                            </label>
-                                                        </div>-->
                             <div class="form-group text-center">
                                 <button class="btn btn-primary account-btn" type="submit">Signup</button>
                             </div>
                             <div class="text-center login-link">
                                 Already have an account? <a href="login.jsp">Login</a>
                             </div>
-                             <div class="mt-4 text-center">
-                        <button type="button" class="btn btn-danger btn-block mb-2" 
-                                onclick="window.location.href = 'https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:9999/SWP/RegisterGoogleServlet&response_type=code&client_id=322004880766-ljaf0a60isb2782d47uegdvjbfgjoc9t.apps.googleusercontent.com&approval_prompt=force'">
-                            <i class="fa fa-google me-2"></i>
-                             Google
-                        </button>
-                    </div>
+                            <div class="mt-4 text-center">
+                                <button type="button" class="btn btn-danger btn-block mb-2" 
+                                        onclick="window.location.href = 'https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:9999/SWP/RegisterGoogleServlet&response_type=code&client_id=322004880766-ljaf0a60isb2782d47uegdvjbfgjoc9t.apps.googleusercontent.com&approval_prompt=force'">
+                                    <i class="fa fa-google me-2"></i>
+                                    Google
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>

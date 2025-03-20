@@ -33,15 +33,11 @@
                 <div class="page-wrapper">
                     <div class="content">
                         <div class="row">
-                            <!--<h2>Thống kê lượng truy cập</h2>-->
-<!--                            <p>Hôm nay: <span>${requestScope.todayCount}</span></p>
-                        <p>Tháng này: <span>${requestScope.monthCount}</span></p>
-                        <p>Năm nay: <span>${requestScope.yearCount}</span></p>-->
-                        <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                            <div class="dash-widget">
-                                <span class="dash-widget-bg2"><i class="fa fa-user-o"></i></span>
-                                <div class="dash-widget-info text-right">
-                                    <h3>${requestScope.todayCount}</h3>
+                            <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                                <div class="dash-widget">
+                                    <span class="dash-widget-bg2"><i class="fa fa-user-o"></i></span>
+                                    <div class="dash-widget-info text-right">
+                                        <h3>${requestScope.todayCount}</h3>
                                     <span class="widget-title2">Visits in day <i class="fa fa-check" aria-hidden="true"></i></span>
                                 </div>
                             </div>
@@ -88,13 +84,8 @@
                                             </select>
                                         </div>
                                     </div>
-
-                                    <!-- Biểu đồ -->
-                                    <!--<canvas id="visitChart" width="400" height="200"></canvas>-->
-
                                     <canvas id="visitChart"></canvas>
                                 </div>
-
                             </div>
                         </div>
 
@@ -537,6 +528,8 @@
         <!--<script src="assets/js/chart.js"></script>-->
 
 
+        <!--Biểu đồ thống kê lượng đăng ký tài khoản của khách hàng  -->
+
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const yearSelect = document.getElementById("customerYearSelect");
@@ -578,6 +571,7 @@
             });
         </script>
 
+        <!--Biểu đồ thống kê lịch đặt khám  -->
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const yearSelect = document.getElementById("appointmentYearSelect");
@@ -646,43 +640,7 @@
             });
         </script>
 
-
-
-        <!--        <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        fetch("visit-chart")
-                                .then(response => response.json())
-                                .then(data => {
-                                    const labels = data.map(item => item.date);
-                                    const counts = data.map(item => item.count);
-        
-                                    const ctx = document.getElementById("visitChart").getContext("2d");
-                                    new Chart(ctx, {
-                                        type: "line", // Thay "line" bằng "bar" nếu muốn biểu đồ cột
-                                        data: {
-                                            labels: labels,
-                                            datasets: [{
-                                                    label: "Lượt truy cập",
-                                                    data: counts,
-                                                    borderColor: "blue",
-                                                    backgroundColor: "rgba(54, 162, 235, 0.2)",
-                                                    borderWidth: 2
-                                                }]
-                                        },
-                                        options: {
-                                            responsive: true,
-                                            scales: {
-                                                x: {title: {display: true, text: "Ngày"}},
-                                                y: {title: {display: true, text: "Số lượt truy cập"}, beginAtZero: true}
-                                            }
-                                        }
-                                    });
-                                })
-                                .catch(error => console.error("Lỗi tải dữ liệu:", error));
-                    });
-                </script>-->
-
-
+        <!--Biểu đồ thống kê lượng truy cập  -->
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 loadChart("day"); // Mặc định là 7 ngày gần nhất
@@ -698,7 +656,6 @@
                         .then(data => {
                             const labels = data.map(item => item.date);
                             const counts = data.map(item => item.count);
-
                             const ctx = document.getElementById("visitChart").getContext("2d");
                             if (window.myChart)
                                 window.myChart.destroy(); // Xóa biểu đồ cũ

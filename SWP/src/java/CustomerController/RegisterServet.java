@@ -86,11 +86,13 @@ public class RegisterServet extends HttpServlet {
 //                return;
 //            }
             //mat khau lon hon 8 ky tu
-//            if (password.length() < 8) {
-//                request.setAttribute("error", "mat khau it nhat 8 ky tu");
-//                request.getRequestDispatcher("register.jsp").forward(request, response);
-//                return;
-//            }
+            String passwordPattern = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+=!]).{8,}$";
+            
+            if (!password.matches(passwordPattern)) {
+                request.setAttribute("error", "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái in hoa, số và ký tự đặc biệt");
+                request.getRequestDispatcher("register.jsp").forward(request, response);
+                return;
+            }
             if (!password.equals(confirm_password)) {
                 request.setAttribute("error", "Passwords do not match !");
                 request.getRequestDispatcher("register.jsp").forward(request, response);

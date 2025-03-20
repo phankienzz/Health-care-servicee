@@ -34,11 +34,10 @@ public class Home extends HttpServlet {
         FeedbackDAO feedbackDAO = new FeedbackDAO();
         VisitCounterDAO visitDAO = new VisitCounterDAO();
 
-        // Kiểm tra session để tránh tăng lượt truy cập 2 lần
         HttpSession session = request.getSession();
         if (session.getAttribute("visited") == null) {
-            visitDAO.updateVisitCount(); // Chỉ tăng khi chưa có session
-            session.setAttribute("visited", true); // Đánh dấu đã ghé thăm
+            visitDAO.updateVisitCount();
+            session.setAttribute("visited", true);
         }
 
         List<Service> listService = dao.get4Service();
