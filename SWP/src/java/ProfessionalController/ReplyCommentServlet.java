@@ -94,7 +94,8 @@ public class ReplyCommentServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Reply text is required");
             return;
         }
-
+        session.getAttribute("professionalID");
+        
         String senderEmail = (String) session.getAttribute("email");
         int staffid=(int ) session.getAttribute("staffID");
         

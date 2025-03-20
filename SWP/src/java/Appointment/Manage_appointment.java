@@ -44,6 +44,7 @@ public class Manage_appointment extends HttpServlet {
         if (pageStr != null && !pageStr.isEmpty()) {
             page = Integer.parseInt(pageStr);
         }
+        
 //HttpSession session = request.getSession(false);  // false để không tạo mới session nếu không có
 //        Integer staffID = null;
 //        
@@ -63,8 +64,7 @@ public class Manage_appointment extends HttpServlet {
         int doctorName = (int) session.getAttribute("staffID");
 //        
 
-       
-
+   
         // Tính tổng số bản ghi để xác định số trang
         int totalRecords = medicalExaminationDAO.getTotalFilteredRecords2(
                 patientName, ageSort, doctorName, appointmentDate, timeCreatedSort, status);
