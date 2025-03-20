@@ -12,6 +12,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -78,7 +79,7 @@ public class ReplyCommentServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "commentId is missing");
             return;
         }
-
+        HttpSession session = request.getSession();
         int commentId;
         try {
             commentId = Integer.parseInt(commentIdStr);
@@ -94,33 +95,14 @@ public class ReplyCommentServlet extends HttpServlet {
             return;
         }
 
-        String senderEmail = "";
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("email".equals(cookie.getName())) {
-                    senderEmail = cookie.getValue();
-                    System.out.println("Sender Email from Cookie: " + senderEmail);
-                }
-            }
-        } else {
-            System.out.println("No cookies found!");
-        }
-        String staffid="";
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("staffID".equals(cookie.getName())) {
-                    staffid = cookie.getValue();
-                    System.out.println("Sender Email from Cookie: " + senderEmail);
-                }
-            }
-        } else {
-            System.out.println("No cookies found!");
-        }
+        String senderEmail = (String) session.getAttribute("email");
+        int staffid=(int ) session.getAttribute("staffID");
+        
 
         // Simulate saving the reply in the database
         CommentCustomerDAO dao = new CommentCustomerDAO();
-        dao.addComment(senderEmail, "", replyText, commentId, "",Integer.parseInt(staffid),dao.getCustomerIDByCommentID(commentId));
+        
+        dao.addComment(senderEmail, "", replyText, commentId, "",staffid,dao.getCustomerIDByCommentID(commentId));
 
         // Print logs
         System.out.println("Replying to comment ID: " + commentId + " with text: " + replyText);

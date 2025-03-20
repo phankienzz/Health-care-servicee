@@ -84,21 +84,11 @@ public class ContactServlet extends HttpServlet {
         String topic = request.getParameter("topic");
         String message= request.getParameter("message");
         CommentCustomerDAO dao = new CommentCustomerDAO();
-         Cookie[] cookies = request.getCookies();
-         String id="";
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("userID".equals(cookie.getName())) {
-                    id = cookie.getValue();
-                    System.out.println("Sender Email from Cookie: " + senderEmail);
-                }
-            }
-        } else {
-            System.out.println("No cookies found!");
-            response.sendRedirect("login.jsp");
-        }
-        boolean addComment = dao.addComment(senderEmail, null, message,null, topic,null, Integer.parseInt(id));
-        HttpSession session = request.getSession();
+        HttpSession session= request.getSession();        
+         int id=(int) session.getAttribute("userID");
+        
+        boolean addComment = dao.addComment(senderEmail, null, message,null, topic,null, id);
+       
         List<Comments> listc = dao.getRootComments();
         for (Comments comments : listc) {
             comments.replies=dao.getCommentsByReplyToCommentID(comments.getCommentId(),null);

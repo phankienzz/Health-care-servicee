@@ -96,8 +96,11 @@ public class LoginServlet extends HttpServlet {
             StaffDAO dao = new StaffDAO();
              ProfessionalDAO dbHelper = new ProfessionalDAO();
             Staff staff = dao.staffLogin(user);
-                response.addCookie(new Cookie("staffID", String.valueOf(staff.getStaffID())));
+            response.addCookie(new Cookie("staffID", String.valueOf(staff.getStaffID())));
                 response.addCookie(new Cookie("email", staff.getEmail()));
+//               session.setAttribute("staffID", staff.getStaffID());
+//               session.setAttribute("email", staff.getEmail());
+       
             if (staff == null || !valid.checkPassword(password, staff.getPassword()) ) {
                 request.setAttribute("error", "Invalid email or password!");
                 request.setAttribute("userType", "staff");

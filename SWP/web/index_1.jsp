@@ -644,7 +644,7 @@
               <div class="floating-icons">
 
                 <a href="https://zalo.me/0886840889" class="icon">
-                    <img src="images/service/download.png" alt="Zalo">
+                    <img src="C:\Users\Phan Huu Kien\Desktop\Health-care-servicee\SWP\web\images\service" alt="Zalo">
                 </a>
                 <a href="https://www.messenger.com/t/61573434115221/?messaging_source=source%3Apages%3Amessage_shortlink&source_id=1441792&recurring_notification=0" class="icon">
                     <img src="images/service/facebook.png" alt="Messenger">

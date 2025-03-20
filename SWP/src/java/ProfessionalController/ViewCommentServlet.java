@@ -59,28 +59,15 @@ public class ViewCommentServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         CommentCustomerDAO dao = new CommentCustomerDAO();
-        Cookie[] cookies = request.getCookies();
-         String id="";
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("staffID".equals(cookie.getName())) {
-                    id = cookie.getValue();
-                    System.out.println("Sender Email from Cookie: " + id);
-                }
-            }
-        } else {
-            System.out.println("No cookies found!");
-            response.sendRedirect("login.jsp");
-        }
-
         HttpSession session = request.getSession();
+        int id = (int) session.getAttribute("staffID");
         List<Comments> listc = dao.getRootComments();
         for (Comments comments : listc) {
-            comments.replies=dao.getCommentsByReplyToCommentID(comments.getCommentId(),Integer.parseInt(id));
+            comments.replies=dao.getCommentsByReplyToCommentID(comments.getCommentId(),id);
         }
         session.setAttribute("comments", listc);
         session.setAttribute("list", listc);
-        session.setAttribute("staffID", Integer.parseInt(id));
+        session.setAttribute("staffID", id);
         request.getRequestDispatcher("Comment.jsp").forward(request, response);
     }
 
