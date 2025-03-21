@@ -81,7 +81,6 @@ public class detailNews extends HttpServlet {
         request.setAttribute("newsDetail", news);
         request.setAttribute("listCate", listCate);
         request.setAttribute("comments", comments);
-
         request.getRequestDispatcher("detail-news.jsp").forward(request, response);
     }
 

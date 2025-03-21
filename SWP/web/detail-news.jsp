@@ -155,7 +155,7 @@
                                                                                   || sessionScope.staffAccount != null 
                                                                                   && sessionScope.staffAccount.staffID == comment.staff_id.staffID}">                                                               
                                                                           <span>
-                                                                              <a href="detailNews?newsID=${newsDetail.post_id}&editMode=true&comment_id=${comment.comment_id}&content=${comment.content}#comment-form" class="mr-2"><i
+                                                                              <a href="detailNews?newsID=${newsDetail.post_id}&editMode=true&comment_id=${comment.comment_id}#comment-form" class="mr-2"><i
                                                                                       class="icofont-edit text-muted"></i>Edit</a>
                                                                               <a href="deleteComment?comment_id=${comment.comment_id}" 
                                                                                  onclick="return confirm('Are you sure to delete this comment?');">

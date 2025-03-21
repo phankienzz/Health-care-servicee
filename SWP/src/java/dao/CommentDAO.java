@@ -140,7 +140,7 @@ public class CommentDAO extends DBContext {
         return false;
     }
 
-    public boolean deleteCommentRecursively(int commentId) {
+    public boolean deleteCommentRecur(int commentId) {
         // Update status of the comment to 0 (deleted)
         String sql = "UPDATE Comments SET status = 0 WHERE comment_id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -149,7 +149,7 @@ public class CommentDAO extends DBContext {
             if (rows > 0) {
                 List<Integer> childCommentIds = getChildCommentIds(commentId);
                 for (int childCommentId : childCommentIds) {
-                    deleteCommentRecursively(childCommentId);
+                    deleteCommentRecur(childCommentId);
                 }
                 return true;
             }

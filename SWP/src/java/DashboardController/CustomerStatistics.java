@@ -25,42 +25,22 @@ import java.util.Map;
 @WebServlet(name = "CustomerStatisticsServlet", urlPatterns = {"/dashboardCustomer"})
 public class CustomerStatistics extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CustomerStatisticsServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CustomerStatisticsServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-
         // Khởi tạo DAO để lấy dữ liệu
         CustomerDAO customerDAO = new CustomerDAO();
         int year = Integer.parseInt(request.getParameter("year"));
-
         // Lấy dữ liệu từ DAO
         Map<Integer, Integer> stats = customerDAO.getCustomerStatistics(year);
-
         // Đảm bảo dữ liệu đủ 12 tháng (nếu tháng nào không có thì gán 0)
         List<Integer> counts = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
             counts.add(stats.getOrDefault(i, 0));
         }
-
         // Tạo JSON trả về
         Map<String, Object> result = new HashMap<>();
         result.put("month", new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"});
@@ -74,7 +54,6 @@ public class CustomerStatistics extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     @Override

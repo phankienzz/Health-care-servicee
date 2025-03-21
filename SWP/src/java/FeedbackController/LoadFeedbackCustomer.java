@@ -26,6 +26,8 @@ public class LoadFeedbackCustomer extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         FeedbackDAO dao = new FeedbackDAO();
+        String invoiceID = request.getParameter("invoiceID");
+
         String pageStr = request.getParameter("page");
         if (pageStr == null || pageStr.isEmpty()) {
             pageStr = "1";
@@ -41,10 +43,6 @@ public class LoadFeedbackCustomer extends HttpServlet {
         int totalFeedback = dao.getAllFeedbackByCustomer().size();
         List<model.Feedback> list = dao.getAllFeedbackByCustomer(page, pageSize);
         int endPage = (int) Math.ceil((double) totalFeedback / pageSize);
-        
-        
-        // Lấy invoiceID từ request
-        String invoiceID = request.getParameter("invoiceID");
 
         HttpSession session = request.getSession();
         String msg = (String) session.getAttribute("msg");
@@ -64,11 +62,6 @@ public class LoadFeedbackCustomer extends HttpServlet {
             throws ServletException, IOException {
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

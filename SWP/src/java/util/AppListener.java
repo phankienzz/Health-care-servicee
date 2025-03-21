@@ -15,7 +15,7 @@ import jakarta.servlet.annotation.WebListener;
 public class AppListener implements ServletContextListener {
 
     @Override
-    public void contextInitialized(ServletContextEvent sce) {//Được gọi khi web khởi động
+    public void contextInitialized(ServletContextEvent sce) {
         sce.getServletContext().setAttribute("visitCount", 0);
     }
 

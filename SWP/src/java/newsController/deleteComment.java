@@ -25,7 +25,7 @@ public class deleteComment extends HttpServlet {
             throws ServletException, IOException {
         int commentID = Integer.parseInt(request.getParameter("comment_id"));
         CommentDAO dao = new CommentDAO();
-        boolean isDeleted = dao.deleteCommentRecursively(commentID);
+        boolean isDeleted = dao.deleteCommentRecur(commentID);
         if (isDeleted) {
             response.sendRedirect(request.getHeader("Referer"));
         } else {

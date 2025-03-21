@@ -239,70 +239,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!--                        <div class="col-12 col-md-6 col-lg-4 col-xl-4">
-                                                    <div class="hospital-barchart">
-                                                        <h4 class="card-title d-inline-block">Hospital Management</h4>
-                                                    </div>
-                                                    <div class="bar-chart">
-                                                        <div class="legend">
-                                                            <div class="item">
-                                                                <h4>Level1</h4>
-                                                            </div>
-                        
-                                                            <div class="item">
-                                                                <h4>Level2</h4>
-                                                            </div>
-                                                            <div class="item text-right">
-                                                                <h4>Level3</h4>
-                                                            </div>
-                                                            <div class="item text-right">
-                                                                <h4>Level4</h4>
-                                                            </div>
-                                                        </div>
-                                                        <div class="chart clearfix">
-                                                            <div class="item">
-                                                                <div class="bar">
-                                                                    <span class="percent">16%</span>
-                                                                    <div class="item-progress" data-percent="16">
-                                                                        <span class="title">OPD Patient</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="item">
-                                                                <div class="bar">
-                                                                    <span class="percent">71%</span>
-                                                                    <div class="item-progress" data-percent="71">
-                                                                        <span class="title">New Patient</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="item">
-                                                                <div class="bar">
-                                                                    <span class="percent">82%</span>
-                                                                    <div class="item-progress" data-percent="82">
-                                                                        <span class="title">Laboratory Test</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="item">
-                                                                <div class="bar">
-                                                                    <span class="percent">67%</span>
-                                                                    <div class="item-progress" data-percent="67">
-                                                                        <span class="title">Treatment</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="item">
-                                                                <div class="bar">
-                                                                    <span class="percent">30%</span>									
-                                                                    <div class="item-progress" data-percent="30">
-                                                                        <span class="title">Discharge</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>-->
                     </div>
                 </div>
                 <div class="notification-box">
@@ -529,7 +465,6 @@
 
 
         <!--Biểu đồ thống kê lượng đăng ký tài khoản của khách hàng  -->
-
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const yearSelect = document.getElementById("customerYearSelect");
@@ -622,68 +557,67 @@
                 yearSelect.addEventListener("change", function () {
                     loadAppointmentData(yearSelect.value);
                 });
+
                 function loadAppointmentData(year) {
                     fetch("/SWP/dashboardAppointment?year=" + year)
                             .then(response => response.json())
                             .then(data => {
                                 console.log("Dữ liệu nhận được:", data);
                                 if (Array.isArray(data.appointmentCount)) {
-                                    appointmentChart.data.labels = data.month.map(m => "" + m);
-                                    appointmentChart.data.datasets[0].data = data.appointmentCount;
+                                    appointmentChart.data.labels = data.month.map(m => "" + m);//truc x
+                                    appointmentChart.data.datasets[0].data = data.appointmentCount;//truc y
                                     appointmentChart.update();
                                 } else {
                                     console.error("Dữ liệu không hợp lệ:", data);
                                 }
-                            })
-                            .catch(error => console.error("Lỗi API:", error));
+                            }).catch(error => console.error("Lỗi API:", error));
                 }
             });
         </script>
 
         <!--Biểu đồ thống kê lượng truy cập  -->
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                loadChart("day"); // Mặc định là 7 ngày gần nhất
-
-                document.getElementById("filterSelect").addEventListener("change", function () {
-                    loadChart(this.value);
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    loadChart("day"); // Mặc định là 7 ngày gần nhất
+                    document.getElementById("filterSelect").addEventListener("change", function () {
+                        loadChart(this.value);//chon trong dropdown thi loadChart dc goi voi fiterType duoc chon
+                    });
                 });
-            });
 
-            function loadChart(filterType) {
-                fetch("visit-chart?filter=" + filterType)
-                        .then(response => response.json())
-                        .then(data => {
-                            const labels = data.map(item => item.date);
-                            const counts = data.map(item => item.count);
-                            const ctx = document.getElementById("visitChart").getContext("2d");
-                            if (window.myChart)
-                                window.myChart.destroy(); // Xóa biểu đồ cũ
+                function loadChart(filterType) {
+                    fetch("visit-chart?filter=" + filterType)
+                            .then(response => response.json())
+                            .then(data => {
+                                const labels = data.map(item => item.date);//ngay
+                                const counts = data.map(item => item.count);//so lg truy cap 
+                                const ctx = document.getElementById("visitChart").getContext("2d");
+                                if (window.myChart)
+                                    window.myChart.destroy(); // Xóa biểu đồ cũ
 
-                            window.myChart = new Chart(ctx, {
-                                type: "line", // Thay bằng "line" nếu muốn biểu đồ đường, "bar" nếu cột
-                                data: {
-                                    labels: labels,
-                                    datasets: [{
-                                            label: "Lượt truy cập",
-                                            data: counts,
-                                            borderColor: "blue",
-                                            backgroundColor: "rgba(54, 162, 235, 0.2)",
-                                            borderWidth: 2
-                                        }]
-                                },
-                                options: {
-                                    responsive: true,
-                                    scales: {
-                                        x: {title: {display: true, text: filterType === "day" ? "Ngày" : (filterType === "month" ? "Tháng" : "Năm")}},
-                                        y: {title: {display: true, text: "Số lượt truy cập"}, beginAtZero: true}
+                                window.myChart = new Chart(ctx, {
+                                    type: "line", // Thay bằng "line" nếu muốn biểu đồ đường, "bar" nếu cột
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                                label: "Lượt truy cập",
+                                                data: counts,
+                                                borderColor: "blue",
+                                                backgroundColor: "rgba(54, 162, 235, 0.2)",
+                                                borderWidth: 2
+                                            }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        scales: {
+                                            x: {title: {display: true, text: filterType === "day" ? "Ngày" : (filterType === "month" ? "Tháng" : "Năm")}},
+                                            y: {title: {display: true, text: "Số lượt truy cập"}, beginAtZero: true}
+                                        }
                                     }
-                                }
-                            });
-                        })
-                        .catch(error => console.error("Lỗi tải dữ liệu:", error));
-            }
-        </script>
+                                });
+                            })
+                            .catch(error => console.error("Lỗi tải dữ liệu:", error));
+                }
+            </script>
 
 
     </body>
