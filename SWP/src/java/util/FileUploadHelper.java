@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 import jakarta.servlet.http.Part;
 
 public class FileUploadHelper {
-    private static final String UPLOAD_DIR = "C:\\Users\\Gigabyte\\OneDrive\\Máy tính\\Health-care-servicee\\SWP\\web\\uploads";  // Thay đổi thư mục phù hợp
+    private static final String UPLOAD_DIR = "D:\\Github1\\Health-care-servicee\\SWP\\web\\images";  // Thay đổi thư mục phù hợp
 
     public static String saveProfilePicture(Part filePart) throws Exception {
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // Lấy tên file

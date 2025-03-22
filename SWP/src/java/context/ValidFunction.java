@@ -120,6 +120,19 @@ public class ValidFunction {
         return BCrypt.checkpw(password, hashedPassword);
     }
     
+    private java.sql.Date convertStringToSqlDate(String dateStr) {
+    try {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Định dạng đầu vào
+        java.util.Date utilDate = sdf.parse(dateStr);
+        return new java.sql.Date(utilDate.getTime()); // Chuyển sang java.sql.Date
+    } catch (ParseException e) {
+        e.printStackTrace();
+        return null; // Trả về null nếu lỗi
+    }
+}
+
+    
+    
     public static void main(String[] args) {
         
     }

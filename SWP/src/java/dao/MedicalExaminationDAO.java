@@ -4,6 +4,7 @@
  */
 package dao;
 
+import com.sun.jdi.connect.spi.Connection;
 import context.DBContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -392,6 +393,11 @@ public class MedicalExaminationDAO extends DBContext {
     }
 
     public boolean saveMedicalExamination(MedicalExamination examination) {
+        if (!isDoctorAvailable(examination.getConsultantId().getStaffID(), examination.getExaminationDate())) {
+            System.out.println("Doctor is not available at the specified time.");
+            return false;
+        }
+
         String sql = "INSERT INTO MedicalExamination (examinationDate, customerID, status, consultantID, notes) VALUES (?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -848,7 +854,7 @@ public class MedicalExaminationDAO extends DBContext {
     }
 
     public boolean cancelAppointment(int examId) {
-        String sql = "UPDATE MedicalExamination SET status = 'Rejected' WHERE examinationID = ? AND status = 'Pending'";
+        String sql = "UPDATE MedicalExamination SET status = 'Cancelled' WHERE examinationID = ? AND status = 'Pending'";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, examId);
@@ -899,4 +905,61 @@ public class MedicalExaminationDAO extends DBContext {
         return appointments;
     }
 
+    public int getNewAppointmentsCount() {
+        String sql = "SELECT COUNT(*) FROM MedicalExamination WHERE status = 'Pending' AND createdAt > ?";
+        int count = 0;
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            try {
+                // Lấy thời gian 24 giờ trước
+                java.sql.Timestamp lastCheck = new java.sql.Timestamp(System.currentTimeMillis() - (24 * 60 * 60 * 1000));
+                ps.setTimestamp(1, lastCheck);
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    count = rs.getInt(1);
+                }
+            } finally {
+                ps.close(); // Đóng PreparedStatement để tránh rò rỉ tài nguyên
+            }
+        } catch (SQLException e) {
+            System.err.println("Error in getNewAppointmentsCount: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    public boolean isDoctorAvailable(int doctorId, String examinationDate) {
+    String sql = "SELECT COUNT(*) FROM MedicalExamination WHERE consultantID = ? AND examinationDate = ? AND status != 'Rejected'";
+    try {
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setInt(1, doctorId);
+        ps.setString(2, examinationDate);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) == 0; // Return true if no appointments found
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false; // Return false if an error occurs or if the doctor is already booked
+}
+
+    public boolean isCustomerAvailable(int customerId, String examinationDate, int doctorId) {
+        String sql = "SELECT COUNT(*) FROM MedicalExamination WHERE customerID = ? AND examinationDate = ? AND consultantID = ? AND status != 'Rejected'";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, customerId);
+            ps.setString(2, examinationDate);
+            ps.setInt(3, doctorId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) == 0; // Return true if no appointments found
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; // Return false if an error occurs or if the customer is already booked
+    }
 }

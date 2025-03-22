@@ -92,7 +92,7 @@ public class AddProfessionalServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // Lấy dữ liệu từ form
-         ValidFunction valid = new ValidFunction();
+        ValidFunction valid = new ValidFunction();
         String fullName = request.getParameter("fullName");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
@@ -111,7 +111,6 @@ public class AddProfessionalServlet extends HttpServlet {
         boolean success = false;
         ProfessionalDAO dbHelper = new ProfessionalDAO();
 
-       
         int roleID = dbHelper.getRoleIDByName(specialization);
         if (roleID == -1) {
             request.setAttribute("errorMessage", "Lỗi: Không tìm thấy Role ID cho chuyên môn " + specialization);
@@ -119,7 +118,6 @@ public class AddProfessionalServlet extends HttpServlet {
             return;
         }
 
-        
         byte[] profilePicture = null;
         try {
             Part filePart = request.getPart("profilePicture");
@@ -138,19 +136,16 @@ public class AddProfessionalServlet extends HttpServlet {
             return;
         }
 
-       
         Professional newProfessional = new Professional(
-                0, fullName, email, valid.hashPassword(password),
+                -1, fullName, email, valid.hashPassword(password),
                 Date.valueOf(dateOfBirth), gender, address, phone,
                 Date.valueOf(hireDate), status, profilePicture,
                 specialization, officeHours, qualification, biography,
-                createdAt, roleID 
+                createdAt, roleID
         );
 
-        
         success = dbHelper.addProfessional(newProfessional);
 
-        
         HttpSession session = request.getSession();
         session.setAttribute("specializations", dbHelper.getallSpecialization());
         session.setAttribute("professionals", dbHelper.getAllProfessionals());
