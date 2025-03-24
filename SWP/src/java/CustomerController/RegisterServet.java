@@ -7,7 +7,6 @@ package CustomerController;
 import context.ValidFunction;
 import dao.CustomerDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import model.Customer;
 
 /**
  *
@@ -58,7 +56,8 @@ public class RegisterServet extends HttpServlet {
             //bat dien het thong tin
             if (username.isEmpty() || fullname.isEmpty() || email.isEmpty() || phone.isEmpty()
                     || password.isEmpty() || confirm_password.isEmpty() || address.isEmpty() || dateOfBirthStr.isEmpty() || gender.isEmpty()) {
-                request.setAttribute("error", "Nhap day du thong tin");
+                request.setAttribute("error", "Please enter all fields !");
+                setFormAttributes(request, username, fullname, email, phone, address, dateOfBirthStr, gender);
                 request.getRequestDispatcher("register.jsp").forward(request, response);
                 return;
             }
@@ -68,16 +67,18 @@ public class RegisterServet extends HttpServlet {
 //                request.getRequestDispatcher("register.jsp").forward(request, response);
 //                return;
 //            }
-            //mat khau lon hon 8 ky tu
-            String passwordPattern = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+=!]).{8,}$";
 
+            //mat khau lon hon 8 ky tu, bao gom chu in hoa, ky tu dac biet
+            String passwordPattern = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+=!]).{8,}$";
             if (!password.matches(passwordPattern)) {
-                request.setAttribute("error", "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái in hoa, số và ký tự đặc biệt");
+                request.setAttribute("error", "Passwords must be at least 8 characters, including uppercase letters, numbers, and special characters !");
+                setFormAttributes(request, username, fullname, email, phone, address, dateOfBirthStr, gender);
                 request.getRequestDispatcher("register.jsp").forward(request, response);
                 return;
             }
             if (!password.equals(confirm_password)) {
                 request.setAttribute("error", "Passwords do not match !");
+                setFormAttributes(request, username, fullname, email, phone, address, dateOfBirthStr, gender);
                 request.getRequestDispatcher("register.jsp").forward(request, response);
             } else {
                 CustomerDAO dao = new CustomerDAO();
@@ -119,5 +120,4 @@ public class RegisterServet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
