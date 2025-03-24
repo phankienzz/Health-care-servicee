@@ -61,9 +61,10 @@ public class RegisterServet extends HttpServlet {
                 request.getRequestDispatcher("register.jsp").forward(request, response);
                 return;
             }
+            
             //sdt bat dau tu so khong, bat buoc 10 so
 //            if (!phone.matches("^0\\d{9}$")) {
-//                request.setAttribute("error", "So dien thoai khong hop le");
+//                request.setAttribute("error", "Invalid phone number !");
 //                request.getRequestDispatcher("register.jsp").forward(request, response);
 //                return;
 //            }
