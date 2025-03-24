@@ -40,11 +40,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Email Address</label>
-                                <input type="email" name="email" value="${requestScope.email}" class="form-control">
+                                <input type="email" name="email" value="${requestScope.email}" class="form-control" required="">
                             </div>
                             <div class="form-group">
                                 <label>Mobile Number</label>
-                                <input type="text" name="phone" value="${requestScope.phone}" class="form-control" pattern="0\d{9}" title="Số điện thoại phải có 10 số và bắt đầu bằng 0">
+                                <input type="text" name="phone" value="${requestScope.phone}" class="form-control"  required="" pattern="0\d{9}">
                             </div>
                             <div class="form-group">
                                 <label>Address</label>
@@ -65,7 +65,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
-                                <input type="password" name="password" class="form-control" pattern=".{8,}" title="Mật khẩu phải nhiều hơn 8 ký tự">
+                                <input type="password" name="password" class="form-control" pattern=".{8,}" required="" >
                             </div>
                             <div class="form-group">
                                 <label>Confirm Password</label>
