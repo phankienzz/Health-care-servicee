@@ -23,27 +23,10 @@ import model.Customer;
  */
 public class RegisterServet extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet RegisterServet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet RegisterServet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
     }
 
     @Override
@@ -73,12 +56,12 @@ public class RegisterServet extends HttpServlet {
             }
 
             //bat dien het thong tin
-//            if (username.isEmpty() || fullname.isEmpty() || email.isEmpty() || phone.isEmpty()
-//                    || password.isEmpty() || confirm_password.isEmpty() || address.isEmpty() || dateOfBirth.isEmpty() || gender.isEmpty()) {
-//                request.setAttribute("error", "Nhap day du thong tin");
-//                request.getRequestDispatcher("register.jsp").forward(request, response);
-//                return;
-//            }
+            if (username.isEmpty() || fullname.isEmpty() || email.isEmpty() || phone.isEmpty()
+                    || password.isEmpty() || confirm_password.isEmpty() || address.isEmpty() || dateOfBirthStr.isEmpty() || gender.isEmpty()) {
+                request.setAttribute("error", "Nhap day du thong tin");
+                request.getRequestDispatcher("register.jsp").forward(request, response);
+                return;
+            }
             //sdt bat dau tu so khong, bat buoc 10 so
 //            if (!phone.matches("^0\\d{9}$")) {
 //                request.setAttribute("error", "So dien thoai khong hop le");
@@ -87,7 +70,7 @@ public class RegisterServet extends HttpServlet {
 //            }
             //mat khau lon hon 8 ky tu
             String passwordPattern = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+=!]).{8,}$";
-            
+
             if (!password.matches(passwordPattern)) {
                 request.setAttribute("error", "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái in hoa, số và ký tự đặc biệt");
                 request.getRequestDispatcher("register.jsp").forward(request, response);
