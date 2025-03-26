@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller;
+package Authentication;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -14,7 +14,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import constant.Iconstant;
+import util.Iconstant;
 import model.Customer;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Form;

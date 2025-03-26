@@ -1,4 +1,4 @@
-package controller;
+package Authentication;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.http.client.ClientProtocolException;
-import constant.Iconstant;
+import util.Iconstant;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
 

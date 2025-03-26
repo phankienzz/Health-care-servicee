@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package Authentication;
 
 import context.ValidFunction;
 import dao.CustomerDAO;
@@ -23,7 +23,7 @@ import model.Customer;
  * @author Phan Huu Kien
  */
 @WebServlet(name = "ChangePassword", urlPatterns = {"/changePassword"})
-public class ChangePassword extends HttpServlet {
+public class ChangePasswordEmail extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
