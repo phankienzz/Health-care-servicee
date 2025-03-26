@@ -1,4 +1,4 @@
-package blog;
+package newsController;
 
 import dao.ServiceDAO;
 import model.Service;

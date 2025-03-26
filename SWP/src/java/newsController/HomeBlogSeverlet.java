@@ -1,4 +1,4 @@
-package blog;
+package newsController;
 
 import dao.CategoryDAO;
 import dao.NewsDAO;

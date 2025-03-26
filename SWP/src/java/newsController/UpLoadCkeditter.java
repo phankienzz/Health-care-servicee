@@ -1,4 +1,4 @@
-package blog;
+package newsController;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;

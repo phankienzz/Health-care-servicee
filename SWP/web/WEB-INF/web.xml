@@ -121,7 +121,7 @@
     </servlet>
     <servlet>
         <servlet-name>addBlog</servlet-name>
-        <servlet-class>blog.addBlog</servlet-class>
+        <servlet-class>newsController.addBlog</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Appointment</servlet-name>
@@ -226,16 +226,15 @@
         <servlet-name>ForgotPassword</servlet-name>
         <url-pattern>/forgotpassword</url-pattern>
     </servlet-mapping>
-    
-  <servlet>
+    <servlet>
         <servlet-name>RegisterGoogleServlet</servlet-name>
         <servlet-class>controller.RegisterGoogleServlet</servlet-class>
     </servlet>
-        <servlet-mapping>
-            <servlet-name>RegisterGoogleServlet</servlet-name>
-            <url-pattern>/RegisterGoogleServlet</url-pattern>
-        </servlet-mapping>
-     <servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterGoogleServlet</servlet-name>
+        <url-pattern>/RegisterGoogleServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>GoogleLoginServlet</servlet-name>
         <servlet-class>controller.GoogleLoginServlet</servlet-class>
     </servlet>
@@ -243,5 +242,4 @@
         <servlet-name>GoogleLoginServlet</servlet-name>
         <url-pattern>/GoogleLoginServlet</url-pattern>
     </servlet-mapping>
-    
 </web-app>

@@ -2,9 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
-package blog;
-
+package newsController;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,11 +15,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import context.DBContext; // Import DBContext để lấy kết nối
-import dao.NewsDAO;
 import java.io.PrintWriter;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,43 +25,29 @@ import java.util.logging.Logger;
  *
  * @author ADMIN
  */
-@WebServlet(name="LoadBlogImage", urlPatterns={"/LoadBlogImage"})
-public class LoadBlogImage extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+@WebServlet(name = "LoadBlogImage", urlPatterns = {"/LoadBlogImage"})
+public class LoadBlogImage2 extends HttpServlet {
+
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoadBlogImage</title>");  
+            out.println("<title>Servlet LoadBlogImage</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoadBlogImage at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet LoadBlogImage at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
-   protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String postIdParam = request.getParameter("postId");
 
@@ -76,44 +58,47 @@ public class LoadBlogImage extends HttpServlet {
 
         try {
             int postId = Integer.parseInt(postIdParam);
-            NewsDAO dao = new NewsDAO();
-            Optional<Blob> imageBlob = dao.getBlogImageById(postId);
+            DBContext dbContext = new DBContext();
+            Connection conn = dbContext.connection;
 
-            if (imageBlob.isPresent()) {
-                response.setContentType("image/jpeg");
-                try (OutputStream out = response.getOutputStream()) {
-                    out.write(imageBlob.get().getBytes(1, (int) imageBlob.get().length()));
+            String sql = "SELECT image FROM Posts WHERE post_id = ?";
+            try (PreparedStatement st = conn.prepareStatement(sql)) {
+                st.setInt(1, postId);
+                try (ResultSet rs = st.executeQuery()) {
+                    if (rs.next()) {
+                        Blob blob = rs.getBlob("image");
+                        if (blob != null && blob.length() > 0) {
+                            response.setContentType("image/jpeg");
+                            try (OutputStream out = response.getOutputStream()) {
+                                out.write(blob.getBytes(1, (int) blob.length()));
+                            }
+                        } else {
+                            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Image not found.");
+                        }
+                    } else {
+                        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Post not found.");
+                    }
                 }
-            } else {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Image not found.");
+            } catch (SQLException ex) {
+                Logger.getLogger(LoadBlogImage2.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                conn.close();
             }
-
         } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid postId parameter.");
         } catch (SQLException e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error.");
-           
+            e.printStackTrace();
         }
     }
 
-
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
+    
     @Override
     public String getServletInfo() {
         return "Short description";

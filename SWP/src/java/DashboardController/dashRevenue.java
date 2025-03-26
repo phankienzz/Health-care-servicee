@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package DashboardRevenueController;
+package DashboardController;
 
 import context.ValidFunction;
 import dao.InvoiceDAO;
