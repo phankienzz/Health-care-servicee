@@ -5,7 +5,7 @@
 
 package DashboardController;
 
-import context.ValidFunction;
+import util.ValidFunction;
 import dao.InvoiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;

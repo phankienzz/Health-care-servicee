@@ -5,7 +5,7 @@
 package dao;
 
 import context.DBContext;
-import context.ValidFunction;
+import util.ValidFunction;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;

@@ -1,6 +1,6 @@
 package serviceController;
 
-import context.ValidFunction;
+import util.ValidFunction;
 import dao.ServiceDAO;
 import model.Service;
 import jakarta.servlet.ServletException;

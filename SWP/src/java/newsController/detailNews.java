@@ -5,7 +5,7 @@
  */
 package newsController;
 
-import context.ValidFunction;
+import util.ValidFunction;
 import dao.CommentDAO;
 import dao.NewsDAO;
 import java.io.IOException;

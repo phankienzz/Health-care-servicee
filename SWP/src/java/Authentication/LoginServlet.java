@@ -4,7 +4,7 @@
  */
 package Authentication;
 
-import context.ValidFunction;
+import util.ValidFunction;
 import dao.CustomerDAO;
 import dao.ProfessionalDAO;
 import dao.StaffDAO;

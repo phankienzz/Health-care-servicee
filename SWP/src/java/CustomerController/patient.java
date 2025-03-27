@@ -4,7 +4,7 @@
  */
 package CustomerController;
 
-import context.ValidFunction;
+import util.ValidFunction;
 import dao.CustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;

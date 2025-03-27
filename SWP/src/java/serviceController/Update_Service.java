@@ -1,6 +1,6 @@
 package serviceController;
 
-import context.ValidFunction;
+import util.ValidFunction;
 import dao.ServiceDAO;
 import java.io.IOException;
 import java.io.InputStream;

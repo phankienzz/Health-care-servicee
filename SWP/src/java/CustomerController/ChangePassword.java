@@ -1,6 +1,6 @@
 package CustomerController;
 
-import context.ValidFunction;
+import util.ValidFunction;
 import dao.CustomerDAO;
 import dao.StaffDAO;
 import java.io.IOException;

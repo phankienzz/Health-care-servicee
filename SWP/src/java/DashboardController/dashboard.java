@@ -4,7 +4,7 @@
  */
 package DashboardController;
 
-import context.ValidFunction;
+import util.ValidFunction;
 import dao.DashboardDAO;
 import dao.MedicalExaminationDAO;
 import dao.ProfessionalDAO;

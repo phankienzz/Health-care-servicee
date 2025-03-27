@@ -4,7 +4,7 @@
  */
 package StaffController;
 
-import context.ValidFunction;
+import util.ValidFunction;
 import dao.RoleDAO;
 import dao.StaffDAO;
 import java.io.IOException;

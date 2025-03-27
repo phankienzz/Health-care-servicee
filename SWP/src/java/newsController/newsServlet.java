@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Category;
 import model.News;
-import context.ValidFunction;
+import util.ValidFunction;
 
 /**
  *

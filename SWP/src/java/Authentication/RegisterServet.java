@@ -4,7 +4,7 @@
  */
 package Authentication;
 
-import context.ValidFunction;
+import util.ValidFunction;
 import dao.CustomerDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;

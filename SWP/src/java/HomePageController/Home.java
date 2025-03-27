@@ -4,7 +4,7 @@
  */
 package HomePageController;
 
-import context.ValidFunction;
+import util.ValidFunction;
 import dao.FeedbackDAO;
 import dao.HomePageDAO;
 import dao.VisitCounterDAO;
