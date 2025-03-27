@@ -684,6 +684,7 @@ public class CustomerDAO extends DBContext {
         }
         return customerStats;
     }
+
     public static void main(String[] args) {
         CustomerDAO customerDAO = new CustomerDAO();
         int year = 2024; // Thay đổi năm nếu muốn test các năm khác

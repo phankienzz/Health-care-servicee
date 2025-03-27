@@ -14,6 +14,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import model.Feedback;
+import org.apache.el.util.Validation;
+import util.ValidFunction;
 
 /**
  *
@@ -26,6 +28,7 @@ public class StaffViewFeedback extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         FeedbackDAO dao = new FeedbackDAO();
+        ValidFunction valid = new ValidFunction();
         String indexPage = request.getParameter("page");
         String rate = request.getParameter("rate");
         if (indexPage == null || indexPage.trim().isEmpty()) {
@@ -45,7 +48,9 @@ public class StaffViewFeedback extends HttpServlet {
         } catch (NumberFormatException e) {
             page = 1;
         }
+
         List<Feedback> list = new ArrayList<>();
+        
         if (!rate.isEmpty()) {
             if (rate.equals("1")) {
                 list = dao.getAllFeedback1StarByCustomer(page, pageSize);
@@ -67,6 +72,11 @@ public class StaffViewFeedback extends HttpServlet {
             list = dao.getAllFeedbackByCustomer(page, pageSize);
             totalFeedback = dao.getAllFeedbackByCustomer().size(); // Lấy tổng số feedback
         }
+        
+        for (Feedback feedback : list) {
+            feedback.setDate(valid.formatDateFeedback(feedback.getDate()));
+        }
+        
         int endPage = (int) Math.ceil((double) totalFeedback / pageSize);
         request.setAttribute("listFeedback", list);
         request.setAttribute("currentPage", page);

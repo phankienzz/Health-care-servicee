@@ -14,6 +14,7 @@ import model.Customer;
 import model.Feedback;
 import model.Invoice;
 import model.MedicalExamination;
+import util.ValidFunction;
 
 /**
  *
@@ -42,7 +43,7 @@ public class FeedbackDAO extends DBContext {
         }
         return list;
     }
-    
+
     public List<Feedback> getAllFeedbackByCustomer(int index, int pageSize) {
         List<Feedback> list = new ArrayList<>();
         InvoiceDAO inDAO = new InvoiceDAO();
@@ -89,7 +90,7 @@ public class FeedbackDAO extends DBContext {
         }
         return list;
     }
-    
+
     public List<Feedback> getAllFeedback5StarByCustomer(int index, int pageSize) {
         List<Feedback> list = new ArrayList<>();
         InvoiceDAO inDAO = new InvoiceDAO();
@@ -136,7 +137,7 @@ public class FeedbackDAO extends DBContext {
         }
         return list;
     }
-    
+
     public List<Feedback> getAllFeedback4StarByCustomer(int index, int pageSize) {
         List<Feedback> list = new ArrayList<>();
         InvoiceDAO inDAO = new InvoiceDAO();
@@ -183,7 +184,7 @@ public class FeedbackDAO extends DBContext {
         }
         return list;
     }
-    
+
     public List<Feedback> getAllFeedback3StarByCustomer(int index, int pageSize) {
         List<Feedback> list = new ArrayList<>();
         InvoiceDAO inDAO = new InvoiceDAO();
@@ -230,7 +231,7 @@ public class FeedbackDAO extends DBContext {
         }
         return list;
     }
-    
+
     public List<Feedback> getAllFeedback2StarByCustomer(int index, int pageSize) {
         List<Feedback> list = new ArrayList<>();
         InvoiceDAO inDAO = new InvoiceDAO();
@@ -277,7 +278,7 @@ public class FeedbackDAO extends DBContext {
         }
         return list;
     }
-    
+
     public List<Feedback> getAllFeedback1StarByCustomer(int index, int pageSize) {
         List<Feedback> list = new ArrayList<>();
         InvoiceDAO inDAO = new InvoiceDAO();
@@ -321,10 +322,20 @@ public class FeedbackDAO extends DBContext {
 
     public static void main(String[] args) {
         FeedbackDAO feedbackDAO = new FeedbackDAO();
+        ValidFunction valid = new ValidFunction();
         List<Feedback> feedbacks = feedbackDAO.getAllFeedback5StarByCustomer();
         for (Feedback fb : feedbacks) {
-            System.out.println(fb.getInvoice().getExaminationID().getCustomerId().getFullName() + ", " + fb.getComment() + ", "
-                    + fb.getRating() + ", " + fb.getDate());
+            // Định dạng ngày mới
+            String formattedDate = valid.formatDateNews(fb.getDate());
+
+            // Cập nhật giá trị vào đối tượng Feedback
+            fb.setDate(formattedDate);
+
+            // In thông tin ra màn hình
+            System.out.println(fb.getInvoice().getExaminationID().getCustomerId().getFullName() + ", "
+                    + fb.getComment() + ", "
+                    + fb.getRating() + ", "
+                    + formattedDate);
         }
 
 //        int invoiceID = 7;

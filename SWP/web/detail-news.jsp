@@ -252,9 +252,6 @@
                                         <input type="hidden" name="comment_id" value="${param.comment_id != null ? param.comment_id : (editMode ? comment.comment_id : 0)}">
                                         <input class="btn btn-main-2 btn-round-full" type="submit" name="submit-comment" id="submit_comment" value="${editMode ? "Update Comment" : "Submit"}">
                                     </form>
-<!--                                        <p>comment_id trong form = <c:out value="${param.comment_id != null ? param.comment_id : (editMode ? comment.comment_id : 0)}"/></p>
-                                        <p>param.comment_id = <c:out value="${param.comment_id}" /></p>
-                                        <p>param.content = <c:out value="${param.content}" /></p>-->
                                 </c:if>
                                 <c:if test="${sessionScope.customerAccount == null && sessionScope.staffAccount == null}">
                                     <p>Please <a href="login.jsp">login</a> to write a comment.</p>
@@ -326,7 +323,7 @@
                                                         </div>-->
 
 
-                            <div class="sidebar-widget schedule-widget mb-3">
+<!--                            <div class="sidebar-widget schedule-widget mb-3">
                                 <h5 class="mb-4">Time Schedule</h5>
 
                                 <ul class="list-unstyled">
@@ -348,7 +345,7 @@
                                     <p class="mb-0">Need Urgent Help?</p>
                                     <h3>+23-4565-65768</h3>
                                 </div>
-                            </div>
+                            </div>-->
 
                         </div>
                     </div>

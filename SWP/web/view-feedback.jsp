@@ -78,23 +78,11 @@
 
                         <form action="feedback" method="get">
                             <div class="row filter-row">
-                                <!--                                <div class="col-sm-6 col-md-3">
-                                                                    <div class="form-group form-focus">
-                                                                        <label class="focus-label">Patient ID</label>
-                                                                        <input name="patientID" value="${patientID}" type="text" class="form-control floating" >
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-6 col-md-3">
-                                                                <div class="form-group form-focus">
-                                                                    <label class="focus-label">Patient Name</label>
-                                                                    <input name="patientName" value="${patientName}" type="text" class="form-control floating" >
-                                                                </div>
-                                                            </div>-->
-                            <div class="col-sm-6 col-md-2">
-                                <div class="form-group form-focus select-focus">
-                                    <label class="focus-label">Rating</label>
-                                    <select name="rate" class="select floating"  onchange="this.form.submit()">
-                                        <option value="" ${rate == '' ? 'selected' : ''}>All</option>
+                                <div class="col-sm-6 col-md-2">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="focus-label">Rating</label>
+                                        <select name="rate" class="select floating"  onchange="this.form.submit()">
+                                            <option value="" ${rate == '' ? 'selected' : ''}>All</option>
                                         <option value="1" ${rate == 1 ? 'selected' : ''}>1</option>
                                         <option value="2" ${rate == 2 ? 'selected' : ''}>2</option>
                                         <option value="3" ${rate == 3 ? 'selected' : ''}>3</option>
@@ -103,9 +91,6 @@
                                     </select>
                                 </div>
                             </div>
-                            <!--                            <div class="col-sm-6 col-md-3">
-                                                            <input type="submit" value="Search" class="btn btn-success btn-block"/>
-                                                        </div>-->
                         </div>
                     </form>
 
@@ -119,12 +104,10 @@
                                 <table class="table table-striped custom-table">
                                     <thead>
                                         <tr>
-                                            <!--<th>Feedback ID</th>-->
                                             <th>Name</th>
                                             <th>Feedback</th>
                                             <th>Rating</th>
                                             <th>Date</th>
-                                            <!--<th class="text-right">Action</th>-->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -135,14 +118,6 @@
                                                 <td class="comment-text">${feed.comment}</td>
                                                 <td>${feed.rating}★</td>
                                                 <td>${feed.date}</td>
-                                                <!--                                                <td class="text-right">
-                                                                                                    <div class="dropdown dropdown-action">
-                                                                                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                                                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                                                                            <a class="dropdown-item" href=""><i class="fa fa-eye m-r-5"></i>View</a>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </td>-->
                                             </tr>
                                         </c:forEach>
                                     </tbody>

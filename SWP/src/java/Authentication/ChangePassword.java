@@ -1,4 +1,4 @@
-package CustomerController;
+package Authentication;
 
 import util.ValidFunction;
 import dao.CustomerDAO;

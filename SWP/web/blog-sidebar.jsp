@@ -156,7 +156,7 @@
                             </div>-->
 
 
-                            <div class="sidebar-widget schedule-widget mb-3">
+<!--                            <div class="sidebar-widget schedule-widget mb-3">
                                 <h5 class="mb-4">Time Schedule</h5>
 
                                 <ul class="list-unstyled">
@@ -178,7 +178,7 @@
                                     <p class="mb-0">Need Urgent Help?</p>
                                     <h3>+23-4565-65768</h3>
                                 </div>
-                            </div>
+                            </div>-->
 
                         </div>
                     </div> 

@@ -20,15 +20,16 @@ import java.util.Locale;
  * @author Gigabyte
  */
 public class ValidFunction {
+
     public boolean containsDigitOrSpecialChar(String str) {
         return str.matches(".*[^a-zA-Z\\s].*"); // Kiểm tra nếu có ký tự không phải chữ cái hoặc khoảng trắng
     }
-    
+
     public boolean containsSpecialCharacter(String str) {
         return str.matches(".*[^a-zA-Z0-9\\s].*");
     }
 
-    public  String normalizeName(String name) {
+    public String normalizeName(String name) {
         if (name == null || name.trim().isEmpty()) {
             return "";
         }
@@ -68,6 +69,7 @@ public class ValidFunction {
 
         return password.matches(regex);
     }
+
     public String formatDate(String input) {
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -75,7 +77,7 @@ public class ValidFunction {
         LocalDateTime dateTime = LocalDateTime.parse(input, inputFormatter);
         return dateTime.format(outputFormatter);
     }
-    
+
     public String formatDateInvoice(String date) {
         // Chuyển từ chuỗi ngày ban đầu (yyyy-MM-dd HH:mm:ss) sang Timestamp
         java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
@@ -83,13 +85,13 @@ public class ValidFunction {
         java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy, MMMM dd", Locale.ENGLISH);
         return dateFormat.format(timestamp);
     }
-    
+
     public String formatDateTime(String date, String pattern) {
         java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
         return dateFormat.format(timestamp);
     }
-    
+
     //chuyển ngày sinh thành dd/mm/yyy
     public String convertDateString(String inputDate, String outputPattern) {
         if (inputDate == null || inputDate.isEmpty()) {
@@ -105,22 +107,28 @@ public class ValidFunction {
             return "";
         }
     }
+
+    // Chuyển từ chuỗi ngày ban đầu (yyyy-MM-dd HH:mm:ss) sang Timestamp
     public String formatDateNews(String date) {
-        // Chuyển từ chuỗi ngày ban đầu (yyyy-MM-dd HH:mm:ss) sang Timestamp
         java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
-        // Định dạng Timestamp thành chuỗi dd/MM/yyyy
         java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
         return dateFormat.format(timestamp);
     }
     
+    public String formatDateFeedback(String date) {
+        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
+        java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm");
+        return dateFormat.format(timestamp);
+    }
+
     public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
-    
+
     public boolean checkPassword(String password, String hashedPassword) {
         return BCrypt.checkpw(password, hashedPassword);
     }
-    
+
     public static void main(String[] args) {
         ValidFunction valid = new ValidFunction();
         System.out.println(valid.hashPassword("00"));
