@@ -70,7 +70,7 @@
                     </c:if>
                     <c:if test="${viewUsage}">
                         <li>
-                            <a href="dashboard.jsp"><i class="fa fa-dashboard"></i> <span>Usage Statistic</span></a>
+                            <a href="dashboard"><i class="fa fa-dashboard"></i> <span>Usage Statistic</span></a>
                         </li>
                     </c:if>
                     <c:if test="${viewStaff}">
@@ -120,7 +120,7 @@
 
                     <c:if test="${viewFeedback}">
                         <li class="submenu">
-                            <a href="#"><i class="fa fa-flag-o"></i> <span> Feedback </span> </a>
+                            <a href="feedback"><i class="fa fa-flag-o"></i> <span> Feedback </span> </a>
                         </li>
                     </c:if>
 

@@ -113,7 +113,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center justify-content-between mb-3">
-                                        <h4 class="mb-0">Appointment Statistics</h4>
+                                        <h4 class="mb-0">Appointment Statistic</h4>
                                         <div>
                                             <label for="appointmentYearSelect" class="me-2">Select year:</label>
                                             <select id="appointmentYearSelect" class="form-control d-inline-block w-auto">
