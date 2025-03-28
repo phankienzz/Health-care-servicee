@@ -436,7 +436,7 @@
                                     </div>
 
 
-<!--                                    <script>
+                                    <script>
                                         document.getElementById("profilePicture").addEventListener("change", function () {
                                             var file = this.files[0];
                                             var errorMessage = document.getElementById("fileError");
@@ -450,7 +450,7 @@
                                                 }
                                             }
                                         });
-                                    </script>-->
+                                    </script>
 
                                     <div class="col-sm-6">
                                         <div class="form-group">

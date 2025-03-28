@@ -44,16 +44,15 @@
                                     <label for="patientName">Patient Name</label>
                                     <input type="text" class="form-control" id="patientName" name="patientName" value="${param.patientName}" placeholder="Enter patient name">
                                 </div>
-
                                 <div class="col-md-2">
-                                    <label for="doctorName">Doctor Name</label>
-                                    <select class="form-control" id="doctorName" name="doctorName">
-                                        <option value="">All Doctors</option>
-                                        <c:forEach var="professional" items="${allProfessionals}">
-                                            <option value="${professional.fullName}" ${param.doctorName == professional.fullName ? 'selected' : ''}>${professional.fullName}</option>
-                                        </c:forEach>
+                                    <label for="ageSort">Sort by Age</label>
+                                    <select class="form-control" id="ageSort" name="ageSort">
+                                        <option value="">No Sort</option>
+                                        <option value="asc" ${param.ageSort == 'asc' ? 'selected' : ''}>Ascending</option>
+                                        <option value="desc" ${param.ageSort == 'desc' ? 'selected' : ''}>Descending</option>
                                     </select>
                                 </div>
+
                                 <div class="col-md-2">
                                     <label for="appointmentDate">Appointment Date</label>
                                     <input type="text" class="form-control" id="appointmentDate" placeholder="Date" name="appointmentDate" value="${param.appointmentDate}">
@@ -153,8 +152,10 @@
                                                                 <i class="fa fa-ellipsis-v"></i>
                                                             </a>
                                                             <div class="dropdown-menu dropdown-menu-right">
-                                                                <a class="dropdown-item" href="edit_appointment?appointmentId=${exam.examinationID}">
-                                                                    <i class="fa fa-pencil m-r-5"></i> Edit
+                                                                <a class="dropdown-item" href="#" data-toggle="modal" 
+                                                                   data-target="#medicalRecordModal"
+                                                                   onclick="openMedicalRecordModal(${exam.examinationID})">
+                                                                    <i class="fa fa-pencil m-r-5"></i> Create/Edit Medical Record
                                                                 </a>
                                                                 <a class="dropdown-item" href="#" data-toggle="modal" 
                                                                    data-target="#delete_appointment" 
@@ -168,6 +169,40 @@
                                             </c:forEach>
                                         </tbody>
                                     </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="medicalRecordModal" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Medical Record</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="medicalRecordForm" action="saveMedicalRecord" method="POST">
+                                            <input type="hidden" id="examinationID" name="examinationID">
+
+                                            <div class="form-group">
+                                                <label>Diagnosis</label>
+                                                <textarea class="form-control" id="diagnosis" name="diagnosis" required></textarea>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Treatment Plan</label>
+                                                <textarea class="form-control" id="treatmentPlan" name="treatmentPlan" required></textarea>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Medications Prescribed</label>
+                                                <textarea class="form-control" id="medicationsPrescribed" name="medicationsPrescribed"></textarea>
+                                            </div>
+
+                                            <button type="submit" class="btn btn-primary" >Save</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -306,17 +341,36 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
         <script src="assets/js/app.js"></script>
         <script>
-                    $(document).ready(function () {
-                        // Kh?i t?o datetimepicker cho appointmentDate
-                        $('#appointmentDate').datetimepicker({
-                            format: 'DD/MM/YYYY', // ??nh d?ng ng�y
-                            useCurrent: false
-                        });
-                    });
+                                                $(document).ready(function () {
+                                                    // Kh?i t?o datetimepicker cho appointmentDate
+                                                    $('#appointmentDate').datetimepicker({
+                                                        format: 'DD/MM/YYYY', // ??nh d?ng ng�y
+                                                        useCurrent: false
+                                                    });
+                                                });
 
-                    function setDeleteId(examId) {
-                        document.getElementById("deleteExamId").value = examId;
-                    }
+                                                function setDeleteId(examId) {
+                                                    document.getElementById("deleteExamId").value = examId;
+                                                }
+                                                function openMedicalRecordModal(examinationID) {
+                                                    document.getElementById("examinationID").value = examinationID;
+
+                                                    // G?i API ?? l?y d? li?u n?u c�
+                                                    fetch("getMedicalRecord?examinationID=" + examinationID)
+                                                            .then(response => response.json())
+                                                            .then(data => {
+                                                                if (data) {
+                                                                    document.getElementById("diagnosis").value = data.diagnosis || "";
+                                                                    document.getElementById("treatmentPlan").value = data.treatmentPlan || "";
+                                                                    document.getElementById("medicationsPrescribed").value = data.medicationsPrescribed || "";
+                                                                }
+                                                            });
+
+                                                    $("#medicalRecordModal").modal("show");
+                                                }
+                                                
+
+
         </script>
         <script>
             $(document).ready(function () {
