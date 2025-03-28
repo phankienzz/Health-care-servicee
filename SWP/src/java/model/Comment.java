@@ -9,9 +9,11 @@ package model;
  * @author Hoang
  */
 public class Comment {
+
     private int comment_id;
     private int post_id;
-    private Customer customerID;
+    private Customer customerID; 
+    private Staff staff_id; 
     private String content;
     private int status;
     private String create_at;
@@ -20,10 +22,11 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(int comment_id, int post_id, Customer customerID, String content, int status, String create_at, int parent_comment_id) {
+    public Comment(int comment_id, int post_id, Customer customerID, Staff staff_id, String content, int status, String create_at, int parent_comment_id) {
         this.comment_id = comment_id;
         this.post_id = post_id;
         this.customerID = customerID;
+        this.staff_id = staff_id;
         this.content = content;
         this.status = status;
         this.create_at = create_at;
@@ -52,6 +55,14 @@ public class Comment {
 
     public void setCustomerID(Customer customerID) {
         this.customerID = customerID;
+    }
+
+    public Staff getStaff_id() {
+        return staff_id;
+    }
+
+    public void setStaff_id(Staff staff_id) {
+        this.staff_id = staff_id;
     }
 
     public String getContent() {
@@ -88,10 +99,6 @@ public class Comment {
 
     @Override
     public String toString() {
-        return "Comment{" + "comment_id=" + comment_id + ", post_id=" + post_id + ", customerID=" + customerID + ", content=" + content + ", status=" + status + ", create_at=" + create_at + ", parent_comment_id=" + parent_comment_id + '}';
+        return "Comment{" + "comment_id=" + comment_id + ", post_id=" + post_id + ", customerID=" + customerID + ", staff_id=" + staff_id + ", content=" + content + ", status=" + status + ", create_at=" + create_at + ", parent_comment_id=" + parent_comment_id + '}';
     }
-
-    
-
-    
 }

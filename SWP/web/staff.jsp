@@ -54,6 +54,30 @@
             .pagination li i {
                 font-size: 16px;
                 padding-top: 6px
+
+            }
+            .btn-facebook {
+                background-color: #3b5998;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 5px;
+                text-decoration: none;
+                display: inline-block;
+            }
+
+            /* Nút Zalo */
+            .btn-zalo {
+                background-color: #4CAF50;  /* Màu Zalo */
+                color: white;
+                padding: 10px 20px;
+                border-radius: 5px;
+                text-decoration: none;
+                display: inline-block;
+            }
+
+            /* Thêm hiệu ứng hover */
+            .btn-facebook:hover, .btn-zalo:hover {
+                opacity: 0.8;
             }
         </style>
     </head>
@@ -135,7 +159,7 @@
                                         <c:forEach var="staff" items="${listStaff}">
                                             <tr>
                                                 <td>
-                                                    <img width="28" height="28" src="assets/img/user.jpg" class="rounded-circle" alt=""> <h2>${staff.fullName}</h2>
+                                                    <img width="28" height="28" src="pictureStaff?staffID=${staff.staffID}" class="rounded-circle" alt=""> <h2>${staff.fullName}</h2>
                                                 </td>
                                                 <td>${staff.staffID}</td>
                                                 <td>${staff.email}</td>
@@ -164,7 +188,7 @@
                                                                     </c:if>
 
                                                                     <c:if test="${permission.permissionID == 26}">
-                                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee" data-id="${staff.staffID}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_ employee" data-id="${staff.staffID}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                                                     </c:if>
                                                                 </c:forEach>
                                                             </div>
@@ -353,6 +377,10 @@
                                         </div>
                                     </a>
                                 </li>
+
+                                <a href="https://zalo.me/yournumber" target="_blank" class="btn btn-zalo">
+                                    <i class="fab fa-zalo"></i> Quản lý Zalo
+                                </a>
                                 <li>
                                     <a href="chat.html">
                                         <div class="list-item">

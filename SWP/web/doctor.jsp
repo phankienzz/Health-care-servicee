@@ -1,8 +1,15 @@
 
 
-<%@ page import=" java.util.List, model.Professional" %>
+<%@ page import=" java.util.List, model.Professional,dao.ProfessionalDAO" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%
+    if (session.getAttribute("professionals") == null) {
+        ProfessionalDAO dao = new ProfessionalDAO();
+        List<Professional> professionals = dao.getAllProfessionals();
+        session.setAttribute("professionals", professionals);
+    }
+%>
 <!DOCTYPE html>
 <html lang="zxx">
     <head>
@@ -311,7 +318,21 @@
                 background: #28a745;
                 color: white;
             }
-
+            /* Phong cách phân trang */
+            .pagination a, .pagination span {
+                display: inline-block;
+                margin: 0 5px;
+                padding: 8px 12px;
+                border: 1px solid #ddd;
+                color: #333;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            .pagination a.active, .pagination span.current {
+                background-color: #007bff;
+                color: #fff;
+                border-color: #007bff;
+            }
 
         </style>
     </head>
@@ -413,10 +434,8 @@
 
 
         <!-- portfolio -->
-        <div class="page-wrapper">
+        <div class="page-wrapper-profile">
             <div class="content">
-
-
                 <!-- Search & Filter -->
                 <div class="row mb-3">
                     <div class="col-md-6">
@@ -472,6 +491,7 @@
                             </div>
                         </div>
                     </c:forEach>
+                    <div id="pagination-container" class="pagination text-center"></div>
                 </div>
 
 
@@ -638,14 +658,7 @@
                 </div>
             </div>
         </footer>
-
-
-        <!-- 
-        Essential Scripts
-        =====================================-->
-
-
-        <!-- Main jQuery -->
+       <!-- Main jQuery -->
         <script src="plugins/jquery/jquery.js"></script>
         <!-- Bootstrap 4.3.2 -->
         <script src="plugins/bootstrap/js/popper.js"></script>
@@ -673,5 +686,11 @@
         <script src="assets/js/moment.min.js"></script>
         <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
         <script src="assets/js/app.js"></script>
+        <script src="js/pagination.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                paginateItems('.doctor-item', 4, '#pagination-container');
+            });
+        </script>
     </body>
 </html>

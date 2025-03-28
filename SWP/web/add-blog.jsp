@@ -11,7 +11,7 @@
         <link rel="stylesheet" type="text/css" href="assets/css/tagsinput.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
-
+        <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
 
 
@@ -19,76 +19,78 @@
     </head>
     <body>
         <div class="main-wrapper">
-            <div class="header">
-                <div class="header-left">
-                    <a href="dashboard.html" class="logo">
-                        <img src="assets/img/logo.png" width="35" height="35" alt=""> <span>Preclinic</span>
-                    </a>
-                </div>
-                <ul class="nav user-menu float-right">
-                    <li class="nav-item dropdown d-none d-sm-block">
-                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"><i class="fa fa-bell-o"></i> <span class="badge badge-pill bg-danger float-right">3</span></a>
-                    </li>
-                    <li class="submenu">
-                        <a href="#"><i class="fa fa-commenting-o"></i> <span> Blog</span> <span class="menu-arrow"></span></a>
-                        <ul style="display: none;">
-                            <li><a href="homeblogseverlet">Blog</a></li>
-                            <li><a href="blog-details.jsp">Blog View</a></li>
-                            <li><a class="active" href="add-blog.jsp">Add Blog</a></li>
-                            <li><a href="edit-blog.html">Edit Blog</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+
+            <jsp:include page="headerStaff.jsp"></jsp:include>
+            <jsp:include page="sidebar.jsp"></jsp:include>
 
 
 
 
-            <div class="page-wrapper-profile">
-                <div class="content">
-                    <div class="row">
-                        <div class="col-lg-8 offset-lg-2">
-                            <h4 class="page-title">Add Blog</h4>
-                            <form method="post" action="addblog" enctype="multipart/form-data">
-                                <div class="form-group">
-                                    <label>Blog Name</label>
-                                    <input class="form-control" type="text" name="name" required>
+                <div class="page-wrapper-profile">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-lg-8 offset-lg-2">
+                                <h4 class="page-title">Add Blog</h4>
+                                <form method="post" action="addblog" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label>Blog Name</label>
+                                        <input class="form-control" type="text" name="name" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <textarea cols="30" rows="2" class="form-control" name="description" ></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Category</label>
+                                    <c:if test="${empty categoryList}">
+                                        <p style="color: red;">No categories found. Please add some categories.</p>
+                                    </c:if>
+                                    <select class="form-control" name="categoryId" required>
+                                        <option value="">Select Category</option>
+                                        <c:forEach items="${categoryList}" var="cat">
+                                            <c:if test="${cat.status == 1}">
+                                                <option value="${cat.category_id}" <c:if test="${cat.category_id == selectedCategoryId}">selected</c:if>>
+                                                    ${cat.name}
+                                                </option>
+                                            </c:if>
+                                        </c:forEach>
+                                    </select>
                                 </div>
-                                <div class="form-group">
-                                    <label>Description</label>
-                                    <textarea cols="30" rows="2" class="form-control" name="description" required></textarea>
-                                </div>
+
+
+
                                 <div class="form-group">
                                     <label>Blog Images</label>
-                                    <!-- Adding the 'accept' attribute to limit selection to PNG files -->
                                     <input class="form-control" type="file" name="image" id="image" accept="image/png, image/jpeg, image/gif, image/jpg">
-
-
                                     <c:if test="${not empty blog.image}">
                                         <img src="${blog.image}" width="100">
                                     </c:if>
                                 </div>
 
-
                                 <div class="form-group">
-                                    <label>Blog content</label>
-                                    <textarea cols="30" rows="6" class="form-control" id="descriptiondetail" name="descriptiondetail" ></textarea>
+                                    <label>Blog Content</label>
+                                    <textarea cols="30" rows="6" class="form-control" id="descriptiondetail" name="descriptiondetail"></textarea>
                                 </div>
+
                                 <div class="form-group">
                                     <label class="display-block">Blog Status</label>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" id="blog_active" value="true" checked>
+                                        <input class="form-check-input" type="radio" name="status" id="blog_active" value="active" checked>
                                         <label class="form-check-label" for="blog_active">Active</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" id="blog_inactive" value="false">
+                                        <input class="form-check-input" type="radio" name="status" id="blog_inactive" value="inactive">
                                         <label class="form-check-label" for="blog_inactive">Inactive</label>
                                     </div>
                                 </div>
+
                                 <div class="m-t-20 text-center">
                                     <button class="btn btn-primary submit-btn">Publish Blog</button>
                                 </div>
                             </form>
+
 
                             <script>
                                 document.addEventListener("DOMContentLoaded", function () {
@@ -101,8 +103,8 @@
                                             .catch(error => console.error(error));
                                 });
                             </script>
-                            
-                            
+
+
                             <script>
                                 document.addEventListener("DOMContentLoaded", function () {
                                     document.getElementById("image").addEventListener("change", function () {

@@ -4,41 +4,34 @@
  */
 package StaffController;
 
-import context.ValidFunction;
+import util.ValidFunction;
 import dao.StaffDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 import model.Staff;
 
 /**
  *
  * @author Gigabyte
  */
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+)
 @WebServlet(name = "profileStaff", urlPatterns = {"/profileStaff"})
 public class profileStaff extends HttpServlet {
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet profileStaff</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet profileStaff at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -49,6 +42,22 @@ public class profileStaff extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        Part filePart = request.getPart("profileImage");
+        InputStream imageStream = null;
+
+        if (filePart != null && filePart.getSize() > 0) {
+            String fileType = filePart.getContentType();
+            List<String> allowedTypes = Arrays.asList("image/png", "image/jpeg", "image/gif");
+
+            if (!allowedTypes.contains(fileType)) {
+                request.setAttribute("error", "Only PNG, JPEG, and GIF files are allowed!");
+                request.getRequestDispatcher("edit-profile.jsp").forward(request, response);
+                return;
+            }
+
+            imageStream = filePart.getInputStream();
+        }
         String fullName = request.getParameter("fullName");
         String dateOfBirth = request.getParameter("dateOfBirth");
         String gender = request.getParameter("gender");
@@ -71,7 +80,7 @@ public class profileStaff extends HttpServlet {
         Staff s = (Staff) session.getAttribute("staffAccount");
         session.removeAttribute("staffAccount");
 
-        staffDAO.updateStaffInfo(s.getStaffID(), valid.normalizeName(fullName), email, phone, dateOfBirth, gender, address);
+        staffDAO.updateStaffInfo(s.getStaffID(), valid.normalizeName(fullName), email, phone, dateOfBirth, gender, address, imageStream);
         Staff staff = staffDAO.getStaffByID(s.getStaffID());
         Staff st = new Staff(staff.getStaffID(), staff.getFullName(), staff.getEmail(), staff.getPassword(), staff.getPhone(), staff.getGender(), valid.formatDate(staff.getDateOfBirth()), staff.getAddress(), valid.formatDate(staff.getHireDate()), staff.getRoleID(), staff.getStatus(), staff.getProfilePicture());
         session.setAttribute("staffAccount", st);

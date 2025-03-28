@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <listener>
+        <listener-class>util.AppListener</listener-class>
+    </listener>
     <dependency>
         <groupId>org.mindrot</groupId>
         <artifactId>jbcrypt</artifactId>
         <version>0.4</version>
     </dependency>
-
     <filter>
         <filter-name>LoginFilter</filter-name>
         <filter-class>filter.LoginFilter</filter-class>
@@ -18,14 +20,82 @@
         <filter-name>InvoiceFilter</filter-name>
         <filter-class>filter.InvoiceFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>RoleFilter</filter-name>
+        <filter-class>filter.RoleFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>AppointmentFilter</filter-name>
+        <filter-class>filter.AppointmentFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>BlogFilter</filter-name>
+        <filter-class>filter.BlogFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>ServiceFilter</filter-name>
+        <filter-class>filter.ServiceFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>ScheduleFilter</filter-name>
+        <filter-class>filter.ScheduleFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ScheduleFilter</filter-name>
+        <url-pattern>/loadstaffforschedule</url-pattern>
+        <url-pattern>/saveSchedule</url-pattern>
+        <url-pattern>/listDoctor-demo.jsp</url-pattern>
+        <url-pattern>/createWorkingSchedule.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>ServiceFilter</filter-name>
+        <url-pattern>/loadmanage</url-pattern>
+        <url-pattern>/manage_Service.jsp</url-pattern>
+        <url-pattern>/addService</url-pattern>
+        <url-pattern>/add_Service.jsp</url-pattern>
+        <url-pattern>/loadupdate</url-pattern>
+        <url-pattern>/updateservice</url-pattern>
+        <url-pattern>/editstatus</url-pattern>
+        <url-pattern>/update_Service.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>BlogFilter</filter-name>
+        <url-pattern>/homeblogseverlet</url-pattern>
+        <url-pattern>/blog.jsp</url-pattern>
+        <url-pattern>/addblog</url-pattern>
+        <url-pattern>/add-blog.jsp</url-pattern>
+        <url-pattern>/blogdetail.jsp</url-pattern>
+        <url-pattern>/blog-detail.jsp</url-pattern>
+        <url-pattern>/editblog</url-pattern>
+        <url-pattern>/edit-blog.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AppointmentFilter</filter-name>
+        <url-pattern>/edit_appointment</url-pattern>
+        <url-pattern>/edit-appointment.jsp</url-pattern>
+        <url-pattern>/manage_appointment</url-pattern>
+        <url-pattern>/manage_appointment.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>RoleFilter</filter-name>
+        <url-pattern>/rolePermission</url-pattern>
+        <url-pattern>/roles-permissions.jsp</url-pattern>
+        <url-pattern>/addRole</url-pattern>
+        <url-pattern>/deleteRole</url-pattern>
+        <url-pattern>/editRole</url-pattern>
+        <url-pattern>/edit-role.jsp</url-pattern>
+        <url-pattern>/add-role.jsp</url-pattern>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>InvoiceFilter</filter-name>
         <url-pattern>/invoice</url-pattern>
-        <url-pattern>/viewInvoice</url-pattern>
         <url-pattern>/createInvoice</url-pattern>
-        <url-pattern>/invoices.jsp</url-pattern>
+        <url-pattern>/editInvoice</url-pattern>
+        <url-pattern>/viewInvoice</url-pattern>
         <url-pattern>/invoice-view.jsp</url-pattern>
+        <url-pattern>/edit-invoice.jsp</url-pattern>
         <url-pattern>/create-invoice.jsp</url-pattern>
+        <url-pattern>/invoices.jsp</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>LoginFilter</filter-name>
@@ -46,16 +116,16 @@
         <servlet-class>CustomerController.ResetPassword</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Add_Blog</servlet-name>
-        <servlet-class>blog.Add_Blog</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>addBlog</servlet-name>
-        <servlet-class>blog.addBlog</servlet-class>
+        <servlet-class>newsController.addBlog</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Appointment</servlet-name>
         <servlet-class>Appointment.Appointment</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListAppointment</servlet-name>
+        <servlet-class>Appointment.ListAppointment</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RequestPassword</servlet-name>
@@ -66,10 +136,6 @@
         <url-pattern>/resetPassword</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Add_Blog</servlet-name>
-        <url-pattern>/add_Blog</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>addBlog</servlet-name>
         <url-pattern>/addblog</url-pattern>
     </servlet-mapping>
@@ -77,16 +143,20 @@
         <servlet-name>Appointment</servlet-name>
         <url-pattern>/appointment</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListAppointment</servlet-name>
+        <url-pattern>/ListAppointment</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
-        <welcome-file>index_1.jsp</welcome-file>
+        <welcome-file>home</welcome-file>
     </welcome-file-list>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>CustomerController.LoginServlet</servlet-class>
+        <servlet-class>Authentication.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RegisterServet</servlet-name>
-        <servlet-class>CustomerController.RegisterServet</servlet-class>
+        <servlet-class>Authentication.RegisterServet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProfileServlet</servlet-name>
@@ -115,5 +185,53 @@
     <servlet-mapping>
         <servlet-name>EditProfileServlet</servlet-name>
         <url-pattern>/editprofile</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>AddProfessionalServlet</servlet-name>
+        <servlet-class>ProfessionalController.AddProfessionalServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddProfessionalServlet</servlet-name>
+        <url-pattern>/AddProfessionalServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>DeleteProfessionalServlet</servlet-name>
+        <servlet-class>ProfessionalController.DeleteProfessionalServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteProfessionalServlet</servlet-name>
+        <url-pattern>/DeleteProfessionalServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>EditProfessionalServlet</servlet-name>
+        <servlet-class>ProfessionalController.EditProfessionalServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditProfessionalServlet</servlet-name>
+        <url-pattern>/EditProfessionalServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ForgotPassword</servlet-name>
+        <servlet-class>Authentication.ForgotPassword</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ForgotPassword</servlet-name>
+        <url-pattern>/forgotpassword</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>RegisterGoogleServlet</servlet-name>
+        <servlet-class>Authentication.RegisterGoogleServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterGoogleServlet</servlet-name>
+        <url-pattern>/RegisterGoogleServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>GoogleLoginServlet</servlet-name>
+        <servlet-class>Authentication.GoogleLoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GoogleLoginServlet</servlet-name>
+        <url-pattern>/GoogleLoginServlet</url-pattern>
     </servlet-mapping>
 </web-app>

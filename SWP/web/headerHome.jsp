@@ -50,9 +50,9 @@
                 <div class="collapse navbar-collapse" id="navbarmain">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="index_1.jsp">Home</a>
+                            <a class="nav-link" href="home">Home</a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="about.jsp">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="about">About</a></li>
                         <li class="nav-item"><a class="nav-link" href="loadservice">Services</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="department.html" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Department <i class="icofont-thin-down"></i></a>
@@ -78,7 +78,8 @@
                                     <%--</c:forEach>--%>
                             </ul>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                         <li class="nav-item"><a class="nav-link" href="viewMedical">Medical Record</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contact">Contact</a></li>
                     </ul>
                 </div>
             </div>
@@ -97,7 +98,9 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <a class="dropdown-item" href="profile.jsp">Profile</a>
+                        <a class="dropdown-item" href="invoiceCustomer">Invoice</a>
                         <!-- <a class="dropdown-item" href="#"></a> -->
+                        <a class="dropdown-item" href="customer-medical-records">Medical Records</a>
                         <a class="dropdown-item" href="logout">Logout</a>
                     </div>
                 </c:if>
@@ -109,6 +112,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <a class="dropdown-item" href="profile.jsp">Profile</a>
+                        <a class="dropdown-item" href="customer-medical-records">Medicalrecords</a>
                         <!-- <a class="dropdown-item" href="#"></a> -->
                         <a class="dropdown-item" href=logout>Logout</a>
                     </div>

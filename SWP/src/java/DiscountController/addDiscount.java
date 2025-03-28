@@ -4,6 +4,7 @@
  */
 package DiscountController;
 
+import util.ValidFunction;
 import dao.DiscountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -32,13 +33,19 @@ public class addDiscount extends HttpServlet {
         String discountName = request.getParameter("discountName");
         String percentage_raw = request.getParameter("percentage");
         String status = request.getParameter("status");
+        ValidFunction valid = new ValidFunction();
+        if(valid.containsSpecialCharacter(discountName)){
+            request.setAttribute("error", "Name can not contains special character");
+            request.getRequestDispatcher("add-discount.jsp").forward(request, response);
+            return;
+        }
         try {
             double percentage = Double.parseDouble(percentage_raw);
             if (percentage < 0 || percentage > 100) {
                 throw new IllegalArgumentException("Percentage must be between 0 and 100");
             }else{
                 DiscountDAO disDAO = new DiscountDAO();
-                disDAO.addDiscount(discountName, percentage, status);
+                disDAO.addDiscount(valid.normalizeName(discountName), percentage, status);
                 request.setAttribute("mess", "Add discount successfully");
             request.getRequestDispatcher("add-discount.jsp").forward(request, response);
             }

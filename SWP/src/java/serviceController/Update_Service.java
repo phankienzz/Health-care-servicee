@@ -1,5 +1,6 @@
 package serviceController;
 
+import util.ValidFunction;
 import dao.ServiceDAO;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,12 +26,14 @@ public class Update_Service extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
-
+        ValidFunction val = new ValidFunction();
         try {
             // Lấy thông tin từ request
             int packageID = Integer.parseInt(request.getParameter("packageID"));
             String packageName = request.getParameter("packageName");
+            packageName = val.normalizeName(packageName);
             String description = request.getParameter("description");
+            description = val.normalizeName(description);
             String type = request.getParameter("type");
             double price = Double.parseDouble(request.getParameter("price"));
             int duration = Integer.parseInt(request.getParameter("duration"));

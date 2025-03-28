@@ -21,6 +21,7 @@
                     <c:set var="viewUsage" value="false"/>
                     <c:set var="viewPatient" value="false"/>
                     <c:set var="viewAppointment" value="false"/>
+                    <c:set var="viewComment" value="false"/>
                     <c:set var="viewSchedule" value="false"/>
                     <c:set var="viewService" value="false"/>
                     <c:set var="viewInvoice" value="false"/>
@@ -42,6 +43,9 @@
                         </c:if>
                         <c:if test="${permission.permissionID == 1}">
                             <c:set var="viewAppointment" value="true"/>
+                        </c:if>
+                        <c:if test="${permission.permissionID == 1}">
+                            <c:set var="viewComment" value="true"/>
                         </c:if>
                         <c:if test="${permission.permissionID == 15}">
                             <c:set var="viewSchedule" value="true"/>
@@ -65,26 +69,25 @@
                     <li class="menu-title">Main</li>
                         <c:if test="${viewRevenue}">
                         <li>
-                            <a href="dashboard.jsp"><i class="fa fa-dashboard"></i> <span>Revenue Statistic</span></a>
+                            <a href="dashRevenue"><i class="fa fa-dashboard"></i> <span>Revenue Statistic</span></a>
                         </li>
                     </c:if>
                     <c:if test="${viewUsage}">
                         <li>
-                            <a href="dashboard.jsp"><i class="fa fa-dashboard"></i> <span>Usage Statistic</span></a>
+                            <a href="dashboard"><i class="fa fa-dashboard"></i> <span>Usage Statistic</span></a>
                         </li>
                     </c:if>
-
-                    <c:if test="${viewStaff}">
-                        <li>
-                            <a href="doctors.html"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
-                        </li>
-                    </c:if>
-
                     <c:if test="${viewStaff}">
                         <li>
                             <a href="staff"><i class="fa fa-user"> </i> <span>Staff</span>  </a>
                         </li>
                     </c:if>
+                    <c:if test="${viewStaff}">
+                        <li>
+                            <a href="manage-doctor.jsp"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
+                        </li>
+                    </c:if>
+
                     <c:if test="${viewPatient}">
                         <li>
                             <a href="patient"><i class="fa fa-wheelchair"></i> <span>Patients</span></a>
@@ -93,19 +96,24 @@
 
                     <c:if test="${viewAppointment}">
                         <li>
-                            <a href="appointments.html"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
+                            <a href="manage_appointment.jsp"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
+                        </li>
+                    </c:if>
+                        <c:if test="${viewComment}">
+                        <li>
+                            <a href="viewComment"><i class="fa fa-calendar"></i> <span>Comment</span></a>
                         </li>
                     </c:if>
 
                     <c:if test="${viewSchedule}">
                         <li>
-                            <a href="schedule.html"><i class="fa fa-calendar-check-o"></i> <span>Doctor Schedule</span></a>
+                            <a href="loadstaffforschedule"><i class="fa fa-calendar-check-o"></i> <span>Doctor Schedule</span></a>
                         </li>
                     </c:if>
 
                     <c:if test="${viewService}">
                         <li>
-                            <a href="loadservice"><i class="fa fa-hospital-o"></i> <span>Service</span></a>
+                            <a href="loadmanage"><i class="fa fa-hospital-o"></i> <span>Service</span></a>
                         </li>
                     </c:if>
 
@@ -121,7 +129,7 @@
 
                     <c:if test="${viewFeedback}">
                         <li class="submenu">
-                            <a href="#"><i class="fa fa-flag-o"></i> <span> Feedback </span> </a>
+                            <a href="feedback"><i class="fa fa-flag-o"></i> <span> Feedback </span> </a>
                         </li>
                     </c:if>
 
@@ -129,8 +137,9 @@
                         <li class="submenu">
                             <a href="#"><i class="fa fa-commenting-o"></i> <span> Blog</span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
-                                <li><a href="blog.jsp">Blog</a></li>
-                                <li><a href="add-blog.jsp">Add Blog</a></li>
+                                <li><a href="homeblogseverlet">Blog</a></li>
+                                <li><a href="categoryList">Category</a></li>
+                                <li><a href="manageIntroduce">Introduce</a></li>
                             </ul>
                         </li>
                     </c:if>
@@ -140,9 +149,6 @@
                             <a href="rolePermission"><i class="fa fa-key"></i> <span>Roles & Permissions</span></a>
                         </li>
                     </c:if>
-
-
-
                 </ul>
             </div>
         </div>

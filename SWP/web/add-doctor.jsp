@@ -341,6 +341,25 @@
                                             <input type="hidden" id="formattedDate" name="formattedDate">
                                         </div>
                                     </div>
+                                    
+                                    
+                                    
+<!--                                    
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                             <label>Select Option <span class="text-danger">*</span></label>
+                                            <select class="form-control" name="roleId" style="width: 100%;" required>                                            
+                                                <option value="Neurology">Doctor</option>
+                                                <option value="Dermatology">Expert</option>
+                                            </select>
+                                        </div>
+                                    </div>-->
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label>Phone <span class="text-danger">*</span></label>
@@ -373,11 +392,8 @@
                                             <label>Specialization <span class="text-danger">*</span></label>
                                             <select class="form-control" name="specialization" style="width: 100%;" required>
                                                 <option value="">Select Specialization</option>
-                                                <option value="Cardiology">Cardiology</option>
-                                                <option value="Pediatrics">Pediatrics</option>
-                                                <option value="General Medicine">General Medicine</option>
-                                                <option value="Neurology">Neurology</option>
-                                                <option value="Dermatology">Dermatology</option>
+                                                <option value="Doctor">Doctor</option>
+                                                <option value="Expert">Expert</option>                                            
                                             </select>
                                         </div>
                                     </div>
@@ -420,7 +436,7 @@
                                     </div>
 
 
-<!--                                    <script>
+                                    <script>
                                         document.getElementById("profilePicture").addEventListener("change", function () {
                                             var file = this.files[0];
                                             var errorMessage = document.getElementById("fileError");
@@ -434,7 +450,7 @@
                                                 }
                                             }
                                         });
-                                    </script>-->
+                                    </script>
 
                                     <div class="col-sm-6">
                                         <div class="form-group">

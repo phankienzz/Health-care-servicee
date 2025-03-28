@@ -2,31 +2,30 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package StaffController;
 
-import context.ValidFunction;
+import util.ValidFunction;
 import dao.RoleDAO;
 import dao.StaffDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import org.mindrot.jbcrypt.BCrypt;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.security.SecureRandom;
-import java.util.ArrayList;
 import java.util.List;
 import model.Role;
 import model.Staff;
-import util.Email;
+import util.EmailStaff;
 
 /**
  *
  * @author Gigabyte
  */
-@WebServlet(name = "addStaff", urlPatterns = {"/addStaff"})
+@WebServlet(name="addStaff", urlPatterns={"/addStaff"})
 public class addStaff extends HttpServlet {
 
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -68,7 +67,6 @@ public class addStaff extends HttpServlet {
         String phone = request.getParameter("phone");
         String roleID = request.getParameter("roleID");
         String hireDate = request.getParameter("hireDate");
-
         String status = request.getParameter("status");
         request.setAttribute("firstName", firstName);
         request.setAttribute("lastName", lastName);
@@ -78,7 +76,7 @@ public class addStaff extends HttpServlet {
         request.setAttribute("status", status);
         request.setAttribute("hireDate", hireDate);
 
-        Email e = new Email();
+        EmailStaff e = new EmailStaff();
 
         if (valid.containsDigitOrSpecialChar(firstName) || valid.containsDigitOrSpecialChar(lastName)) {
             request.setAttribute("error", "First Name or Last Name cannot contain digit or special character");
@@ -93,8 +91,9 @@ public class addStaff extends HttpServlet {
         }
         String fullName = valid.normalizeName(firstName) + " " + valid.normalizeName(lastName);
         String rand = generateRandomString();
-        if (!e.sendEmail(email, rand)) {
-            request.setAttribute("mess", "Please check your email");
+        boolean checkSend = e.sendEmail(email, rand);
+        if (!checkSend) {
+            request.setAttribute("error", "Please check your email " + email + " " + rand);
             request.getRequestDispatcher("add-staff.jsp").forward(request, response);
         } else {
             staffDAO.createStaff(fullName, email, valid.hashPassword(rand), phone, hireDate, Integer.parseInt(roleID), status);

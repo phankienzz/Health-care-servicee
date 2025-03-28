@@ -80,7 +80,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item" href="profile.jsp">My Profile</a>
-
+                            <a class="dropdown-item" href="profile.jsp">My Invoice</a>
                             <a class="dropdown-item" href="settings.html">Settings</a>
                             <a class="dropdown-item" href="logout">Logout</a>
                         </div>
