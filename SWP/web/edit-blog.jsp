@@ -111,7 +111,14 @@
                                 </div>
                             </form>
 
-                            <script>
+                           
+
+
+
+
+
+
+ <script>
                                 document.addEventListener("DOMContentLoaded", function () {
                                     ClassicEditor
                                             .create(document.querySelector('#detail'), {
@@ -135,20 +142,13 @@
                                             const allowedTypes = ["image/png", "image/jpeg", "image/gif", "image/jpg"];
                                             if (!allowedTypes.includes(file.type) || file.size > 50 * 1024 * 1024) {
                                                 alert("Only PNG, JPEG, JPG, GIF files are allowed and must be under 50MB.");
-                                                this.value = ''; // Xóa file n?u không h?p l?
+                                                this.value = '';
                                             }
                                         }
                                     });
                                 });
 
                             </script>
-
-
-
-
-
-
-
                         </div>
                     </div>
                 </div>

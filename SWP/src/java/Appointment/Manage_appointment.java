@@ -23,12 +23,13 @@ import model.Professional;
 @WebServlet(name = "Manage_appointment", urlPatterns = {"/manage_appointment"})
 public class Manage_appointment extends HttpServlet {
 
-    private MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
+    
 
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
+        MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
     
     String patientName = request.getParameter("patientName");
     String doctorName = request.getParameter("doctorName");

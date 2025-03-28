@@ -130,6 +130,7 @@
                             <ul style="display: none;">
                                 <li><a href="homeblogseverlet">Blog</a></li>
                                 <li><a href="categoryList">Category</a></li>
+                                <li><a href="manageIntroduce">Introduce</a></li>
                             </ul>
                         </li>
                     </c:if>
