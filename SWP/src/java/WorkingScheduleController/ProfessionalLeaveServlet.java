@@ -71,6 +71,7 @@ public class ProfessionalLeaveServlet extends HttpServlet {
         WorkingScheduleDAO workingDAO = new WorkingScheduleDAO();
 
         try {
+
             int professionalID = Integer.parseInt(request.getParameter("professionalID"));
             String selectedDateStr = request.getParameter("selectedDate");
 
@@ -80,7 +81,7 @@ public class ProfessionalLeaveServlet extends HttpServlet {
 
             LocalDate firstMondayOfWeek = selectedDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
 
-            List<WorkingSchedule> professionalList = workingDAO.getAllSchedulesByProfessionalID(professionalID);
+            List<WorkingSchedule> professionalList = workingDAO.getOnSchedulesByProfessionalID(professionalID);
             List<ProfessionalLeave> leaveList = workingDAO.getProfessionalLeavesByProfessionalID(professionalID);
 
             List<Date> leaveDates = new ArrayList<>();
@@ -130,7 +131,55 @@ public class ProfessionalLeaveServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        WorkingScheduleDAO workingDAO = new WorkingScheduleDAO();
+        int professionalID = Integer.parseInt(request.getParameter("professionalID"));
+        request.setAttribute("professionalID", professionalID);
+        int leaveID = Integer.parseInt(request.getParameter("leaveID"));
+        String oldStatus = request.getParameter("oldStatus");
+        String status = request.getParameter("status");
+        String leaveDateStr = request.getParameter("leaveDate");
+        LocalDate leaveDate = LocalDate.parse(leaveDateStr);
+
+        if (leaveDate.isBefore(LocalDate.now())) {
+            if (oldStatus.equalsIgnoreCase("Pending")) {
+                workingDAO.updateLeaveStatus(leaveID, "Missed time!");
+                String errorMessage = "Missed time to edit status.";
+                request.setAttribute("errorMessage", errorMessage);
+                doGet(request, response);
+            } else {
+                String errorMessage = "Can not edit this status";
+                request.setAttribute("errorMessage", errorMessage);
+                doGet(request, response);
+            }
+        } else {
+            if (oldStatus.equalsIgnoreCase("Pending")) {
+                if (status.equalsIgnoreCase("Pending") || status.equalsIgnoreCase("Missed time!")) {
+                    String errorMessage = "Invalid status";
+                    request.setAttribute("errorMessage", errorMessage);
+                    doGet(request, response);
+                } else {
+                    workingDAO.updateLeaveStatus(leaveID, status);
+                    String successMessage = "Edit this status done";
+                    request.setAttribute("successMessage", successMessage);
+                    doGet(request, response);
+                }
+            }
+
+            if (oldStatus.equalsIgnoreCase("Approved") || oldStatus.equalsIgnoreCase("Rejected")) {
+                if (status.equalsIgnoreCase("Approved") || status.equalsIgnoreCase("Rejected")) {
+                    workingDAO.updateLeaveStatus(leaveID, status);
+                    String successMessage = "Edit this status done";
+                    request.setAttribute("successMessage", successMessage);
+                    doGet(request, response);
+                } else {
+                    String errorMessage = "Invalid status";
+                    request.setAttribute("errorMessage", errorMessage);
+                    doGet(request, response);
+                }
+            }
+            doGet(request, response);
+        }
+
     }
 
     /**

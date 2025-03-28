@@ -125,19 +125,19 @@ public class WorkingSchedule {
     public String getDayName() {
         switch (dayOfWeek) {
             case 2:
-                return "Thứ hai";
+                return "Monday";
             case 3:
-                return "Thứ ba";
+                return "Tuesday";
             case 4:
-                return "Thứ tư";
+                return "Wednesday";
             case 5:
-                return "Thứ năm";
+                return "Thursday";
             case 6:
-                return "Thứ sáu";
+                return "Friday";
             case 7:
-                return "Thứ bảy";
+                return "Saturday";
             case 8:
-                return "Chủ nhật";
+                return "Sunday";
             default:
                 return "Không xác định";
         }

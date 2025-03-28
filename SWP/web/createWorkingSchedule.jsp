@@ -24,7 +24,7 @@
                 <input type="hidden" name="ID" value="${ID}">
                 <div class="mb-3">
                     <label class="form-label text-primary">Chọn lịch làm việc:</label>
-                    <c:set var="days" value="Thứ Hai,Thứ Ba,Thứ Tư,Thứ Năm,Thứ Sáu,Thứ Bảy,Chủ Nhật"/>
+                    <c:set var="days" value="Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday"/>
                     <c:set var="dayValues" value="2,3,4,5,6,7,8"/>
                     <c:forEach var="day" items="${fn:split(days, ',')}" varStatus="status">
                         <div class="border p-3 mb-3 rounded">
