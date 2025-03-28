@@ -38,7 +38,7 @@
                 
                 </div>
 
-                <div class="page-wrapper">
+                <div class="page-wrapper-profile">
                     <div class="content container-fluid">
                         <div class="row align-items-center mb-4">
                             <div class="col-md-6">
