@@ -16,13 +16,13 @@ import model.Customer;
 @WebServlet(name = "ViewMedicalRecordServlet", urlPatterns = {"/view-medical-record"})
 public class ViewMedicalRecordServlet extends HttpServlet {
 
-    private MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
+    
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        
+        MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
         HttpSession session = request.getSession();
         Customer customer = (Customer) session.getAttribute("customerAccount");
 

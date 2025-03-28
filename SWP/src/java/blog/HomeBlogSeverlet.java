@@ -71,7 +71,7 @@ public class HomeBlogSeverlet extends HttpServlet {
             page = totalPages;
         }
 
-        // Lấy danh sách danh mục
+        
         List<Category> categoryList = categoryDAO.getAllCategories();
 
         // Set attributes cho JSP
