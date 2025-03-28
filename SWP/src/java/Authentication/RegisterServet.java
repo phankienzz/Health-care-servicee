@@ -61,14 +61,13 @@ public class RegisterServet extends HttpServlet {
                 request.getRequestDispatcher("register.jsp").forward(request, response);
                 return;
             }
-            
+
             //sdt bat dau tu so khong, bat buoc 10 so
 //            if (!phone.matches("^0\\d{9}$")) {
 //                request.setAttribute("error", "Invalid phone number !");
 //                request.getRequestDispatcher("register.jsp").forward(request, response);
 //                return;
 //            }
-
             //mat khau lon hon 8 ky tu, bao gom chu in hoa, ky tu dac biet
             String passwordPattern = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+=!]).{8,}$";
             if (!password.matches(passwordPattern)) {
@@ -85,13 +84,17 @@ public class RegisterServet extends HttpServlet {
                 CustomerDAO dao = new CustomerDAO();
                 boolean usernameExists = dao.isUsernameExist(username);
                 boolean emailExists = dao.isEmailExist(email);
-
+                boolean phoneNumberExists = dao.isPhoneNumberExist(phone);
                 if (usernameExists) {
                     request.setAttribute("error", "Username already exists!");
                     setFormAttributes(request, username, fullname, email, phone, address, dateOfBirthStr, gender);
                     request.getRequestDispatcher("register.jsp").forward(request, response);
                 } else if (emailExists) {
                     request.setAttribute("error", "Email already exists!");
+                    setFormAttributes(request, username, fullname, email, phone, address, dateOfBirthStr, gender);
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                } else if (phoneNumberExists) {
+                    request.setAttribute("error", "Phone number already exists!");
                     setFormAttributes(request, username, fullname, email, phone, address, dateOfBirthStr, gender);
                     request.getRequestDispatcher("register.jsp").forward(request, response);
                 } else {

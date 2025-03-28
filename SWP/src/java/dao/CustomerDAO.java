@@ -556,6 +556,18 @@ public class CustomerDAO extends DBContext {
         }
         return false;
     }
+    
+    public boolean isPhoneNumberExist(String phone) {
+        String sql = "SELECT customerID FROM Customer WHERE phone = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, phone);
+            ResultSet rs = st.executeQuery();
+            return rs.next(); // Nếu có dữ liệu, email đã tồn tại
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     //Đăng ký
     public void customerSignup(String username, String password, String fullname, String email, String phone, String address, String dateOfBirth, String gender) {
