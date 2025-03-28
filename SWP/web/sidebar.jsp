@@ -149,9 +149,6 @@
                             <a href="rolePermission"><i class="fa fa-key"></i> <span>Roles & Permissions</span></a>
                         </li>
                     </c:if>
-
-
-
                 </ul>
             </div>
         </div>
