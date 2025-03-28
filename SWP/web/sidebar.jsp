@@ -21,6 +21,7 @@
                     <c:set var="viewUsage" value="false"/>
                     <c:set var="viewPatient" value="false"/>
                     <c:set var="viewAppointment" value="false"/>
+                    <c:set var="viewComment" value="false"/>
                     <c:set var="viewSchedule" value="false"/>
                     <c:set var="viewService" value="false"/>
                     <c:set var="viewInvoice" value="false"/>
@@ -42,6 +43,9 @@
                         </c:if>
                         <c:if test="${permission.permissionID == 1}">
                             <c:set var="viewAppointment" value="true"/>
+                        </c:if>
+                        <c:if test="${permission.permissionID == 1}">
+                            <c:set var="viewComment" value="true"/>
                         </c:if>
                         <c:if test="${permission.permissionID == 15}">
                             <c:set var="viewSchedule" value="true"/>
@@ -92,7 +96,12 @@
 
                     <c:if test="${viewAppointment}">
                         <li>
-                            <a href="view-appointment.jsp"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
+                            <a href="manage_appointment.jsp"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
+                        </li>
+                    </c:if>
+                        <c:if test="${viewComment}">
+                        <li>
+                            <a href="viewComment"><i class="fa fa-calendar"></i> <span>Comment</span></a>
                         </li>
                     </c:if>
 

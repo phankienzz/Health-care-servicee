@@ -104,6 +104,7 @@ private MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO(
         } else {
             System.out.println("No cookies found!");
         }
+        
         // Tính tổng số bản ghi để xác định số trang
         int totalRecords = medicalExaminationDAO.getTotalFilteredRecords2(
                 patientName, ageSort,Integer.parseInt(doctorName) , appointmentDate, timeCreatedSort, status);

@@ -72,6 +72,9 @@ public class Appointment extends HttpServlet {
                 reloadFormData(request, response, serviceIds, doctorId, dateStr, timeStr, name, phone, message);
                 return;
             }
+        System.out.println(doctorId);
+        // Get current timestamp for createdAt
+        String createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
             Professional doctor = professionalDAO.getProfessionalbyID(Integer.parseInt(doctorId));
             if (doctor == null) {
@@ -93,7 +96,7 @@ public class Appointment extends HttpServlet {
             }
 
             String examinationDate = examinationDateTime.format(outputFormatter);
-            String createdAt = LocalDateTime.now().format(outputFormatter);
+             createdAt = LocalDateTime.now().format(outputFormatter);
 
             // Check if the doctor is available at the specified time
             if (!medicalExaminationDAO.isDoctorAvailable(Integer.parseInt(doctorId), examinationDate)) {

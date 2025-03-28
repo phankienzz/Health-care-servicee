@@ -9,6 +9,7 @@ package dao;
  * @author Win11
  */
 import context.DBContext;
+import static context.DBContext.connection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

@@ -964,9 +964,8 @@ public class MedicalExaminationDAO extends DBContext {
             e.printStackTrace();
         }
         return false; // Return false if an error occurs or if the customer is already booked
-
     }
-
+    
     public Map<Integer, Integer> getMonthlyAppointmentStatistics(int year) {
         Map<Integer, Integer> stats = new HashMap<>();
         String sql = "SELECT MONTH(examinationDate) AS Month, COUNT(customerID) AS NumberOfAppointments "
@@ -999,4 +998,6 @@ public class MedicalExaminationDAO extends DBContext {
             System.out.println("Tháng " + i + ": " + stats.getOrDefault(i, 0) + " khách hàng");
         }
     }
+
+
 }

@@ -45,7 +45,7 @@
         <url-pattern>/loadstaffforschedule</url-pattern>
         <url-pattern>/saveSchedule</url-pattern>
         <url-pattern>/listDoctor-demo.jsp</url-pattern>
-        <url-pattern>/createWorkingSchedult.jsp</url-pattern>
+        <url-pattern>/createWorkingSchedule.jsp</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>ServiceFilter</filter-name>
