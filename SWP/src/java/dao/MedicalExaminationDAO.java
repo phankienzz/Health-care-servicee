@@ -959,8 +959,13 @@ public class MedicalExaminationDAO extends DBContext {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1) == 0; // Return true if no appointments found
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false; // Return false if an error occurs or if the customer is already booked
     }
+    
     public Map<Integer, Integer> getMonthlyAppointmentStatistics(int year) {
         Map<Integer, Integer> stats = new HashMap<>();
         String sql = "SELECT MONTH(examinationDate) AS Month, COUNT(customerID) AS NumberOfAppointments "
