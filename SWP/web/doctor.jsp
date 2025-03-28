@@ -434,10 +434,8 @@
 
 
         <!-- portfolio -->
-        <div class="page-wrapper">
+        <div class="page-wrapper-profile">
             <div class="content">
-
-
                 <!-- Search & Filter -->
                 <div class="row mb-3">
                     <div class="col-md-6">

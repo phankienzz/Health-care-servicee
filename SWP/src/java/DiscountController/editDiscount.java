@@ -4,7 +4,7 @@
  */
 package DiscountController;
 
-import context.ValidFunction;
+import util.ValidFunction;
 import dao.DiscountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;

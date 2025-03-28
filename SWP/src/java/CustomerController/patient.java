@@ -4,7 +4,7 @@
  */
 package CustomerController;
 
-import context.ValidFunction;
+import util.ValidFunction;
 import dao.CustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,23 +23,6 @@ import model.Customer;
  */
 @WebServlet(name = "patient", urlPatterns = {"/patient"})
 public class patient extends HttpServlet {
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet patient</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet patient at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -69,48 +52,79 @@ public class patient extends HttpServlet {
         }
 
         try {
-            if (patientIdStr != null && !patientIdStr.isEmpty() && patientName != null && !patientName.isEmpty()) {
-                // ID và Tên
-                int patientID = Integer.parseInt(patientIdStr);
-                Customer customer = dao.getCustomerByIdAndName(patientID, patientName);
-                if (customer != null) {
-                    listPatient.add(customer);
-                    totalPatient = 1;
+            if (status.isEmpty()) {
+                if (patientIdStr != null && !patientIdStr.isEmpty() && patientName != null && !patientName.isEmpty()) {
+                    // ID và Tên nhưng không lọc theo Status
+                    int patientID = Integer.parseInt(patientIdStr);
+                    Customer customer = dao.getCustomerByIdAndName(patientID, patientName);
+                    if (customer != null) {
+                        listPatient.add(customer);
+                        totalPatient = 1;
+                    } else {
+                        request.setAttribute("error", "No patient found with ID: " + patientIdStr + " and name: " + patientName);
+                    }
+                } else if (patientIdStr != null && !patientIdStr.isEmpty()) {
+                    //ID nhưng không lọc theo Status
+                    int patientID = Integer.parseInt(valid.normalizeName(patientIdStr));
+                    Customer customer = dao.getCustomerByID(patientID);
+                    if (customer != null) {
+                        listPatient.add(customer);
+                        totalPatient = 1;
+                    } else {
+                        request.setAttribute("error", "Patient not found with ID: " + patientIdStr);
+                    }
+                } else if (patientName != null && !patientName.isEmpty()) {
+                    //Name nhưng không lọc theo Status
+                    listPatient = dao.getCustomerByName(valid.normalizeName(patientName), page, pageSize);
+                    totalPatient = dao.getCustomerByName(valid.normalizeName(patientName)).size();
+                    if (listPatient.isEmpty()) {
+                        request.setAttribute("error", "No patients found with name: " + patientName);
+                    }
                 } else {
-                    request.setAttribute("error", "No patient found with ID: " + patientIdStr + " and name: " + patientName);
-                }
-            } else if (patientIdStr != null && !patientIdStr.isEmpty()) {
-                //ID
-                int patientID = Integer.parseInt(valid.normalizeName(patientIdStr));
-                Customer customer = dao.getCustomerByID(patientID);
-                if (customer != null) {
-                    listPatient.add(customer);
-                    totalPatient = 1;
-                } else {
-                    request.setAttribute("error", "Patient not found with ID: " + patientIdStr);
-                }
-            } else if (patientName != null && !patientName.isEmpty()) {
-                //Name
-                listPatient = dao.getCustomerByName(valid.normalizeName(patientName), page, pageSize);
-                totalPatient = dao.getCustomerByName(valid.normalizeName(patientName)).size();
-                if (listPatient.isEmpty()) {
-                    request.setAttribute("error", "No patients found with name: " + patientName);
-                }
-            } else if (!status.isEmpty()) {
-                if (status.equals("active")) {
-                    listPatient = dao.getAllCustomerActive(page, pageSize);
-                    totalPatient = dao.getAllCustomerActive().size();
-                } else {
-                    listPatient = dao.getAllCustomerInactive(page, pageSize);
-                    totalPatient = dao.getAllCustomerInactive().size();
+                    listPatient = dao.getAllCustomer(page, pageSize);
+                    totalPatient = dao.getAllCustomer().size();
                 }
             } else {
-                listPatient = dao.getAllCustomer(page, pageSize);
-                totalPatient = dao.getAllCustomer().size();
+                if (patientIdStr != null && !patientIdStr.isEmpty() && patientName != null && !patientName.isEmpty()) {
+                    // ID và Tên nhưng CÓ lọc theo Status
+                    int patientID = Integer.parseInt(patientIdStr);
+                    Customer customer = dao.getCustomerByIdAndName(patientID, patientName, status);
+                    if (customer != null) {
+                        listPatient.add(customer);
+                        totalPatient = 1;
+                    } else {
+                        request.setAttribute("error", "No patient found with ID: " + patientIdStr + " and name: " + patientName + " with status " + status);
+                    }
+                } else if (patientIdStr != null && !patientIdStr.isEmpty()) {
+                    //ID nhưng CÓ lọc theo Status
+                    int patientID = Integer.parseInt(valid.normalizeName(patientIdStr));
+                    Customer customer = dao.getCustomerByID(patientID, status);
+                    if (customer != null) {
+                        listPatient.add(customer);
+                        totalPatient = 1;
+                    } else {
+                        request.setAttribute("error", "Patient not found with ID: " + patientIdStr + " with status " + status);
+                    }
+                } else if (patientName != null && !patientName.isEmpty()) {
+                    //Name nhưng CÓ lọc theo Status
+                    listPatient = dao.getCustomerByName(valid.normalizeName(patientName), page, pageSize, status);
+                    totalPatient = dao.getCustomerByName(valid.normalizeName(patientName)).size();
+                    if (listPatient.isEmpty()) {
+                        request.setAttribute("error", "No patients found with name: " + patientName + " with status " + status);
+                    }
+                } else {
+                    if (status.equals("Active")) {
+                        listPatient = dao.getAllCustomerActive(page, pageSize);
+                        totalPatient = dao.getAllCustomerActive().size();
+                    } else {
+                        listPatient = dao.getAllCustomerInactive(page, pageSize);
+                        totalPatient = dao.getAllCustomerInactive().size();
+                    }
+                }
             }
 
             int endPage = (int) Math.ceil((double) totalPatient / pageSize);
-            
+
             request.setAttribute("listPatient", listPatient);
             request.setAttribute("totalPatient", totalPatient);
             request.setAttribute("currentEntries", listPatient.size());
@@ -129,14 +143,8 @@ public class patient extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

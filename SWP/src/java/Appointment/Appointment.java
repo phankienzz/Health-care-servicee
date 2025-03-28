@@ -75,7 +75,7 @@ public class Appointment extends HttpServlet {
         String name = request.getParameter("name");
         String phone = request.getParameter("phone");
         String message = request.getParameter("message");
-        System.out.println(doctorId);
+
         // Get current timestamp for createdAt
         String createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
@@ -103,11 +103,10 @@ public class Appointment extends HttpServlet {
         examination.setNote(message);
         examination.setCreatedAt(createdAt);
         examination.setList(selectedServices);
-        PrintWriter out = response.getWriter();
-        out.print(examination.getConsultantId().toString());
+
         // Save to database using DAO
         boolean success = medicalExaminationDAO.saveMedicalExamination(examination);
-//out.print(success);
+
         if (success) {
             // Redirect to a success page or show a success message
             response.sendRedirect("confirmation.jsp");

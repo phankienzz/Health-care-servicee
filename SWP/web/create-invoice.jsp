@@ -44,6 +44,12 @@
                                 <div class="row">
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group">
+                                            <label>Phone</label>
+                                            <input class="form-control" type="text" name="phone"  onchange="this.form.submit()"  value="${phone}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group">
                                             <label>Medical Examination ID <span class="text-danger">*</span></label>
                                             <select class="select" name="medicalExaminationID" onchange="this.form.submit()">
                                                 <option value="0">Select Medical Examination</option>
@@ -66,12 +72,7 @@
                                             <input class="form-control" type="email" name="email" readonly="" value="${email}">
                                         </div>
                                     </div>
-                                    <div class="col-sm-6 col-md-3">
-                                        <div class="form-group">
-                                            <label>Phone</label>
-                                            <input class="form-control" type="text" name="phone" readonly="" value="${phone}">
-                                        </div>
-                                    </div>
+                                    
 
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group">
@@ -166,14 +167,6 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label>Other Information</label>
-                                                    <textarea class="form-control"></textarea>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>

@@ -29,18 +29,23 @@
         <div class="main-wrapper">
             <jsp:include page="headerStaff.jsp"></jsp:include>
             <jsp:include page="sidebar.jsp"></jsp:include>
-            <div class="page-wrapper">
-                <div class="content">
-                    <div class="row">
-                        <div class="col-sm-5 col-4">
-                            <h4 class="page-title">Invoice</h4>
-                        </div>
-                        <div class="col-sm-7 col-8 text-right m-b-30">
-                            <div class="btn-group btn-group-sm">
-                                <button class="btn btn-white">PDF</button>
-                                <button class="btn btn-white"><i class="fa fa-print fa-lg"></i> Print</button>
+                <div class="page-wrapper">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-sm-5 col-4">
+                                <h4 class="page-title">Invoice</h4>
+                            </div>
+
+                            <div class="col-sm-7 col-8 text-right m-b-30">
+                                <div class="btn-group btn-group-sm">
+                                    <form action="xuatPDF" method="get">
+                                        <input name="invoiceID" value="${invoice.invoiceID}" hidden=""/>
+                                    <button class="btn btn-white"><i class="fa fa-print fa-lg"></i> PDF</button>
+                                </form>
                             </div>
                         </div>
+
+
                     </div>
                     <div class="row">
                         <div class="col-md-12">
@@ -51,7 +56,7 @@
                                             <img src="assets/img/logo-dark.png" class="inv-logo" alt="">
                                             <ul class="list-unstyled">
                                                 <li>PreClinic</li>
-                                                <li>FPT Univercity,</li>
+                                                <li>FPT University,</li>
                                                 <li>Hòa Lạc, Hà Nội, Việt Nam</li>
                                             </ul>
                                         </div>
@@ -60,7 +65,7 @@
                                                 <h3 class="text-uppercase">Invoice #${invoice.invoiceID}</h3>
                                                 <ul class="list-unstyled">
                                                     <li>Created Date: <span>${createdDate}</span></li>
-                                                    
+
                                                 </ul>
                                             </div>
                                         </div>
@@ -75,7 +80,7 @@
                                                 </li>
                                                 <li><span>Việt Nam</span></li>
                                                 <li>${invoice.examinationID.customerId.address}</li>
-                                                
+
                                                 <li>${invoice.examinationID.customerId.phone}</li>
                                                 <li><a href="#">${invoice.examinationID.customerId.email}</a></li>
                                             </ul>
@@ -108,15 +113,15 @@
                                             <tbody>
                                                 <c:set var="i" value="1"/>
                                                 <c:forEach var="service" items="${invoice.examinationID.list}">
-                                                <tr>
-                                                    <td>${i}</td>
-                                                    <c:set var="i" value="${i + 1}"/>
-                                                    <td>${service.packageName}</td>
-                                                    <td>${service.description}</td>
-                                                    <td>${service.price}</td>
-                                                </tr>
+                                                    <tr>
+                                                        <td>${i}</td>
+                                                        <c:set var="i" value="${i + 1}"/>
+                                                        <td>${service.packageName}</td>
+                                                        <td>${service.description}</td>
+                                                        <td>${service.price}</td>
+                                                    </tr>
                                                 </c:forEach>
-                                                
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -150,7 +155,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                             </div>

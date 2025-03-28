@@ -9,11 +9,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.MedicalExamination;
 import model.Professional;
@@ -27,73 +25,44 @@ public class Manage_appointment extends HttpServlet {
 
     private MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
 
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Lấy tham số từ form lọc
-        String patientName = request.getParameter("patientName");
-        String ageSort = request.getParameter("ageSort");
-        String appointmentDate = request.getParameter("appointmentDate");
-        String timeCreatedSort = request.getParameter("timeCreatedSort");
-        String status = request.getParameter("status");
-        
-        // Tham số phân trang
-        int page = 1; // Trang mặc định
-        int pageSize = 10; // Số bản ghi mỗi trang (có thể thay đổi)
-        String pageStr = request.getParameter("page");
-        if (pageStr != null && !pageStr.isEmpty()) {
-            page = Integer.parseInt(pageStr);
-        }
-        
-//HttpSession session = request.getSession(false);  // false để không tạo mới session nếu không có
-//        Integer staffID = null;
-//        
-//        if (session != null) {
-//            staffID = (Integer) session.getAttribute("staffID");
-//        }
-//
-//        // Nếu không có staffID trong session, chuyển hướng về trang đăng nhập
-//        if (staffID == null) {
-//            response.sendRedirect("login.jsp");  // Hoặc trang khác nếu cần
-//            return;  // Dừng thực thi phương thức doGet
-//        }
-//
-//        // Nếu có staffID, gán vào doctorName
-//        int doctorName = staffID;
-        HttpSession session = request.getSession();
-        int doctorName = (int) session.getAttribute("staffID");
-//        
+        throws ServletException, IOException {
+    
+    String patientName = request.getParameter("patientName");
+    String doctorName = request.getParameter("doctorName");
+    String appointmentDate = request.getParameter("appointmentDate");
+    String timeCreatedSort = request.getParameter("timeCreatedSort");
+    String status = request.getParameter("status");
 
-   
-        // Tính tổng số bản ghi để xác định số trang
-        int totalRecords = medicalExaminationDAO.getTotalFilteredRecords2(
-                patientName, ageSort, doctorName, appointmentDate, timeCreatedSort, status);
-        int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
-
-        // Đảm bảo page không vượt quá giới hạn
-        if (page < 1) {
-            page = 1;
-        }
-        if (page > totalPages && totalPages > 0) {
-            page = totalPages;
-        }
-
-        // Lấy danh sách đã lọc với phân trang
-        List<MedicalExamination> list = medicalExaminationDAO.getFilteredExaminations2(
-        patientName, ageSort, doctorName, appointmentDate, timeCreatedSort, status, page, pageSize);
-
-        // Lấy danh sách tất cả bác sĩ để hiển thị trong dropdown
-        List<Professional> allProfessionals = medicalExaminationDAO.getAllProfessionals();
-
-        // Đặt dữ liệu vào request
-        request.setAttribute("list", list);
-        request.setAttribute("allProfessionals", allProfessionals);
-        request.setAttribute("currentPage", page);
-        request.setAttribute("totalPages", totalPages);
-        request.setAttribute("pageSize", pageSize);
-
-        // Chuyển hướng đến JSP
-        request.getRequestDispatcher("manage_appointment.jsp").forward(request, response);
+    int page = 1; 
+    int pageSize = 10; 
+    String pageStr = request.getParameter("page");
+    if (pageStr != null && !pageStr.isEmpty()) {
+        page = Integer.parseInt(pageStr);
     }
 
+    // Bỏ ageSort trong getTotalFilteredRecords
+    int totalRecords = medicalExaminationDAO.getTotalFilteredRecords(
+            patientName, doctorName, appointmentDate, timeCreatedSort, status);
+    int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+
+    if (page < 1) page = 1;
+    if (page > totalPages && totalPages > 0) page = totalPages;
+
+    // Bỏ ageSort trong getFilteredExaminations
+    List<MedicalExamination> list = medicalExaminationDAO.getFilteredExaminations(
+            patientName, doctorName, appointmentDate, timeCreatedSort, status, page, pageSize);
+
+    List<Professional> allProfessionals = medicalExaminationDAO.getAllProfessionals();
+
+    request.setAttribute("list", list);
+    request.setAttribute("allProfessionals", allProfessionals);
+    request.setAttribute("currentPage", page);
+    request.setAttribute("totalPages", totalPages);
+    request.setAttribute("pageSize", pageSize);
+
+    request.getRequestDispatcher("manage_appointment.jsp").forward(request, response);
+}
 }

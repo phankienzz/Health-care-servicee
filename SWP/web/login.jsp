@@ -9,8 +9,8 @@
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <script>
-           
-               function toggleForm() {
+
+            function toggleForm() {
                 const userType = document.getElementById('userType').value;
                 document.getElementById('userForm').style.display = userType === 'user' ? 'block' : 'none';
                 document.getElementById('employeeForm').style.display = userType === 'employee' ? 'block' : 'none';
@@ -104,7 +104,7 @@
                                     </div>
                                 </div>
                             </div>
-                                     <div class="form-group text-right">
+                            <div class="form-group text-right">
                                 <a href="forgot-password.jsp" class="small">Forgot your password?</a>
                             </div>
 
@@ -112,7 +112,7 @@
                                 <label><input type="checkbox" name="rememberMe" <% if (!savedUsername.isEmpty()) { %> checked <% } %>> Remember me</label>
                             </div>
 
-                         
+
 
                             <div class="form-group text-center">
                                 <button type="submit" class="btn btn-primary btn-block">Login</button>
@@ -124,11 +124,10 @@
                         </form>
                     </div>
                     <div class="mt-4 text-center">
-                        <button type="button" class="btn btn-danger btn-block mb-2" id="googleLoginBtn">
-                            <a href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:8081/SWP/LoginGoogle&response_type=code&client_id=125097471726-ugd65uqmj26a8gf1358ugh1301v7enlo.apps.googleusercontent.com&approval_prompt=force">
-                                <i class="fa fa-google me-2"></i>Login with Google
-                            </a>
-                            
+                        <button type="button" class="btn btn-danger btn-block mb-2" 
+                                onclick="window.location.href = 'https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:9999/SWP/GoogleLoginServlet&response_type=code&client_id=322004880766-ljaf0a60isb2782d47uegdvjbfgjoc9t.apps.googleusercontent.com&approval_prompt=force'">
+                            <i class="fa fa-google me-2"></i>
+                            Google
                         </button>
                     </div>
 
@@ -141,32 +140,34 @@
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/app.js"></script>
         <script>
-                                            function toggleForm() {
-                                                var userType = document.getElementById("userType").value;
-                                                var userLabel = document.getElementById("userLabel");
-                                                var userInput = document.getElementById("user");
-                                                var googleLogin = document.getElementById("googleLoginBtn");
+                                    function toggleForm() {
+                                        var userType = document.getElementById("userType").value;
+                                        var userLabel = document.getElementById("userLabel");
+                                        var userInput = document.getElementById("user");
+                                        var googleLogin = document.querySelector(".btn-danger"); // Nút Google login
+                                        var registerLink = document.getElementById("registerLink");
+                                        var rememberMeChkBox = document.getElementById("rememberMeChkBox");
 
-                                                if (userType === "customer") {
-                                                    userLabel.innerText = "Username";
-                                                    userInput.placeholder = "Enter your username";
-                                                    userInput.type = "text";
-                                                    googleLogin.style.display = "block";
-                                                    registerLink.style.display = "block";
-                                                    rememberMeChkBox.style.display = "block";
+                                        if (userType === "customer") {
+                                            userLabel.innerText = "Username";
+                                            userInput.placeholder = "Enter your username";
+                                            userInput.type = "text";
+                                            googleLogin.style.display = "block";
+                                            registerLink.style.display = "block";
+                                            rememberMeChkBox.style.display = "block";
+                                        } else {
+                                            userLabel.innerText = "Email";
+                                            userInput.placeholder = "Enter your email";
+                                            userInput.type = "email";
+                                            googleLogin.style.display = "none";
+                                            registerLink.style.display = "none";
+                                            rememberMeChkBox.style.display = "none";
+                                        }
+                                    }
+                                    window.onload = function () {
+                                        toggleForm();
+                                    };
 
-                                                } else {
-                                                    userLabel.innerText = "Email";
-                                                    userInput.placeholder = "Enter your email";
-                                                    userInput.type = "email";
-                                                    googleLogin.style.display = "none";
-                                                    registerLink.style.display = "none";
-                                                    rememberMeChkBox.style.display = "none";
-                                                }
-                                            }
-                                            window.onload = function () {
-                                                toggleForm();
-                                            };
         </script>
     </body>
 </html>

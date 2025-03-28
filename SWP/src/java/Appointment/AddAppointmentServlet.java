@@ -21,7 +21,7 @@ public class AddAppointmentServlet extends HttpServlet {
 
     private MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
 
-    @Override
+    @Override   
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<Customer> customers = medicalExaminationDAO.getAllCustomers();

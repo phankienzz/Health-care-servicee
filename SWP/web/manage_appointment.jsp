@@ -8,7 +8,7 @@
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
-        <!-- Thêm CSS cho Datetimepicker -->
+        <!-- Thï¿½m CSS cho Datetimepicker -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <!--[if lt IE 9]>
@@ -18,42 +18,42 @@
     </head>
     <body>
         <div class="main-wrapper">
-            <!-- Header -->
-            <jsp:include page="headerStaff.jsp"></jsp:include>
+             <jsp:include page="headerStaff.jsp"></jsp:include>
             <jsp:include page="sidebar.jsp"></jsp:include>
 
-                <!-- Page Content -->
-                <div class="page-wrapper">
-                    <div class="content">
-                        <div class="row">
-                            <div class="col-sm-4 col-3">
-                                <h4 class="page-title">Appointments</h4>
-                            </div>
-                            <div class="col-sm-8 col-9 text-right m-b-20">
-                                <a href="add-appointment.jsp" class="btn btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Add Appointment</a>
-                            </div>
+            <!-- Page Content -->
+            <div class="page-wrapper">
+                <div class="content">
+                    <div class="row">
+                        <div class="col-sm-4 col-3">
+                            <h4 class="page-title">Appointments</h4>
                         </div>
+                        <div class="col-sm-8 col-9 text-right m-b-20">
+                            <a href="add-appointment.jsp" class="btn btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Add Appointment</a>
+                        </div>
+                    </div>
 
                     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                     <div class="container">
                         <h2>Medical Examinations</h2>
 
-                        <!-- Form tìm ki?m và l?c -->
+                        <!-- Form tï¿½m ki?m vï¿½ l?c -->
                         <form method="get" action="manage_appointment" class="mb-4">
                             <div class="row">
                                 <div class="col-md-3">
                                     <label for="patientName">Patient Name</label>
                                     <input type="text" class="form-control" id="patientName" name="patientName" value="${param.patientName}" placeholder="Enter patient name">
                                 </div>
+                              
                                 <div class="col-md-2">
-                                    <label for="ageSort">Sort by Age</label>
-                                    <select class="form-control" id="ageSort" name="ageSort">
-                                        <option value="">No Sort</option>
-                                        <option value="asc" ${param.ageSort == 'asc' ? 'selected' : ''}>Ascending</option>
-                                        <option value="desc" ${param.ageSort == 'desc' ? 'selected' : ''}>Descending</option>
+                                    <label for="doctorName">Doctor Name</label>
+                                    <select class="form-control" id="doctorName" name="doctorName">
+                                        <option value="">All Doctors</option>
+                                        <c:forEach var="professional" items="${allProfessionals}">
+                                            <option value="${professional.fullName}" ${param.doctorName == professional.fullName ? 'selected' : ''}>${professional.fullName}</option>
+                                        </c:forEach>
                                     </select>
                                 </div>
-
                                 <div class="col-md-2">
                                     <label for="appointmentDate">Appointment Date</label>
                                     <input type="text" class="form-control" id="appointmentDate" name="appointmentDate" value="${param.appointmentDate}">
@@ -83,7 +83,7 @@
                             </div>
                         </form>
 
-                        <!-- B?ng danh sách -->
+                        <!-- B?ng danh sï¿½ch -->
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
@@ -146,10 +146,8 @@
                                                                 <i class="fa fa-ellipsis-v"></i>
                                                             </a>
                                                             <div class="dropdown-menu dropdown-menu-right">
-                                                                <a class="dropdown-item" href="#" data-toggle="modal" 
-                                                                   data-target="#medicalRecordModal"
-                                                                   onclick="openMedicalRecordModal(${exam.examinationID})">
-                                                                    <i class="fa fa-pencil m-r-5"></i> Create/Edit Medical Record
+                                                                <a class="dropdown-item" href="edit_appointment?appointmentId=${exam.examinationID}">
+                                                                    <i class="fa fa-pencil m-r-5"></i> Edit
                                                                 </a>
                                                                 <a class="dropdown-item" href="#" data-toggle="modal" 
                                                                    data-target="#delete_appointment" 
@@ -166,48 +164,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="modal fade" id="medicalRecordModal" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Medical Record</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form id="medicalRecordForm" action="saveMedicalRecord" method="POST">
-                                            <input type="hidden" id="examinationID" name="examinationID">
 
-                                            <div class="form-group">
-                                                <label>Diagnosis</label>
-                                                <textarea class="form-control" id="diagnosis" name="diagnosis" required></textarea>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label>Treatment Plan</label>
-                                                <textarea class="form-control" id="treatmentPlan" name="treatmentPlan" required></textarea>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label>Medications Prescribed</label>
-                                                <textarea class="form-control" id="medicationsPrescribed" name="medicationsPrescribed"></textarea>
-                                            </div>
-
-                                            <button type="submit" class="btn btn-primary" >Save</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Phân trang -->
+                        <!-- Phï¿½n trang -->
                         <c:if test="${totalPages > 1}">
                             <nav aria-label="Page navigation" class="mt-3">
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
                                         <a class="page-link" href="manage_appointment?page=${currentPage - 1}&patientName=${param.patientName}&ageSort=${param.ageSort}&doctorName=${param.doctorName}&appointmentDate=${param.appointmentDate}&timeCreatedSort=${param.timeCreatedSort}&status=${param.status}" aria-label="Previous">
-                                            <span aria-hidden="true">«</span>
+                                            <span aria-hidden="true">ï¿½</span>
                                         </a>
                                     </li>
                                     <c:forEach begin="1" end="${totalPages}" var="i">
@@ -217,7 +181,7 @@
                                     </c:forEach>
                                     <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
                                         <a class="page-link" href="manage_appointment?page=${currentPage + 1}&patientName=${param.patientName}&ageSort=${param.ageSort}&doctorName=${param.doctorName}&appointmentDate=${param.appointmentDate}&timeCreatedSort=${param.timeCreatedSort}&status=${param.status}" aria-label="Next">
-                                            <span aria-hidden="true">»</span>
+                                            <span aria-hidden="true">ï¿½</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -254,41 +218,22 @@
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/jquery.slimscroll.js"></script>
         <script src="assets/js/select2.min.js"></script>
-        <!-- Thêm Moment.js và Bootstrap Datetimepicker -->
+        <!-- Thï¿½m Moment.js vï¿½ Bootstrap Datetimepicker -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
         <script src="assets/js/app.js"></script>
         <script>
-                                                $(document).ready(function () {
-                                                    // Kh?i t?o datetimepicker cho appointmentDate
-                                                    $('#appointmentDate').datetimepicker({
-                                                        format: 'DD/MM/YYYY', // ??nh d?ng ngày
-                                                        useCurrent: false
-                                                    });
-                                                });
+                                                                       $(document).ready(function () {
+                                                                           // Kh?i t?o datetimepicker cho appointmentDate
+                                                                           $('#appointmentDate').datetimepicker({
+                                                                               format: 'DD/MM/YYYY', // ??nh d?ng ngï¿½y
+                                                                               useCurrent: false
+                                                                           });
+                                                                       });
 
-                                                function setDeleteId(examId) {
-                                                    document.getElementById("deleteExamId").value = examId;
-                                                }
-                                                function openMedicalRecordModal(examinationID) {
-                                                    document.getElementById("examinationID").value = examinationID;
-
-                                                    // G?i API ?? l?y d? li?u n?u có
-                                                    fetch("getMedicalRecord?examinationID=" + examinationID)
-                                                            .then(response => response.json())
-                                                            .then(data => {
-                                                                if (data) {
-                                                                    document.getElementById("diagnosis").value = data.diagnosis || "";
-                                                                    document.getElementById("treatmentPlan").value = data.treatmentPlan || "";
-                                                                    document.getElementById("medicationsPrescribed").value = data.medicationsPrescribed || "";
-                                                                }
-                                                            });
-
-                                                    $("#medicalRecordModal").modal("show");
-                                                }
-                                                
-
-
+                                                                       function setDeleteId(examId) {
+                                                                           document.getElementById("deleteExamId").value = examId;
+                                                                       }
         </script>
     </body>
 </html>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -22,6 +24,13 @@
         <!-- Main Stylesheet -->
         <link rel="stylesheet" href="assets2/css/style.css">
 
+        <style>
+            .client-info p {
+                word-wrap: break-word; /* Xuống dòng khi gặp từ quá dài */
+                white-space: normal; /* Giữ nguyên các dòng */
+                overflow-wrap: break-word;
+            }
+        </style>
     </head>
 
     <body id="top">
@@ -31,67 +40,48 @@
             <jsp:include page="headerHome.jsp"></jsp:include>
 
 
-            <section class="page-title bg-1">
-                <div class="overlay"></div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="block text-center">
-                                <span class="text-white">About Us</span>
-                                <h1 class="text-capitalize mb-5 text-lg">About Us</h1>
+                <section class="page-title bg-1">
+                    <div class="overlay"></div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="block text-center">
+                                    <span class="text-white">About Us</span>
+                                    <h1 class="text-capitalize mb-5 text-lg">About Us</h1>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <section class="section about-page">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <h2 class="title-color">Personal care for your healthy living</h2>
-                        </div>
-                        <div class="col-lg-8">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt, quod laborum alias. Vitae
-                                dolorum, officia sit! Saepe ullam facere at, consequatur incidunt, quae esse, quis ut
-                                reprehenderit dignissimos, libero delectus.</p>
-                            <img src="assets2/images/about/sign.png" alt="" class="img-fluid">
+                <section class="section about-page">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <h2 class="title-color">Personal care for your healthy living</h2>
+                            </div>
+                            <div class="col-lg-8">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt, quod laborum alias. Vitae
+                                    dolorum, officia sit! Saepe ullam facere at, consequatur incidunt, quae esse, quis ut
+                                    reprehenderit dignissimos, libero delectus.</p>
+                                <img src="assets2/images/about/sign.png" alt="" class="img-fluid">
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <section class="fetaure-page ">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-3 col-md-6">
-                            <div class="about-block-item mb-5 mb-lg-0">
-                                <img src="assets2/images/about/about-1.jpg" alt="" class="img-fluid w-100">
-                                <h4 class="mt-3">Healthcare for Kids</h4>
-                                <p>Voluptate aperiam esse possimus maxime repellendus, nihil quod accusantium .</p>
+                <section class="fetaure-page ">
+                    <div class="container">
+                        <div class="row">
+                        <c:forEach var="service" items="${listService}">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="about-block-item mb-5 mb-lg-0">
+                                    <img src="assets2/images/about/about-1.jpg" alt="" class="img-fluid w-100">
+                                    <h4 class="mt-3">${service.packageName}</h4>
+                                    <p>${service.description}</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="about-block-item mb-5 mb-lg-0">
-                                <img src="assets2/images/about/about-2.jpg" alt="" class="img-fluid w-100">
-                                <h4 class="mt-3">Medical Counseling</h4>
-                                <p>Voluptate aperiam esse possimus maxime repellendus, nihil quod accusantium .</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="about-block-item mb-5 mb-lg-0">
-                                <img src="assets2/images/about/about-3.jpg" alt="" class="img-fluid w-100">
-                                <h4 class="mt-3">Modern Equipments</h4>
-                                <p>Voluptate aperiam esse possimus maxime repellendus, nihil quod accusantium .</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="about-block-item">
-                                <img src="assets2/images/about/about-4.jpg" alt="" class="img-fluid w-100">
-                                <h4 class="mt-3">Qualified Doctors</h4>
-                                <p>Voluptate aperiam esse possimus maxime repellendus, nihil quod accusantium .</p>
-                            </div>
-                        </div>
+                        </c:forEach>
                     </div>
                 </div>
             </section>
@@ -212,71 +202,19 @@
                     </div>
                     <div class="row align-items-center">
                         <div class="col-lg-6 testimonial-wrap offset-lg-6">
-                            <div class="testimonial-block">
-                                <div class="client-info ">
-                                    <h4>Amazing service!</h4>
-                                    <span>John Partho</span>
+                            <c:forEach var="feedback" items="${listFeedback}">
+                                <div class="testimonial-block">
+                                    <div class="client-info ">
+                                        <h4>${feedback.invoice.examinationID.customerId.fullName}</h4>
+                                        <span>${feedback.date}</span>
+                                    </div>
+                                    <p>
+                                        ${feedback.comment}
+                                    </p>
+                                    <strong>Rate: ${feedback.rating}★</strong>
+                                    <i class="icofont-quote-right"></i>
                                 </div>
-                                <p>
-                                    They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium,
-                                    iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat. Quibusdam laboriosam
-                                    eveniet nostrum nemo commodi numquam quod.
-                                </p>
-                                <i class="icofont-quote-right"></i>
-
-                            </div>
-
-                            <div class="testimonial-block">
-                                <div class="client-info">
-                                    <h4>Expert doctors!</h4>
-                                    <span>Mullar Sarth</span>
-                                </div>
-                                <p>
-                                    They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium,
-                                    iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat. Quibusdam laboriosam
-                                    eveniet nostrum nemo commodi numquam quod.
-                                </p>
-                                <i class="icofont-quote-right"></i>
-                            </div>
-
-                            <div class="testimonial-block">
-                                <div class="client-info">
-                                    <h4>Good Support!</h4>
-                                    <span>Kolis Mullar</span>
-                                </div>
-                                <p>
-                                    They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium,
-                                    iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat. Quibusdam laboriosam
-                                    eveniet nostrum nemo commodi numquam quod.
-                                </p>
-                                <i class="icofont-quote-right"></i>
-                            </div>
-
-                            <div class="testimonial-block">
-                                <div class="client-info">
-                                    <h4>Nice Environment!</h4>
-                                    <span>Partho Sarothi</span>
-                                </div>
-                                <p>
-                                    They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium,
-                                    iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat. Quibusdam laboriosam
-                                    eveniet nostrum nemo commodi numquam quod.
-                                </p>
-                                <i class="icofont-quote-right"></i>
-                            </div>
-
-                            <div class="testimonial-block">
-                                <div class="client-info">
-                                    <h4>Modern Service!</h4>
-                                    <span>Kolis Mullar</span>
-                                </div>
-                                <p>
-                                    They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium,
-                                    iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat. Quibusdam laboriosam
-                                    eveniet nostrum nemo commodi numquam quod.
-                                </p>
-                                <i class="icofont-quote-right"></i>
-                            </div>
+                            </c:forEach>
                         </div>
                     </div>
                 </div>
