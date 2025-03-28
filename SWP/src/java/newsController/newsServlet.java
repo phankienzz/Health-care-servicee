@@ -15,8 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Category;
 import model.News;
-import context.ValidFunction;
-import java.util.ArrayList;
+import util.ValidFunction;
 
 /**
  *
@@ -25,29 +24,12 @@ import java.util.ArrayList;
 @WebServlet(name = "newsServlet", urlPatterns = {"/allNews"})
 public class newsServlet extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet newsServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet newsServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ValidFunction valid = new ValidFunction();
         NewsDAO dao = new NewsDAO();
-        String indexPage = request.getParameter("page");
+        String pageStr = request.getParameter("page");
         String categoryID = request.getParameter("categoryID");
         String search = request.getParameter("search");
         String sort = request.getParameter("sort");
@@ -58,13 +40,13 @@ public class newsServlet extends HttpServlet {
         if (search == null) {
             search = "";
         }
-        if (indexPage == null || indexPage.trim().isEmpty()) {
-            indexPage = "1";
+        if (pageStr == null || pageStr.trim().isEmpty()) {
+            pageStr = "1";
         }
 
         int page;
         try {
-            page = Integer.parseInt(indexPage.trim());
+            page = Integer.parseInt(pageStr.trim());
             if (page <= 0) {
                 page = 1;
             }
@@ -113,7 +95,6 @@ public class newsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     @Override

@@ -4,8 +4,8 @@
     Author     : Hoang
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %><!DOCTYPE html>
 <html lang="zxx">
 
     <head>
@@ -149,13 +149,18 @@
             /* Ẩn phần tử */
             .hidden {
                 display: none;
-                
+
+            }
+
+            .client-info p {
+                word-wrap: break-word; /* Xuống dòng khi gặp từ quá dài */
+                white-space: normal; /* Giữ nguyên các dòng */
+                overflow-wrap: break-word;
             }
         </style>
     </head>
 
     <body id="top">
-
         <jsp:include page="headerHome.jsp"></jsp:include>
 
             <!-- Slider Start -->
@@ -484,173 +489,106 @@
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-lg-12 testimonial-wrap-2">
+                        <c:forEach var="feedback" items="${listFeedback}">
                             <div class="testimonial-block style-2  gray-bg">
                                 <i class="icofont-quote-right"></i>
 
                                 <div class="testimonial-thumb">
-                                    <img src="assets2/images/team/test-thumb1.jpg" alt="" class="img-fluid">
+                                    <img src="pictureprofile?customerID=${feedback.invoice.examinationID.customerId.customerID}" alt="" class="img-fluid">
                                 </div>
 
                                 <div class="client-info ">
-                                    <h4>Amazing service!</h4>
-                                    <span>John Partho</span>
-                                    <p>
-                                        They provide great service facilty consectetur adipisicing elit. Itaque rem,
-                                        praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
-                                    </p>
+                                    <h4>${feedback.invoice.examinationID.customerId.fullName}</h4>
+                                    <span>${feedback.date}</span>
+                                    <p>${feedback.comment}</p>
+                                    <strong>Rating: ${feedback.rating}★</strong>
                                 </div>
                             </div>
-
-                            <div class="testimonial-block style-2  gray-bg">
-                                <div class="testimonial-thumb">
-                                    <img src="assets2/images/team/test-thumb2.jpg" alt="" class="img-fluid">
-                                </div>
-
-                                <div class="client-info">
-                                    <h4>Expert doctors!</h4>
-                                    <span>Mullar Sarth</span>
-                                    <p>
-                                        They provide great service facilty consectetur adipisicing elit. Itaque rem,
-                                        praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
-                                    </p>
-                                </div>
-
-                                <i class="icofont-quote-right"></i>
-                            </div>
-
-                            <div class="testimonial-block style-2  gray-bg">
-                                <div class="testimonial-thumb">
-                                    <img src="assets2/images/team/test-thumb3.jpg" alt="" class="img-fluid">
-                                </div>
-
-                                <div class="client-info">
-                                    <h4>Good Support!</h4>
-                                    <span>Kolis Mullar</span>
-                                    <p>
-                                        They provide great service facilty consectetur adipisicing elit. Itaque rem,
-                                        praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
-                                    </p>
-                                </div>
-
-                                <i class="icofont-quote-right"></i>
-                            </div>
-
-                            <div class="testimonial-block style-2  gray-bg">
-                                <div class="testimonial-thumb">
-                                    <img src="assets2/images/team/test-thumb4.jpg" alt="" class="img-fluid">
-                                </div>
-
-                                <div class="client-info">
-                                    <h4>Nice Environment!</h4>
-                                    <span>Partho Sarothi</span>
-                                    <p class="mt-4">
-                                        They provide great service facilty consectetur adipisicing elit. Itaque rem,
-                                        praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
-                                    </p>
-                                </div>
-                                <i class="icofont-quote-right"></i>
-                            </div>
-
-                            <div class="testimonial-block style-2  gray-bg">
-                                <div class="testimonial-thumb">
-                                    <img src="assets2/images/team/test-thumb1.jpg" alt="" class="img-fluid">
-                                </div>
-
-                                <div class="client-info">
-                                    <h4>Modern Service!</h4>
-                                    <span>Kolis Mullar</span>
-                                    <p>
-                                        They provide great service facilty consectetur adipisicing elit. Itaque rem,
-                                        praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
-                                    </p>
-                                </div>
-                                <i class="icofont-quote-right"></i>
-                            </div>
-                        </div>
+                        </c:forEach>
                     </div>
                 </div>
-            </section>
-            <section class="section clients">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-7">
-                            <div class="section-title text-center">
-                                <h2>Partners who support us</h2>
-                                <div class="divider mx-auto my-4"></div>
-                                <p>Lets know moreel necessitatibus dolor asperiores illum possimus sint voluptates incidunt
-                                    molestias nostrum laudantium. Maiores porro cumque quaerat.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="container">
-                    <div class="row clients-logo">
-                        <div class="col-lg-2">
-                            <div class="client-thumb">
-                                <img src="assets2/images/about/1.png" alt="" class="img-fluid">
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="client-thumb">
-                                <img src="assets2/images/about/2.png" alt="" class="img-fluid">
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="client-thumb">
-                                <img src="assets2/images/about/3.png" alt="" class="img-fluid">
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="client-thumb">
-                                <img src="assets2/images/about/4.png" alt="" class="img-fluid">
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="client-thumb">
-                                <img src="assets2/images/about/5.png" alt="" class="img-fluid">
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="client-thumb">
-                                <img src="assets2/images/about/6.png" alt="" class="img-fluid">
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="client-thumb">
-                                <img src="assets2/images/about/3.png" alt="" class="img-fluid">
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="client-thumb">
-                                <img src="assets2/images/about/4.png" alt="" class="img-fluid">
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="client-thumb">
-                                <img src="assets2/images/about/5.png" alt="" class="img-fluid">
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="client-thumb">
-                                <img src="assets2/images/about/6.png" alt="" class="img-fluid">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            
-              <div class="floating-icons">
-
-                <a href="https://zalo.me/0886840889" class="icon">
-                    <img src="images/service/download.png" alt="Zalo">
-                </a>
-                <a href="https://www.messenger.com/t/61573434115221/?messaging_source=source%3Apages%3Amessage_shortlink&source_id=1441792&recurring_notification=0" class="icon">
-                    <img src="images/service/4a4c224a0c6667178bebdfa3b6bdb92b.jpg" alt="Messenger">
-                </a>
             </div>
-            <!-- footer Start -->
+        </section>
+        <section class="section clients">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-7">
+                        <div class="section-title text-center">
+                            <h2>Partners who support us</h2>
+                            <div class="divider mx-auto my-4"></div>
+                            <p>Lets know moreel necessitatibus dolor asperiores illum possimus sint voluptates incidunt
+                                molestias nostrum laudantium. Maiores porro cumque quaerat.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row clients-logo">
+                    <div class="col-lg-2">
+                        <div class="client-thumb">
+                            <img src="assets2/images/about/1.png" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="client-thumb">
+                            <img src="assets2/images/about/2.png" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="client-thumb">
+                            <img src="assets2/images/about/3.png" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="client-thumb">
+                            <img src="assets2/images/about/4.png" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="client-thumb">
+                            <img src="assets2/images/about/5.png" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="client-thumb">
+                            <img src="assets2/images/about/6.png" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="client-thumb">
+                            <img src="assets2/images/about/3.png" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="client-thumb">
+                            <img src="assets2/images/about/4.png" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="client-thumb">
+                            <img src="assets2/images/about/5.png" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="client-thumb">
+                            <img src="assets2/images/about/6.png" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <div class="floating-icons">
+            <a href="https://zalo.me/0886840889" class="icon">
+                <img src="https://help.zalo.me/wp-content/uploads/2023/08/cropped-logoZalo.png" alt="Zalo">
+            </a>
+            <a href="https://www.messenger.com/t/61573434115221/?messaging_source=source%3Apages%3Amessage_shortlink&source_id=1441792&recurring_notification=0" class="icon">
+                <img src="https://th.bing.com/th/id/R.5e81e292523d1f3a099da156223d8cc7?rik=Nj1WZ7uxItlDzA&pid=ImgRaw&r=0" alt="Messenger">
+            </a>
+        </div>
+        <!-- footer Start -->
         <jsp:include page="footer.jsp"></jsp:include>
 
 

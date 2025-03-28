@@ -21,6 +21,24 @@ import model.MedicalExamination;
  */
 public class InvoiceDAO extends DBContext {
 
+    public int getInvoiceByCustomerID(int customerID) {
+        String query = "SELECT TOP 1 i.invoiceID\n"
+                + "        FROM Invoice i\n"
+                + "        JOIN MedicalExamination me ON i.examinationID = me.examinationID\n"
+                + "        WHERE me.customerId = ?\n"
+                + "        ORDER BY i.createdAt DESC";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, customerID);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("invoiceID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Trả về -1 nếu không tìm thấy invoiceID
+    }
+
     public List<Invoice> getAllInvoice() {
         List<Invoice> invoiceList = new ArrayList<>();
         CustomerDAO customerDAO = new CustomerDAO();
@@ -121,7 +139,6 @@ public class InvoiceDAO extends DBContext {
                         rs.getString("paymentMethod"),
                         rs.getString("createdAt"),
                         disDAO.getDiscountByID(rs.getInt("discountID")));
-
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -680,7 +697,20 @@ public class InvoiceDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        double a = 190000891.5;
-        System.out.println(a);
+        // Tạo đối tượng InvoiceDAO
+        InvoiceDAO invoiceDAO = new InvoiceDAO();
+
+        // CustomerID cần kiểm tra
+        int customerID = 1; // Thay bằng một customerID thực tế trong database của bạn
+
+        // Gọi phương thức getInvoiceByCustomerID
+        int invoiceID = invoiceDAO.getInvoiceByCustomerID(customerID);
+
+        // Kiểm tra kết quả
+        if (invoiceID != -1) {
+            System.out.println("Invoice ID tìm thấy cho Customer ID " + customerID + ": " + invoiceID);
+        } else {
+            System.out.println("Không tìm thấy Invoice ID cho Customer ID " + customerID);
+        }
     }
 }

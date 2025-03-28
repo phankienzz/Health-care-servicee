@@ -4,7 +4,7 @@
  */
 package CustomerController;
 
-import context.ValidFunction;
+import util.ValidFunction;
 import dao.CustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,23 +23,6 @@ import model.Customer;
  */
 @WebServlet(name = "patient", urlPatterns = {"/patient"})
 public class patient extends HttpServlet {
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet patient</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet patient at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -105,7 +88,7 @@ public class patient extends HttpServlet {
                 if (patientIdStr != null && !patientIdStr.isEmpty() && patientName != null && !patientName.isEmpty()) {
                     // ID và Tên nhưng CÓ lọc theo Status
                     int patientID = Integer.parseInt(patientIdStr);
-                    Customer customer = dao.getCustomerByIdAndName(patientID, patientName,status);
+                    Customer customer = dao.getCustomerByIdAndName(patientID, patientName, status);
                     if (customer != null) {
                         listPatient.add(customer);
                         totalPatient = 1;
@@ -115,7 +98,7 @@ public class patient extends HttpServlet {
                 } else if (patientIdStr != null && !patientIdStr.isEmpty()) {
                     //ID nhưng CÓ lọc theo Status
                     int patientID = Integer.parseInt(valid.normalizeName(patientIdStr));
-                    Customer customer = dao.getCustomerByID(patientID,status);
+                    Customer customer = dao.getCustomerByID(patientID, status);
                     if (customer != null) {
                         listPatient.add(customer);
                         totalPatient = 1;
@@ -124,16 +107,16 @@ public class patient extends HttpServlet {
                     }
                 } else if (patientName != null && !patientName.isEmpty()) {
                     //Name nhưng CÓ lọc theo Status
-                    listPatient = dao.getCustomerByName(valid.normalizeName(patientName), page, pageSize,status);
+                    listPatient = dao.getCustomerByName(valid.normalizeName(patientName), page, pageSize, status);
                     totalPatient = dao.getCustomerByName(valid.normalizeName(patientName)).size();
                     if (listPatient.isEmpty()) {
                         request.setAttribute("error", "No patients found with name: " + patientName + " with status " + status);
                     }
-                }else {
-                    if(status.equals("Active")){
+                } else {
+                    if (status.equals("Active")) {
                         listPatient = dao.getAllCustomerActive(page, pageSize);
                         totalPatient = dao.getAllCustomerActive().size();
-                    }else{
+                    } else {
                         listPatient = dao.getAllCustomerInactive(page, pageSize);
                         totalPatient = dao.getAllCustomerInactive().size();
                     }
@@ -160,7 +143,6 @@ public class patient extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     @Override

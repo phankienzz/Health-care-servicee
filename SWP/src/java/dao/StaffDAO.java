@@ -5,7 +5,7 @@
 package dao;
 
 import context.DBContext;
-import context.ValidFunction;
+import util.ValidFunction;
 import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

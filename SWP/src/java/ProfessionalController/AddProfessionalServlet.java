@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 import static javax.xml.bind.DatatypeConverter.parseDate;
 import model.Professional;
 import util.FileUploadHelper;
-import context.ValidFunction;
+import util.ValidFunction;
 
 /**
  *

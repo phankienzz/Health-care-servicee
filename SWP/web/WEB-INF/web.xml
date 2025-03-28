@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <listener>
+        <listener-class>util.AppListener</listener-class>
+    </listener>
     <dependency>
         <groupId>org.mindrot</groupId>
         <artifactId>jbcrypt</artifactId>
@@ -118,7 +121,7 @@
     </servlet>
     <servlet>
         <servlet-name>addBlog</servlet-name>
-        <servlet-class>blog.addBlog</servlet-class>
+        <servlet-class>newsController.addBlog</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Appointment</servlet-name>
@@ -153,15 +156,15 @@
         <url-pattern>/ListAppointment</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
-        <welcome-file>index_1.jsp</welcome-file>
+        <welcome-file>home</welcome-file>
     </welcome-file-list>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>CustomerController.LoginServlet</servlet-class>
+        <servlet-class>Authentication.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RegisterServet</servlet-name>
-        <servlet-class>CustomerController.RegisterServet</servlet-class>
+        <servlet-class>Authentication.RegisterServet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProfileServlet</servlet-name>
@@ -217,28 +220,26 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>ForgotPassword</servlet-name>
-        <servlet-class>controller.ForgotPassword</servlet-class>
+        <servlet-class>Authentication.ForgotPassword</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ForgotPassword</servlet-name>
         <url-pattern>/forgotpassword</url-pattern>
     </servlet-mapping>
-    
-  <servlet>
+    <servlet>
         <servlet-name>RegisterGoogleServlet</servlet-name>
-        <servlet-class>controller.RegisterGoogleServlet</servlet-class>
+        <servlet-class>Authentication.RegisterGoogleServlet</servlet-class>
     </servlet>
-        <servlet-mapping>
-            <servlet-name>RegisterGoogleServlet</servlet-name>
-            <url-pattern>/RegisterGoogleServlet</url-pattern>
-        </servlet-mapping>
-     <servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterGoogleServlet</servlet-name>
+        <url-pattern>/RegisterGoogleServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>GoogleLoginServlet</servlet-name>
-        <servlet-class>controller.GoogleLoginServlet</servlet-class>
+        <servlet-class>Authentication.GoogleLoginServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>GoogleLoginServlet</servlet-name>
         <url-pattern>/GoogleLoginServlet</url-pattern>
     </servlet-mapping>
-    
 </web-app>

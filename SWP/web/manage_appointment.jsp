@@ -8,7 +8,7 @@
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
-        <!-- Thêm CSS cho Datetimepicker -->
+        <!-- Thï¿½m CSS cho Datetimepicker -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <!--[if lt IE 9]>
@@ -37,7 +37,7 @@
                     <div class="container">
                         <h2>Medical Examinations</h2>
 
-                        <!-- Form tìm ki?m và l?c -->
+                        <!-- Form tï¿½m ki?m vï¿½ l?c -->
                         <form method="get" action="manage_appointment" class="mb-4">
                             <div class="row">
                                 <div class="col-md-3">
@@ -86,7 +86,7 @@
 
                         </form>
 
-                        <!-- B?ng danh sách -->
+                        <!-- B?ng danh sï¿½ch -->
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
@@ -125,7 +125,7 @@
                                                         <c:choose>
                                                             <c:when test="${exam.status == 'Pending'}">
                                                                 <span class="badge" style="background-color: #ff9800; color: white;">${exam.status}</span>
-                                                                <%-- Ki?m tra n?u là ??n m?i ??t --%>
+                                                                <%-- Ki?m tra n?u lï¿½ ??n m?i ??t --%>
                                                                 <c:if test="${exam.createdAt > recentTime}">
                                                                     <span style="color: red; font-weight: bold; margin-left: 5px;">New</span>
                                                                 </c:if>
@@ -172,13 +172,13 @@
                             </div>
                         </div>
 
-                        <!-- Phân trang -->
+                        <!-- Phï¿½n trang -->
                         <c:if test="${totalPages > 1}">
                             <nav aria-label="Page navigation" class="mt-3">
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
                                         <a class="page-link" href="manage_appointment?page=${currentPage - 1}&patientName=${param.patientName}&ageSort=${param.ageSort}&doctorName=${param.doctorName}&appointmentDate=${param.appointmentDate}&timeCreatedSort=${param.timeCreatedSort}&status=${param.status}" aria-label="Previous">
-                                            <span aria-hidden="true">«</span>
+                                            <span aria-hidden="true">ï¿½</span>
                                         </a>
                                     </li>
                                     <c:forEach begin="1" end="${totalPages}" var="i">
@@ -188,7 +188,7 @@
                                     </c:forEach>
                                     <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
                                         <a class="page-link" href="manage_appointment?page=${currentPage + 1}&patientName=${param.patientName}&ageSort=${param.ageSort}&doctorName=${param.doctorName}&appointmentDate=${param.appointmentDate}&timeCreatedSort=${param.timeCreatedSort}&status=${param.status}" aria-label="Next">
-                                            <span aria-hidden="true">»</span>
+                                            <span aria-hidden="true">ï¿½</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -219,7 +219,7 @@
         </div>
 
 
-        <!-- Thông báo góc d??i ph?i -->
+        <!-- Thï¿½ng bï¿½o gï¿½c d??i ph?i -->
         <div class="notification-container" id="notificationContainer">
             <div class="notification-icon">
                 <i class="fa fa-bell"></i>
@@ -227,15 +227,15 @@
             </div>
             <div class="notification-message" id="notificationMessage" style="display: none;">
                 <p>You have <span id="newCount">0</span> new appointments!</p>
-                <button class="close-notification" onclick="closeNotification()">×</button>
+                <button class="close-notification" onclick="closeNotification()">ï¿½</button>
             </div>
         </div>
 
         <style>
             .notification-container {
                 position: fixed;
-                bottom: 20px; /* Cách l? d??i 20px */
-                right: 20px;  /* Cách l? ph?i 20px */
+                bottom: 20px; /* Cï¿½ch l? d??i 20px */
+                right: 20px;  /* Cï¿½ch l? ph?i 20px */
                 z-index: 1000;
             }
 
@@ -261,13 +261,13 @@
 
             .notification-message {
                 position: absolute;
-                bottom: 35px; /* Hi?n th? phía trên bi?u t??ng chuông */
-                right: 0;    /* C?n ph?i v?i chuông */
+                bottom: 35px; /* Hi?n th? phï¿½a trï¿½n bi?u t??ng chuï¿½ng */
+                right: 0;    /* C?n ph?i v?i chuï¿½ng */
                 background-color: #fff;
                 border: 1px solid #ddd;
                 border-radius: 5px;
                 padding: 10px;
-                box-shadow: 0 -2px 5px rgba(0,0,0,0.2); /* ?? bóng lên trên */
+                box-shadow: 0 -2px 5px rgba(0,0,0,0.2); /* ?? bï¿½ng lï¿½n trï¿½n */
                 min-width: 200px;
             }
 
@@ -301,7 +301,7 @@
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/jquery.slimscroll.js"></script>
         <script src="assets/js/select2.min.js"></script>
-        <!-- Thêm Moment.js và Bootstrap Datetimepicker -->
+        <!-- Thï¿½m Moment.js vï¿½ Bootstrap Datetimepicker -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
         <script src="assets/js/app.js"></script>
@@ -309,7 +309,7 @@
                     $(document).ready(function () {
                         // Kh?i t?o datetimepicker cho appointmentDate
                         $('#appointmentDate').datetimepicker({
-                            format: 'DD/MM/YYYY', // ??nh d?ng ngày
+                            format: 'DD/MM/YYYY', // ??nh d?ng ngï¿½y
                             useCurrent: false
                         });
                     });
@@ -320,7 +320,7 @@
         </script>
         <script>
             $(document).ready(function () {
-                // Hàm ki?m tra l?ch khám m?i
+                // Hï¿½m ki?m tra l?ch khï¿½m m?i
                 function checkNewAppointments() {
                     $.ajax({
                         url: 'CheckNewAppointmentServlet',
@@ -342,19 +342,19 @@
                     });
                 }
 
-                // Ki?m tra m?i 30 giây
+                // Ki?m tra m?i 30 giï¿½y
                 setInterval(checkNewAppointments, 30000);
 
                 // Ki?m tra ngay khi load trang
                 checkNewAppointments();
 
-                // X? lý khi click vào bi?u t??ng chuông
+                // X? lï¿½ khi click vï¿½o bi?u t??ng chuï¿½ng
                 $('.notification-icon').click(function () {
                     $('#notificationMessage').slideToggle();
                 });
             });
 
-// ?óng thông báo
+// ?ï¿½ng thï¿½ng bï¿½o
             function closeNotification() {
                 $('#notificationMessage').slideUp();
             }
@@ -363,13 +363,13 @@
 
 
             $(document).ready(function () {
-                // Th?i gian hi?n t?i tr? 1 gi? (miligiây)
+                // Th?i gian hi?n t?i tr? 1 gi? (miligiï¿½y)
                 var oneHourAgo = new Date().getTime() - (60 * 60 * 1000);
 
-                // Duy?t qua các hàng trong b?ng
+                // Duy?t qua cï¿½c hï¿½ng trong b?ng
                 $('table tbody tr').each(function () {
                     var createdAtStr = $(this).find('td:nth-child(7)').text(); // C?t createdAt (th? 7)
-                    var createdAt = moment(createdAtStr, 'DD/MM/YYYY HH:mm').toDate().getTime(); // Chuy?n chu?i thành timestamp
+                    var createdAt = moment(createdAtStr, 'DD/MM/YYYY HH:mm').toDate().getTime(); // Chuy?n chu?i thï¿½nh timestamp
 
                     if (createdAt > oneHourAgo) {
                         var statusCell = $(this).find('td:nth-child(8)'); // C?t status (th? 8)
@@ -381,14 +381,14 @@
         </script>
         <script>
             document.getElementById("clearFilters").addEventListener("click", function () {
-                // Xóa giá tr? c?a t?t c? input và select
+                // Xï¿½a giï¿½ tr? c?a t?t c? input vï¿½ select
                 document.getElementById("patientName").value = "";
                 document.getElementById("doctorName").value = "";
                 document.getElementById("appointmentDate").value = "";
                 document.getElementById("timeCreatedSort").value = "";
                 document.getElementById("status").value = "";
 
-                // G?i l?i trang mà không có query parameters
+                // G?i l?i trang mï¿½ khï¿½ng cï¿½ query parameters
                 window.location.href = "manage_appointment";
             });
         </script>

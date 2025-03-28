@@ -1,6 +1,6 @@
 package WorkingScheduleController;
 
-import context.ValidFunction;
+import util.ValidFunction;
 import dao.WorkingScheduleDAO;
 import java.io.IOException;
 import java.util.Comparator;

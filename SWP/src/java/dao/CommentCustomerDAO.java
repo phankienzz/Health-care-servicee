@@ -24,78 +24,76 @@ public class CommentCustomerDAO extends DBContext {
         // Ví dụ kiểm tra thêm bình luận mới với staffID và customerID là null
         // System.out.println(dao.addComment("chuquockhanhchung@gmail.com", null, "Toi muon hoi ve phoi", null, "Phoi", null, null));
         // Ví dụ update bình luận
-         System.out.println(dao.updateComment(33, "Cam on bac si"));
+        System.out.println(dao.updateComment(33, "Cam on bac si"));
 //        List<Comments> list = dao.getRootCommentsWithoutReplies();
 //        for (Comments comment : list) {
 //            System.out.println(comment);
 //        }
     }
+
     public Integer getCustomerIDByCommentID(int commentID) {
-    String sql = "SELECT customerID FROM Comment WHERE commentID = ?";
-    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-        stmt.setInt(1, commentID);
-        try (ResultSet rs = stmt.executeQuery()) {
-            if (rs.next()) {
-                return rs.getInt("customerID"); // Lấy giá trị customerID
-            }
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return null; // Trả về null nếu không tìm thấy
-}
-
-    // Lấy các comment theo replyToCommentID
-   public List<Comments> getCommentsByReplyToCommentID(int replyToCommentID, Integer staffID) {
-    List<Comments> comments = new ArrayList<>();
-    
-    // Tạo câu lệnh SQL với điều kiện tùy chọn cho staffID
-    StringBuilder sqlBuilder = new StringBuilder(
-        "SELECT commentID, senderEmail, receiverEmail, commentText, commentDate, replyToCommentID, topic, staffID, customerID " +
-        "FROM MedicalSystem.dbo.Comment WHERE replyToCommentID = ?");
-
-    // Nếu staffID không phải là null, thêm điều kiện lọc theo staffID
-    if (staffID != null) {
-        sqlBuilder.append(" AND staffID = ?");
-    }
-
-    sqlBuilder.append(" ORDER BY commentDate DESC");
-
-    try (PreparedStatement stmt = connection.prepareStatement(sqlBuilder.toString())) {
-        // Thiết lập tham số cho replyToCommentID
-        stmt.setInt(1, replyToCommentID);
-        
-        // Nếu staffID có giá trị, thiết lập tham số cho staffID
-        if (staffID != null) {
-            stmt.setInt(2, staffID);
-        }
-
-        try (ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                Comments comment = mapComment(rs);
-                comments.add(comment);
+        String sql = "SELECT customerID FROM Comment WHERE commentID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, commentID);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("customerID"); // Lấy giá trị customerID
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return null; // Trả về null nếu không tìm thấy
     }
-    
-    return comments;
-}
 
+    // Lấy các comment theo replyToCommentID
+    public List<Comments> getCommentsByReplyToCommentID(int replyToCommentID, Integer staffID) {
+        List<Comments> comments = new ArrayList<>();
+
+        // Tạo câu lệnh SQL với điều kiện tùy chọn cho staffID
+        StringBuilder sqlBuilder = new StringBuilder(
+                "SELECT commentID, senderEmail, receiverEmail, commentText, commentDate, replyToCommentID, topic, staffID, customerID "
+                + "FROM MedicalSystem.dbo.Comment WHERE replyToCommentID = ?");
+
+        // Nếu staffID không phải là null, thêm điều kiện lọc theo staffID
+        if (staffID != null) {
+            sqlBuilder.append(" AND staffID = ?");
+        }
+
+        sqlBuilder.append(" ORDER BY commentDate DESC");
+
+        try (PreparedStatement stmt = connection.prepareStatement(sqlBuilder.toString())) {
+            // Thiết lập tham số cho replyToCommentID
+            stmt.setInt(1, replyToCommentID);
+
+            // Nếu staffID có giá trị, thiết lập tham số cho staffID
+            if (staffID != null) {
+                stmt.setInt(2, staffID);
+            }
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Comments comment = mapComment(rs);
+                    comments.add(comment);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return comments;
+    }
 
     // Lấy các comment gốc mà không có phản hồi nào (điều kiện cụ thể trong truy vấn tùy thuộc vào nghiệp vụ)
     public List<Comments> getRootCommentsWithoutReplies() {
         List<Comments> comments = new ArrayList<>();
-        String sql = """
-                SELECT c.commentID, c.senderEmail, c.receiverEmail, c.commentText, c.commentDate, c.replyToCommentID, c.topic, c.staffID, c.customerID
-                FROM Comment c
-                LEFT JOIN Comment r ON c.commentID = r.replyToCommentID
-                WHERE c.replyToCommentID IS NULL AND r.replyToCommentID IS NULL 
-                ORDER BY commentDate DESC;
-                """;
+        String sql = "SELECT c.commentID, c.senderEmail, c.receiverEmail, c.commentText, c.commentDate, c.replyToCommentID, c.topic, c.staffID, c.customerID\n"
+                + "                FROM Comment c\n"
+                + "                LEFT JOIN Comment r ON c.commentID = r.replyToCommentID\n"
+                + "                WHERE c.replyToCommentID IS NULL AND r.replyToCommentID IS NULL \n"
+                + "                ORDER BY commentDate DESC;";
 
         try (
                 PreparedStatement stmt = connection.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
@@ -207,7 +205,7 @@ public class CommentCustomerDAO extends DBContext {
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, newCommentText);
             stmt.setInt(2, commentID);
-            
+
             return stmt.executeUpdate() > 0; // Trả về true nếu cập nhật thành công
         } catch (SQLException e) {
             e.printStackTrace();

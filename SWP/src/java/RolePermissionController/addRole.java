@@ -5,7 +5,7 @@
 
 package RolePermissionController;
 
-import context.ValidFunction;
+import util.ValidFunction;
 import dao.RoleDAO;
 import java.io.IOException;
 import java.io.PrintWriter;

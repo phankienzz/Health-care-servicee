@@ -4,7 +4,7 @@
  */
 package InvoiceController;
 
-import context.ValidFunction;
+import util.ValidFunction;
 import dao.DiscountDAO;
 import dao.InvoiceDAO;
 import java.io.IOException;

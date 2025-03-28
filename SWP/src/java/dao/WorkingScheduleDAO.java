@@ -25,13 +25,11 @@ public class WorkingScheduleDAO {
 
     public List<WorkingSchedule> getListProfessionalSchedules() {
         List<WorkingSchedule> schedules = new ArrayList<>();
-        String sql = """
-        SELECT ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime, ws.status
-        FROM WorkingSchedule ws
-        INNER JOIN Professional p ON ws.professionalID = p.professionalID
-        INNER JOIN Staff s ON p.staffID = s.staffID
-        ORDER BY ws.professionalID, ws.dayOfWeek, ws.startTime
-        """;
+        String sql = "SELECT ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime, ws.status\n"
+                + "        FROM WorkingSchedule ws\n"
+                + "        INNER JOIN Professional p ON ws.professionalID = p.professionalID\n"
+                + "        INNER JOIN Staff s ON p.staffID = s.staffID\n"
+                + "        ORDER BY ws.professionalID, ws.dayOfWeek, ws.startTime";
 
         try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
 
@@ -54,14 +52,12 @@ public class WorkingScheduleDAO {
 
     public List<WorkingSchedule> getAllSchedulesByProfessionalID(int professionalID) {
         List<WorkingSchedule> schedules = new ArrayList<>();
-        String sql = """
-        SELECT ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime, ws.status
-        FROM WorkingSchedule ws
-        INNER JOIN Professional p ON ws.professionalID = p.professionalID
-        INNER JOIN Staff s ON p.staffID = s.staffID
-        WHERE ws.professionalID = ?
-        ORDER BY ws.dayOfWeek, ws.startTime
-        """;
+        String sql = "SELECT ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime, ws.status\n"
+                + "        FROM WorkingSchedule ws\n"
+                + "        INNER JOIN Professional p ON ws.professionalID = p.professionalID\n"
+                + "        INNER JOIN Staff s ON p.staffID = s.staffID\n"
+                + "        WHERE ws.professionalID = ?\n"
+                + "        ORDER BY ws.dayOfWeek, ws.startTime";
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, professionalID);
@@ -86,13 +82,11 @@ public class WorkingScheduleDAO {
 
     public List<WorkingSchedule> getSchedulesByShiftAndDay(String shift, Integer dayOfWeek) {
         List<WorkingSchedule> schedules = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("""
-        SELECT ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime, ws.status
-        FROM WorkingSchedule ws
-        INNER JOIN Professional p ON ws.professionalID = p.professionalID
-        INNER JOIN Staff s ON p.staffID = s.staffID
-        WHERE 1=1
-        """);
+        StringBuilder sql = new StringBuilder("SELECT ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime, ws.status\n"
+                + "        FROM WorkingSchedule ws\n"
+                + "        INNER JOIN Professional p ON ws.professionalID = p.professionalID\n"
+                + "        INNER JOIN Staff s ON p.staffID = s.staffID\n"
+                + "        WHERE 1=1");
 
         List<Object> params = new ArrayList<>();
 
@@ -202,14 +196,12 @@ public class WorkingScheduleDAO {
     // Search for schedules by professional name
     public List<WorkingSchedule> searchSchedulesByName(String searchName) {
         List<WorkingSchedule> schedules = new ArrayList<>();
-        String sql = """
-        SELECT ws.scheduleID, ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime, ws.status
-        FROM WorkingSchedule ws
-        INNER JOIN Professional p ON ws.professionalID = p.professionalID
-        INNER JOIN Staff s ON p.staffID = s.staffID
-        WHERE s.fullName LIKE ?
-        ORDER BY ws.professionalID, ws.dayOfWeek, ws.startTime
-        """;
+        String sql = "SELECT ws.scheduleID, ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime, ws.status\n"
+                + "        FROM WorkingSchedule ws\n"
+                + "        INNER JOIN Professional p ON ws.professionalID = p.professionalID\n"
+                + "        INNER JOIN Staff s ON p.staffID = s.staffID\n"
+                + "        WHERE s.fullName LIKE ?\n"
+                + "        ORDER BY ws.professionalID, ws.dayOfWeek, ws.startTime";
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, "%" + searchName + "%");  // Add wildcards for partial name matching

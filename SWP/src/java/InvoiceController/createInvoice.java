@@ -4,12 +4,11 @@
  */
 package InvoiceController;
 
-import context.ValidFunction;
+import util.ValidFunction;
 import dao.DiscountDAO;
 import dao.InvoiceDAO;
 import dao.MedicalExaminationDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

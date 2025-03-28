@@ -4,7 +4,6 @@
  */
 package model;
 
-import java.util.Date;
 
 /**
  *
@@ -31,6 +30,13 @@ public class Customer {
     public Customer(int customerID) {
         this.customerID = customerID;
     }
+
+    public Customer(int customerID, String fullName) {
+        this.customerID = customerID;
+        this.fullName = fullName;
+    }
+    
+    
 
     public Customer(int customerID, String username, String password, String fullName, String email, String phone, String address, String accountStatus, String registrationDate, String dateOfBirth, String gender, String profilePicture) {
         this.customerID = customerID;

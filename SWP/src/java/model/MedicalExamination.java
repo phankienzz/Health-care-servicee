@@ -1,4 +1,3 @@
-
 package model;
 
 import java.util.List;
@@ -11,6 +10,7 @@ import model.Service;
  * @author Gigabyte
  */
 public class MedicalExamination {
+
     private int examinationID;
     private String examinationDate;
     private Customer customerId;
@@ -19,7 +19,6 @@ public class MedicalExamination {
     private String note;
     private String createdAt;
     private List<Service> list;
-    
 
     public MedicalExamination() {
     }
@@ -34,6 +33,8 @@ public class MedicalExamination {
         this.createdAt = createdAt;
         this.list = list;
     }
+    
+    
 
     public int getExaminationID() {
         return examinationID;
@@ -99,6 +100,4 @@ public class MedicalExamination {
         this.list = list;
     }
 
-    
-    
 }
