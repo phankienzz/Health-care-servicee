@@ -34,7 +34,7 @@ public class DBContext {
     public static void main(String[] args) {
         try {
             System.out.println(new DBContext().connection);
-            System.out.println("*Hello");
+            System.out.println("*thanggggg");
         } catch (Exception e) {
         }
     }
