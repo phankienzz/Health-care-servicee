@@ -96,7 +96,7 @@ public class Appointment extends HttpServlet {
             }
 
             String examinationDate = examinationDateTime.format(outputFormatter);
-            String createdAt = LocalDateTime.now().format(outputFormatter);
+             createdAt = LocalDateTime.now().format(outputFormatter);
 
             // Check if the doctor is available at the specified time
             if (!medicalExaminationDAO.isDoctorAvailable(Integer.parseInt(doctorId), examinationDate)) {
