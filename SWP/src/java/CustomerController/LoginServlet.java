@@ -4,7 +4,6 @@
  */
 package CustomerController;
 
-import util.ValidFunction;
 import dao.CustomerDAO;
 import dao.ProfessionalDAO;
 import dao.StaffDAO;
@@ -18,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Customer;
 import model.Staff;
+import util.ValidFunction;
 
 /**
  *

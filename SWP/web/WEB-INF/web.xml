@@ -67,7 +67,7 @@
         <url-pattern>/blogdetail.jsp</url-pattern>
         <url-pattern>/blog-detail.jsp</url-pattern>
         <url-pattern>/editblog</url-pattern>
-        <url-pattern>/ edit-blog.jsp</url-pattern>
+        <url-pattern>/edit-blog.jsp</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>AppointmentFilter</filter-name>
@@ -116,10 +116,6 @@
         <servlet-class>CustomerController.ResetPassword</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Add_Blog</servlet-name>
-        <servlet-class>blog.Add_Blog</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>addBlog</servlet-name>
         <servlet-class>newsController.addBlog</servlet-class>
     </servlet>
@@ -138,10 +134,6 @@
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
         <url-pattern>/resetPassword</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Add_Blog</servlet-name>
-        <url-pattern>/add_Blog</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>addBlog</servlet-name>

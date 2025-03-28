@@ -934,20 +934,20 @@ public class MedicalExaminationDAO extends DBContext {
     }
 
     public boolean isDoctorAvailable(int doctorId, String examinationDate) {
-    String sql = "SELECT COUNT(*) FROM MedicalExamination WHERE consultantID = ? AND examinationDate = ? AND status != 'Rejected'";
-    try {
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setInt(1, doctorId);
-        ps.setString(2, examinationDate);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return rs.getInt(1) == 0; // Return true if no appointments found
+        String sql = "SELECT COUNT(*) FROM MedicalExamination WHERE consultantID = ? AND examinationDate = ? AND status != 'Rejected'";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, doctorId);
+            ps.setString(2, examinationDate);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) == 0; // Return true if no appointments found
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return false; // Return false if an error occurs or if the doctor is already booked
     }
-    return false; // Return false if an error occurs or if the doctor is already booked
-}
 
     public boolean isCustomerAvailable(int customerId, String examinationDate, int doctorId) {
         String sql = "SELECT COUNT(*) FROM MedicalExamination WHERE customerID = ? AND examinationDate = ? AND consultantID = ? AND status != 'Rejected'";
@@ -981,11 +981,12 @@ public class MedicalExaminationDAO extends DBContext {
                 int count = rs.getInt("NumberOfAppointments");
                 stats.put(month, count);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
+        } catch (Exception e) {
+
+        }
         return stats;
+
     }
 
     public static void main(String[] args) {
