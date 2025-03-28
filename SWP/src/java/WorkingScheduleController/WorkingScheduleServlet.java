@@ -13,7 +13,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/saveSchedule")
+@WebServlet( urlPatterns={"/saveSchedule"})
 public class WorkingScheduleServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

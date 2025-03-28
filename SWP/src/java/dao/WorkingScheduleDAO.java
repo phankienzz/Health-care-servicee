@@ -82,14 +82,13 @@ public class WorkingScheduleDAO {
     
         public List<WorkingSchedule> getOnSchedulesByProfessionalID(int professionalID) {
         List<WorkingSchedule> schedules = new ArrayList<>();
-        String sql = """
-        SELECT ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime, ws.status
-        FROM WorkingSchedule ws
-        INNER JOIN Professional p ON ws.professionalID = p.professionalID
-        INNER JOIN Staff s ON p.staffID = s.staffID
-        WHERE ws.professionalID = ? AND ws.status = 'On'
-        ORDER BY ws.dayOfWeek, ws.startTime
-        """;
+        String sql = "SELECT ws.professionalID, s.fullName, ws.dayOfWeek, ws.shift, ws.startTime, ws.endTime, ws.status\n" +
+"        FROM WorkingSchedule ws\n" +
+"        INNER JOIN Professional p ON ws.professionalID = p.professionalID\n" +
+"        INNER JOIN Staff s ON p.staffID = s.staffID\n" +
+"        WHERE ws.professionalID = ? AND ws.status = 'On'\n" +
+"        ORDER BY ws.dayOfWeek, ws.startTime";
+        
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, professionalID);
