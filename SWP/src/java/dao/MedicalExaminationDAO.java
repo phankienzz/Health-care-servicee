@@ -908,20 +908,6 @@ public class MedicalExaminationDAO extends DBContext {
         return appointments;
     }
 
-    public Map<Integer, Integer> getMonthlyAppointmentStatistics(int year) {
-        Map<Integer, Integer> stats = new HashMap<>();
-        String sql = "SELECT MONTH(examinationDate) AS Month, COUNT(customerID) AS NumberOfAppointments "
-                + "FROM MedicalExamination WHERE YEAR(examinationDate) = ? "
-                + "GROUP BY MONTH(examinationDate) ORDER BY Month";
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, year);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                int month = rs.getInt("Month");
-                int count = rs.getInt("NumberOfAppointments");
-                stats.put(month, count);
     public int getNewAppointmentsCount() {
         String sql = "SELECT COUNT(*) FROM MedicalExamination WHERE status = 'Pending' AND createdAt > ?";
         int count = 0;
@@ -948,20 +934,20 @@ public class MedicalExaminationDAO extends DBContext {
     }
 
     public boolean isDoctorAvailable(int doctorId, String examinationDate) {
-    String sql = "SELECT COUNT(*) FROM MedicalExamination WHERE consultantID = ? AND examinationDate = ? AND status != 'Rejected'";
-    try {
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setInt(1, doctorId);
-        ps.setString(2, examinationDate);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return rs.getInt(1) == 0; // Return true if no appointments found
+        String sql = "SELECT COUNT(*) FROM MedicalExamination WHERE consultantID = ? AND examinationDate = ? AND status != 'Rejected'";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, doctorId);
+            ps.setString(2, examinationDate);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) == 0; // Return true if no appointments found
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return false; // Return false if an error occurs or if the doctor is already booked
     }
-    return false; // Return false if an error occurs or if the doctor is already booked
-}
 
     public boolean isCustomerAvailable(int customerId, String examinationDate, int doctorId) {
         String sql = "SELECT COUNT(*) FROM MedicalExamination WHERE customerID = ? AND examinationDate = ? AND consultantID = ? AND status != 'Rejected'";
@@ -977,7 +963,31 @@ public class MedicalExaminationDAO extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false; // Return false if an error occurs or if the customer is already booked
+
+    }
+
+    public Map<Integer, Integer> getMonthlyAppointmentStatistics(int year) {
+        Map<Integer, Integer> stats = new HashMap<>();
+        String sql = "SELECT MONTH(examinationDate) AS Month, COUNT(customerID) AS NumberOfAppointments "
+                + "FROM MedicalExamination WHERE YEAR(examinationDate) = ? "
+                + "GROUP BY MONTH(examinationDate) ORDER BY Month";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, year);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int month = rs.getInt("Month");
+                int count = rs.getInt("NumberOfAppointments");
+                stats.put(month, count);
+            }
+
+        } catch (Exception e) {
+
+        }
         return stats;
+
     }
 
     public static void main(String[] args) {
@@ -988,8 +998,5 @@ public class MedicalExaminationDAO extends DBContext {
         for (int i = 1; i <= 12; i++) {
             System.out.println("Tháng " + i + ": " + stats.getOrDefault(i, 0) + " khách hàng");
         }
-    }
-
-        return false; // Return false if an error occurs or if the customer is already booked
     }
 }
