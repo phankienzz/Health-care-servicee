@@ -18,20 +18,20 @@
     </head>
     <body>
         <div class="main-wrapper">
-             <jsp:include page="headerStaff.jsp"></jsp:include>
+            <jsp:include page="headerStaff.jsp"></jsp:include>
             <jsp:include page="sidebar.jsp"></jsp:include>
 
-            <!-- Page Content -->
-            <div class="page-wrapper">
-                <div class="content">
-                    <div class="row">
-                        <div class="col-sm-4 col-3">
-                            <h4 class="page-title">Appointments</h4>
+                <!-- Page Content -->
+                <div class="page-wrapper">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-sm-4 col-3">
+                                <h4 class="page-title">Appointments</h4>
+                            </div>
+                            <div class="col-sm-8 col-9 text-right m-b-20">
+                                <a href="add-appointment.jsp" class="btn btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Add Appointment</a>
+                            </div>
                         </div>
-                        <div class="col-sm-8 col-9 text-right m-b-20">
-                            <a href="add-appointment.jsp" class="btn btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Add Appointment</a>
-                        </div>
-                    </div>
 
                     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                     <div class="container">
@@ -44,7 +44,7 @@
                                     <label for="patientName">Patient Name</label>
                                     <input type="text" class="form-control" id="patientName" name="patientName" value="${param.patientName}" placeholder="Enter patient name">
                                 </div>
-                              
+
                                 <div class="col-md-2">
                                     <label for="doctorName">Doctor Name</label>
                                     <select class="form-control" id="doctorName" name="doctorName">
@@ -56,7 +56,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <label for="appointmentDate">Appointment Date</label>
-                                    <input type="text" class="form-control" id="appointmentDate" name="appointmentDate" value="${param.appointmentDate}">
+                                    <input type="text" class="form-control" id="appointmentDate" placeholder="Date" name="appointmentDate" value="${param.appointmentDate}">
                                 </div>
                                 <div class="col-md-2">
                                     <label for="timeCreatedSort">Sort by Time Created</label>
@@ -78,9 +78,12 @@
                                     </select>
                                 </div>
                             </div>
+                            
                             <div class="text-center mt-3">
                                 <button type="submit" class="btn btn-primary">Apply Filters</button>
+                                <button type="button" class="btn btn-secondary" id="clearFilters">Clear Filters</button>
                             </div>
+
                         </form>
 
                         <!-- B?ng danh sách -->
@@ -122,6 +125,10 @@
                                                         <c:choose>
                                                             <c:when test="${exam.status == 'Pending'}">
                                                                 <span class="badge" style="background-color: #ff9800; color: white;">${exam.status}</span>
+                                                                <%-- Ki?m tra n?u là ??n m?i ??t --%>
+                                                                <c:if test="${exam.createdAt > recentTime}">
+                                                                    <span style="color: red; font-weight: bold; margin-left: 5px;">New</span>
+                                                                </c:if>
                                                             </c:when>
                                                             <c:when test="${exam.status == 'In process'}">
                                                                 <span class="badge" style="background-color: #2196f3; color: white;">${exam.status}</span>
@@ -210,9 +217,85 @@
                 </div>
             </div>
         </div>
+
+
+        <!-- Thông báo góc d??i ph?i -->
+        <div class="notification-container" id="notificationContainer">
+            <div class="notification-icon">
+                <i class="fa fa-bell"></i>
+                <span class="badge badge-danger notification-count" style="display: none;">0</span>
+            </div>
+            <div class="notification-message" id="notificationMessage" style="display: none;">
+                <p>You have <span id="newCount">0</span> new appointments!</p>
+                <button class="close-notification" onclick="closeNotification()">×</button>
+            </div>
+        </div>
+
+        <style>
+            .notification-container {
+                position: fixed;
+                bottom: 20px; /* Cách l? d??i 20px */
+                right: 20px;  /* Cách l? ph?i 20px */
+                z-index: 1000;
+            }
+
+            .notification-icon {
+                position: relative;
+                display: inline-block;
+                cursor: pointer;
+            }
+
+            .notification-icon .fa-bell {
+                font-size: 24px;
+                color: #333;
+            }
+
+            .notification-count {
+                position: absolute;
+                top: -5px;
+                right: -5px;
+                font-size: 12px;
+                padding: 2px 6px;
+                border-radius: 50%;
+            }
+
+            .notification-message {
+                position: absolute;
+                bottom: 35px; /* Hi?n th? phía trên bi?u t??ng chuông */
+                right: 0;    /* C?n ph?i v?i chuông */
+                background-color: #fff;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 10px;
+                box-shadow: 0 -2px 5px rgba(0,0,0,0.2); /* ?? bóng lên trên */
+                min-width: 200px;
+            }
+
+            .notification-message p {
+                margin: 0;
+                font-size: 14px;
+            }
+
+            .close-notification {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                background: none;
+                border: none;
+                font-size: 16px;
+                cursor: pointer;
+                color: #999;
+            }
+
+            .close-notification:hover {
+                color: #333;
+            }
+        </style>
+
         <div class="sidebar-overlay" data-reff=""></div>
 
         <!-- Scripts -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
         <script src="assets/js/jquery-3.2.1.min.js"></script>
         <script src="assets/js/popper.min.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
@@ -223,17 +306,92 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
         <script src="assets/js/app.js"></script>
         <script>
-                                                                       $(document).ready(function () {
-                                                                           // Kh?i t?o datetimepicker cho appointmentDate
-                                                                           $('#appointmentDate').datetimepicker({
-                                                                               format: 'DD/MM/YYYY', // ??nh d?ng ngày
-                                                                               useCurrent: false
-                                                                           });
-                                                                       });
+                    $(document).ready(function () {
+                        // Kh?i t?o datetimepicker cho appointmentDate
+                        $('#appointmentDate').datetimepicker({
+                            format: 'DD/MM/YYYY', // ??nh d?ng ngày
+                            useCurrent: false
+                        });
+                    });
 
-                                                                       function setDeleteId(examId) {
-                                                                           document.getElementById("deleteExamId").value = examId;
-                                                                       }
+                    function setDeleteId(examId) {
+                        document.getElementById("deleteExamId").value = examId;
+                    }
         </script>
+        <script>
+            $(document).ready(function () {
+                // Hàm ki?m tra l?ch khám m?i
+                function checkNewAppointments() {
+                    $.ajax({
+                        url: 'CheckNewAppointmentServlet',
+                        method: 'GET',
+                        dataType: 'json',
+                        success: function (response) {
+                            if (response.newCount > 0) {
+                                $('#newCount').text(response.newCount);
+                                $('.notification-count').text(response.newCount).show();
+                                $('#notificationMessage').slideDown();
+                            } else {
+                                $('.notification-count').hide();
+                                $('#notificationMessage').slideUp();
+                            }
+                        },
+                        error: function () {
+                            console.log('Error checking new appointments');
+                        }
+                    });
+                }
+
+                // Ki?m tra m?i 30 giây
+                setInterval(checkNewAppointments, 30000);
+
+                // Ki?m tra ngay khi load trang
+                checkNewAppointments();
+
+                // X? lý khi click vào bi?u t??ng chuông
+                $('.notification-icon').click(function () {
+                    $('#notificationMessage').slideToggle();
+                });
+            });
+
+// ?óng thông báo
+            function closeNotification() {
+                $('#notificationMessage').slideUp();
+            }
+
+
+
+
+            $(document).ready(function () {
+                // Th?i gian hi?n t?i tr? 1 gi? (miligiây)
+                var oneHourAgo = new Date().getTime() - (60 * 60 * 1000);
+
+                // Duy?t qua các hàng trong b?ng
+                $('table tbody tr').each(function () {
+                    var createdAtStr = $(this).find('td:nth-child(7)').text(); // C?t createdAt (th? 7)
+                    var createdAt = moment(createdAtStr, 'DD/MM/YYYY HH:mm').toDate().getTime(); // Chuy?n chu?i thành timestamp
+
+                    if (createdAt > oneHourAgo) {
+                        var statusCell = $(this).find('td:nth-child(8)'); // C?t status (th? 8)
+                        statusCell.append('<span style="color: red; font-weight: bold; margin-left: 5px;">New</span>');
+                    }
+                });
+            });
+
+        </script>
+        <script>
+            document.getElementById("clearFilters").addEventListener("click", function () {
+                // Xóa giá tr? c?a t?t c? input và select
+                document.getElementById("patientName").value = "";
+                document.getElementById("doctorName").value = "";
+                document.getElementById("appointmentDate").value = "";
+                document.getElementById("timeCreatedSort").value = "";
+                document.getElementById("status").value = "";
+
+                // G?i l?i trang mà không có query parameters
+                window.location.href = "manage_appointment";
+            });
+        </script>
+
     </body>
 </html>
