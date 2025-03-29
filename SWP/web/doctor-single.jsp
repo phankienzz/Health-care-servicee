@@ -51,7 +51,7 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-6">
                         <div class="doctor-img-block">
-                            <img src="${professional.getProfilePicture()}" alt="" class="img-fluid w-100">
+                            <img src="assets/img/${professional.getPicture()}" alt="" class="img-fluid w-100">
                             <div class="info-block mt-4">
                                 <h4 class="mb-0">${professional.getName()}</h4>
                                 <p>${professional.getSpecialization()}</p>

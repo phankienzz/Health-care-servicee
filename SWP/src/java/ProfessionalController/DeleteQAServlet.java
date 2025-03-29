@@ -9,19 +9,15 @@ import dao.CommentCustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import model.Comments;
 
 /**
  *
  * @author Win11
  */
-public class ViewCommentServlet extends HttpServlet {
+public class DeleteQAServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,10 +34,10 @@ public class ViewCommentServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewCommentServlet</title>");
+            out.println("<title>Servlet DeleteQAServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewCommentServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet DeleteQAServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,17 +54,7 @@ public class ViewCommentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        CommentCustomerDAO dao = new CommentCustomerDAO();
-        HttpSession session = request.getSession();
-        int id = (int) session.getAttribute("staffID");
-        List<Comments> listc = dao.getRootComments();
-        for (Comments comments : listc) {
-            comments.replies=dao.getCommentsByReplyToCommentID(comments.getCommentId(),id);
-        }
-        session.setAttribute("comments", listc);
-        session.setAttribute("list", listc);
-        session.setAttribute("staffID", id);
-        request.getRequestDispatcher("Comment.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -81,7 +67,20 @@ public class ViewCommentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+       int commentId = Integer.parseInt(request.getParameter("commentId"));
+        
+        // Call your DAO to delete the comment from the database
+        CommentCustomerDAO dao = new CommentCustomerDAO();
+        boolean deleted = dao.deleteComment(commentId);  // Assuming this method exists in your DAO
+        
+        // Send response back to client
+        response.setContentType("application/json");
+        if (deleted) {
+            response.getWriter().write("{\"status\": \"success\"}");
+        } else {
+            response.getWriter().write("{\"status\": \"failure\"}");
+        }
+
     }
 
     /**

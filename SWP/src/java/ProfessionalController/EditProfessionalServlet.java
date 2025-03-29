@@ -116,7 +116,7 @@ if (roleID == -1) {
                 request.getRequestDispatcher("edit-doctor.jsp").forward(request, response);
                 return;
             }
-                String imagePath = "uploads/"+FileUploadHelper.saveProfilePicture(filePart); // Lưu file
+                String imagePath = FileUploadHelper.saveProfilePicture(filePart); // Lưu file
               
         //nt staffID, String fullName, String email, String password, Date dateOfBirth, String gender, String address, String phone, Date hireDate, String status, byte[] profilePicture, String specialization, String officeHours, String qualification, String biography, Date createdA
         Professional professional = new Professional(staffID, fullName, email, "", Date.valueOf(dateOfBirth), 
@@ -142,7 +142,7 @@ if (roleID == -1) {
         if (success) {
              session.setAttribute("specializations", professionalDAO.getallSpecialization());
             session.setAttribute("professionals", list);
-            request.getRequestDispatcher("manage-doctor.jsp").forward(request, response);
+            response.sendRedirect("manage-doctor.jsp");
         } else {
             request.setAttribute("errorMessage", "Update failed!");
             request.getRequestDispatcher("edit-doctor.jsp").forward(request, response);

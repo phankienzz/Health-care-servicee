@@ -3,30 +3,27 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package CustomerController;
+package ProfessionalController;
 
-import dao.MedicalRecordDAO;
-import jakarta.servlet.RequestDispatcher;
+import dao.CommentCustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.MedicalRecord;
+import model.Comments;
+import model.Staff;
 
 /**
  *
- * @author Hoang
+ * @author Win11
  */
-@WebServlet(name="ViewMedical", urlPatterns={"/viewMedical"})
-public class ViewMedical extends HttpServlet {
-   
-    /** 
+public class ViewQAServlet extends HttpServlet {
+
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
@@ -41,17 +38,17 @@ public class ViewMedical extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewMedical</title>");  
+            out.println("<title>Servlet ViewQAServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewMedical at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ViewQAServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -61,27 +58,20 @@ public class ViewMedical extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        MedicalRecordDAO dao = new MedicalRecordDAO();
-        String userid="";
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("userID".equals(cookie.getName())) {
-                     userid = cookie.getValue();
-                    System.out.println("Doctor ID from Cookie: " + userid);
-                }
-            }
-        } else {
-            System.out.println("No cookies found!");
-        }
-        List<MedicalRecord> lists = dao.getMedicalRecordsByCustomerId(Integer.parseInt(userid));
+        CommentCustomerDAO dao = new CommentCustomerDAO();
         HttpSession session = request.getSession();
-        session.setAttribute("medicalRecords", lists);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/viewmedical-customer.jsp");
-        dispatcher.forward(request, response);
+        Staff id = (Staff) session.getAttribute("staffAccount");
+        List<Comments> listc = dao.getRootComments();
+        for (Comments comments : listc) {
+            comments.replies=dao.getCommentsByReplyToCommentID(comments.getCommentId(),id.getStaffID());
+        }
+        session.setAttribute("comments", listc);
+        session.setAttribute("list", listc);
+        session.setAttribute("staffID", id);
+        request.getRequestDispatcher("Comment.jsp").forward(request, response);
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -94,7 +84,7 @@ public class ViewMedical extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */

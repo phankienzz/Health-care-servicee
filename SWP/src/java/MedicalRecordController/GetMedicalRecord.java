@@ -13,13 +13,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.MedicalRecord; 
+import model.MedicalRecord;
 
 /**
  *
  * @author Win11
  */
-public class GetMedicalRecordServlet extends HttpServlet {
+public class GetMedicalRecord extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -36,10 +36,10 @@ public class GetMedicalRecordServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet GetMedicalRecordServlet</title>");
+            out.println("<title>Servlet GetMedicalRecord</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet GetMedicalRecordServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet GetMedicalRecord at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,7 +56,7 @@ public class GetMedicalRecordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       int examinationID = Integer.parseInt(request.getParameter("examinationID"));
+        int examinationID = Integer.parseInt(request.getParameter("examinationID"));
         
         MedicalRecordDAO dao = new MedicalRecordDAO();
         MedicalRecord record = dao.getMedicalRecordByExamID(examinationID);

@@ -127,6 +127,34 @@
         <servlet-name>ListAppointment</servlet-name>
         <servlet-class>Appointment.ListAppointment</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewQAServlet</servlet-name>
+        <servlet-class>ProfessionalController.ViewQAServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReplyQAServlet</servlet-name>
+        <servlet-class>ProfessionalController.ReplyQAServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditQAServlet</servlet-name>
+        <servlet-class>ProfessionalController.EditQAServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteQAServlet</servlet-name>
+        <servlet-class>ProfessionalController.DeleteQAServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewMedicalRecord</servlet-name>
+        <servlet-class>CustomerController.ViewMedicalRecord</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetMedicalRecord</servlet-name>
+        <servlet-class>MedicalRecordController.GetMedicalRecord</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SaveMedical</servlet-name>
+        <servlet-class>MedicalRecordController.SaveMedical</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RequestPassword</servlet-name>
         <url-pattern>/requestPassword</url-pattern>
@@ -146,6 +174,34 @@
     <servlet-mapping>
         <servlet-name>ListAppointment</servlet-name>
         <url-pattern>/ListAppointment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewQAServlet</servlet-name>
+        <url-pattern>/viewQA</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReplyQAServlet</servlet-name>
+        <url-pattern>/replyQA</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditQAServlet</servlet-name>
+        <url-pattern>/editQA</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteQAServlet</servlet-name>
+        <url-pattern>/deleteQA</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewMedicalRecord</servlet-name>
+        <url-pattern>/viewMedicalRecord</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetMedicalRecord</servlet-name>
+        <url-pattern>/getMedicalRecord</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaveMedical</servlet-name>
+        <url-pattern>/saveMedical</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>home</welcome-file>
@@ -232,6 +288,6 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>GoogleLoginServlet</servlet-name>
-        <url-pattern>/GoogleLoginServlet</url-pattern>
+        <url-pattern>/LoginGoogle</url-pattern>
     </servlet-mapping>
 </web-app>
