@@ -1,179 +1,92 @@
+
 <%@ page import="java.time.LocalDate, java.time.temporal.TemporalAdjusters, java.time.DayOfWeek" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<html lang="en">
 
-<html>
+
+    <!-- edit-patient24:07-->
     <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
         <title>Doctor's Weekly Schedule</title>
+        <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/css_viewPersonalSchedule.css">
         <style>
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #e6f7ff;
-                margin: 0;
-                padding: 0;
-            }
-            .content-wrapper {
-                padding: 20px;
-                margin-left: 250px; /* Adjust based on your sidebar width */
-                margin-top: 70px; /* Add top margin to prevent header overlap */
-            }
-            h1 {
-                color: #005580;
-                text-align: center;
-            }
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-bottom: 20px;
-            }
-            th, td {
-                border: 1px solid #99ccff;
-                text-align: center;
-                padding: 10px;
-            }
-            th {
-                background-color: #b3e0ff;
-                color: #005580;
-            }
-            .shift {
-                height: 50px;
-            }
-            .on-leave {
-                background-color: #ffcccc;
-            }
-            #leave-section {
-                display: flex;
-                justify-content: center;
-                align-items: flex-start;
-                gap: 20px;
-            }
-            #leaveForm {
-                background-color: #d9f2ff;
-                padding: 20px;
-                border: 1px solid #99ccff;
-                border-radius: 10px;
-                width: 45%;
-            }
-            #leaveTable {
-                width: 50%;
-                background-color: #ffffff;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            }
-            #leaveTable th {
-                background-color: #b3e0ff;
-                color: #005580;
-                padding: 12px;
-                font-weight: bold;
-            }
-            #leaveTable td {
-                padding: 8px;
-                vertical-align: middle;
-            }
-            #leaveTable th:nth-child(3), #leaveTable td:nth-child(3) { /* Cột Leave Date */
-                width: 150px; /* Tăng chiều rộng cho cột Leave Date */
-                min-width: 150px; /* Đảm bảo không bị co lại */
-            }
-            #leaveTable th:nth-child(4), #leaveTable td:nth-child(4) { /* Cột Reason */
-                width: 250px; /* Tăng chiều rộng cho cột Reason */
-                min-width: 250px; /* Đảm bảo không bị co lại */
-                text-align: left; /* Căn trái nội dung Reason */
-                word-wrap: break-word; /* Cho phép xuống dòng */
-            }
-            #leaveTable select {
-                padding: 5px;
-                border: 1px solid #99ccff;
-                border-radius: 4px;
-                background-color: #f0faff;
-                width: 100px;
-            }
-            input, button {
-                margin: 5px 0;
-                padding: 8px 12px;
-                border: 1px solid #99ccff;
-                border-radius: 5px;
-                width: 100%;
-            }
-            button {
-                background-color: #007acc;
-                color: white;
-                cursor: pointer;
-            }
-            button:hover {
-                background-color: #005580;
-            }
-            #leaveTable button {
-                width: 80px;
-                padding: 6px;
-                font-size: 14px;
-            }
-            #dateForm {
-                display: flex;
-                align-items: center;
-                justify-content: flex-start;
-                gap: 10px;
-                margin-bottom: 20px;
-            }
-            #dateForm input[type="date"] {
-                padding: 5px 10px;
-                width: 150px;
-                font-size: 14px;
-            }
-            #dateForm button {
-                padding: 5px 15px;
-                font-size: 14px;
-                background-color: #007acc;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                width: auto;
-                cursor: pointer;
-            }
-            #dateForm button:hover {
-                background-color: #005580;
-            }
             .filter-section {
+                margin: 20px 0;
+                padding: 15px;
+                background-color: #f9f9f9;
+                border-radius: 5px;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            }
+
+            .filter-section form {
                 display: flex;
                 align-items: center;
-                justify-content: flex-end;
-                gap: 10px;
-                margin-bottom: 15px;
+                white-space: nowrap;
             }
+
+            .filter-section label {
+                margin-right: 10px;
+                font-weight: 500;
+            }
+
             .filter-section select {
-                padding: 5px 10px;
-                border: 1px solid #99ccff;
+                padding: 8px 12px;
+                border: 1px solid #ddd;
                 border-radius: 4px;
-                background-color: #f0faff;
-                width: 120px;
+                background-color: white;
+                height: 38px;
+                min-width: 150px;
+                margin-right: 10px;
             }
+
             .filter-section button {
-                padding: 5px 15px;
-                background-color: #007acc;
+                padding: 8px 20px;
+                height: 38px;
+                width: 100px;
+                background-color: #009efb;
                 color: white;
                 border: none;
-                border-radius: 5px;
-                width: auto;
+                border-radius: 4px;
                 cursor: pointer;
+                font-weight: 500;
+                transition: background-color 0.2s;
+                display: inline-block;
             }
-            /* Make sure the leave table is responsively sized */
-            @media (max-width: 1200px) {
-                #leave-section {
+
+            .filter-section button:hover {
+                background-color: #0088d9;
+            }
+
+            /* Only apply responsive styles for very small screens */
+            @media (max-width: 480px) {
+                .filter-section form {
                     flex-direction: column;
+                    align-items: flex-start;
                 }
-                #leaveTable {
+
+                .filter-section select,
+                .filter-section button {
                     width: 100%;
+                    margin-top: 5px;
                 }
             }
         </style>
     </head>
+
     <body>
-        <!-- Include header and sidebar -->
         <jsp:include page="headerStaff.jsp"></jsp:include>
         <jsp:include page="sidebar.jsp"></jsp:include>
-
-            <!-- Wrap content in a div with proper margin for sidebar and header -->
-            <div class="content-wrapper">
+            <div class="page-wrapper">
                 <h1>Doctor's Weekly Schedule</h1>
-
                 <form id="dateForm" method="GET" action="professionalleave">
                     <input type="hidden" name="professionalID" value="${param.professionalID}" />
                 <label for="selectedDate">Select Date:</label>
@@ -219,20 +132,6 @@
             </table>
 
             <h1>Professional Leave List</h1>
-
-            <c:if test="${not empty errorMessage}">
-                <div style="color: red; margin-bottom: 10px;">
-                    ${errorMessage}
-                </div>
-            </c:if>
-
-            <!-- Hiển thị thông báo thành công -->
-            <c:if test="${not empty successMessage}">
-                <div style="color: green; margin-bottom: 10px;">
-                    ${successMessage}
-                </div>
-            </c:if>
-
             <!-- Add Status Filter -->
             <div class="filter-section">
                 <form method="GET" action="professionalleave">
@@ -249,6 +148,19 @@
                     <button type="submit">Filter</button>
                 </form>
             </div>
+
+            <c:if test="${not empty errorMessage}">
+                <div style="color: red; margin-bottom: 10px;">
+                    ${errorMessage}
+                </div>
+            </c:if>
+
+            <!-- Hiển thị thông báo thành công -->
+            <c:if test="${not empty successMessage}">
+                <div style="color: green; margin-bottom: 10px;">
+                    ${successMessage}
+                </div>
+            </c:if>
 
             <div id="leave-section">
                 <table id="leaveTable">
@@ -299,5 +211,19 @@
                 </table>
             </div>
         </div>
-    </body>
+    </div>
+</div>
+<div class="sidebar-overlay" data-reff=""></div>
+<script src="assets/js/jquery-3.2.1.min.js"></script>
+<script src="assets/js/popper.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/jquery.slimscroll.js"></script>
+<script src="assets/js/select2.min.js"></script>
+<script src="assets/js/moment.min.js"></script>
+<script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+
+
+<!-- edit-patient24:07-->
 </html>
