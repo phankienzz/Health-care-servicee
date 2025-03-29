@@ -48,7 +48,7 @@ public class CommentCustomerDAO extends DBContext {
     }
 
     // Lấy các comment theo replyToCommentID
-    public List<Comments> getCommentsByReplyToCommentID(int replyToCommentID, Integer staffID) {
+        public List<Comments> getCommentsByReplyToCommentID(int replyToCommentID, Integer staffID) {
         List<Comments> comments = new ArrayList<>();
 
         // Tạo câu lệnh SQL với điều kiện tùy chọn cho staffID

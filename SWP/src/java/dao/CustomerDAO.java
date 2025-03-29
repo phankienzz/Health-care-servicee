@@ -699,12 +699,13 @@ public class CustomerDAO extends DBContext {
 
     public static void main(String[] args) {
         CustomerDAO customerDAO = new CustomerDAO();
-        int year = 2024; // Thay đổi năm nếu muốn test các năm khác
-        Map<Integer, Integer> stats = customerDAO.getCustomerStatistics(year);
-        System.out.println("Thống kê khách hàng đăng ký theo tháng năm " + year + ":");
-        for (int i = 1; i <= 12; i++) {
-            System.out.println("Tháng " + i + ": " + stats.getOrDefault(i, 0) + " khách hàng");
-        }
+//        int year = 2024; // Thay đổi năm nếu muốn test các năm khác
+//        Map<Integer, Integer> stats = customerDAO.getCustomerStatistics(year);
+//        System.out.println("Thống kê khách hàng đăng ký theo tháng năm " + year + ":");
+//        for (int i = 1; i <= 12; i++) {
+//            System.out.println("Tháng " + i + ": " + stats.getOrDefault(i, 0) + " khách hàng");
+//        }
+        
     }
 
 }

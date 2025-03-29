@@ -10,7 +10,6 @@ import dao.MedicalRecordDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,12 +17,13 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.MedicalExamination;
 import model.Professional;
+import model.Staff;
 
 /**
  *
  * @author Win11
  */
-public class SaveMedicalRecordServlet extends HttpServlet {
+public class SaveMedical extends HttpServlet {
 private MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -40,10 +40,10 @@ private MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO(
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SaveMedicalRecordServlet</title>");
+            out.println("<title>Servlet SaveMedical</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SaveMedicalRecordServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet SaveMedical at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -85,7 +85,7 @@ private MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO(
         String appointmentDate = request.getParameter("appointmentDate");
         String timeCreatedSort = request.getParameter("timeCreatedSort");
         String status = request.getParameter("status");
-        String doctorName="";
+        
         // Tham số phân trang
         int page = 1; // Trang mặc định
         int pageSize = 10; // Số bản ghi mỗi trang (có thể thay đổi)
@@ -93,21 +93,12 @@ private MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO(
         if (pageStr != null && !pageStr.isEmpty()) {
             page = Integer.parseInt(pageStr);
         }
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("staffID".equals(cookie.getName())) {
-                     doctorName = cookie.getValue();
-                    System.out.println("Doctor ID from Cookie: " + doctorName);
-                }
-            }
-        } else {
-            System.out.println("No cookies found!");
-        }
+        HttpSession session =request.getSession();
+        Staff st = (Staff) session.getAttribute("staffAccount");
         
         // Tính tổng số bản ghi để xác định số trang
         int totalRecords = medicalExaminationDAO.getTotalFilteredRecords2(
-                patientName, ageSort,Integer.parseInt(doctorName) , appointmentDate, timeCreatedSort, status);
+                patientName, ageSort,st.getStaffID() , appointmentDate, timeCreatedSort, status);
         int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
 
         // Đảm bảo page không vượt quá giới hạn
@@ -116,7 +107,7 @@ private MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO(
         
         // Lấy danh sách đã lọc với phân trang
         List<MedicalExamination> list = medicalExaminationDAO.getFilteredExaminations2(
-                patientName, ageSort, Integer.parseInt(doctorName), appointmentDate, timeCreatedSort, status, page, pageSize);
+                patientName, ageSort, st.getStaffID(), appointmentDate, timeCreatedSort, status, page, pageSize);
 
         // Lấy danh sách tất cả bác sĩ để hiển thị trong dropdown
         List<Professional> allProfessionals = medicalExaminationDAO.getAllProfessionals();
@@ -130,7 +121,6 @@ private MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO(
 
         // Chuyển hướng đến JSP
         request.getRequestDispatcher("manage_appointment.jsp").forward(request, response);
-        
     }
 
     /**

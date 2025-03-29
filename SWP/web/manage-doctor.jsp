@@ -28,37 +28,101 @@
         <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+        <link rel="stylesheet" type="text/css" href="css/pagination.css">
         <!--[if lt IE 9]>
                     <script src="assets/js/html5shiv.min.js"></script>
                     <script src="assets/js/respond.min.js"></script>
             <![endif]-->
+        <style>
+            .doctor-item {
+                width: 100px;  /* Đặt kích thước cố định */
+                height: 250px; /* Đặt chiều cao cố định */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 15px;
+                margin: 10px;
+                background: #fff;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                overflow: hidden; /* Ngăn nội dung mở rộng */
+            }
+
+            .profile-widget {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+
+            .doctor-img img {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                object-fit: cover; /* Đảm bảo ảnh không bị méo */
+            }
+
+            .doctor-name {
+                font-size: 18px;
+                font-weight: bold;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 90%;
+            }
+
+            .doc-prof, .user-country {
+                font-size: 14px;
+                color: #666;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 90%;
+            }
+
+            .user-country {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 5px;
+            }
+
+            .profile-action {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+            }
+
+        </style>
     </head>
 
     <body>
         <div class="main-wrapper">
             <jsp:include page="headerStaff.jsp"></jsp:include>
             <jsp:include page="sidebar.jsp"></jsp:include>
-            <div class="page-wrapper">
-                <div class="content">
-                    <div class="row">
-                        <div class="col-sm-4 col-3">
-                            <h4 class="page-title">Doctors</h4>
+                <div class="page-wrapper">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-sm-4 col-3">
+                                <h4 class="page-title">Doctors</h4>
+                            </div>
+                            <div class="col-sm-8 col-9 text-right m-b-20">
+                                <a href="add-doctor.jsp" class="btn btn-primary btn-rounded float-right">
+                                    <i class="fa fa-plus"></i> Add Doctor
+                                </a>
+                            </div>
                         </div>
-                        <div class="col-sm-8 col-9 text-right m-b-20">
-                            <a href="add-doctor.jsp" class="btn btn-primary btn-rounded float-right">
-                                <i class="fa fa-plus"></i> Add Doctor
-                            </a>
-                        </div>
-                    </div>
 
-                    <!-- Search & Filter -->
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <input type="text" id="searchName" class="form-control" placeholder="Search by name...">
-                        </div>
-                        <div class="col-md-6">
-                            <div class="filter-options">
-                                <label><strong>Filter by Specialization:</strong></label><br>
+                        <!-- Search & Filter -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <input type="text" id="searchName" class="form-control" placeholder="Search by name...">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="filter-options">
+                                    <label><strong>Filter by Specialization:</strong></label><br>
                                 <c:forEach var="specialization" items="${sessionScope.specializations}">
                                     <label class="mr-3">
                                         <input type="checkbox" class="filter-specialization" value="${specialization}"> 
@@ -72,7 +136,7 @@
                     <!-- Doctor Grid -->
                     <div class="row doctor-grid" id="doctorList">
                         <c:forEach var="professional" items="${sessionScope.professionals}">
-                            <div class="col-md-4 col-sm-4 col-lg-3 doctor-item" data-name="${professional.getName().toLowerCase()}" data-specialization="${professional.getSpecialization()}">
+                            <div class="col-md-4 col-sm-4 col-lg-3 doctor-item card" data-name="${professional.getName().toLowerCase()}" data-specialization="${professional.getSpecialization()}">
                                 <div class="profile-widget">
                                     <div class="doctor-img">
                                         <a class="avatar" href="DetailDoctorServlet?id=${professional.getStaffID()}">
@@ -104,16 +168,10 @@
                                 </div>
                             </div>
                         </c:forEach>
+
                     </div>
 
-                    <!-- Load More Button -->
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="see-all">
-                                <a class="see-all-btn" href="javascript:void(0);">Load More</a>
-                            </div>
-                        </div>
-                    </div>
+                    <div id="pagination-container" class="pagination text-center"></div>
                 </div>
             </div>
 
@@ -378,6 +436,12 @@
     <script src="assets/js/moment.min.js"></script>
     <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
     <script src="assets/js/app.js"></script>
+    <script src="js/pagination.js"></script>
+    <script>
+               document.addEventListener("DOMContentLoaded", function () {
+                   paginateItems('.card', 8, '#pagination-container');
+               });
+    </script>
 </body>
 
 

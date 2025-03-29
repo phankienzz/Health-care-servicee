@@ -182,7 +182,7 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="medicalRecordForm" action="saveMedicalRecord" method="POST">
+                                        <form id="medicalRecordForm" action="saveMedical" method="POST">
                                             <input type="hidden" id="examinationID" name="examinationID">
 
                                             <div class="form-group">
