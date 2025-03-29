@@ -34,30 +34,45 @@
                     <img src="assets/img/logo.png" width="35" height="35" alt=""> <span>Preclinic</span>
                 </a>
             </div>
+            <c:choose>
+                <c:when test="${sessionScope.customerAccount != null}">
+                    <ul class="nav user-menu float-right">
+                        <li class="nav-item dropdown has-arrow">
+                            <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
+                                <span class="user-img"><img class="rounded-circle" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" width="50" height="35">
+                                    <span class="status online"></span></span>
+                                <span>${sessionScope.customerAccount.fullName}</span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="profile.jsp">My Profile</a>
+                                <c:if test="${sessionScope.customerAccount != null}">
+                                    <a class="dropdown-item" href="customer-medical-records">Medical record</a>
+                                </c:if>
+                                <a class="dropdown-item" href="logout">Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </c:when>
+                <c:otherwise>
+                    <c:if test="${sessionScope.staffAccount != null}">
+                        <ul class="nav user-menu float-right">
+                            <li class="nav-item dropdown has-arrow">
+                                <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
+                                    <span class="user-img"><img class="rounded-circle" src="pictureStaff?staffID=${sessionScope.staffAccount.staffID}" width="50" height="35">
+                                        <span class="status online"></span></span>
+                                    <span>${sessionScope.staffAccount.fullName}</span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="profile.jsp">My Profile</a>
+                                    <a class="dropdown-item" href="logout">Logout</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </c:if>
+                </c:otherwise>
+            </c:choose>
 
-            <ul class="nav user-menu float-right">
-                <li class="nav-item dropdown has-arrow">
-                    <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
-                        <span class="user-img"><img class="rounded-circle" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" width="50" height="35">
-                            <span class="status online"></span></span>
-                            <c:if test="${sessionScope.customerAccount != null}">
-                            <span>${sessionScope.customerAccount.fullName}</span>
-                        </c:if>
-                        <c:if test="${sessionScope.staffAccount != null}">
-                            <span>${sessionScope.staffAccount.fullName}</span>
-                        </c:if>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="profile.jsp">My Profile</a>
-                        <c:if test="${sessionScope.customerAccount != null}">
-                            <a class="dropdown-item" href="customer-medical-records">Medical record</a>
-                        </c:if>
-                        <a class="dropdown-item" href="logout">Logout</a>
-                    </div>
-                </li>
 
-
-            </ul>
 
         </div>
 

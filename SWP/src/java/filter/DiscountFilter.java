@@ -4,6 +4,7 @@
  */
 package filter;
 
+import dao.RoleDAO;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -14,15 +15,20 @@ import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
+import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.Permission;
+import model.Staff;
 
 /**
  *
  * @author Gigabyte
  */
-public class LoginFilter implements Filter {
+@WebFilter(filterName = "DiscountFilter", urlPatterns = {"/discount","/addDiscount","/editDiscount","/deleteDiscount","/add-discount.jsp","/edit-discount.jsp","/discount.jsp"})
+public class DiscountFilter implements Filter {
     
     private static final boolean debug = true;
 
@@ -31,13 +37,13 @@ public class LoginFilter implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
     
-    public LoginFilter() {
+    public DiscountFilter() {
     }    
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("LoginFilter:DoBeforeProcessing");
+            log("DiscountFilter:DoBeforeProcessing");
         }
 
         // Write code here to process the request and/or response before
@@ -65,7 +71,7 @@ public class LoginFilter implements Filter {
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("LoginFilter:DoAfterProcessing");
+            log("DiscountFilter:DoAfterProcessing");
         }
 
         // Write code here to process the request and/or response after
@@ -100,34 +106,46 @@ public class LoginFilter implements Filter {
             FilterChain chain)
             throws IOException, ServletException {
         
-        
-        // Kiểm tra xem yêu cầu có phải là yêu cầu đăng nhập Google (OAuth) không
-        
         if (debug) {
-            log("LoginFilter:doFilter()");
+            log("DiscountFilter:doFilter()");
         }
-        HttpServletRequest req = (HttpServletRequest)request;
-       
-        HttpServletResponse res = (HttpServletResponse)response;
-         String requestURI = req.getRequestURI();
+        
+        doBeforeProcessing(request, response);
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
+        HttpSession session = req.getSession();
+        String requestURI = req.getRequestURI();
         if (requestURI.contains("/GoogleLoginServlet")) {
             // Bỏ qua bộ lọc nếu yêu cầu là đăng nhập Google
             chain.doFilter(request, response);
             return;
         }
-        HttpSession session = req.getSession();
-        if(session.getAttribute("staffAccount")==null && session.getAttribute("customerAccount") == null){
+        if (session.getAttribute("staffAccount") == null && session.getAttribute("customerAccount") == null) {
             res.sendRedirect("login.jsp");
-            return;
         }
-        if(session.getAttribute("staffAccount")==null){
+        if (session.getAttribute("customerAccount") != null) {
             res.sendRedirect("errorPermission.jsp");
+
         }
-        
-        
-        
-        doBeforeProcessing(request, response);
-        
+        if (session.getAttribute("staffAccount") != null) {
+            String uri = req.getServletPath();
+            Staff s = (Staff) session.getAttribute("staffAccount");
+            RoleDAO roleDAO = new RoleDAO();
+            List<Permission> list = roleDAO.getRoleByID(s.getRoleID()).getPermission();
+            boolean canAdd = false;
+
+            for (Permission p : list) {
+                if (p.getPermissionID() == 5) {
+                    canAdd = true;
+                }
+            }
+            if ((uri.contains("discount") || uri.contains("discount.jsp") || uri.contains("deleteDiscount") 
+                    || uri.contains("addDicount") || uri.contains("add-discount.jsp") || uri.contains("edit-discount.jsp") || uri.contains("editDiscount") ) && !canAdd) {
+                res.sendRedirect("errorPermission.jsp");
+            }
+
+
+        }
         Throwable problem = null;
         try {
             chain.doFilter(request, response);
@@ -183,7 +201,7 @@ public class LoginFilter implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {                
-                log("LoginFilter:Initializing filter");
+                log("DiscountFilter:Initializing filter");
             }
         }
     }
@@ -194,9 +212,9 @@ public class LoginFilter implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("LoginFilter()");
+            return ("DiscountFilter()");
         }
-        StringBuffer sb = new StringBuffer("LoginFilter(");
+        StringBuffer sb = new StringBuffer("DiscountFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());

@@ -72,6 +72,8 @@ public class editStaff extends HttpServlet {
         String staffID_raw = request.getParameter("staffID");
         int staffID = Integer.parseInt(staffID_raw);
         StaffDAO staffDAO = new StaffDAO();
+        Staff s = new Staff();
+        s = staffDAO.getStaffByID(staffID);
         RoleDAO roleDAO = new RoleDAO();
         List<Role> listRole = roleDAO.getAllRole();
         request.setAttribute("listRole", listRole);

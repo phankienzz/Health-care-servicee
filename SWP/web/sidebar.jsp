@@ -21,6 +21,7 @@
                     <c:set var="viewUsage" value="false"/>
                     <c:set var="viewPatient" value="false"/>
                     <c:set var="viewAppointment" value="false"/>
+                    <c:set var="viewQA" value="false"/>
                     <c:set var="viewComment" value="false"/>
                     <c:set var="viewSchedule" value="false"/>
                     <c:set var="viewService" value="false"/>
@@ -44,7 +45,7 @@
                         <c:if test="${permission.permissionID == 1}">
                             <c:set var="viewAppointment" value="true"/>
                         </c:if>
-                        <c:if test="${permission.permissionID == 1}">
+                        <c:if test="${permission.permissionID == 30}">
                             <c:set var="viewQA" value="true"/>
                         </c:if>
                         <c:if test="${permission.permissionID == 15}">
@@ -67,12 +68,14 @@
                         </c:if>
                     </c:forEach>
                     <li class="menu-title">Main</li>
-                        <c:if test="${viewRevenue}">
+
+
+                    <c:if test="${viewRevenue}">
                         <li>
                             <a href="dashRevenue"><i class="fa fa-dashboard"></i> <span>Revenue Statistic</span></a>
                         </li>
                     </c:if>
-                        
+
                     <c:if test="${viewUsage}">
                         <li>
                             <a href="dashboard"><i class="fa fa-dashboard"></i> <span>Usage Statistic</span></a>
@@ -94,23 +97,42 @@
                             <a href="patient"><i class="fa fa-wheelchair"></i> <span>Patients</span></a>
                         </li>
                     </c:if>
+                    <c:choose>
+                        <c:when test="${sessionScope.staffAccount.roleID == 4 || sessionScope.staffAccount.roleID == 5}">
+                            <li>
+                                <a href="viewpersonalschedule?professionalID=${sessionScope.staffAccount.staffID}"><i class="fa fa-calendar"></i> <span>Doctor Schedule</span></a>
+                            </li>
+                        </c:when>
+                        <c:otherwise>
+                            <c:if test="${viewSchedule}">
+                                <li>
+                                    <a href="loadstaffforschedule"><i class="fa fa-calendar-check-o"></i> <span>Doctor Schedule</span></a>
+                                </li>
+                            </c:if>
+                        </c:otherwise>
+                    </c:choose>
+                    <c:choose>
+                        <c:when test="${sessionScope.staffAccount.roleID == 4 || sessionScope.staffAccount.roleID == 5}">
+                            <li>
+                                <a href="listDoctorAppointment"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
+                            </li>
+                        </c:when>
+                        <c:otherwise>
+                            <c:if test="${viewAppointment}">
+                                <li>
+                                    <a href="manage_appointment"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
+                                </li>
+                            </c:if>
+                        </c:otherwise>
+                    </c:choose>
 
-                    <c:if test="${viewAppointment}">
-                        <li>
-                            <a href="manage_appointment"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
-                        </li>
-                    </c:if>
                     <c:if test="${viewQA}">
                         <li>
-                            <a href="viewQA"><i class="fa fa-calendar"></i> <span>QA</span></a>
+                            <a href="viewQA"><i class="fa fa-commenting-o"></i> <span>QA</span></a>
                         </li>
                     </c:if>
 
-                    <c:if test="${viewSchedule}">
-                        <li>
-                            <a href="loadstaffforschedule"><i class="fa fa-calendar-check-o"></i> <span>Doctor Schedule</span></a>
-                        </li>
-                    </c:if>
+
 
                     <c:if test="${viewService}">
                         <li>
@@ -129,7 +151,7 @@
                     </c:if>
 
                     <c:if test="${viewFeedback}">
-                        <li class="submenu">
+                        <li >
                             <a href="feedback"><i class="fa fa-flag-o"></i> <span> Feedback </span> </a>
                         </li>
                     </c:if>

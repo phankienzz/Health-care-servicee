@@ -49,62 +49,110 @@ public class roleStaff extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Staff s = (Staff) session.getAttribute("staffAccount");
+        RoleDAO rDAO = new RoleDAO();
+        Role r = rDAO.getRoleByID(s.getRoleID());
+        session.setAttribute("role", r);
         if (s.getRoleID() == 4 || s.getRoleID() == 5) {
             response.sendRedirect("viewpersonalschedule?professionalID=" + s.getStaffID());
             return;
         }
-        RoleDAO rDAO = new RoleDAO();
-        Role r = rDAO.getRoleByID(s.getRoleID());
-        session.setAttribute("role", r);
+        
         List<Permission> listPer = r.getPermission();
-        for (Permission p : listPer) {
+        boolean dashRevenue = false;
+        boolean dash = false;
+        boolean staff = false;
+        boolean patient = false;
+        boolean manageAppointment = false;
+        boolean loadSchedule = false;
+        boolean loadService = false;
+        boolean invoice = false;
+        boolean feedback = false;
+        boolean blog = false;
+        boolean rolePermission = false;
+        for (Permission p : listPer){
             if (p.getPermissionID() == 21) {
+                dashRevenue = true;
+            }
+            if (p.getPermissionID() == 22) {
+                dash = true;
+            }
+            if (p.getPermissionID() == 24) {
+                staff = true;
+            }
+
+            if (p.getPermissionID() == 28) {
+                patient = true;
+            }
+            if (p.getPermissionID() == 1) {
+                manageAppointment = true;
+            }
+            if (p.getPermissionID() == 15) {
+                loadSchedule = true;
+            }
+            if (p.getPermissionID() == 18) {
+                loadService = true;
+            }
+
+            if (p.getPermissionID() == 4) {
+                invoice = true;
+            }
+            if (p.getPermissionID() == 29) {
+                feedback = true;
+            }
+            if (p.getPermissionID() == 8) {
+                blog = true;
+            }
+            if (p.getPermissionID() == 27) {
+                rolePermission = true;
+            }
+        }
+        
+            if (dashRevenue) {
                 response.sendRedirect("dashRevenue");
                 return;
             }
-            if (p.getPermissionID() == 22) {
-                response.sendRedirect("dashboard.jsp");
+            if (dash) {
+                response.sendRedirect("dashboard");
                 return;
             }
-            if (p.getPermissionID() == 24) {
+            if (staff) {
                 response.sendRedirect("staff");
                 return;
             }
 
-            if (p.getPermissionID() == 28) {
+            if (patient) {
                 response.sendRedirect("patient");
                 return;
             }
-            if (p.getPermissionID() == 1) {
+            if (manageAppointment) {
                 response.sendRedirect("manage_appointment");
                 return;
             }
-            if (p.getPermissionID() == 15) {
+            if (loadSchedule) {
                 response.sendRedirect("loadstaffforschedule");
                 return;
             }
-            if (p.getPermissionID() == 18) {
+            if (loadService) {
                 response.sendRedirect("loadmanage");
                 return;
             }
 
-            if (p.getPermissionID() == 4) {
+            if (invoice) {
                 response.sendRedirect("invoice");
                 return;
             }
-            if (p.getPermissionID() == 29) {
-                response.sendRedirect("dashboard.jsp");
+            if (feedback) {
+                response.sendRedirect("feedback");
                 return;
             }
-            if (p.getPermissionID() == 8) {
+            if (blog) {
                 response.sendRedirect("homeblogseverlet");
                 return;
             }
-            if (p.getPermissionID() == 27) {
+            if (rolePermission) {
                 response.sendRedirect("rolePermission");
                 return;
             }
-        }
 
     }
 
