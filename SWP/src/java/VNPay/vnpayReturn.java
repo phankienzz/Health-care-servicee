@@ -27,11 +27,15 @@ public class vnpayReturn extends HttpServlet {
         String invoiceID = request.getParameter(("vnp_TxnRef")).substring(8);
         String vnp_ResponseCode = request.getParameter("vnp_ResponseCode");
         InvoiceDAO invDAO = new InvoiceDAO();
+         ValidFunction valid = new ValidFunction();
         if ("00".equals(vnp_ResponseCode)) {
             invDAO.updateInvoiceOnline(Integer.parseInt(invoiceID));
+            response.sendRedirect("loadfeedback?invoiceID=" + invoiceID + "&success=" + valid.hashPassword(vnp_ResponseCode));
+        }else{
+            response.sendRedirect("viewInvoiceCustomer?invoiceID="+ invoiceID + "&success=" + valid.hashPassword(vnp_ResponseCode));
         }
-        ValidFunction valid = new ValidFunction();
-        response.sendRedirect("loadfeedback?invoiceID=" + invoiceID + "&success=" + valid.hashPassword(vnp_ResponseCode));
+
+
     }
 
     @Override
