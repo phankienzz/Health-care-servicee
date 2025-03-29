@@ -362,10 +362,6 @@ public class ProfessionalDAO {
         // Khởi tạo DAO
         ProfessionalDAO dao = new ProfessionalDAO();
 
-        // Kiểm tra kết nối CSDL trước khi truy vấn
-        List<Professional> list = dao.getAllDoctors();
-        for (Professional professional : list) {
-            System.out.println(professional.getName());
-        }
+        System.out.println(dao.getProfessionalbyID(17).getProfilePicture());
     }
 }

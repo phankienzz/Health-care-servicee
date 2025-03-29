@@ -288,6 +288,6 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>GoogleLoginServlet</servlet-name>
-        <url-pattern>/GoogleLoginServlet</url-pattern>
+        <url-pattern>/LoginGoogle</url-pattern>
     </servlet-mapping>
 </web-app>
