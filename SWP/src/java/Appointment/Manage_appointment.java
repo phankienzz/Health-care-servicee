@@ -9,12 +9,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.MedicalExamination;
 import model.Professional;
+import model.Staff;
 
 /**
  *
@@ -23,12 +26,12 @@ import model.Professional;
 @WebServlet(name = "Manage_appointment", urlPatterns = {"/manage_appointment"})
 public class Manage_appointment extends HttpServlet {
 
-    private MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
-
     
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
+        MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
     
     String patientName = request.getParameter("patientName");
     String doctorName = request.getParameter("doctorName");
@@ -50,13 +53,14 @@ public class Manage_appointment extends HttpServlet {
 
     if (page < 1) page = 1;
     if (page > totalPages && totalPages > 0) page = totalPages;
-
+    HttpSession session = request.getSession();
     // Bỏ ageSort trong getFilteredExaminations
-    List<MedicalExamination> list = medicalExaminationDAO.getFilteredExaminations(
-            patientName, doctorName, appointmentDate, timeCreatedSort, status, page, pageSize);
-
+        Staff doctorID = (Staff) session.getAttribute("staffAccount");
+    List<MedicalExamination> list = medicalExaminationDAO.getFilteredExaminations2(
+            patientName, doctorName, appointmentDate, timeCreatedSort, status,doctorID.getStaffID(), page, pageSize);
+    
     List<Professional> allProfessionals = medicalExaminationDAO.getAllProfessionals();
-
+    
     request.setAttribute("list", list);
     request.setAttribute("allProfessionals", allProfessionals);
     request.setAttribute("currentPage", page);

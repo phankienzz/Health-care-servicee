@@ -104,7 +104,9 @@ public class Professional extends Staff {
     public void setStatus(String status) {
         this.status = status;
     }
-
+    public String getPicture(){
+        return new String(getProfilePicture(), StandardCharsets.UTF_8);
+    }
     public Date getCreatedAt() {
         return createdAt;
     }

@@ -42,12 +42,22 @@ public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if(session.getAttribute("staffAccount") != null){
+        Cookie cusUsername = new Cookie("username", "");
+        cusUsername.setMaxAge(0); // Hết hạn ngay lập tức
+        cusUsername.setPath("/"); // Đảm bảo nó áp dụng trên toàn bộ ứng dụng
+        response.addCookie(cusUsername);
+
+        Cookie cusPassword = new Cookie("password", "");
+        cusPassword.setMaxAge(0);
+        cusPassword.setPath("/");
+        response.addCookie(cusPassword);
+
+        if (session.getAttribute("staffAccount") != null) {
             session.removeAttribute("staffAccount");
             response.sendRedirect("home");
             return;
         }
-        if(session.getAttribute("customerAccount") != null){
+        if (session.getAttribute("customerAccount") != null) {
             session.removeAttribute("customerAccount");
             response.sendRedirect("home");
             return;

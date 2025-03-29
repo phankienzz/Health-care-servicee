@@ -34,7 +34,7 @@ public class ViewPersonalSchedule extends HttpServlet {
 
             LocalDate firstMondayOfWeek = selectedDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
 
-            List<WorkingSchedule> professionalList = workingDAO.getAllSchedulesByProfessionalID(professionalID);
+            List<WorkingSchedule> professionalList = workingDAO.getOnSchedulesByProfessionalID(professionalID);
             List<ProfessionalLeave> leaveList = workingDAO.getProfessionalLeavesByProfessionalID(professionalID);
 
             List<Date> leaveDates = new ArrayList<>();
@@ -83,25 +83,25 @@ public class ViewPersonalSchedule extends HttpServlet {
             String leaveDateStr = request.getParameter("leaveDate");
             String reason = request.getParameter("reason");
             String note = request.getParameter("note");
+            LocalDate leaveDate = LocalDate.parse(leaveDateStr);
 
             if (leaveDateStr == null || leaveDateStr.isEmpty()) {
                 message = "Leave date is required.";
             } else if (reason == null || reason.isEmpty()) {
                 message = "Reason is required.";
-            } else if ("personal".equals(reason) && (note == null || note.trim().isEmpty())) {
+            } else if ("Personal reason".equals(reason) && (note == null || note.trim().isEmpty())) {
                 message = "Note is required when the reason is personal.";
+            } else if (leaveDate.isBefore(LocalDate.now())) {
+                message = "Leave date cannot be in the past.";
+            } else if (!(dao.isWorkingOnDate(professionalID, Date.valueOf(leaveDate)))) {
+                message = "No schedule on this day.";
+            } else if (dao.isLeaveOnDate(professionalID, Date.valueOf(leaveDate))) {
+                message = "Had a day off that day.";
             } else {
-                LocalDate leaveDate = LocalDate.parse(leaveDateStr);
-                if (leaveDate.isBefore(LocalDate.now())) {
-                    message = "Leave date cannot be in the past.";
-                } else {
-                    if (!dao.isWorkingOnDate(professionalID, Date.valueOf(leaveDate))) {
-                        message = "No schedule on this day.";
-                    } else {
-                        String combinedReason = "(" + reason + ") " + (note != null ? note.trim() : "");
-                        dao.addProfessionalLeave(professionalID, Date.valueOf(leaveDate), combinedReason);
-                        request.setAttribute("successMessage", "Leave request submitted successfully.");
-                    }
+                if (dao.isWorkingOnDate(professionalID, Date.valueOf(leaveDate))) {
+                    String combinedReason = "(" + reason + ") " + (note != null ? note.trim() : "");
+                    dao.addProfessionalLeave(professionalID, Date.valueOf(leaveDate), combinedReason);
+                    request.setAttribute("successMessage", "Leave request submitted successfully.");
                 }
             }
         } catch (NumberFormatException e) {
@@ -109,11 +109,9 @@ public class ViewPersonalSchedule extends HttpServlet {
         } catch (Exception e) {
             message = "Error processing request: " + e.getMessage();
         }
-
         if (message != null) {
             request.setAttribute("errorMessage", message);
         }
-
         doGet(request, response);
     }
 }

@@ -16,7 +16,7 @@
         <div class="main-wrapper">
             <div class="header">
                 <div class="header-left">
-                    <a href="customer-dashboard.jsp" class="logo">
+                    <a href="index_1.jsp" class="logo">
                         <img src="assets/img/logo.png" width="35" height="35" alt=""> <span>Preclinic</span>
                     </a>
                 </div>
@@ -38,7 +38,7 @@
                 
                 </div>
 
-                <div class="page-wrapper">
+                <div class="page-wrapper-profile">
                     <div class="content container-fluid">
                         <div class="row align-items-center mb-4">
                             <div class="col-md-6">

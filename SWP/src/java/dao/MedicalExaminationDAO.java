@@ -4,6 +4,7 @@
  */
 package dao;
 
+import com.sun.jdi.connect.spi.Connection;
 import context.DBContext;
 import static context.DBContext.connection;
 import java.sql.PreparedStatement;
@@ -395,6 +396,11 @@ public class MedicalExaminationDAO extends DBContext {
     }
 
     public boolean saveMedicalExamination(MedicalExamination examination) {
+        if (!isDoctorAvailable(examination.getConsultantId().getStaffID(), examination.getExaminationDate())) {
+            System.out.println("Doctor is not available at the specified time.");
+            return false;
+        }
+
         String sql = "INSERT INTO MedicalExamination (examinationDate, customerID, status, consultantID, notes) VALUES (?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -580,6 +586,111 @@ public class MedicalExaminationDAO extends DBContext {
             return false;
         }
     }
+    public List<MedicalExamination> getFilteredExaminations2(String patientName, String doctorName,
+            String appointmentDate, String timeCreatedSort, String status, int consultantID, int page, int pageSize) {
+        List<MedicalExamination> medicalExaminationList = new ArrayList<>();
+        StringBuilder sql = new StringBuilder(
+                "WITH FilteredExaminations AS ( "
+                + "    SELECT m.examinationID, "
+                + "           FORMAT(m.examinationDate, 'dd/MM/yyyy HH:mm') AS examinationDate, "
+                + "           m.customerID, m.status, m.consultantID, m.notes, "
+                + "           FORMAT(m.createdAt, 'dd/MM/yyyy HH:mm') AS createdAt, "
+                + "           c.fullName AS customerName, "
+                + "           DATEDIFF(YEAR, c.dateOfBirth, GETDATE()) AS age, "
+                + "           s.fullName AS staffName, "
+                + "           ROW_NUMBER() OVER ("
+        );
+
+        // Bỏ điều kiện ageSort, chỉ giữ timeCreatedSort
+        if ("latest".equals(timeCreatedSort)) {
+            sql.append("ORDER BY m.createdAt DESC");
+        } else if ("oldest".equals(timeCreatedSort)) {
+            sql.append("ORDER BY m.createdAt ASC");
+        } else {
+            sql.append("ORDER BY m.examinationID");
+        }
+
+        sql.append(") AS RowNum "
+                + "    FROM MedicalExamination m "
+                + "    JOIN Customer c ON m.customerID = c.customerID "
+                + "    JOIN Staff s ON m.consultantID = s.staffID "
+                + "    WHERE 1=1"
+        );
+
+        List<Object> params = new ArrayList<>();
+
+        if (patientName != null && !patientName.trim().isEmpty()) {
+            sql.append(" AND c.fullName LIKE ?");
+            params.add("%" + patientName + "%");
+        }
+        if (doctorName != null && !doctorName.trim().isEmpty()) {
+            sql.append(" AND s.fullName = ?");
+            params.add(doctorName);
+        }
+        if (appointmentDate != null && !appointmentDate.trim().isEmpty()) {
+            sql.append(" AND CONVERT(date, m.examinationDate, 103) = CONVERT(date, ?, 103)");
+            params.add(appointmentDate);
+        }
+        if (status != null && !status.trim().isEmpty()) {
+            sql.append(" AND m.status = ?");
+            params.add(status);
+        }
+        
+            sql.append(" AND m.consultantID = ?");
+            params.add(consultantID);
+        
+
+        sql.append(") SELECT * FROM FilteredExaminations "
+                + "WHERE RowNum BETWEEN ? AND ?");
+
+        int startRow = (page - 1) * pageSize + 1;
+        int endRow = page * pageSize;
+        params.add(startRow);
+        params.add(endRow);
+
+        try {
+            if (connection == null) {
+                System.out.println("Database connection is null!");
+                return medicalExaminationList;
+            }
+
+            System.out.println("SQL Query: " + sql.toString());
+            System.out.println("Params: " + params);
+
+            PreparedStatement ps = connection.prepareStatement(sql.toString());
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Customer customer = new Customer();
+                customer.setCustomerID(rs.getInt("customerID"));
+                customer.setFullName(rs.getString("customerName"));
+                customer.setDateOfBirth(String.valueOf(rs.getInt("age")));
+
+                Professional professional = new Professional();
+                professional.setStaffID(rs.getInt("consultantID"));
+                professional.setFullName(rs.getString("staffName"));
+
+                MedicalExamination exam = new MedicalExamination();
+                exam.setExaminationID(rs.getInt("examinationID"));
+                exam.setExaminationDate(rs.getString("examinationDate"));
+                exam.setCustomerId(customer);
+                exam.setStatus(rs.getString("status"));
+                exam.setConsultantId(professional);
+                exam.setNote(rs.getString("notes"));
+                exam.setCreatedAt(rs.getString("createdAt"));
+                exam.setList(getServicesByExaminationId(rs.getInt("examinationID")));
+
+                medicalExaminationList.add(exam);
+            }
+            System.out.println("Records retrieved: " + medicalExaminationList.size());
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return medicalExaminationList;
+    }
 
     public List<MedicalExamination> getFilteredExaminations(String patientName, String doctorName,
             String appointmentDate, String timeCreatedSort, String status, int page, int pageSize) {
@@ -682,7 +793,7 @@ public class MedicalExaminationDAO extends DBContext {
         }
         return medicalExaminationList;
     }
-
+    
     public int getTotalFilteredRecords(String patientName, String doctorName,
             String appointmentDate, String timeCreatedSort, String status) {
         StringBuilder sql = new StringBuilder(
@@ -851,7 +962,7 @@ public class MedicalExaminationDAO extends DBContext {
     }
 
     public boolean cancelAppointment(int examId) {
-        String sql = "UPDATE MedicalExamination SET status = 'Rejected' WHERE examinationID = ? AND status = 'Pending'";
+        String sql = "UPDATE MedicalExamination SET status = 'Cancelled' WHERE examinationID = ? AND status = 'Pending'";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, examId);
@@ -902,6 +1013,64 @@ public class MedicalExaminationDAO extends DBContext {
         return appointments;
     }
 
+    public int getNewAppointmentsCount() {
+        String sql = "SELECT COUNT(*) FROM MedicalExamination WHERE status = 'Pending' AND createdAt > ?";
+        int count = 0;
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            try {
+                // Lấy thời gian 24 giờ trước
+                java.sql.Timestamp lastCheck = new java.sql.Timestamp(System.currentTimeMillis() - (24 * 60 * 60 * 1000));
+                ps.setTimestamp(1, lastCheck);
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    count = rs.getInt(1);
+                }
+            } finally {
+                ps.close(); // Đóng PreparedStatement để tránh rò rỉ tài nguyên
+            }
+        } catch (SQLException e) {
+            System.err.println("Error in getNewAppointmentsCount: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    public boolean isDoctorAvailable(int doctorId, String examinationDate) {
+        String sql = "SELECT COUNT(*) FROM MedicalExamination WHERE consultantID = ? AND examinationDate = ? AND status != 'Rejected'";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, doctorId);
+            ps.setString(2, examinationDate);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) == 0; // Return true if no appointments found
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; // Return false if an error occurs or if the doctor is already booked
+    }
+
+    public boolean isCustomerAvailable(int customerId, String examinationDate, int doctorId) {
+        String sql = "SELECT COUNT(*) FROM MedicalExamination WHERE customerID = ? AND examinationDate = ? AND consultantID = ? AND status != 'Rejected'";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, customerId);
+            ps.setString(2, examinationDate);
+            ps.setInt(3, doctorId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) == 0; // Return true if no appointments found
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; // Return false if an error occurs or if the customer is already booked
+    }
+    
     public Map<Integer, Integer> getMonthlyAppointmentStatistics(int year) {
         Map<Integer, Integer> stats = new HashMap<>();
         String sql = "SELECT MONTH(examinationDate) AS Month, COUNT(customerID) AS NumberOfAppointments "
@@ -917,10 +1086,12 @@ public class MedicalExaminationDAO extends DBContext {
                 int count = rs.getInt("NumberOfAppointments");
                 stats.put(month, count);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+        } catch (Exception e) {
+
         }
         return stats;
+
     }
 
     public static void main(String[] args) {
@@ -932,5 +1103,6 @@ public class MedicalExaminationDAO extends DBContext {
             System.out.println("Tháng " + i + ": " + stats.getOrDefault(i, 0) + " khách hàng");
         }
     }
+
 
 }

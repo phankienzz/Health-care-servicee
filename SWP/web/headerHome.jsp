@@ -78,8 +78,10 @@
                                     <%--</c:forEach>--%>
                             </ul>
                         </li>
-                         <li class="nav-item"><a class="nav-link" href="viewMedical">Medical Record</a></li>
                         <li class="nav-item"><a class="nav-link" href="contact">Contact</a></li>
+                        <c:if test="${sessionScope.customerAccount != null || sessionScope.staffAccount != null}">
+                        <li class="nav-item"><a class="nav-link" href="viewMedicalRecord">View Medical</a></li>
+                        </c:if>
                     </ul>
                 </div>
             </div>
