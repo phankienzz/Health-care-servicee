@@ -63,21 +63,21 @@
 </head>
 
 <body id="top">
-        <jsp:include page="headerHome.jsp"></jsp:include>
+    <jsp:include page="headerHome.jsp"></jsp:include>
         <section class="page-title bg-1">
-                <div class="overlay"></div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="block text-center">
-                                <span class="text-white">Appointment</span>
-                                <h1 class="text-capitalize mb-5 text-lg">Make appointment</h1>
+            <div class="overlay"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="block text-center">
+                            <span class="text-white">Appointment</span>
+                            <h1 class="text-capitalize mb-5 text-lg">Make appointment</h1>
 
-                            </div>
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
         <section class="appoinment section">
             <div class="container">
@@ -128,7 +128,10 @@
                                             <option value="">Select Doctor</option>
                                             <c:if test="${not empty doctors}">
                                                 <c:forEach var="doctor" items="${doctors}">
-                                                    <option value="${doctor.staffID}" data-image="${doctor.profilePicture}" data-specialization="${doctor.specialization}" <c:if test="${doctor.staffID == selectedDoctorId}">selected</c:if>>${doctor.fullName}</option>
+                                                    <option value="${doctor.staffID}" 
+                                                            data-image="assets/img/${doctor.picture}" 
+                                                            data-specialization="${doctor.specialization}" 
+                                                            <c:if test="${doctor.staffID == selectedDoctorId}">selected</c:if>>${doctor.fullName}</option>
                                                 </c:forEach>
                                             </c:if>
                                         </select>
@@ -203,22 +206,22 @@
     <!-- footer Start -->
     <jsp:include page="footer.jsp"></jsp:include>
 
-    <!-- 
-    Essential Scripts
-    =====================================-->
+        <!-- 
+        Essential Scripts
+        =====================================-->
 
-    <div class="sidebar-overlay" data-reff=""></div>
-    <script src="assets/js/jquery-3.2.1.min.js"></script>
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/jquery.slimscroll.js"></script>
-    <script src="assets/js/select2.min.js"></script>
-    <script src="assets/js/moment.min.js"></script>
+        <div class="sidebar-overlay" data-reff=""></div>
+        <script src="assets/js/jquery-3.2.1.min.js"></script>
+        <script src="assets/js/popper.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.slimscroll.js"></script>
+        <script src="assets/js/select2.min.js"></script>
+        <script src="assets/js/moment.min.js"></script>
 
-    <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="assets/js/app.js"></script>
+        <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+        <script src="assets/js/app.js"></script>
 
-    <script>
+        <script>
         $(document).ready(function () {
             // Initialize datetimepicker
             $('.datetimepicker').datetimepicker({
@@ -258,31 +261,31 @@
                 }
             });
         });
-    </script>
-    <script>
-        
-        var bookedTimes = ${bookedTimesJson};
+        </script>
+        <script>
 
-        document.getElementById("doctorSelect").addEventListener("change", function () {
-            var selectedDoctorId = this.value;
-            var timeSelect = document.querySelector('select[name="time"]');
+            var bookedTimes = ${bookedTimesJson};
 
-            
-            Array.from(timeSelect.options).forEach(function (option) {
-                option.style.display = "block";
-            });
+            document.getElementById("doctorSelect").addEventListener("change", function () {
+                var selectedDoctorId = this.value;
+                var timeSelect = document.querySelector('select[name="time"]');
 
-           
-            if (bookedTimes[selectedDoctorId]) {
-                bookedTimes[selectedDoctorId].forEach(function (time) {
-                    Array.from(timeSelect.options).forEach(function (option) {
-                        if (option.value === time) {
-                            option.style.display = "none";
-                        }
-                    });
+
+                Array.from(timeSelect.options).forEach(function (option) {
+                    option.style.display = "block";
                 });
-            }
-        });
+
+
+                if (bookedTimes[selectedDoctorId]) {
+                    bookedTimes[selectedDoctorId].forEach(function (time) {
+                        Array.from(timeSelect.options).forEach(function (option) {
+                            if (option.value === time) {
+                                option.style.display = "none";
+                            }
+                        });
+                    });
+                }
+            });
     </script>
 
 </body>

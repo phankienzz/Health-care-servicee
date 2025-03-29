@@ -72,6 +72,7 @@
                             <a href="dashRevenue"><i class="fa fa-dashboard"></i> <span>Revenue Statistic</span></a>
                         </li>
                     </c:if>
+                        
                     <c:if test="${viewUsage}">
                         <li>
                             <a href="dashboard"><i class="fa fa-dashboard"></i> <span>Usage Statistic</span></a>
@@ -99,7 +100,7 @@
                             <a href="manage_appointment"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
                         </li>
                     </c:if>
-                        <c:if test="${viewQA}">
+                    <c:if test="${viewQA}">
                         <li>
                             <a href="viewQA"><i class="fa fa-calendar"></i> <span>QA</span></a>
                         </li>

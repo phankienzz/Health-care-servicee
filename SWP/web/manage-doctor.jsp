@@ -159,7 +159,7 @@
                                         </div>
                                     </div>
                                     <h4 class="doctor-name text-ellipsis">
-                                        <a href="profile.html">${professional.getName()}</a>
+                                        <a href="DetailDoctorServlet?id=${professional.getStaffID()}">${professional.getName()}</a>
                                     </h4>
                                     <div class="doc-prof">${professional.getSpecialization()}</div>
                                     <div class="user-country">
