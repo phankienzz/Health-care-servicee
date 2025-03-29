@@ -388,7 +388,7 @@
                             <div class="profile-widget">
                                 <div class="doctor-img">
                                     <a class="" href="DetailDoctorServlet?id=${professional.getStaffID()}">
-                                        <img alt="" src="${professional.getProfilePicture()}">
+                                        <img alt="" src="assets/img/${professional.getPicture()}">
                                     </a>
                                 </div>
                                 <c:if test="${sessionScope.role eq 'admin'}">

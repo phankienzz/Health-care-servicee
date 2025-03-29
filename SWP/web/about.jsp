@@ -137,56 +137,23 @@
                             <div class="section-title text-center">
                                 <h2 class="mb-4">Meet Our Specialist</h2>
                                 <div class="divider mx-auto my-4"></div>
-                                <p>Today?s users expect effortless experiences. Don?t let essential people and processes stay
-                                    stuck in the past. Speed it up, skip the hassles</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="team-block mb-5 mb-lg-0">
-                                <img style="width: 255px; height: 255px;" src="" alt="" class="img-fluid w-100">
+                        <c:forEach var="doctor" items="${listProfessional}">
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="team-block mb-5 mb-lg-0">
+                                    <img style="width: 255px; height: 255px;" src="assets/img/${doctor.getPicture()}" alt="" class="img-fluid w-100">
 
-                                <div class="content">
-                                    <h4 class="mt-4 mb-0"><a href="doctor-single.html">John Marshal</a></h4>
-                                    <p>Internist, Emergency Physician</p>
+                                    <div class="content">
+                                        <h4 class="mt-4 mb-0"><a href="DetailDoctorServlet?id=${doctor.getStaffID()}">${doctor.getName()}</a></h4>
+                                        <p>${doctor.qualification}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="team-block mb-5 mb-lg-0">
-                                <img src="assets2/images/team/2.jpg" alt="" class="img-fluid w-100">
-
-                                <div class="content">
-                                    <h4 class="mt-4 mb-0"><a href="doctor-single.html">Marshal Root</a></h4>
-                                    <p>Surgeon, ?ardiologist</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="team-block mb-5 mb-lg-0">
-                                <img src="assets2/images/team/3.jpg" alt="" class="img-fluid w-100">
-
-                                <div class="content">
-                                    <h4 class="mt-4 mb-0"><a href="doctor-single.html">Siamon john</a></h4>
-                                    <p>Internist, General Practitioner</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="team-block">
-                                <img src="assets2/images/team/4.jpg" alt="" class="img-fluid w-100">
-
-                                <div class="content">
-                                    <h4 class="mt-4 mb-0"><a href="doctor-single.html">Rishat Ahmed</a></h4>
-                                    <p>Orthopedic Surgeon</p>
-                                </div>
-                            </div>
-                        </div>
+                        </c:forEach>
                     </div>
                 </div>
             </section>

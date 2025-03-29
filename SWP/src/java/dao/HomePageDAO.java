@@ -32,10 +32,24 @@ public class HomePageDAO extends DBContext {
                 rs.getString("createdAt")
         );
     }
-
+    
     public List<Service> get4Service() {
         List<Service> serviceList = new ArrayList<>();
         String sql = "SELECT top 4* FROM ServicePackage";
+
+        try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+            while (rs.next()) {
+                serviceList.add(mapResultSetToService(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return serviceList;
+    }
+
+    public List<Service> get6Service() {
+        List<Service> serviceList = new ArrayList<>();
+        String sql = "SELECT top 6* FROM ServicePackage";
 
         try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
             while (rs.next()) {
