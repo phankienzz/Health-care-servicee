@@ -241,7 +241,7 @@
                         </div>
                         <div class="col-lg-4 col-sm-6">
                             <div class="about-img mt-4 mt-lg-0">
-                                <img src="assets2/images/about/img-3.jpg" alt="" class="img-fluid">
+                                    <img src="assets2/images/about/img-3.jpg" alt="" class="img-fluid">
                             </div>
                         </div>
                         <div class="col-lg-4">

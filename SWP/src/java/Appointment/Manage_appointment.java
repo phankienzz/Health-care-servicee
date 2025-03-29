@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.MedicalExamination;
 import model.Professional;
+import model.Staff;
 
 /**
  *
@@ -28,43 +29,38 @@ public class Manage_appointment extends HttpServlet {
     
 
     @Override
-protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-    MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
-
+        MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
+    
     String patientName = request.getParameter("patientName");
     String doctorName = request.getParameter("doctorName");
     String appointmentDate = request.getParameter("appointmentDate");
     String timeCreatedSort = request.getParameter("timeCreatedSort");
     String status = request.getParameter("status");
 
-    // Nếu không có giá trị timeCreatedSort, mặc định là "latest"
-    if (timeCreatedSort == null || timeCreatedSort.isEmpty()) {
-        timeCreatedSort = "latest";
-    }
-
-    int page = 1;
-    int pageSize = 10;
+    int page = 1; 
+    int pageSize = 10; 
     String pageStr = request.getParameter("page");
     if (pageStr != null && !pageStr.isEmpty()) {
         page = Integer.parseInt(pageStr);
     }
 
-    // Lấy tổng số bản ghi phù hợp với bộ lọc
+    // Bỏ ageSort trong getTotalFilteredRecords
     int totalRecords = medicalExaminationDAO.getTotalFilteredRecords(
             patientName, doctorName, appointmentDate, timeCreatedSort, status);
     int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
 
     if (page < 1) page = 1;
     if (page > totalPages && totalPages > 0) page = totalPages;
-
-    // Lấy danh sách đã sắp xếp theo timeCreatedSort
-    List<MedicalExamination> list = medicalExaminationDAO.getFilteredExaminations(
-            patientName, doctorName, appointmentDate, timeCreatedSort, status, page, pageSize);
-
+    HttpSession session = request.getSession();
+    // Bỏ ageSort trong getFilteredExaminations
+        Staff doctorID = (Staff) session.getAttribute("staffAccount");
+    List<MedicalExamination> list = medicalExaminationDAO.getFilteredExaminations2(
+            patientName, doctorName, appointmentDate, timeCreatedSort, status,doctorID.getStaffID(), page, pageSize);
+    
     List<Professional> allProfessionals = medicalExaminationDAO.getAllProfessionals();
-
-    // Gửi dữ liệu đến JSP
+    
     request.setAttribute("list", list);
     request.setAttribute("allProfessionals", allProfessionals);
     request.setAttribute("currentPage", page);

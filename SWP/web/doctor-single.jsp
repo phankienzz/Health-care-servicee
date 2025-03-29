@@ -3,7 +3,7 @@
     Created on : Mar 3, 2025, 7:16:36 AM
     Author     : Win11
 --%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -31,19 +31,15 @@
     </head>
 
     <body id="top">
-
         <jsp:include page="headerHome.jsp"></jsp:include>
-
-
-
-        <section class="page-title bg-1">
-            <div class="overlay"></div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="block text-center">
-                            <span class="text-white">Doctor Details</span>
-                            <h1 class="text-capitalize mb-5 text-lg">${professional.getName()}</h1>
+            <section class="page-title bg-1">
+                <div class="overlay"></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="block text-center">
+                                <span class="text-white">Doctor Details</span>
+                                <h1 class="text-capitalize mb-5 text-lg">${professional.getName()}</h1>
                         </div>
                     </div>
                 </div>
@@ -55,7 +51,7 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-6">
                         <div class="doctor-img-block">
-                            <img src="${professional.getProfilePicture()}" alt="" class="img-fluid w-100">
+                            <img src="assets/img/${professional.getPicture()}" alt="" class="img-fluid w-100">
                             <div class="info-block mt-4">
                                 <h4 class="mb-0">${professional.getName()}</h4>
                                 <p>${professional.getSpecialization()}</p>

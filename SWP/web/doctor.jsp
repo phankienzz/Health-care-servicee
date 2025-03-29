@@ -338,42 +338,38 @@
     </head>
 
     <body id="top">
-
         <jsp:include page="headerHome.jsp"></jsp:include>
+            <section class="page-title bg-1">
+                <div class="overlay"></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="block text-center">
+                                <span class="text-white">All Doctors</span>
+                                <h1 class="text-capitalize mb-5 text-lg">Specalized doctors</h1>
 
-
-
-        <section class="page-title bg-1">
-            <div class="overlay"></div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="block text-center">
-                            <span class="text-white">All Doctors</span>
-                            <h1 class="text-capitalize mb-5 text-lg">Specalized doctors</h1>
-
-                            <!-- <ul class="list-inline breadcumb-nav">
-                              <li class="list-inline-item"><a href="index.html" class="text-white">Home</a></li>
-                              <li class="list-inline-item"><span class="text-white">/</span></li>
-                              <li class="list-inline-item"><a href="#" class="text-white-50">All Doctors</a></li>
-                            </ul> -->
+                                <!-- <ul class="list-inline breadcumb-nav">
+                                  <li class="list-inline-item"><a href="index.html" class="text-white">Home</a></li>
+                                  <li class="list-inline-item"><span class="text-white">/</span></li>
+                                  <li class="list-inline-item"><a href="#" class="text-white-50">All Doctors</a></li>
+                                </ul> -->
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
 
-        <!-- portfolio -->
-        <div class="page-wrapper-profile">
-            <div class="content">
-                <!-- Search & Filter -->
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <input type="text" id="searchName" class="form-control" placeholder="Search by name...">
-                    </div>
-                    <div class="col-md-6">
-                        <div class="filter-options filter-buttons">
+            <!-- portfolio -->
+            <div class="page-wrapper-profile">
+                <div class="content">
+                    <!-- Search & Filter -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <input type="text" id="searchName" class="form-control" placeholder="Search by name...">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="filter-options filter-buttons">
 
                             <c:forEach var="specialization" items="${sessionScope.specializations}">
                                 <label class="mr-3">
@@ -412,7 +408,7 @@
                                     </div>
                                 </c:if>
                                 <h4 class="doctor-name text-ellipsis">
-                                    <a href="profile.html">${professional.getName()}</a>
+                                    <a href="DetailDoctorServlet?id=${professional.getStaffID()}">${professional.getName()}</a>
                                 </h4>
                                 <div class="doc-prof">${professional.getSpecialization()}</div>
                                 <div class="user-country">
@@ -589,7 +585,7 @@
                 </div>
             </div>
         </footer>
-       <!-- Main jQuery -->
+        <!-- Main jQuery -->
         <script src="plugins/jquery/jquery.js"></script>
         <!-- Bootstrap 4.3.2 -->
         <script src="plugins/bootstrap/js/popper.js"></script>

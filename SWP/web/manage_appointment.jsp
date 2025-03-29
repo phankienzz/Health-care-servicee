@@ -152,11 +152,11 @@
                                                                 <i class="fa fa-ellipsis-v"></i>
                                                             </a>
                                                             <div class="dropdown-menu dropdown-menu-right">
-                                                                <!-- S?a liên k?t Edit -->
+                                                                <!-- S?a liï¿½n k?t Edit -->
                                                                 <a class="dropdown-item" href="edit_appointment?examinationID=${exam.examinationID}">
                                                                     <i class="fa fa-pencil m-r-5"></i> Edit
                                                                 </a>
-                                                                <!-- S?a liên k?t Delete -->
+                                                                <!-- S?a liï¿½n k?t Delete -->
                                                                 <a class="dropdown-item" href="deleteappointment?examinationID=${exam.examinationID}" 
                                                                    onclick="return confirm('Are you sure you want to delete this appointment?');">
                                                                     <i class="fa fa-trash-o m-r-5"></i> Delete
@@ -171,6 +171,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="modal fade" id="medicalRecordModal" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Medical Record</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="medicalRecordForm" action="saveMedical" method="POST">
+                                            <input type="hidden" id="examinationID" name="examinationID">
 
 
                         <!-- Ph?n trang -->

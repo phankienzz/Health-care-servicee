@@ -5,25 +5,25 @@
 
 package CustomerController;
 
-import dao.MedicalExaminationDAO;
 import dao.MedicalRecordDAO;
+import dao.ProfessionalDAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import model.Customer;
 import model.MedicalRecord;
 
 /**
  *
  * @author Win11
  */
-public class ViewMedical extends HttpServlet {
+public class ViewMedicalRecord extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -40,10 +40,10 @@ public class ViewMedical extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewMedical</title>");
+            out.println("<title>Servlet ViewMedicalRecord</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewMedical at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ViewMedicalRecord at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,21 +61,12 @@ public class ViewMedical extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         MedicalRecordDAO dao = new MedicalRecordDAO();
-        String userid="";
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("userID".equals(cookie.getName())) {
-                     userid = cookie.getValue();
-                    System.out.println("Doctor ID from Cookie: " + userid);
-                }
-            }
-        } else {
-            System.out.println("No cookies found!");
-        }
-        List<MedicalRecord> lists = dao.getMedicalRecordsByCustomerId(Integer.parseInt(userid));
         HttpSession session = request.getSession();
+        Customer cus = (Customer) session.getAttribute("customerAccount");
+        List<MedicalRecord> lists = dao.getMedicalRecordsByCustomerId(cus.getCustomerID());
+        ProfessionalDAO daop =  new ProfessionalDAO();
         session.setAttribute("medicalRecords", lists);
+        session.setAttribute("listdoctor", lists);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/viewmedical-customer.jsp");
         dispatcher.forward(request, response);
     }

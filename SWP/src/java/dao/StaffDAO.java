@@ -450,6 +450,7 @@ public class StaffDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-
+        StaffDAO dao = new StaffDAO();
+        System.out.println(dao.getStaffByID(2).getPassword());
     }
 }

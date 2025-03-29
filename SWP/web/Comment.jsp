@@ -15,6 +15,7 @@
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
+        <link rel="stylesheet" type="text/css" href="css/pagination.css">
         <!-- Thêm CSS cho Datetimepicker -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
@@ -72,10 +73,16 @@
                                 <c:if test="${list == null || empty list}">
                                     <div class="alert alert-warning text-center">No comments available</div>
                                 </c:if>
+                                <!-- Bộ lọc theo ngày -->
+                                <div class="mb-3">
+                                    <label for="filterDate"><strong>Filter by Date:</strong></label>
+                                    <input type="date" id="filterDate" class="form-control" onchange="filterComments()">
+                                    <button class="btn btn-secondary mt-2" onclick="resetFilter()">Reset</button>
+                                </div>
 
                                 <c:forEach var="comment" items="${list}">
 
-                                    <div class="card p-3 mb-3">
+                                    <div class="card p-3 mb-3 comment-card" data-date="${comment.getDate()}">
                                         <div class="d-flex align-items-center mb-2">
                                             <strong class="text-primary">&#128172; ${comment.senderEmail}</strong>
                                             <br>
@@ -93,24 +100,20 @@
                                             <div class="replies-section">
                                                 <p><strong>Replies:</strong></p>
                                                 <ul>
-                                                    <c:set var="cookieStaffID" value="" />
-                                                    <c:forEach var="cookie" items="${pageContext.request.cookies}">
-                                                        <c:if test="${cookie.name eq 'staffID'}">
-                                                            <c:set var="cookieStaffID" value="${cookie.value}" />
-                                                        </c:if>
-                                                    </c:forEach>
+
+
                                                     <c:forEach var="reply" items="${comment.getReplies()}">
                                                         <li class="reply">
                                                             <p><strong>${reply.senderEmail}</strong> replied:</p>
                                                             <p>${reply.getCommentText()}</p>
 
-                                                            
-                                                                <!-- Nút mở popup -->
-                                                                <button class="btn btn-warning btn-sm" 
-                                                                        onclick="openPopup(${reply.commentId}, `${reply.getCommentText()}`)">
-                                                                    Edit
-                                                                </button>
-                                                           
+
+                                                            <!--                                                                 Nút mở popup 
+                                                            -->                                                                <button class="btn btn-warning btn-sm" 
+                                                                                                                                       onclick="openPopup(${reply.commentId}, `${reply.getCommentText()}`)">
+                                                                Edit
+                                                            </button>
+
                                                         </li>
                                                     </c:forEach>
                                                 </ul>
@@ -132,7 +135,7 @@
         <!-- Popup Edit -->
         <div id="editCommentPopup">
             <h5>Edit Comment</h5>
-            <form action="editcomment" method="POST">
+            <form action="editQA" method="POST">
                 <input type="hidden" id="editPopupCommentId" name="commentId">
                 <textarea id="editPopupCommentText" name="commentText" class="form-control" rows="3"></textarea>
                 <br>
@@ -146,14 +149,14 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Reply to Comment</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="closePopup2()"></button>
                     </div>
                     <div class="modal-body">
                         <input type="hidden" id="replyToCommentId">
                         <textarea id="replyText" class="form-control" rows="3" placeholder="Enter your reply..."></textarea>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closePopup2()">Cancel</button>
                         <button type="button" class="btn btn-primary" onclick="submitReply()">Submit</button>
                     </div>
                 </div>
@@ -187,7 +190,7 @@
             bodyData.append('replyText', encodedText);
 
             // Gửi request đến ReplyCommentServlet
-            fetch('/SWP/replyComment', {
+            fetch('/SWP/replyQA', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -223,7 +226,7 @@
                 // Gửi request đến DeleteCommentServlet
                 let bodyData = new URLSearchParams();
                 bodyData.append('commentId', commentId);
-                fetch('/SWP/deleteComment', {
+                fetch('/SWP/deleteQA', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
@@ -263,7 +266,52 @@
             document.getElementById("editCommentPopup").style.display = "none";
             document.getElementById("popupOverlay").style.display = "none";
         }
+        function closePopup2() {
+            let modalElement = document.getElementById("replyModal");
+            let backdrop = document.querySelector(".modal-backdrop");
 
+            if (modalElement) {
+                modalElement.classList.remove("show");
+                modalElement.style.display = "none";
+                document.body.classList.remove("modal-open"); // Xóa class của Bootstrap
+            }
+
+            if (backdrop) {
+                backdrop.remove(); // Xóa nền mờ
+            }
+        }
+
+
+        function filterComments() {
+            let filterDate = document.getElementById("filterDate").value; // Ngày từ input (YYYY-MM-DD)
+            let comments = document.querySelectorAll(".comment-card"); // Lấy danh sách comment
+
+            comments.forEach(comment => {
+                let rawDate = comment.getAttribute("data-date"); // Ngày ban đầu (có thể khác format)
+                let commentDate = convertToISODate(rawDate); // Chuyển về YYYY-MM-DD
+
+                if (!filterDate || commentDate > filterDate) {
+                    comment.style.display = "block"; // Hiện comment nếu khớp ngày
+                } else {
+                    comment.style.display = "none"; // Ẩn nếu không khớp
+                }
+            });
+        }
+
+// Chuyển đổi định dạng ngày từ `dd/MM/yyyy` → `YYYY-MM-DD`
+        function convertToISODate(dateStr) {
+            let parts = dateStr.split("/");
+            if (parts.length === 3) {
+                return `${parts[2]}-${parts[1]}-${parts[0]}`; // Trả về YYYY-MM-DD
+                        }
+                        return dateStr; // Nếu không đúng định dạng, giữ nguyên
+                    }
+
+// Hàm reset bộ lọc
+                    function resetFilter() {
+                        document.getElementById("filterDate").value = "";
+                        filterComments(); // Hiển thị lại tất cả comments
+                    }
 
 
     </script>
@@ -279,8 +327,8 @@
     <script src="assets/js/app.js"></script>
     <script src="js/pagination.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            paginateItems('.card', 5, '#pagination-container');
-        });
+                    document.addEventListener("DOMContentLoaded", function () {
+                        paginateItems('.card', 2, '#pagination-container');
+                    });
     </script>
 </html>

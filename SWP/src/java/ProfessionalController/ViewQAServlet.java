@@ -9,19 +9,19 @@ import dao.CommentCustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Comments;
+import model.Staff;
 
 /**
  *
  * @author Win11
  */
-public class EditCommentServlet extends HttpServlet {
+public class ViewQAServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,10 +38,10 @@ public class EditCommentServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet EditCommentServlet</title>");
+            out.println("<title>Servlet ViewQAServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet EditCommentServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ViewQAServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,7 +58,17 @@ public class EditCommentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        CommentCustomerDAO dao = new CommentCustomerDAO();
+        HttpSession session = request.getSession();
+        Staff id = (Staff) session.getAttribute("staffAccount");
+        List<Comments> listc = dao.getRootComments();
+        for (Comments comments : listc) {
+            comments.replies=dao.getCommentsByReplyToCommentID(comments.getCommentId(),id.getStaffID());
+        }
+        session.setAttribute("comments", listc);
+        session.setAttribute("list", listc);
+        session.setAttribute("staffID", id);
+        request.getRequestDispatcher("Comment.jsp").forward(request, response);
     }
 
     /**
@@ -71,49 +81,7 @@ public class EditCommentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       try {
-            int commentId = Integer.parseInt(request.getParameter("commentId"));
-            String newText = request.getParameter("commentText").trim();
-
-            // Kiểm tra nếu commentText không rỗng
-            if (newText.isEmpty()) {
-                request.setAttribute("error", "Comment cannot be empty.");
-                request.getRequestDispatcher("comments.jsp").forward(request, response);
-                return;
-            }
-            Cookie[] cookies = request.getCookies();
-            String id="";
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("staffID".equals(cookie.getName())) {
-                    id = cookie.getValue();
-                    System.out.println("Sender Email from Cookie: " + id);
-                }
-            }
-        } else {
-            System.out.println("No cookies found!");
-            response.sendRedirect("login.jsp");
-        }
-            CommentCustomerDAO dao = new CommentCustomerDAO();
-            // Gọi DAO để cập nhật bình luận
-            boolean updated = dao.updateComment(commentId, newText);
-            HttpSession session = request.getSession();
-        List<Comments> listc = dao.getRootComments();
-        for (Comments comments : listc) {
-            comments.replies=dao.getCommentsByReplyToCommentID(comments.getCommentId(),Integer.parseInt(id));
-        }
-        session.setAttribute("comments", listc);
-        session.setAttribute("list", listc);
-            if (updated) {
-                response.sendRedirect("Comment.jsp"); // Load lại trang sau khi cập nhật thành công
-            } else {
-                request.setAttribute("error", "Failed to update comment.");
-                request.getRequestDispatcher("Comment.jsp").forward(request, response);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendRedirect("comments.jsp?error=Invalid request");
-        }
+        processRequest(request, response);
     }
 
     /**

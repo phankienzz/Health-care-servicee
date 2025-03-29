@@ -3,23 +3,27 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package MedicalRecordController;
+package ProfessionalController;
 
-import com.google.gson.Gson;
-import dao.MedicalRecordDAO;
+import dao.CommentCustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.MedicalRecord; 
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.Comments;
+import model.Customer;
+import model.Staff;
 
 /**
  *
  * @author Win11
  */
-public class GetMedicalRecordServlet extends HttpServlet {
+public class EditQAServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -36,10 +40,10 @@ public class GetMedicalRecordServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet GetMedicalRecordServlet</title>");
+            out.println("<title>Servlet EditQAServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet GetMedicalRecordServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet EditQAServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,13 +60,7 @@ public class GetMedicalRecordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       int examinationID = Integer.parseInt(request.getParameter("examinationID"));
-        
-        MedicalRecordDAO dao = new MedicalRecordDAO();
-        MedicalRecord record = dao.getMedicalRecordByExamID(examinationID);
-
-        response.setContentType("application/json");
-        response.getWriter().write(new Gson().toJson(record));
+        processRequest(request, response);
     }
 
     /**
@@ -75,7 +73,40 @@ public class GetMedicalRecordServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            int commentId = Integer.parseInt(request.getParameter("commentId"));
+            String newText = request.getParameter("commentText").trim();
+
+            // Kiểm tra nếu commentText không rỗng
+            if (newText.isEmpty()) {
+                request.setAttribute("error", "Comment cannot be empty.");
+                request.getRequestDispatcher("comments.jsp").forward(request, response);
+                return;
+            }
+            
+            CommentCustomerDAO dao = new CommentCustomerDAO();
+            // Gọi DAO để cập nhật bình luận
+            boolean updated = dao.updateComment(commentId, newText);
+            HttpSession session = request.getSession();
+            Staff id = (Staff) session.getAttribute("staffAccount");
+        List<Comments> listc = dao.getRootComments();
+        for (Comments comments : listc) {
+            comments.replies=dao.getCommentsByReplyToCommentID(comments.getCommentId(),id.getStaffID());
+        }
+        session.setAttribute("comments", listc);
+        session.setAttribute("list", listc);
+        session.setAttribute("staffID", id);
+        
+            if (updated) {
+                request.getRequestDispatcher("Comment.jsp").forward(request, response); // Load lại trang sau khi cập nhật thành công
+            } else {
+                request.setAttribute("error", "Failed to update comment.");
+                request.getRequestDispatcher("Comment.jsp").forward(request, response);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("Comment.jsp?error=Invalid request");
+        }
     }
 
     /**
