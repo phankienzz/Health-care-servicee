@@ -45,7 +45,7 @@
                             <c:set var="viewAppointment" value="true"/>
                         </c:if>
                         <c:if test="${permission.permissionID == 1}">
-                            <c:set var="viewComment" value="true"/>
+                            <c:set var="viewQA" value="true"/>
                         </c:if>
                         <c:if test="${permission.permissionID == 15}">
                             <c:set var="viewSchedule" value="true"/>
@@ -96,12 +96,12 @@
 
                     <c:if test="${viewAppointment}">
                         <li>
-                            <a href="manage_appointment.jsp"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
+                            <a href="manage_appointment"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
                         </li>
                     </c:if>
-                        <c:if test="${viewComment}">
+                        <c:if test="${viewQA}">
                         <li>
-                            <a href="viewComment"><i class="fa fa-calendar"></i> <span>Comment</span></a>
+                            <a href="viewQA"><i class="fa fa-calendar"></i> <span>QA</span></a>
                         </li>
                     </c:if>
 

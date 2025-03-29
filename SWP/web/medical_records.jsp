@@ -20,32 +20,32 @@
                         <img src="assets/img/logo.png" width="35" height="35" alt=""> <span>Preclinic</span>
                     </a>
                 </div>
-                            <ul class="nav user-menu float-right">
-                                <li class="nav-item dropdown has-arrow">
-                                    <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
-                                        <span class="user-img"><img class="rounded-circle" src="assets/img/user.jpg" width="40" alt="Customer">
-                                            <span class="status online"></span></span>
-                                        <span>${sessionScope.customerAccount.fullName}</span>
-                                    </a>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="profile.jsp">My Profile</a>
-                                         <a class="dropdown-item" href="customer-medical-records">Medical record</a>
-                                        <a class="dropdown-item" href="logout">Logout</a>
-                                    </div>
-                                </li>
-                            </ul>
-
-                
-                </div>
-
-                <div class="page-wrapper">
-                    <div class="content container-fluid">
-                        <div class="row align-items-center mb-4">
-                            <div class="col-md-6">
-                                <h4 class="page-title">Your Appointments</h4>
-                            </div>
+                <ul class="nav user-menu float-right">
+                    <li class="nav-item dropdown has-arrow">
+                        <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
+                            <span class="user-img"><img class="rounded-circle" src="assets/img/user.jpg" width="40" alt="Customer">
+                                <span class="status online"></span></span>
+                            <span>${sessionScope.customerAccount.fullName}</span>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="profile.jsp">My Profile</a>
+                            <a class="dropdown-item" href="customer-medical-records">Medical record</a>
+                            <a class="dropdown-item" href="logout">Logout</a>
                         </div>
-                        <!-- Hi?n th? thông báo -->
+                    </li>
+                </ul>
+
+
+            </div>
+
+            <div class="page-wrapper-profile">
+                <div class="content container-fluid">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-md-6">
+                            <h4 class="page-title">Your Appointments</h4>
+                        </div>
+                    </div>
+                    <!-- Hi?n th? thông báo -->
                     <c:if test="${not empty message}">
                         <div class="alert alert-success">${message}</div>
                         <c:remove var="message" scope="session"/>
@@ -129,9 +129,9 @@
             </div>
         </div>
     </div>
-     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-        <script src="assets/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>

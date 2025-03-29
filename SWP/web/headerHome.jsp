@@ -55,30 +55,15 @@
                         <li class="nav-item"><a class="nav-link" href="about">About</a></li>
                         <li class="nav-item"><a class="nav-link" href="loadservice">Services</a></li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="department.html" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Department <i class="icofont-thin-down"></i></a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdown02">
-                                <li><a class="dropdown-item" href="department.jsp">Departments</a></li>
-                                <li><a class="dropdown-item" href="department-single.jsp">Department Single</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="doctor.jsp" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Doctors <i class="icofont-thin-down"></i></a>
                             <ul class="dropdown-menu" aria-labelledby="dropdown03">
                                 <li><a class="dropdown-item" href="doctor.jsp">Doctors</a></li>
-                                <li><a class="dropdown-item" href="doctor-single.jsp">Doctor Single</a></li>
                                 <li><a class="dropdown-item" href="appointment">Appointment</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">News<i class="icofont-thin-down"></i></a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdown05">
-                                <li><a class="dropdown-item" href="allNews">All News</a></li>
-                                    <%--<c:forEach var="cate" items="${listCate}">--%> 
-                                    <!--<li><a class="dropdown-item" href="allNews?categoryID=${cate.category_id}">${cate.name}</a></li>-->
-                                    <%--</c:forEach>--%>
-                            </ul>
-                        </li>
-                         <li class="nav-item"><a class="nav-link" href="viewMedical">Medical Record</a></li>
+
+                        <li class="nav-item"><a class="nav-link" href="allNews">News</a></li>
+
                         <li class="nav-item"><a class="nav-link" href="contact">Contact</a></li>
                     </ul>
                 </div>
@@ -112,8 +97,12 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <a class="dropdown-item" href="profile.jsp">Profile</a>
-                        <a class="dropdown-item" href="customer-medical-records">Medicalrecords</a>
-                        <!-- <a class="dropdown-item" href="#"></a> -->
+                        <c:if test="${sessionScope.customerAccount != null}">
+                            <a class="dropdown-item" href="customer-medical-records">Medicalrecords</a>
+                        </c:if>
+                        <c:if test="${sessionScope.staffAccount != null}">
+                            <a class="dropdown-item" href="roleStaff">Staff site</a>
+                        </c:if>
                         <a class="dropdown-item" href=logout>Logout</a>
                     </div>
                 </c:if>
