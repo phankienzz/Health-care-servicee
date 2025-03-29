@@ -128,7 +128,10 @@
                                             <option value="">Select Doctor</option>
                                             <c:if test="${not empty doctors}">
                                                 <c:forEach var="doctor" items="${doctors}">
-                                                    <option value="${doctor.staffID}" data-image="${doctor.profilePicture}" data-specialization="${doctor.specialization}" <c:if test="${doctor.staffID == selectedDoctorId}">selected</c:if>>${doctor.fullName}</option>
+                                                    <option value="${doctor.staffID}" 
+                                                            data-image="assets/img/${doctor.picture}" 
+                                                            data-specialization="${doctor.specialization}" 
+                                                            <c:if test="${doctor.staffID == selectedDoctorId}">selected</c:if>>${doctor.fullName}</option>
                                                 </c:forEach>
                                             </c:if>
                                         </select>

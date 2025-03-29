@@ -133,19 +133,19 @@
                         </div>
                     </div>
                 </div>
-<!--                <div class="col-12 text-center  mb-5">
-                    <div class="btn-group btn-group-toggle " data-toggle="buttons">
-                        <label class="btn active ">
-                            <input type="radio" name="shuffle-filter" value="all" checked="checked" />All Doctor
-                        </label>
-                        <c:forEach var="pro" items="${listPro}">
-                            <label class="btn">
-                                <input type="radio" name="shuffle-filter" value="cat6" />${pro.biography}
-                            </label>
-                        </c:forEach>
+                <!--                <div class="col-12 text-center  mb-5">
+                                    <div class="btn-group btn-group-toggle " data-toggle="buttons">
+                                        <label class="btn active ">
+                                            <input type="radio" name="shuffle-filter" value="all" checked="checked" />All Doctor
+                                        </label>
+                <c:forEach var="pro" items="${listPro}">
+                    <label class="btn">
+                        <input type="radio" name="shuffle-filter" value="cat6" />${pro.biography}
+                    </label>
+                </c:forEach>
 
-                    </div>
-                </div>-->
+            </div>
+        </div>-->
                 <div class="row shuffle-wrapper portfolio-gallery">
                     <c:forEach var="pro" items="${listPro}">
                         <div class="col-lg-3 col-sm-6 col-md-6 mb-4 shuffle-item" data-groups="[&quot;cat1&quot;,&quot;cat2&quot;]">
@@ -165,8 +165,8 @@
                 </div>
             </div>
         </section>
-        
-        
+
+
 
         <!-- Chi Tiết Dịch Vụ -->
         <div class="container" id="service-detail" style="display: none;">
@@ -179,7 +179,7 @@
             <div class="info"><span>Giá:</span> $${service.price}</div>
             <div class="info"><span>Thời Gian:</span> ${service.duration} phút</div>
             <div class="text-center mt-3">
-                <a href="appoinment.html" class="btn btn-primary btn-custom">Đặt Dịch Vụ</a>
+                <a href="appointment" class="btn btn-primary btn-custom">Đặt Dịch Vụ</a>
                 <a href="loadservice" class="btn btn-secondary btn-custom">Quay Lại Danh Sách</a>
             </div>
         </div>
@@ -187,32 +187,46 @@
 
         <jsp:include page="footer.jsp"></jsp:include>
 
-        <!-- Scripts -->
-        <script src="plugins/jquery/jquery.js"></script>
-        <script src="plugins/bootstrap/js/bootstrap.min.js"></script>
-        <script src="plugins/slick-carousel/slick/slick.min.js"></script>
+            <!-- Scripts -->
+            <script src="plugins/jquery/jquery.js"></script>
+            <script src="plugins/bootstrap/js/bootstrap.min.js"></script>
+            <script src="plugins/slick-carousel/slick/slick.min.js"></script>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const items = document.querySelectorAll(".item");
-                const sections = document.querySelectorAll(".container[id]");
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const items = document.querySelectorAll(".item");
+                    const sections = document.querySelectorAll(".container[id]");
 
-                items.forEach(item => {
-                    item.addEventListener("click", function () {
-                        items.forEach(i => i.classList.remove("active"));
-                        this.classList.add("active");
+                    items.forEach(item => {
+                        item.addEventListener("click", function () {
+                            items.forEach(i => i.classList.remove("active"));
+                            this.classList.add("active");
 
-                        // Ẩn tất cả các section trước khi hiển thị
-                        sections.forEach(sec => sec.style.display = "none");
+                            // Ẩn tất cả các section trước khi hiển thị
+                            sections.forEach(sec => sec.style.display = "none");
 
-                        // Hiển thị section tương ứng với tab được click
-                        const target = this.getAttribute("data-target");
-                        document.getElementById(target).style.display = "block";
+                            // Hiển thị section tương ứng với tab được click
+                            const target = this.getAttribute("data-target");
+                            document.getElementById(target).style.display = "block";
+                        });
                     });
                 });
-            });
 
+            </script>
+
+            <script>
+                // Automatically check the service checkbox if 'selectedServiceId' is present in the URL
+                document.addEventListener("DOMContentLoaded", function () {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const selectedServiceId = urlParams.get("selectedServiceId");
+
+                    if (selectedServiceId) {
+                        const checkbox = document.getElementById(`service_${selectedServiceId}`);
+                        if (checkbox) {
+                            checkbox.checked = true;
+                        }
+                    }
+                });
         </script>
-
     </body>
 </html>
