@@ -28,24 +28,29 @@ public class Manage_appointment extends HttpServlet {
     
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
-    
+    MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
+
     String patientName = request.getParameter("patientName");
     String doctorName = request.getParameter("doctorName");
     String appointmentDate = request.getParameter("appointmentDate");
     String timeCreatedSort = request.getParameter("timeCreatedSort");
     String status = request.getParameter("status");
 
-    int page = 1; 
-    int pageSize = 10; 
+    // Nếu không có giá trị timeCreatedSort, mặc định là "latest"
+    if (timeCreatedSort == null || timeCreatedSort.isEmpty()) {
+        timeCreatedSort = "latest";
+    }
+
+    int page = 1;
+    int pageSize = 10;
     String pageStr = request.getParameter("page");
     if (pageStr != null && !pageStr.isEmpty()) {
         page = Integer.parseInt(pageStr);
     }
 
-    // Bỏ ageSort trong getTotalFilteredRecords
+    // Lấy tổng số bản ghi phù hợp với bộ lọc
     int totalRecords = medicalExaminationDAO.getTotalFilteredRecords(
             patientName, doctorName, appointmentDate, timeCreatedSort, status);
     int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
@@ -53,12 +58,13 @@ public class Manage_appointment extends HttpServlet {
     if (page < 1) page = 1;
     if (page > totalPages && totalPages > 0) page = totalPages;
 
-    // Bỏ ageSort trong getFilteredExaminations
+    // Lấy danh sách đã sắp xếp theo timeCreatedSort
     List<MedicalExamination> list = medicalExaminationDAO.getFilteredExaminations(
             patientName, doctorName, appointmentDate, timeCreatedSort, status, page, pageSize);
 
     List<Professional> allProfessionals = medicalExaminationDAO.getAllProfessionals();
 
+    // Gửi dữ liệu đến JSP
     request.setAttribute("list", list);
     request.setAttribute("allProfessionals", allProfessionals);
     request.setAttribute("currentPage", page);

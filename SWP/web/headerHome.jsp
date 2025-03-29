@@ -54,13 +54,7 @@
                         </li>
                         <li class="nav-item"><a class="nav-link" href="about">About</a></li>
                         <li class="nav-item"><a class="nav-link" href="loadservice">Services</a></li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="department.html" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Department <i class="icofont-thin-down"></i></a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdown02">
-                                <li><a class="dropdown-item" href="department.jsp">Departments</a></li>
-                                <li><a class="dropdown-item" href="department-single.jsp">Department Single</a></li>
-                            </ul>
-                        </li>
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="doctor.jsp" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Doctors <i class="icofont-thin-down"></i></a>
                             <ul class="dropdown-menu" aria-labelledby="dropdown03">
@@ -75,10 +69,10 @@
                                 <li><a class="dropdown-item" href="allNews">All News</a></li>
                                     <%--<c:forEach var="cate" items="${listCate}">--%> 
                                     <!--<li><a class="dropdown-item" href="allNews?categoryID=${cate.category_id}">${cate.name}</a></li>-->
-                                    <%--</c:forEach>--%>
+                                <%--</c:forEach>--%>
                             </ul>
                         </li>
-                         <li class="nav-item"><a class="nav-link" href="viewMedical">Medical Record</a></li>
+
                         <li class="nav-item"><a class="nav-link" href="contact">Contact</a></li>
                     </ul>
                 </div>
@@ -100,7 +94,12 @@
                         <a class="dropdown-item" href="profile.jsp">Profile</a>
                         <a class="dropdown-item" href="invoiceCustomer">Invoice</a>
                         <!-- <a class="dropdown-item" href="#"></a> -->
-                        <a class="dropdown-item" href="customer-medical-records">Medical Records</a>
+                        <a class="dropdown-item" href="customer-medical-records">
+                            Medical Records
+                            <c:if test="${sessionScope.newMedicalRecordNotification == true}">
+                                <span class="badge badge-danger ml-2">!</span>
+                            </c:if>
+                        </a>
                         <a class="dropdown-item" href="logout">Logout</a>
                     </div>
                 </c:if>

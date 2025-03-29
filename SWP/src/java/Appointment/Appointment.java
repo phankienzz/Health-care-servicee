@@ -1,5 +1,6 @@
 package Appointment;
 
+import com.google.gson.Gson;
 import dao.MedicalExaminationDAO;
 import dao.ProfessionalDAO;
 import dao.ServiceDAO;
@@ -14,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import model.Customer;
 import model.MedicalExamination;
 import model.Professional;
@@ -25,18 +27,23 @@ import model.Service;
  */
 public class Appointment extends HttpServlet {
 
-    private ServiceDAO serviceDAO = new ServiceDAO();
-    private ProfessionalDAO professionalDAO = new ProfessionalDAO();
-    private MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ServiceDAO serviceDAO = new ServiceDAO();
+        ProfessionalDAO professionalDAO = new ProfessionalDAO();
+        MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
+
         List<Service> services = serviceDAO.getAllService();
         List<Professional> doctors = professionalDAO.getAllDoctors();
 
+
+        Map<Integer, List<String>> bookedTimes = medicalExaminationDAO.getBookedTimesForAllDoctors();
+        String bookedTimesJson = new Gson().toJson(bookedTimes); 
+
         request.setAttribute("services", services);
         request.setAttribute("doctors", doctors);
+        request.setAttribute("bookedTimesJson", bookedTimesJson);
 
         request.getRequestDispatcher("appointment.jsp").forward(request, response);
     }
@@ -45,6 +52,9 @@ public class Appointment extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+        ServiceDAO serviceDAO = new ServiceDAO();
+        ProfessionalDAO professionalDAO = new ProfessionalDAO();
+        MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
         Customer customerProfile = (Customer) session.getAttribute("customerAccount");
 
         if (customerProfile == null) {
@@ -61,7 +71,7 @@ public class Appointment extends HttpServlet {
         String message = request.getParameter("message");
 
         try {
-            // Kiểm tra dữ liệu đầu vào
+
             if (serviceIds == null || serviceIds.length == 0) {
                 request.setAttribute("error", "Please select at least one service.");
                 reloadFormData(request, response, serviceIds, doctorId, dateStr, timeStr, name, phone, message);
@@ -72,9 +82,9 @@ public class Appointment extends HttpServlet {
                 reloadFormData(request, response, serviceIds, doctorId, dateStr, timeStr, name, phone, message);
                 return;
             }
-        System.out.println(doctorId);
-        // Get current timestamp for createdAt
-        String createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            System.out.println(doctorId);
+
+            String createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
             Professional doctor = professionalDAO.getProfessionalbyID(Integer.parseInt(doctorId));
             if (doctor == null) {
@@ -96,16 +106,14 @@ public class Appointment extends HttpServlet {
             }
 
             String examinationDate = examinationDateTime.format(outputFormatter);
-             createdAt = LocalDateTime.now().format(outputFormatter);
+            createdAt = LocalDateTime.now().format(outputFormatter);
 
-            // Check if the doctor is available at the specified time
             if (!medicalExaminationDAO.isDoctorAvailable(Integer.parseInt(doctorId), examinationDate)) {
                 request.setAttribute("error", "The selected doctor is not available at the specified time.");
                 reloadFormData(request, response, serviceIds, doctorId, dateStr, timeStr, name, phone, message);
                 return;
             }
 
-            // Check if the customer is available at the specified time
             if (!medicalExaminationDAO.isCustomerAvailable(customerProfile.getCustomerID(), examinationDate, Integer.parseInt(doctorId))) {
                 request.setAttribute("error", "You already have an appointment with this doctor at the specified time.");
                 reloadFormData(request, response, serviceIds, doctorId, dateStr, timeStr, name, phone, message);
@@ -165,6 +173,9 @@ public class Appointment extends HttpServlet {
             String[] serviceIds, String doctorId, String dateStr, String timeStr,
             String name, String phone, String message) throws ServletException, IOException {
         preserveFormData(request, serviceIds, doctorId, dateStr, timeStr, name, phone, message);
+        ServiceDAO serviceDAO = new ServiceDAO();
+        ProfessionalDAO professionalDAO = new ProfessionalDAO();
+        MedicalExaminationDAO medicalExaminationDAO = new MedicalExaminationDAO();
         request.setAttribute("services", serviceDAO.getAllService());
         request.setAttribute("doctors", professionalDAO.getAllDoctors());
         request.getRequestDispatcher("appointment.jsp").forward(request, response);
