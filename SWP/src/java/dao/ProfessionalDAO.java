@@ -1,6 +1,7 @@
 package dao;
 
 import context.DBContext;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -361,7 +362,7 @@ public class ProfessionalDAO {
     public static void main(String[] args) {
         // Khởi tạo DAO
         ProfessionalDAO dao = new ProfessionalDAO();
-
-        System.out.println(dao.getProfessionalbyID(17).getProfilePicture());
+        String Image = new String(dao.getProfessionalbyID(17).getProfilePicture(), StandardCharsets.UTF_8);
+        System.out.println(Image);
     }
 }
