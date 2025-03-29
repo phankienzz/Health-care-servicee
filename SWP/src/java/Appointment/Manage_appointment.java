@@ -46,7 +46,7 @@ public class Manage_appointment extends HttpServlet {
         page = Integer.parseInt(pageStr);
     }
 
-    // Bỏ ageSort trong getTotalFilteredRecords
+    
     int totalRecords = medicalExaminationDAO.getTotalFilteredRecords(
             patientName, doctorName, appointmentDate, timeCreatedSort, status);
     int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
@@ -54,10 +54,9 @@ public class Manage_appointment extends HttpServlet {
     if (page < 1) page = 1;
     if (page > totalPages && totalPages > 0) page = totalPages;
     HttpSession session = request.getSession();
-    // Bỏ ageSort trong getFilteredExaminations
+    
         Staff doctorID = (Staff) session.getAttribute("staffAccount");
-    List<MedicalExamination> list = medicalExaminationDAO.getFilteredExaminations2(
-            patientName, doctorName, appointmentDate, timeCreatedSort, status,doctorID.getStaffID(), page, pageSize);
+    List<MedicalExamination> list = medicalExaminationDAO.getFilteredExaminations(patientName, doctorName, appointmentDate, timeCreatedSort, status, page, pageSize);
     
     List<Professional> allProfessionals = medicalExaminationDAO.getAllProfessionals();
     

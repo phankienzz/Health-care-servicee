@@ -153,7 +153,7 @@
                                                             </a>
                                                             <div class="dropdown-menu dropdown-menu-right">
                                                                 <!-- S?a li�n k?t Edit -->
-                                                                <a class="dropdown-item" href="edit_appointment?examinationID=${exam.examinationID}">
+                                                                <a class="dropdown-item" href="edit_appointment?appointmentId=${exam.examinationID}">
                                                                     <i class="fa fa-pencil m-r-5"></i> Edit
                                                                 </a>
                                                                 <!-- S?a li�n k?t Delete -->
@@ -171,19 +171,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="modal fade" id="medicalRecordModal" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Medical Record</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form id="medicalRecordForm" action="saveMedical" method="POST">
-                                            <input type="hidden" id="examinationID" name="examinationID">
-
+                        
+                                    
 
                         <!-- Ph?n trang -->
                         <c:if test="${totalPages > 1}">

@@ -586,6 +586,7 @@ public class MedicalExaminationDAO extends DBContext {
             return false;
         }
     }
+
     public List<MedicalExamination> getFilteredExaminations2(String patientName, String doctorName,
             String appointmentDate, String timeCreatedSort, String status, int consultantID, int page, int pageSize) {
         List<MedicalExamination> medicalExaminationList = new ArrayList<>();
@@ -635,10 +636,9 @@ public class MedicalExaminationDAO extends DBContext {
             sql.append(" AND m.status = ?");
             params.add(status);
         }
-        
-            sql.append(" AND m.consultantID = ?");
-            params.add(consultantID);
-        
+
+        sql.append(" AND m.consultantID = ?");
+        params.add(consultantID);
 
         sql.append(") SELECT * FROM FilteredExaminations "
                 + "WHERE RowNum BETWEEN ? AND ?");
@@ -800,7 +800,7 @@ public class MedicalExaminationDAO extends DBContext {
         }
         return medicalExaminationList;
     }
-    
+
     public int getTotalFilteredRecords(String patientName, String doctorName,
             String appointmentDate, String timeCreatedSort, String status) {
         StringBuilder sql = new StringBuilder(
@@ -1016,44 +1016,6 @@ public class MedicalExaminationDAO extends DBContext {
         return totalRecords;
     }
 
-//    public List<MedicalExamination> getAppointmentsByCustomerId(int customerId) {
-//        List<MedicalExamination> appointments = new ArrayList<>();
-//        String sql = "SELECT m.examinationID, FORMAT(m.examinationDate, 'dd/MM/yyyy HH:mm') AS examinationDate, "
-//                + "m.customerID, m.status, m.consultantID, m.notes, FORMAT(m.createdAt, 'dd/MM/yyyy HH:mm') AS createdAt, "
-//                + "c.fullName AS customerName, s.fullName AS staffName "
-//                + "FROM MedicalExamination m "
-//                + "JOIN Customer c ON m.customerID = c.customerID "
-//                + "JOIN Staff s ON m.consultantID = s.staffID "
-//                + "WHERE m.customerID = ?";
-//        try {
-//            PreparedStatement ps = connection.prepareStatement(sql);
-//            ps.setInt(1, customerId);
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                Customer customer = new Customer();
-//                customer.setCustomerID(rs.getInt("customerID"));
-//                customer.setFullName(rs.getString("customerName"));
-//
-//                Professional professional = new Professional();
-//                professional.setStaffID(rs.getInt("consultantID"));
-//                professional.setFullName(rs.getString("staffName"));
-//
-//                MedicalExamination exam = new MedicalExamination();
-//                exam.setExaminationID(rs.getInt("examinationID"));
-//                exam.setExaminationDate(rs.getString("examinationDate"));
-//                exam.setCustomerId(customer);
-//                exam.setStatus(rs.getString("status"));
-//                exam.setConsultantId(professional);
-//                exam.setNote(rs.getString("notes"));
-//                exam.setCreatedAt(rs.getString("createdAt"));
-//                exam.setList(getServicesByExaminationId(rs.getInt("examinationID")));
-//                appointments.add(exam);
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return appointments;
-//    }
     public List<MedicalExamination> getAppointmentsByCustomerId(int customerId, String dateFilter, int page, int pageSize) {
         List<MedicalExamination> appointments = new ArrayList<>();
         String sql = "SELECT m.examinationID, FORMAT(m.examinationDate, 'dd/MM/yyyy HH:mm') AS examinationDate, "
@@ -1212,27 +1174,21 @@ public class MedicalExaminationDAO extends DBContext {
     public boolean hasNewStatusChange(int customerId) {
         String sql = "SELECT COUNT(*) AS count "
                 + "FROM MedicalExamination "
-                + "WHERE customerID = ? AND statusChanged = 1"; 
+                + "WHERE customerID = ? AND statusChanged = 1";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, customerId);
+            System.out.println("Executing SQL: " + ps.toString()); // Log câu truy vấn
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return rs.getInt("count") > 0; 
+                int count = rs.getInt("count");
+                System.out.println("Status change count: " + count); // Log kết quả
+                return count > 0;
             }
         } catch (SQLException e) {
+            System.out.println("SQL Error in hasNewStatusChange: " + e.getMessage());
             e.printStackTrace();
         }
         return false; // Trả về false nếu không có trạng thái thay đổi hoặc xảy ra lỗi
-    }
-
-    public static void main(String[] args) {
-        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
-        int year = 2024; // Thay đổi năm nếu muốn test các năm khác
-        Map<Integer, Integer> stats = medDAO.getMonthlyAppointmentStatistics(year);
-        System.out.println("Thống kê khách hàng đăng ký theo tháng năm " + year + ":");
-        for (int i = 1; i <= 12; i++) {
-            System.out.println("Tháng " + i + ": " + stats.getOrDefault(i, 0) + " khách hàng");
-        }
     }
 
 }
