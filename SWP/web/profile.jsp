@@ -30,27 +30,35 @@
     <body>
         <div class="header">
             <div class="header-left">
-                <a href="customer-dashboard.html" class="logo">
+                <a href="home" class="logo">
                     <img src="assets/img/logo.png" width="35" height="35" alt=""> <span>Preclinic</span>
                 </a>
             </div>
+
             <ul class="nav user-menu float-right">
-
-
                 <li class="nav-item dropdown has-arrow">
                     <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
                         <span class="user-img"><img class="rounded-circle" src="pictureprofile?customerID=${sessionScope.customerAccount.customerID}" width="50" height="35">
                             <span class="status online"></span></span>
-                        <span>${sessionScope.customerAccount.fullName}</span>
+                            <c:if test="${sessionScope.customerAccount != null}">
+                            <span>${sessionScope.customerAccount.fullName}</span>
+                        </c:if>
+                        <c:if test="${sessionScope.staffAccount != null}">
+                            <span>${sessionScope.staffAccount.fullName}</span>
+                        </c:if>
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="profile.jsp">My Profile</a>
-                        <a class="dropdown-item" href="customer-medical-records">Medical record</a>
-
+                        <c:if test="${sessionScope.customerAccount != null}">
+                            <a class="dropdown-item" href="customer-medical-records">Medical record</a>
+                        </c:if>
                         <a class="dropdown-item" href="logout">Logout</a>
                     </div>
                 </li>
+
+
             </ul>
+
         </div>
 
         <style>
@@ -110,8 +118,8 @@
                                         <div class="col-md-5">
                                             <div class="profile-info-left">
                                                 <h3 class="user-name m-t-0 mb-0">${sessionScope.customerAccount.fullName}</h3>
-                                                <small class="text-muted">Gynecologist</small>
-                                                <div class="staff-id">Employee ID : DR-0001</div>
+                                                <!--<small class="text-muted">Gynecologist</small>-->
+                                                <div class="staff-id">Customer ID : ${sessionScope.customerAccount.customerID}</div>
                                                 <div class="staff-msg"><a href="change-password.jsp" class="btn btn-primary">Change password</a></div>
                                             </div>
                                         </div>
@@ -147,15 +155,6 @@
                             </div>                        
                         </div>
                     </div>
-                </div>
-                <div class="profile-tabs">
-                    <ul class="nav nav-tabs nav-tabs-bottom">
-                        <li class="nav-item"><a class="nav-link active" href="#about-cont" data-toggle="tab">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#bottom-tab2" data-toggle="tab">Profile</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#bottom-tab3" data-toggle="tab">Messages</a></li>
-                    </ul>
-
-
                 </div>
             </c:if>   
             <c:if test="${sessionScope.staffAccount != null}">
@@ -194,8 +193,8 @@
                                         <div class="col-md-5">
                                             <div class="profile-info-left">
                                                 <h3 class="user-name m-t-0 mb-0">${sessionScope.staffAccount.fullName}</h3>
-                                                <small class="text-muted">Gynecologist</small>
-                                                <div class="staff-id">Employee ID : DR-0001</div>
+                                                <!--<small class="text-muted">Gynecologist</small>-->
+                                                <div class="staff-id">Staff ID : ${sessionScope.staffAccount.staffID}</div>
                                                 <div class="staff-msg"><a href="change-password.jsp" class="btn btn-primary">Change password</a></div>
                                             </div>
                                         </div>
@@ -231,15 +230,6 @@
                             </div>                        
                         </div>
                     </div>
-                </div>
-                <div class="profile-tabs">
-                    <ul class="nav nav-tabs nav-tabs-bottom">
-                        <li class="nav-item"><a class="nav-link active" href="#about-cont" data-toggle="tab">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#bottom-tab2" data-toggle="tab">Profile</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#bottom-tab3" data-toggle="tab">Messages</a></li>
-                    </ul>
-
-
                 </div>
             </c:if> 
         </div>

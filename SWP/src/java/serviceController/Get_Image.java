@@ -31,7 +31,6 @@ public class Get_Image extends HttpServlet {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy ảnh.");
                 return;
             }
-
             // Đặt MIME type phù hợp (ở đây là ảnh PNG, có thể thay đổi)
             response.setContentType("image/jpeg");
 

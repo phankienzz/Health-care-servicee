@@ -37,7 +37,7 @@
             </ul>
             </div>
 
-            <div class="page-wrapper">
+            <div class="page-wrapper-profile">
                 <div class="content container-fluid">
                     <div class="row">
                         <div class="col-lg-8 offset-lg-2">
