@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.MedicalExamination;
 import model.Professional;
+import model.Staff;
 
 /**
  *
@@ -45,20 +46,20 @@ public class Manage_appointment extends HttpServlet {
         page = Integer.parseInt(pageStr);
     }
 
-    // Bỏ ageSort trong getTotalFilteredRecords
+    
     int totalRecords = medicalExaminationDAO.getTotalFilteredRecords(
             patientName, doctorName, appointmentDate, timeCreatedSort, status);
     int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
 
     if (page < 1) page = 1;
     if (page > totalPages && totalPages > 0) page = totalPages;
-
-    // Bỏ ageSort trong getFilteredExaminations
-    List<MedicalExamination> list = medicalExaminationDAO.getFilteredExaminations(
-            patientName, doctorName, appointmentDate, timeCreatedSort, status, page, pageSize);
-
+    HttpSession session = request.getSession();
+    
+        Staff doctorID = (Staff) session.getAttribute("staffAccount");
+    List<MedicalExamination> list = medicalExaminationDAO.getFilteredExaminations(patientName, doctorName, appointmentDate, timeCreatedSort, status, page, pageSize);
+    
     List<Professional> allProfessionals = medicalExaminationDAO.getAllProfessionals();
-
+    
     request.setAttribute("list", list);
     request.setAttribute("allProfessionals", allProfessionals);
     request.setAttribute("currentPage", page);

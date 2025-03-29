@@ -40,14 +40,12 @@ public class Home extends HttpServlet {
             session.setAttribute("visited", true);
         }
 
-        List<Service> listService = dao.get4Service();
         List<Feedback> listFeedback = feedbackDAO.getAllFeedback5StarByCustomer();
 
         for (Feedback feedback : listFeedback) {
             feedback.setDate(valid.formatDateNews(feedback.getDate()));
         }
 
-        request.setAttribute("listService", listService);
         request.setAttribute("listFeedback", listFeedback);
         request.getRequestDispatcher("index_1.jsp").forward(request, response);
     }

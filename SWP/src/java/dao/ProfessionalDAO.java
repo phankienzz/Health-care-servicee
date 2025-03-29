@@ -1,6 +1,7 @@
 package dao;
 
 import context.DBContext;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -89,39 +90,9 @@ public class ProfessionalDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        //    public boolean addProfessional(Professional professional) {
-        //        String sql = "INSERT INTO Staff (fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture)\n"
-        //                + "VALUES (?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?);"
-        //                + "INSERT INTO Professional (specialization, officeHours, qualification, biography, profilePicture, status, createdAt, staffID)\n"
-        //                + "VALUES (?, ?, ?, ?, ?, ?, GETDATE(), SCOPE_IDENTITY());";
-        //        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-        //            stmt.setString(1, professional.getFullName());
-        //            stmt.setString(2, professional.getEmail());
-        //            stmt.setString(3, professional.getPassword());
-        //            stmt.setDate(6, convertStringToSqlDate(professional.getDateOfBirth()));
-        //            stmt.setString(5, professional.getGender());
-        //            stmt.setString(7, professional.getAddress());
-        //            stmt.setString(4, professional.getPhone());
-        //            stmt.setDate(8, convertStringToSqlDate(professional.getHireDate()));
-        //            stmt.setInt(9, professional.getRoleID());
-        //            stmt.setString(10, professional.getStatus());
-        //            stmt.setBytes(11, professional.getProfilePicture().getBytes());
-        //            stmt.setString(12, professional.getSpecialization());
-        //            stmt.setString(13, professional.getOfficeHours());
-        //            stmt.setString(14, professional.getQualification());
-        //            stmt.setString(15, professional.getBiography());
-        //            stmt.setBytes(16, professional.getProfilePicture().getBytes());
-        //            stmt.setString(17, professional.getStatus());
-        //
-        //            return stmt.executeUpdate() > 0;
-        //        } catch (SQLException e) {
-        //            e.printStackTrace();
-        //        }
-        //        return false;
-        //    }
         return false;
     }
-        
+
     public int getRoleIDByName(String roleName) {
         String sql = "SELECT roleID FROM MedicalSystem.dbo.Role WHERE roleName = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -178,6 +149,41 @@ public class ProfessionalDAO {
     public List<Professional> getAllProfessionals() {
         List<Professional> list = new ArrayList<>();
         String sql = "SELECT \n"
+                + "    s.staffID,\n"
+                + "    s.fullName,\n"
+                + "    s.email,\n"
+                + "    s.password,\n"
+                + "    s.phone,\n"
+                + "    s.gender,\n"
+                + "    s.dateOfBirth,\n"
+                + "    s.address,\n"
+                + "    s.hireDate,\n"
+                + "    s.roleID,\n"
+                + "    s.status AS staffStatus,\n"
+                + "    s.profilePicture AS staffProfilePicture,\n"
+                + "    p.professionalID,\n"
+                + "    p.specialization,\n"
+                + "    p.officeHours,\n"
+                + "    p.qualification,\n"
+                + "    p.biography,\n"
+                + "    p.profilePicture AS professionalProfilePicture,\n"
+                + "    p.status AS professionalStatus,\n"
+                + "    p.createdAt\n"
+                + "FROM Staff s\n"
+                + "JOIN Professional p ON s.staffID = p.staffID;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                list.add(extractProfessional(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<Professional> get4Professionals() {
+        List<Professional> list = new ArrayList<>();
+        String sql = "SELECT TOP 4 \n"
                 + "    s.staffID,\n"
                 + "    s.fullName,\n"
                 + "    s.email,\n"
@@ -361,8 +367,9 @@ public class ProfessionalDAO {
     public static void main(String[] args) {
         // Khởi tạo DAO
         ProfessionalDAO dao = new ProfessionalDAO();
-
-        // Kiểm tra kết nối CSDL trước khi truy vấn
-        System.out.println(dao.getProfessionalbyID(18).getProfilePicture());
+        List<Professional> list = dao.get4Professionals();
+        for (Professional professional : list) {
+            System.out.println(professional);
+        }
     }
 }

@@ -7,6 +7,7 @@ package HomePageController;
 import util.ValidFunction;
 import dao.FeedbackDAO;
 import dao.HomePageDAO;
+import dao.ProfessionalDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Feedback;
+import model.Professional;
 import model.Service;
 
 /**
@@ -32,9 +34,10 @@ public class About extends HttpServlet {
 
         HomePageDAO dao = new HomePageDAO();
         FeedbackDAO feedbackDAO = new FeedbackDAO();
+        ProfessionalDAO proDAO = new ProfessionalDAO();
 
         List<Feedback> listFeedback = feedbackDAO.getAllFeedback5StarByCustomer();
-
+        List<Professional> listPro = proDAO.get4Professionals();
         List<Service> listService = dao.get4Service();
 
         for (Feedback feedback : listFeedback) {
@@ -42,6 +45,7 @@ public class About extends HttpServlet {
         }
         request.setAttribute("listService", listService);
         request.setAttribute("listFeedback", listFeedback);
+        request.setAttribute("listProfessional", listPro);
 
         request.getRequestDispatcher("about.jsp").forward(request, response);
     }

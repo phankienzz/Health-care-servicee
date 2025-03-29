@@ -42,24 +42,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!--                        <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                                                    <div class="dash-widget">
-                                                        <span class="dash-widget-bg1"><i class="fa fa-stethoscope" aria-hidden="true"></i></span>
-                                                        <div class="dash-widget-info text-right">
-                                                            <h3>${docCount}</h3>
-                                                            <span class="widget-title1">Doctors <i class="fa fa-check" aria-hidden="true"></i></span>
-                                                        </div>
-                                                    </div>
-                                                </div>-->
-                        <!--                        <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                                                    <div class="dash-widget">
-                                                        <span class="dash-widget-bg3"><i class="fa fa-user-md" aria-hidden="true"></i></span>
-                                                        <div class="dash-widget-info text-right">
-                                                            <h3>72</h3>
-                                                            <span class="widget-title3">Attend <i class="fa fa-check" aria-hidden="true"></i></span>
-                                                        </div>
-                                                    </div>
-                                                </div>-->
                         <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                             <div class="dash-widget">
                                 <span class="dash-widget-bg4"><i class="fa fa-heartbeat" aria-hidden="true"></i></span>
@@ -197,9 +179,6 @@
                                         </c:forEach>
                                     </ul>
                                 </div>
-                                <!--                                <div class="card-footer text-center bg-white">
-                                                                    <a href="doctors.html" class="text-muted">View all Doctors</a>
-                                                                </div>-->
                             </div>
                         </div>
                     </div>
@@ -576,50 +555,48 @@
         </script>
 
         <!--Biểu đồ thống kê lượng truy cập  -->
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    loadChart("day"); // Mặc định là 7 ngày gần nhất
-                    document.getElementById("filterSelect").addEventListener("change", function () {
-                        loadChart(this.value);//chon trong dropdown thi loadChart dc goi voi fiterType duoc chon
-                    });
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                loadChart("day"); // Mặc định là 7 ngày gần nhất
+                document.getElementById("filterSelect").addEventListener("change", function () {
+                    loadChart(this.value);//chon trong dropdown thi loadChart dc goi voi fiterType duoc chon
                 });
+            });
 
-                function loadChart(filterType) {
-                    fetch("visit-chart?filter=" + filterType)
-                            .then(response => response.json())
-                            .then(data => {
-                                const labels = data.map(item => item.date);//ngay
-                                const counts = data.map(item => item.count);//so lg truy cap 
-                                const ctx = document.getElementById("visitChart").getContext("2d");
-                                if (window.myChart)
-                                    window.myChart.destroy(); // Xóa biểu đồ cũ
+            function loadChart(filterType) {
+                fetch("visit-chart?filter=" + filterType)
+                        .then(response => response.json())
+                        .then(data => {
+                            const labels = data.map(item => item.date);//ngay
+                            const counts = data.map(item => item.count);//so lg truy cap 
+                            const ctx = document.getElementById("visitChart").getContext("2d");
+                            if (window.myChart)
+                                window.myChart.destroy(); // Xóa biểu đồ cũ
 
-                                window.myChart = new Chart(ctx, {
-                                    type: "line", // Thay bằng "line" nếu muốn biểu đồ đường, "bar" nếu cột
-                                    data: {
-                                        labels: labels,
-                                        datasets: [{
-                                                label: "Lượt truy cập",
-                                                data: counts,
-                                                borderColor: "blue",
-                                                backgroundColor: "rgba(54, 162, 235, 0.2)",
-                                                borderWidth: 2
-                                            }]
-                                    },
-                                    options: {
-                                        responsive: true,
-                                        scales: {
-                                            x: {title: {display: true, text: filterType === "day" ? "Ngày" : (filterType === "month" ? "Tháng" : "Năm")}},
-                                            y: {title: {display: true, text: "Số lượt truy cập"}, beginAtZero: true}
-                                        }
+                            window.myChart = new Chart(ctx, {
+                                type: "line", // Thay bằng "line" nếu muốn biểu đồ đường, "bar" nếu cột
+                                data: {
+                                    labels: labels,
+                                    datasets: [{
+                                            label: "Lượt truy cập",
+                                            data: counts,
+                                            borderColor: "blue",
+                                            backgroundColor: "rgba(54, 162, 235, 0.2)",
+                                            borderWidth: 2
+                                        }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    scales: {
+                                        x: {title: {display: true, text: filterType === "day" ? "Ngày" : (filterType === "month" ? "Tháng" : "Năm")}},
+                                        y: {title: {display: true, text: "Số lượt truy cập"}, beginAtZero: true}
                                     }
-                                });
-                            })
-                            .catch(error => console.error("Lỗi tải dữ liệu:", error));
-                }
-            </script>
-
-
+                                }
+                            });
+                        })
+                        .catch(error => console.error("Lỗi tải dữ liệu:", error));
+            }
+        </script>
     </body>
 
 

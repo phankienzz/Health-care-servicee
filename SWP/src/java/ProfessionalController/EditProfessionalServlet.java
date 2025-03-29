@@ -57,15 +57,7 @@ public class EditProfessionalServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -77,14 +69,7 @@ public class EditProfessionalServlet extends HttpServlet {
         request.getRequestDispatcher("edit-doctor.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     @Override
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -116,7 +101,7 @@ if (roleID == -1) {
                 request.getRequestDispatcher("edit-doctor.jsp").forward(request, response);
                 return;
             }
-                String imagePath = "uploads/"+FileUploadHelper.saveProfilePicture(filePart); // Lưu file
+                String imagePath = FileUploadHelper.saveProfilePicture(filePart); // Lưu file
               
         //nt staffID, String fullName, String email, String password, Date dateOfBirth, String gender, String address, String phone, Date hireDate, String status, byte[] profilePicture, String specialization, String officeHours, String qualification, String biography, Date createdA
         Professional professional = new Professional(staffID, fullName, email, "", Date.valueOf(dateOfBirth), 
@@ -142,7 +127,7 @@ if (roleID == -1) {
         if (success) {
              session.setAttribute("specializations", professionalDAO.getallSpecialization());
             session.setAttribute("professionals", list);
-            request.getRequestDispatcher("manage-doctor.jsp").forward(request, response);
+            response.sendRedirect("manage-doctor.jsp");
         } else {
             request.setAttribute("errorMessage", "Update failed!");
             request.getRequestDispatcher("edit-doctor.jsp").forward(request, response);

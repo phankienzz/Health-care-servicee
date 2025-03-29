@@ -17,7 +17,7 @@ import org.apache.http.client.fluent.Request;
 import model.Customer;
 import dao.CustomerDAO;
 
-@WebServlet(name = "GoogleLoginServlet", urlPatterns = {"/GoogleLoginServlet"})
+@WebServlet(name = "GoogleLoginServlet", urlPatterns = {"/LoginGoogle"})
 public class GoogleLoginServlet extends HttpServlet {
 
     private void handleError(HttpServletRequest request, HttpServletResponse response, String errorMessage, String errorPage) throws ServletException, IOException {
@@ -67,7 +67,7 @@ public class GoogleLoginServlet extends HttpServlet {
         request.setAttribute("email", user.getEmail());
         request.setAttribute("username", user.getUsername());
         request.setAttribute("profilePicture", user.getProfilePicture());
-        request.getRequestDispatcher("no-account.jsp").forward(request, response);
+        request.getRequestDispatcher("register.jsp").forward(request, response);
 
     } catch (Exception e) {
         handleError(request, response, "Lỗi hệ thống: " + e.getMessage(), "error.jsp");
@@ -140,8 +140,5 @@ public class GoogleLoginServlet extends HttpServlet {
         return "Short description";
     }
 
-    public static void main(String[] args) throws IOException {
-        String code = "?code=4%2F0AQSTgQHG4KHD5pfYvGEWGx_D_w1OmBeAux_uKAfb7CHnkxHgDW5__lvMKd2daGlI-jVpjA&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=consent";
-        Customer user = getUserInfo(code);
-    }
+    
 }
