@@ -214,6 +214,7 @@
     <script src="assets/js/jquery.slimscroll.js"></script>
     <script src="assets/js/select2.min.js"></script>
     <script src="assets/js/moment.min.js"></script>
+
     <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
     <script src="assets/js/app.js"></script>
 
@@ -256,6 +257,31 @@
                     return false;
                 }
             });
+        });
+    </script>
+    <script>
+        
+        var bookedTimes = ${bookedTimesJson};
+
+        document.getElementById("doctorSelect").addEventListener("change", function () {
+            var selectedDoctorId = this.value;
+            var timeSelect = document.querySelector('select[name="time"]');
+
+            
+            Array.from(timeSelect.options).forEach(function (option) {
+                option.style.display = "block";
+            });
+
+           
+            if (bookedTimes[selectedDoctorId]) {
+                bookedTimes[selectedDoctorId].forEach(function (time) {
+                    Array.from(timeSelect.options).forEach(function (option) {
+                        if (option.value === time) {
+                            option.style.display = "none";
+                        }
+                    });
+                });
+            }
         });
     </script>
 

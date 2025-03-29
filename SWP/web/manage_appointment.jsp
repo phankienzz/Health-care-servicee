@@ -8,7 +8,7 @@
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
-        <!-- Th�m CSS cho Datetimepicker -->
+        <!-- Th?m CSS cho Datetimepicker -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
         <!--[if lt IE 9]>
@@ -37,7 +37,7 @@
                     <div class="container">
                         <h2>Medical Examinations</h2>
 
-                        <!-- Form t�m ki?m v� l?c -->
+                        <!-- Form t?m ki?m v? l?c -->
                         <form method="get" action="manage_appointment" class="mb-4">
                             <div class="row">
                                 <div class="col-md-3">
@@ -77,7 +77,7 @@
                                     </select>
                                 </div>
                             </div>
-                            
+
                             <div class="text-center mt-3">
                                 <button type="submit" class="btn btn-primary">Apply Filters</button>
                                 <button type="button" class="btn btn-secondary" id="clearFilters">Clear Filters</button>
@@ -85,7 +85,7 @@
 
                         </form>
 
-                        <!-- B?ng danh s�ch -->
+                        <!-- B?ng danh s?ch -->
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
@@ -124,7 +124,7 @@
                                                         <c:choose>
                                                             <c:when test="${exam.status == 'Pending'}">
                                                                 <span class="badge" style="background-color: #ff9800; color: white;">${exam.status}</span>
-                                                                <%-- Ki?m tra n?u l� ??n m?i ??t --%>
+                                                                <%-- Ki?m tra n?u l? ??n m?i ??t --%>
                                                                 <c:if test="${exam.createdAt > recentTime}">
                                                                     <span style="color: red; font-weight: bold; margin-left: 5px;">New</span>
                                                                 </c:if>
@@ -152,14 +152,13 @@
                                                                 <i class="fa fa-ellipsis-v"></i>
                                                             </a>
                                                             <div class="dropdown-menu dropdown-menu-right">
-                                                                <a class="dropdown-item" href="#" data-toggle="modal" 
-                                                                   data-target="#medicalRecordModal"
-                                                                   onclick="openMedicalRecordModal(${exam.examinationID})">
-                                                                    <i class="fa fa-pencil m-r-5"></i> Create/Edit Medical Record
+                                                                <!-- S?a li�n k?t Edit -->
+                                                                <a class="dropdown-item" href="edit_appointment?appointmentId=${exam.examinationID}">
+                                                                    <i class="fa fa-pencil m-r-5"></i> Edit
                                                                 </a>
-                                                                <a class="dropdown-item" href="#" data-toggle="modal" 
-                                                                   data-target="#delete_appointment" 
-                                                                   onclick="setDeleteId(${exam.examinationID})">
+                                                                <!-- S?a li�n k?t Delete -->
+                                                                <a class="dropdown-item" href="deleteappointment?examinationID=${exam.examinationID}" 
+                                                                   onclick="return confirm('Are you sure you want to delete this appointment?');">
                                                                     <i class="fa fa-trash-o m-r-5"></i> Delete
                                                                 </a>
                                                             </div>
@@ -172,48 +171,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="modal fade" id="medicalRecordModal" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Medical Record</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form id="medicalRecordForm" action="saveMedical" method="POST">
-                                            <input type="hidden" id="examinationID" name="examinationID">
+                        
+                                    
 
-                                            <div class="form-group">
-                                                <label>Diagnosis</label>
-                                                <textarea class="form-control" id="diagnosis" name="diagnosis" required></textarea>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label>Treatment Plan</label>
-                                                <textarea class="form-control" id="treatmentPlan" name="treatmentPlan" required></textarea>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label>Medications Prescribed</label>
-                                                <textarea class="form-control" id="medicationsPrescribed" name="medicationsPrescribed"></textarea>
-                                            </div>
-
-                                            <button type="submit" class="btn btn-primary" >Save</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Ph�n trang -->
+                        <!-- Ph?n trang -->
                         <c:if test="${totalPages > 1}">
                             <nav aria-label="Page navigation" class="mt-3">
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
                                         <a class="page-link" href="manage_appointment?page=${currentPage - 1}&patientName=${param.patientName}&ageSort=${param.ageSort}&doctorName=${param.doctorName}&appointmentDate=${param.appointmentDate}&timeCreatedSort=${param.timeCreatedSort}&status=${param.status}" aria-label="Previous">
-                                            <span aria-hidden="true">�</span>
+                                            <span aria-hidden="true"><</span>
                                         </a>
                                     </li>
                                     <c:forEach begin="1" end="${totalPages}" var="i">
@@ -223,7 +190,7 @@
                                     </c:forEach>
                                     <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
                                         <a class="page-link" href="manage_appointment?page=${currentPage + 1}&patientName=${param.patientName}&ageSort=${param.ageSort}&doctorName=${param.doctorName}&appointmentDate=${param.appointmentDate}&timeCreatedSort=${param.timeCreatedSort}&status=${param.status}" aria-label="Next">
-                                            <span aria-hidden="true">�</span>
+                                            <span aria-hidden="true">></span>
                                         </a>
                                     </li>
                                 </ul>
@@ -254,7 +221,7 @@
         </div>
 
 
-        <!-- Th�ng b�o g�c d??i ph?i -->
+        <!-- Th?ng b?o g?c d??i ph?i -->
         <div class="notification-container" id="notificationContainer">
             <div class="notification-icon">
                 <i class="fa fa-bell"></i>
@@ -262,15 +229,15 @@
             </div>
             <div class="notification-message" id="notificationMessage" style="display: none;">
                 <p>You have <span id="newCount">0</span> new appointments!</p>
-                <button class="close-notification" onclick="closeNotification()">�</button>
+                <button class="close-notification" onclick="closeNotification()">?</button>
             </div>
         </div>
 
         <style>
             .notification-container {
                 position: fixed;
-                bottom: 20px; /* C�ch l? d??i 20px */
-                right: 20px;  /* C�ch l? ph?i 20px */
+                bottom: 20px; /* C?ch l? d??i 20px */
+                right: 20px;  /* C?ch l? ph?i 20px */
                 z-index: 1000;
             }
 
@@ -296,13 +263,13 @@
 
             .notification-message {
                 position: absolute;
-                bottom: 35px; /* Hi?n th? ph�a tr�n bi?u t??ng chu�ng */
-                right: 0;    /* C?n ph?i v?i chu�ng */
+                bottom: 35px; /* Hi?n th? ph?a tr?n bi?u t??ng chu?ng */
+                right: 0;    /* C?n ph?i v?i chu?ng */
                 background-color: #fff;
                 border: 1px solid #ddd;
                 border-radius: 5px;
                 padding: 10px;
-                box-shadow: 0 -2px 5px rgba(0,0,0,0.2); /* ?? b�ng l�n tr�n */
+                box-shadow: 0 -2px 5px rgba(0,0,0,0.2); /* ?? b?ng l?n tr?n */
                 min-width: 200px;
             }
 
@@ -336,45 +303,45 @@
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/jquery.slimscroll.js"></script>
         <script src="assets/js/select2.min.js"></script>
-        <!-- Th�m Moment.js v� Bootstrap Datetimepicker -->
+        <!-- Th?m Moment.js v? Bootstrap Datetimepicker -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
         <script src="assets/js/app.js"></script>
         <script>
-                                                $(document).ready(function () {
-                                                    // Kh?i t?o datetimepicker cho appointmentDate
-                                                    $('#appointmentDate').datetimepicker({
-                                                        format: 'DD/MM/YYYY', // ??nh d?ng ng�y
-                                                        useCurrent: false
-                                                    });
-                                                });
+                    $(document).ready(function () {
 
-                                                function setDeleteId(examId) {
-                                                    document.getElementById("deleteExamId").value = examId;
-                                                }
-                                                function openMedicalRecordModal(examinationID) {
-                                                    document.getElementById("examinationID").value = examinationID;
+                        $('#appointmentDate').datetimepicker({
+                            format: 'DD/MM/YYYY',
+                            useCurrent: false
+                        });
+                    });
 
-                                                    // G?i API ?? l?y d? li?u n?u c�
-                                                    fetch("getMedicalRecord?examinationID=" + examinationID)
-                                                            .then(response => response.json())
-                                                            .then(data => {
-                                                                if (data) {
-                                                                    document.getElementById("diagnosis").value = data.diagnosis || "";
-                                                                    document.getElementById("treatmentPlan").value = data.treatmentPlan || "";
-                                                                    document.getElementById("medicationsPrescribed").value = data.medicationsPrescribed || "";
-                                                                }
-                                                            });
+                    function setDeleteId(examId) {
+                        document.getElementById("deleteExamId").value = examId;
+                    }
+                    function openMedicalRecordModal(examinationID) {
+                        document.getElementById("examinationID").value = examinationID;
 
-                                                    $("#medicalRecordModal").modal("show");
-                                                }
-                                                
+                        // G?i API ?? l?y d? li?u n?u c?
+                        fetch("getMedicalRecord?examinationID=" + examinationID)
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data) {
+                                        document.getElementById("diagnosis").value = data.diagnosis || "";
+                                        document.getElementById("treatmentPlan").value = data.treatmentPlan || "";
+                                        document.getElementById("medicationsPrescribed").value = data.medicationsPrescribed || "";
+                                    }
+                                });
+
+                        $("#medicalRecordModal").modal("show");
+                    }
+
 
 
         </script>
         <script>
             $(document).ready(function () {
-                // H�m ki?m tra l?ch kh�m m?i
+
                 function checkNewAppointments() {
                     $.ajax({
                         url: 'CheckNewAppointmentServlet',
@@ -396,19 +363,19 @@
                     });
                 }
 
-                // Ki?m tra m?i 30 gi�y
+
                 setInterval(checkNewAppointments, 30000);
 
-                // Ki?m tra ngay khi load trang
+
                 checkNewAppointments();
 
-                // X? l� khi click v�o bi?u t??ng chu�ng
+
                 $('.notification-icon').click(function () {
                     $('#notificationMessage').slideToggle();
                 });
             });
 
-// ?�ng th�ng b�o
+
             function closeNotification() {
                 $('#notificationMessage').slideUp();
             }
@@ -417,16 +384,16 @@
 
 
             $(document).ready(function () {
-                // Th?i gian hi?n t?i tr? 1 gi? (miligi�y)
-                var oneHourAgo = new Date().getTime() - (60 * 60 * 1000);
 
-                // Duy?t qua c�c h�ng trong b?ng
+                var oneHourAgo = new Date().getTime() - (2 * 60 * 60 * 1000);
+
+                // Duy?t qua c?c h?ng trong b?ng
                 $('table tbody tr').each(function () {
-                    var createdAtStr = $(this).find('td:nth-child(7)').text(); // C?t createdAt (th? 7)
-                    var createdAt = moment(createdAtStr, 'DD/MM/YYYY HH:mm').toDate().getTime(); // Chuy?n chu?i th�nh timestamp
+                    var createdAtStr = $(this).find('td:nth-child(7)').text();
+                    var createdAt = moment(createdAtStr, 'DD/MM/YYYY HH:mm').toDate().getTime();
 
                     if (createdAt > oneHourAgo) {
-                        var statusCell = $(this).find('td:nth-child(8)'); // C?t status (th? 8)
+                        var statusCell = $(this).find('td:nth-child(8)');
                         statusCell.append('<span style="color: red; font-weight: bold; margin-left: 5px;">New</span>');
                     }
                 });
@@ -435,14 +402,14 @@
         </script>
         <script>
             document.getElementById("clearFilters").addEventListener("click", function () {
-                // X�a gi� tr? c?a t?t c? input v� select
+                // X?a gi? tr? c?a t?t c? input v? select
                 document.getElementById("patientName").value = "";
                 document.getElementById("doctorName").value = "";
                 document.getElementById("appointmentDate").value = "";
                 document.getElementById("timeCreatedSort").value = "";
                 document.getElementById("status").value = "";
 
-                // G?i l?i trang m� kh�ng c� query parameters
+
                 window.location.href = "manage_appointment";
             });
         </script>

@@ -586,6 +586,7 @@ public class MedicalExaminationDAO extends DBContext {
             return false;
         }
     }
+
     public List<MedicalExamination> getFilteredExaminations2(String patientName, String doctorName,
             String appointmentDate, String timeCreatedSort, String status, int consultantID, int page, int pageSize) {
         List<MedicalExamination> medicalExaminationList = new ArrayList<>();
@@ -635,10 +636,9 @@ public class MedicalExaminationDAO extends DBContext {
             sql.append(" AND m.status = ?");
             params.add(status);
         }
-        
-            sql.append(" AND m.consultantID = ?");
-            params.add(consultantID);
-        
+
+        sql.append(" AND m.consultantID = ?");
+        params.add(consultantID);
 
         sql.append(") SELECT * FROM FilteredExaminations "
                 + "WHERE RowNum BETWEEN ? AND ?");
@@ -707,13 +707,20 @@ public class MedicalExaminationDAO extends DBContext {
                 + "           ROW_NUMBER() OVER ("
         );
 
-        // Bỏ điều kiện ageSort, chỉ giữ timeCreatedSort
-        if ("latest".equals(timeCreatedSort)) {
-            sql.append("ORDER BY m.createdAt DESC");
-        } else if ("oldest".equals(timeCreatedSort)) {
-            sql.append("ORDER BY m.createdAt ASC");
-        } else {
+        if (null == timeCreatedSort) {
             sql.append("ORDER BY m.examinationID");
+        } else {
+            switch (timeCreatedSort) {
+                case "latest":
+                    sql.append("ORDER BY m.createdAt DESC");
+                    break;
+                case "oldest":
+                    sql.append("ORDER BY m.createdAt ASC");
+                    break;
+                default:
+                    sql.append("ORDER BY m.examinationID");
+                    break;
+            }
         }
 
         sql.append(") AS RowNum "
@@ -793,7 +800,7 @@ public class MedicalExaminationDAO extends DBContext {
         }
         return medicalExaminationList;
     }
-    
+
     public int getTotalFilteredRecords(String patientName, String doctorName,
             String appointmentDate, String timeCreatedSort, String status) {
         StringBuilder sql = new StringBuilder(
@@ -804,8 +811,10 @@ public class MedicalExaminationDAO extends DBContext {
                 + "WHERE 1=1"
         );
 
+        // Danh sách tham số để truyền vào PreparedStatement
         List<Object> params = new ArrayList<>();
 
+        // Thêm điều kiện lọc nếu có
         if (patientName != null && !patientName.trim().isEmpty()) {
             sql.append(" AND c.fullName LIKE ?");
             params.add("%" + patientName + "%");
@@ -823,19 +832,22 @@ public class MedicalExaminationDAO extends DBContext {
             params.add(status);
         }
 
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql.toString());
+        try (PreparedStatement ps = connection.prepareStatement(sql.toString())) {
+            // Gán các tham số vào PreparedStatement
             for (int i = 0; i < params.size(); i++) {
                 ps.setObject(i + 1, params.get(i));
             }
 
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("total");
+            // Thực thi truy vấn
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("total");
+                }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
+
+        // Trả về 0 nếu có lỗi hoặc không tìm thấy kết quả
         return 0;
     }
 
@@ -974,7 +986,37 @@ public class MedicalExaminationDAO extends DBContext {
         }
     }
 
-    public List<MedicalExamination> getAppointmentsByCustomerId(int customerId) {
+    public int getTotalAppointmentsByCustomerId(int customerId, String dateFilter) {
+        int totalRecords = 0;
+        String sql = "SELECT COUNT(*) AS total "
+                + "FROM MedicalExamination m "
+                + "WHERE m.customerID = ?";
+
+        // Thêm điều kiện tìm kiếm theo ngày (nếu có)
+        if (dateFilter != null && !dateFilter.isEmpty()) {
+            sql += " AND FORMAT(m.examinationDate, 'dd/MM/yyyy') = ?";
+        }
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            int paramIndex = 1;
+            ps.setInt(paramIndex++, customerId);
+
+            // Nếu có tìm kiếm theo ngày
+            if (dateFilter != null && !dateFilter.isEmpty()) {
+                ps.setString(paramIndex++, dateFilter);
+            }
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                totalRecords = rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totalRecords;
+    }
+
+    public List<MedicalExamination> getAppointmentsByCustomerId(int customerId, String dateFilter, int page, int pageSize) {
         List<MedicalExamination> appointments = new ArrayList<>();
         String sql = "SELECT m.examinationID, FORMAT(m.examinationDate, 'dd/MM/yyyy HH:mm') AS examinationDate, "
                 + "m.customerID, m.status, m.consultantID, m.notes, FORMAT(m.createdAt, 'dd/MM/yyyy HH:mm') AS createdAt, "
@@ -983,9 +1025,28 @@ public class MedicalExaminationDAO extends DBContext {
                 + "JOIN Customer c ON m.customerID = c.customerID "
                 + "JOIN Staff s ON m.consultantID = s.staffID "
                 + "WHERE m.customerID = ?";
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1, customerId);
+
+        // Thêm điều kiện tìm kiếm theo ngày (nếu có)
+        if (dateFilter != null && !dateFilter.isEmpty()) {
+            sql += " AND FORMAT(m.examinationDate, 'dd/MM/yyyy') = ?";
+        }
+
+        // Thêm phân trang
+        sql += " ORDER BY m.examinationDate DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            int paramIndex = 1;
+            ps.setInt(paramIndex++, customerId);
+
+            // Nếu có tìm kiếm theo ngày
+            if (dateFilter != null && !dateFilter.isEmpty()) {
+                ps.setString(paramIndex++, dateFilter);
+            }
+
+            // Phân trang
+            ps.setInt(paramIndex++, (page - 1) * pageSize);
+            ps.setInt(paramIndex++, pageSize);
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Customer customer = new Customer();
@@ -1070,7 +1131,7 @@ public class MedicalExaminationDAO extends DBContext {
         }
         return false; // Return false if an error occurs or if the customer is already booked
     }
-    
+
     public Map<Integer, Integer> getMonthlyAppointmentStatistics(int year) {
         Map<Integer, Integer> stats = new HashMap<>();
         String sql = "SELECT MONTH(examinationDate) AS Month, COUNT(customerID) AS NumberOfAppointments "
@@ -1094,15 +1155,40 @@ public class MedicalExaminationDAO extends DBContext {
 
     }
 
-    public static void main(String[] args) {
-        MedicalExaminationDAO medDAO = new MedicalExaminationDAO();
-        int year = 2024; // Thay đổi năm nếu muốn test các năm khác
-        Map<Integer, Integer> stats = medDAO.getMonthlyAppointmentStatistics(year);
-        System.out.println("Thống kê khách hàng đăng ký theo tháng năm " + year + ":");
-        for (int i = 1; i <= 12; i++) {
-            System.out.println("Tháng " + i + ": " + stats.getOrDefault(i, 0) + " khách hàng");
+    public Map<Integer, List<String>> getBookedTimesForAllDoctors() {
+        Map<Integer, List<String>> bookedTimes = new HashMap<>();
+        String sql = "SELECT consultantID, FORMAT(examinationDate, 'HH:mm') AS timeSlot "
+                + "FROM MedicalExamination WHERE status != 'Rejected'";
+        try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                int doctorId = rs.getInt("consultantID");
+                String timeSlot = rs.getString("timeSlot");
+                bookedTimes.computeIfAbsent(doctorId, k -> new ArrayList<>()).add(timeSlot);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return bookedTimes;
     }
 
+    public boolean hasNewStatusChange(int customerId) {
+        String sql = "SELECT COUNT(*) AS count "
+                + "FROM MedicalExamination "
+                + "WHERE customerID = ? AND statusChanged = 1";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, customerId);
+            System.out.println("Executing SQL: " + ps.toString()); // Log câu truy vấn
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt("count");
+                System.out.println("Status change count: " + count); // Log kết quả
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error in hasNewStatusChange: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return false; // Trả về false nếu không có trạng thái thay đổi hoặc xảy ra lỗi
+    }
 
 }
