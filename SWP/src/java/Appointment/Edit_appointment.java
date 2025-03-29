@@ -22,28 +22,28 @@ public class Edit_appointment extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String appointmentIdStr = request.getParameter("appointmentId");
-        if (appointmentIdStr == null || appointmentIdStr.isEmpty()) {
-            response.sendRedirect("appointment_list.jsp?error=invalidid");
-            return;
-        }
-
-        int appointmentId = Integer.parseInt(appointmentIdStr);
-        MedicalExamination appointment = medicalExaminationDAO.getMedicalExaminationByID(appointmentId);
-
-        if (appointment != null) {
-            // Lấy danh sách tất cả dịch vụ và bác sĩ để hiển thị trong form
-            List<Service> allServices = medicalExaminationDAO.getAllServices();
-            List<Professional> allProfessionals = medicalExaminationDAO.getAllProfessionals();
-
-            request.setAttribute("appointment", appointment);
-            request.setAttribute("services", allServices); // Đổi tên thành "services" để khớp với JSP
-            request.setAttribute("allProfessionals", allProfessionals);
-            request.getRequestDispatcher("edit-appointment.jsp").forward(request, response);
-        } else {
-            response.sendRedirect("appointment_list.jsp?error=notfound");
-        }
+    String appointmentIdStr = request.getParameter("appointmentId");
+    if (appointmentIdStr == null || appointmentIdStr.isEmpty()) {
+        response.sendRedirect("manage_appointment?error=invalidid"); // Sửa URL chuyển hướng
+        return;
     }
+
+    int appointmentId = Integer.parseInt(appointmentIdStr);
+    MedicalExamination appointment = medicalExaminationDAO.getMedicalExaminationByID(appointmentId);
+
+    if (appointment != null) {
+        // Lấy danh sách tất cả dịch vụ và bác sĩ để hiển thị trong form
+        List<Service> allServices = medicalExaminationDAO.getAllServices();
+        List<Professional> allProfessionals = medicalExaminationDAO.getAllProfessionals();
+
+        request.setAttribute("appointment", appointment);
+        request.setAttribute("services", allServices); // Đổi tên thành "services" để khớp với JSP
+        request.setAttribute("allProfessionals", allProfessionals);
+        request.getRequestDispatcher("edit-appointment.jsp").forward(request, response);
+    } else {
+        response.sendRedirect("manage_appointment?error=notfound"); // Sửa URL chuyển hướng
+    }
+}
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

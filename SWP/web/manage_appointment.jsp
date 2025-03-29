@@ -28,9 +28,7 @@
                             <div class="col-sm-4 col-3">
                                 <h4 class="page-title">Appointments</h4>
                             </div>
-                            <div class="col-sm-8 col-9 text-right m-b-20">
-                                <a href="add-appointment.jsp" class="btn btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Add Appointment</a>
-                            </div>
+                            
                         </div>
 
                     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -77,7 +75,7 @@
                                     </select>
                                 </div>
                             </div>
-                            
+
                             <div class="text-center mt-3">
                                 <button type="submit" class="btn btn-primary">Apply Filters</button>
                                 <button type="button" class="btn btn-secondary" id="clearFilters">Clear Filters</button>
@@ -152,14 +150,13 @@
                                                                 <i class="fa fa-ellipsis-v"></i>
                                                             </a>
                                                             <div class="dropdown-menu dropdown-menu-right">
-                                                                <a class="dropdown-item" href="#" data-toggle="modal" 
-                                                                   data-target="#medicalRecordModal"
-                                                                   onclick="openMedicalRecordModal(${exam.examinationID})">
-                                                                    <i class="fa fa-pencil m-r-5"></i> Create/Edit Medical Record
+                                                                <!-- S?a liên k?t Edit -->
+                                                                <a class="dropdown-item" href="edit_appointment?appointmentId=${exam.examinationID}">
+                                                                    <i class="fa fa-pencil m-r-5"></i> Edit
                                                                 </a>
-                                                                <a class="dropdown-item" href="#" data-toggle="modal" 
-                                                                   data-target="#delete_appointment" 
-                                                                   onclick="setDeleteId(${exam.examinationID})">
+                                                                <!-- S?a liên k?t Delete -->
+                                                                <a class="dropdown-item" href="deleteappointment?examinationID=${exam.examinationID}" 
+                                                                   onclick="return confirm('Are you sure you want to delete this appointment?');">
                                                                     <i class="fa fa-trash-o m-r-5"></i> Delete
                                                                 </a>
                                                             </div>
@@ -181,28 +178,7 @@
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <div class="modal-body">
-                                        <form id="medicalRecordForm" action="saveMedicalRecord" method="POST">
-                                            <input type="hidden" id="examinationID" name="examinationID">
-
-                                            <div class="form-group">
-                                                <label>Diagnosis</label>
-                                                <textarea class="form-control" id="diagnosis" name="diagnosis" required></textarea>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label>Treatment Plan</label>
-                                                <textarea class="form-control" id="treatmentPlan" name="treatmentPlan" required></textarea>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label>Medications Prescribed</label>
-                                                <textarea class="form-control" id="medicationsPrescribed" name="medicationsPrescribed"></textarea>
-                                            </div>
-
-                                            <button type="submit" class="btn btn-primary" >Save</button>
-                                        </form>
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -213,7 +189,7 @@
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
                                         <a class="page-link" href="manage_appointment?page=${currentPage - 1}&patientName=${param.patientName}&ageSort=${param.ageSort}&doctorName=${param.doctorName}&appointmentDate=${param.appointmentDate}&timeCreatedSort=${param.timeCreatedSort}&status=${param.status}" aria-label="Previous">
-                                            <span aria-hidden="true">ï¿½</span>
+                                            <span aria-hidden="true"><</span>
                                         </a>
                                     </li>
                                     <c:forEach begin="1" end="${totalPages}" var="i">
@@ -223,7 +199,7 @@
                                     </c:forEach>
                                     <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
                                         <a class="page-link" href="manage_appointment?page=${currentPage + 1}&patientName=${param.patientName}&ageSort=${param.ageSort}&doctorName=${param.doctorName}&appointmentDate=${param.appointmentDate}&timeCreatedSort=${param.timeCreatedSort}&status=${param.status}" aria-label="Next">
-                                            <span aria-hidden="true">ï¿½</span>
+                                            <span aria-hidden="true">></span>
                                         </a>
                                     </li>
                                 </ul>
@@ -262,7 +238,7 @@
             </div>
             <div class="notification-message" id="notificationMessage" style="display: none;">
                 <p>You have <span id="newCount">0</span> new appointments!</p>
-                <button class="close-notification" onclick="closeNotification()">ï¿½</button>
+                <button class="close-notification" onclick="closeNotification()">!</button>
             </div>
         </div>
 
@@ -341,34 +317,34 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
         <script src="assets/js/app.js"></script>
         <script>
-                                                $(document).ready(function () {
-                                                    // Kh?i t?o datetimepicker cho appointmentDate
-                                                    $('#appointmentDate').datetimepicker({
-                                                        format: 'DD/MM/YYYY', // ??nh d?ng ngï¿½y
-                                                        useCurrent: false
-                                                    });
-                                                });
+                    $(document).ready(function () {
+                        // Kh?i t?o datetimepicker cho appointmentDate
+                        $('#appointmentDate').datetimepicker({
+                            format: 'DD/MM/YYYY', // ??nh d?ng ngï¿½y
+                            useCurrent: false
+                        });
+                    });
 
-                                                function setDeleteId(examId) {
-                                                    document.getElementById("deleteExamId").value = examId;
-                                                }
-                                                function openMedicalRecordModal(examinationID) {
-                                                    document.getElementById("examinationID").value = examinationID;
+                    function setDeleteId(examId) {
+                        document.getElementById("deleteExamId").value = examId;
+                    }
+                    function openMedicalRecordModal(examinationID) {
+                        document.getElementById("examinationID").value = examinationID;
 
-                                                    // G?i API ?? l?y d? li?u n?u cï¿½
-                                                    fetch("getMedicalRecord?examinationID=" + examinationID)
-                                                            .then(response => response.json())
-                                                            .then(data => {
-                                                                if (data) {
-                                                                    document.getElementById("diagnosis").value = data.diagnosis || "";
-                                                                    document.getElementById("treatmentPlan").value = data.treatmentPlan || "";
-                                                                    document.getElementById("medicationsPrescribed").value = data.medicationsPrescribed || "";
-                                                                }
-                                                            });
+                        // G?i API ?? l?y d? li?u n?u cï¿½
+                        fetch("getMedicalRecord?examinationID=" + examinationID)
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data) {
+                                        document.getElementById("diagnosis").value = data.diagnosis || "";
+                                        document.getElementById("treatmentPlan").value = data.treatmentPlan || "";
+                                        document.getElementById("medicationsPrescribed").value = data.medicationsPrescribed || "";
+                                    }
+                                });
 
-                                                    $("#medicalRecordModal").modal("show");
-                                                }
-                                                
+                        $("#medicalRecordModal").modal("show");
+                    }
+
 
 
         </script>
