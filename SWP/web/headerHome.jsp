@@ -94,12 +94,7 @@
                         <a class="dropdown-item" href="profile.jsp">Profile</a>
                         <a class="dropdown-item" href="invoiceCustomer">Invoice</a>
                         <!-- <a class="dropdown-item" href="#"></a> -->
-                        <a class="dropdown-item" href="customer-medical-records">
-                            Medical Records
-                            <c:if test="${sessionScope.newMedicalRecordNotification == true}">
-                                <span class="badge badge-danger ml-2">!</span>
-                            </c:if>
-                        </a>
+                        <a class="dropdown-item" href="customer-medical-records">Medical Records</a>
                         <a class="dropdown-item" href="logout">Logout</a>
                     </div>
                 </c:if>

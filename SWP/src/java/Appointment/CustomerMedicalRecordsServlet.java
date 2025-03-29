@@ -50,8 +50,7 @@ public class CustomerMedicalRecordsServlet extends HttpServlet {
         );
 
         // Kiểm tra trạng thái thay đổi của đơn khám
-        boolean hasNewNotification = medicalExaminationDAO.hasNewStatusChange(customer.getCustomerID());
-        session.setAttribute("newMedicalRecordNotification", hasNewNotification);
+        
 
         // Truyền dữ liệu vào request
         request.setAttribute("appointments", appointments);
