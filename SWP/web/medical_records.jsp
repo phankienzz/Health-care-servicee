@@ -129,7 +129,7 @@
                                                         </td>
                                                         <td>
                                                             <c:choose>
-                                                                <c:when test="${exam.status == 'Pending' || exam.status == 'Confirmed'}">
+                                                                <c:when test="${exam.status == 'Pending' || exam.status == 'In process'|| exam.status == 'Confirmed'}">
                                                                     <a href="view-medical-record?examId=${exam.examinationID}" class="btn btn-sm btn-info">View Details</a>
                                                                 </c:when>
                                                                 <c:when test="${exam.status == 'Completed'}">
