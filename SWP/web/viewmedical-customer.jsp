@@ -51,16 +51,6 @@
     </head>
     <body id="top">
         <jsp:include page="headerHome.jsp"></jsp:include>
-            <header>
-                <nav class="navbar navbar-expand-lg navigation">
-                    <div class="container">
-                        <a class="navbar-brand" href="index.jsp">
-                            <img src="images/logo.png" alt="Logo" class="img-fluid">
-                        </a>
-                    </div>
-                </nav>
-            </header>
-
             <section class="page-title bg-1">
                 <div class="overlay"></div>
                 <div class="container">
@@ -102,27 +92,7 @@
             <div id="pagination-container" class="pagination text-center"></div>
         </section>
 
-        <footer class="footer section gray-bg">
-            <div class="container">
-                <div class="footer-btm py-4 mt-5">
-                    <div class="row align-items-center justify-content-between">
-                        <div class="col-lg-6">
-                            <div class="copyright">
-                                &copy; Copyright Reserved to <span class="text-color">Novena</span> by <a href="https://themefisher.com/" target="_blank">Themefisher</a>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="subscribe-form text-lg-right mt-5 mt-lg-0">
-                                <form action="#" class="subscribe">
-                                    <input type="text" class="form-control" placeholder="Your Email address">
-                                    <a href="#" class="btn btn-main-2 btn-round-full">Subscribe</a>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        <jsp:include page="footer.jsp"></jsp:include>
 
         <script src="plugins/jquery/jquery.js"></script>
         <script src="plugins/bootstrap/js/popper.js"></script>

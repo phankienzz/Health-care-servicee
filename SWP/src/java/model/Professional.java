@@ -32,10 +32,12 @@ public class Professional extends Staff {
         this.status = status;
     }
 
+    @Override
     public int getRoleID() {
         return super.getRoleID();
     }
 
+    @Override
     public int getStaffID() {
         return super.getStaffID();
     }
@@ -44,14 +46,17 @@ public class Professional extends Staff {
         return super.getFullName();
     }
 
+    @Override
     public String getEmail() {
         return super.getEmail();
     }
 
+    @Override
     public String getPhone() {
         return super.getPhone();
     }
 
+    @Override
     public String getAddress() {
         return super.getAddress();
     }
@@ -60,6 +65,7 @@ public class Professional extends Staff {
         return super.getDateOfBirth();
     }
 
+    @Override
     public String getGender() {
         return super.getGender();
     }
@@ -97,10 +103,12 @@ public class Professional extends Staff {
         this.biography = biography;
     }
 
+    @Override
     public String getStatus() {
         return status;
     }
 
+    @Override
     public void setStatus(String status) {
         this.status = status;
     }
