@@ -262,7 +262,7 @@
             });
         });
         </script>
-        <script>
+<!--        <script>
 
             var bookedTimes = ${bookedTimesJson};
 
@@ -286,7 +286,7 @@
                     });
                 }
             });
-    </script>
+    </script>-->
 
 </body>
 </html>
