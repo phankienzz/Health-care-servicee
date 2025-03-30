@@ -21,21 +21,21 @@
                             <a href="index_1.jsp"><i class="fa fa-home back-icon"></i> <span>Back to Home</span></a>
                         </li>
                         <li class="menu-title">Information</li>
-                        <li>
+<!--                        <li>
                             <a href="localization.html"><i class="fa fa-clock-o"></i> <span>Appointment</span></a>
-                        </li>
+                        </li>-->
                         <li>
                             <a href="invoiceCustomer"><i class="fa fa-pencil-square-o"></i> <span>Invoice</span></a>
                         </li>
                         <li>
-                            <a href="salary-settings.html"><i class="fa fa-money"></i> <span>Medical Record</span></a>
+                            <a href="customer-medical-records"><i class="fa fa-money"></i> <span>Medical Record</span></a>
                         </li>
-                        <li>
+<!--                        <li>
                             <a href="leave-type.html"><i class="fa fa-cogs"></i> <span>Profile</span></a>
-                        </li>
-                        <li>
+                        </li>-->
+<!--                        <li>
                             <a href="change-password.html"><i class="fa fa-lock"></i> <span>Change Password</span></a>
-                        </li>
+                        </li>-->
                     </ul>
                 </div>
             </div>

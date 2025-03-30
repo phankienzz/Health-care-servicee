@@ -31,7 +31,6 @@
         <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
         <jsp:include page="editseting.jsp"></jsp:include>
-
             <div class="page-wrapper-profile">
                 <div class="content">
                     <div class="row">
@@ -39,9 +38,6 @@
                             <h4 class="page-title">Edit Profile</h4>
                         </div>
                     </div>
-
-
-
                 <c:if test="${sessionScope.customerAccount != null}">  
                     <form action="editprofile" method="post" enctype="multipart/form-data">
                         <div class="card-box">

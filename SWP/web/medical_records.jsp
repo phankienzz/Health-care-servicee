@@ -15,31 +15,10 @@
     </head>
     <body>
         <div class="main-wrapper">
-            <div class="header">
-                <div class="header-left">
-                    <a href="index_1.jsp" class="logo">
-                        <img src="assets/img/logo.png" width="35" height="35" alt=""> <span>Preclinic</span>
-                    </a>
-                </div>
-                <ul class="nav user-menu float-right">
-                    <li class="nav-item dropdown has-arrow">
-                        <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
-                            <span class="user-img"><img class="rounded-circle" src="assets/img/user.jpg" width="40" alt="Customer">
-                                <span class="status online"></span></span>
-                            <span>${sessionScope.customerAccount.fullName}</span>
-                        </a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="profile.jsp">My Profile</a>
-                            <a class="dropdown-item" href="customer-medical-records">Medical record</a>
-                            <a class="dropdown-item" href="logout">Logout</a>
-                        </div>
-                    </li>
-                </ul>
+            <jsp:include page="editseting.jsp"></jsp:include>
+            <jsp:include page="sidebarCustomer.jsp"></jsp:include>
 
-
-            </div>
-
-            <div class="page-wrapper-profile">
+            <div class="page-wrapper">
                 <div class="content container-fluid">
                     <div class="row align-items-center mb-4">
                         <div class="col-md-6">
