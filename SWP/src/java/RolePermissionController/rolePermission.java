@@ -60,8 +60,9 @@ public class rolePermission extends HttpServlet {
         permissionDAO.updateRolePermissions(roleID, selectedPermissions);
         HttpSession session = request.getSession();
         session.removeAttribute("role");
-        session.setAttribute("role", rDAO.getRoleByID(roleID));
+
         Staff s = (Staff)session.getAttribute("staffAccount");
+        session.setAttribute("role", rDAO.getRoleByID(s.getRoleID()));
         session.removeAttribute("staffAccount");
         
         session.setAttribute("staffAccount", s);

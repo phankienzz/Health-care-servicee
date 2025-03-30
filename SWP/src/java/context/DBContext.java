@@ -23,7 +23,7 @@ public class DBContext {
             //Change the username password and url to connect your own database
             String username = "sa";
             String password = "123";
-            String url = "jdbc:sqlserver://DESKTOP-APV190D;databaseName=MedicalSystem";
+            String url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=MedicalSystem";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(url, username, password);
         } catch (ClassNotFoundException | SQLException ex) {
@@ -34,7 +34,7 @@ public class DBContext {
     public static void main(String[] args) {
         try {
             System.out.println(new DBContext().connection);
-            System.out.println("*Hello");
+            System.out.println("*thanggggg");
         } catch (Exception e) {
         }
     }

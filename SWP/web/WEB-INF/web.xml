@@ -9,10 +9,6 @@
         <version>0.4</version>
     </dependency>
     <filter>
-        <filter-name>LoginFilter</filter-name>
-        <filter-class>filter.LoginFilter</filter-class>
-    </filter>
-    <filter>
         <filter-name>StaffFilter</filter-name>
         <filter-class>filter.StaffFilter</filter-class>
     </filter>
@@ -96,10 +92,6 @@
         <url-pattern>/edit-invoice.jsp</url-pattern>
         <url-pattern>/create-invoice.jsp</url-pattern>
         <url-pattern>/invoices.jsp</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/adminIndex.jsp</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>StaffFilter</filter-name>
