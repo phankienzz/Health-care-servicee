@@ -63,7 +63,7 @@ public class createInvoice extends HttpServlet {
         List<MedicalExamination> listMedicalExam = medDAO.getAllMedicalExamination();
         List<MedicalExamination> list = new ArrayList<>();
         for (MedicalExamination x : listMedicalExam) {
-            if (x.getStatus().equals("Pending")) {
+            if (x.getStatus().equals("Confirmed")) {
                 list.add(x);
             }
         }
@@ -83,7 +83,7 @@ public class createInvoice extends HttpServlet {
         request.setAttribute("phone", phone);
         List<MedicalExamination> list = new ArrayList<>();
         for (MedicalExamination x : listMedicalExam) {
-            if (x.getStatus().equals("Pending") && x.getCustomerId().getPhone().equals(phone)) {
+            if (x.getStatus().equals("Confirmed") && x.getCustomerId().getPhone().equals(phone)) {
                 list.add(x);
             }
         }

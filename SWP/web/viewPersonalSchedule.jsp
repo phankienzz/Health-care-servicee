@@ -29,14 +29,19 @@
         <div class="main-wrapper">
             <jsp:include page="headerStaff.jsp"></jsp:include>
             <jsp:include page="sidebar.jsp"></jsp:include>
-                <div class="page-wrapper">
+            <c:forEach var="permission" items="${listPermission}">
+                <c:if test="${permission.permissionID == 31}">
+                    <c:set var="view" value="true"/>
+                </c:if>
+            </c:forEach>
+            <div class="page-wrapper">
+                <div class="">
+                    <!-- Nội dung chính -->
                     <div class="">
-                        <!-- Nội dung chính -->
-                        <div class="">
-                            <h1>Doctor's Weekly Schedule</h1>
+                        <h1>Doctor's Weekly Schedule</h1>
 
-                            <form id="dateForm" method="GET" action="viewpersonalschedule">
-                                <input type="hidden" name="professionalID" value="${param.professionalID}" />
+                        <form id="dateForm" method="GET" action="viewpersonalschedule">
+                            <input type="hidden" name="professionalID" value="${param.professionalID}" />
                             <label for="selectedDate">Select Date:</label>
                             <input type="date" id="selectedDate" name="selectedDate" value="${selectedDate}">
                             <button type="submit">Submit</button>
@@ -79,65 +84,68 @@
                             </tbody>
                         </table>
 
-                        <h1>Professional Leave List</h1>
-                        <!-- Hiển thị thông báo lỗi -->
-                        <c:if test="${not empty errorMessage}">
-                            <div style="color: red; margin-bottom: 10px;">
-                                ${errorMessage}
-                            </div>
-                        </c:if>
+                        <c:if test="${view}">
+                            <h1>Professional Leave List</h1>
+                            <!-- Hiển thị thông báo lỗi -->
+                            <c:if test="${not empty errorMessage}">
+                                <div style="color: red; margin-bottom: 10px;">
+                                    ${errorMessage}
+                                </div>
+                            </c:if>
 
-                        <!-- Hiển thị thông báo thành công -->
-                        <c:if test="${not empty successMessage}">
-                            <div style="color: green; margin-bottom: 10px;">
-                                ${successMessage}
-                            </div>
-                        </c:if>
+                            <!-- Hiển thị thông báo thành công -->
+                            <c:if test="${not empty successMessage}">
+                                <div style="color: green; margin-bottom: 10px;">
+                                    ${successMessage}
+                                </div>
+                            </c:if>
 
-                        <div id="leave-section">
-                            <form id="leaveForm" method="POST" action="viewpersonalschedule">
-                                <input type="hidden" id="professionalID" name="professionalID" value="${param.professionalID}" readonly><br>
+                            <div id="leave-section">
+                                <form id="leaveForm" method="POST" action="viewpersonalschedule">
+                                    <input type="hidden" id="professionalID" name="professionalID" value="${param.professionalID}" readonly><br>
 
-                                <label for="leaveDate">Leave Date:</label>
-                                <input type="date" id="leaveDate" required="" name="leaveDate"><br>
+                                    <label for="leaveDate">Leave Date:</label>
+                                    <input type="date" id="leaveDate" required="" name="leaveDate"><br>
 
-                                <label for="reason">Reason:</label>
-                                <select id="reason" name="reason" required="">
-                                    <option value="">-- Select Reason --</option>
-                                    <option value="Work Related">Work-Related</option>
-                                    <option value="Personal reason">Personal</option>
-                                </select><br>
+                                    <label for="reason">Reason:</label>
+                                    <select id="reason" name="reason" required="">
+                                        <option value="">-- Select Reason --</option>
+                                        <option value="Work Related">Work-Related</option>
+                                        <option value="Personal reason">Personal</option>
+                                    </select><br>
 
-                                <label>Note:</label>
-                                <input type="text" id="note" name="note"><br>
+                                    <label>Note:</label>
+                                    <input type="text" id="note" name="note"><br>
 
-                                <button type="submit">Submit Leave Request</button>
-                            </form>
+                                    <button type="submit">Submit Leave Request</button>
+                                </form>
 
-                            <table id="leaveTable">
-                                <tr>
-                                    <th>Leave Date</th>
-                                    <th>Reason</th>
-                                    <th>Status</th>
-                                </tr>
-                                <c:choose>
-                                    <c:when test="${not empty leaveList}">
-                                        <c:forEach var="leave" items="${leaveList}">
+                                <table id="leaveTable">
+                                    <tr>
+                                        <th>Leave Date</th>
+                                        <th>Reason</th>
+                                        <th>Status</th>
+                                    </tr>
+                                    <c:choose>
+                                        <c:when test="${not empty leaveList}">
+                                            <c:forEach var="leave" items="${leaveList}">
+                                                <tr>
+                                                    <td>${leave.leaveDate}</td>
+                                                    <td>${leave.reason}</td>
+                                                    <td>${leave.status}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
                                             <tr>
-                                                <td>${leave.leaveDate}</td>
-                                                <td>${leave.reason}</td>
-                                                <td>${leave.status}</td>
+                                                <td colspan="5">No records found</td>
                                             </tr>
-                                        </c:forEach>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <tr>
-                                            <td colspan="5">No records found</td>
-                                        </tr>
-                                    </c:otherwise>
-                                </c:choose>
-                            </table>
-                        </div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </table>
+                            </div>
+                        </c:if>
+
                     </div>
 
                 </div>

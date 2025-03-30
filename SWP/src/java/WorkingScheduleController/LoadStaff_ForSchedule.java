@@ -1,5 +1,6 @@
 package WorkingScheduleController;
 
+import dao.RoleDAO;
 import util.ValidFunction;
 import dao.WorkingScheduleDAO;
 import java.io.IOException;
@@ -11,12 +12,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Role;
+import model.Staff;
 import model.WorkingSchedule;
 
 @WebServlet(name = "LoadStaff_ForSchedule", urlPatterns = {"/loadstaffforschedule"})
@@ -28,7 +32,11 @@ public class LoadStaff_ForSchedule extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         WorkingScheduleDAO workingDAO = new WorkingScheduleDAO();
-
+        HttpSession session = request.getSession();
+        Staff s = (Staff)session.getAttribute("staffAccount");
+        RoleDAO rDAO = new RoleDAO();
+        Role r = rDAO.getRoleByID(s.getRoleID());
+        request.setAttribute("listPermission", r.getPermission());
         List<WorkingSchedule> professionalList = workingDAO.getListProfessionalSchedules();
         paginateAndForward(request, response, professionalList);
     }

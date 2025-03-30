@@ -16,19 +16,29 @@
         <div class="main-wrapper">
             <jsp:include page="headerStaff.jsp"></jsp:include>
             <jsp:include page="sidebar.jsp"></jsp:include>
-                <div class="container mt-5">
-                    <h2>Danh Sách Lịch Làm Việc</h2>
+            <c:set var="view" value="false"/>
+            <c:set var="view1" value="false"/>
+            <c:forEach var="permission" items="${listPermission}">
+                <c:if test="${permission.permissionID == 16}">
+                    <c:set var="view" value="true"/>
+                </c:if>
+                <c:if test="${permission.permissionID == 31}">
+                    <c:set var="view1" value="true"/>
+                </c:if>
+            </c:forEach>
+            <div class="container mt-5">
+                <h2>Danh Sách Lịch Làm Việc</h2>
 
-                    <!-- Search by Name (Top-left corner) -->
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <form action="loadstaffforschedule" method="POST" class="d-flex align-items-end gap-2">
-                                <input type="hidden" name="searchType" value="name">
-                                <div class="flex-grow-1">
-                                    <label for="doctorName" class="form-label control-label">
-                                        <i class="fas fa-search"></i> Tìm kiếm theo tên
-                                    </label>
-                                    <input type="text" class="form-control" id="doctorName" name="searchName" placeholder="Nhập tên bác sĩ" value="${param.searchName}">
+                <!-- Search by Name (Top-left corner) -->
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <form action="loadstaffforschedule" method="POST" class="d-flex align-items-end gap-2">
+                            <input type="hidden" name="searchType" value="name">
+                            <div class="flex-grow-1">
+                                <label for="doctorName" class="form-label control-label">
+                                    <i class="fas fa-search"></i> Tìm kiếm theo tên
+                                </label>
+                                <input type="text" class="form-control" id="doctorName" name="searchName" placeholder="Nhập tên bác sĩ" value="${param.searchName}">
                             </div>
                             <button type="submit" class="btn search-btn">
                                 <i class="fas fa-search"></i>
@@ -112,21 +122,28 @@
                         </c:if>
                         <div class="doctor-header">
                             <span>Bác sĩ: ${schedule.fullName} (ID: ${schedule.professionalID})</span>
-                            <form action="saveSchedule" method="GET">
-                                <input type="hidden" name="fullName" value="${schedule.fullName}">
-                                <input type="hidden" name="professionalID" value="${schedule.professionalID}">
-                                <button type="submit" class="manage-btn">Manage Lịch</button>
-                            </form>
-                            <form action="viewpersonalschedule" method="GET">
-                                <input type="hidden" name="fullName" value="${schedule.fullName}">
-                                <input type="hidden" name="professionalID" value="${schedule.professionalID}">
-                                <button type="submit" class="manage-btn">View personal schedule</button>
-                            </form>
-                            <form action="professionalleave" method="GET">
-                                <input type="hidden" name="fullName" value="${schedule.fullName}">
-                                <input type="hidden" name="professionalID" value="${schedule.professionalID}">
-                                <button type="submit" class="manage-btn">Manage Personal Leave</button>
-                            </form>
+                            <c:if test="${view}">
+                                <form action="saveSchedule" method="GET">
+                                    <input type="hidden" name="fullName" value="${schedule.fullName}">
+                                    <input type="hidden" name="professionalID" value="${schedule.professionalID}">
+                                    <button type="submit" class="manage-btn">Manage Lịch</button>
+                                </form>
+                            </c:if>
+                     
+                                <form action="viewpersonalschedule" method="GET">
+                                    <input type="hidden" name="fullName" value="${schedule.fullName}">
+                                    <input type="hidden" name="professionalID" value="${schedule.professionalID}">
+                                    <button type="submit" class="manage-btn">View personal schedule</button>
+                                </form>
+                           
+                            <c:if test="${view}">
+                                <form action="professionalleave" method="GET">
+                                    <input type="hidden" name="fullName" value="${schedule.fullName}">
+                                    <input type="hidden" name="professionalID" value="${schedule.professionalID}">
+                                    <button type="submit" class="manage-btn">Manage Personal Leave</button>
+                                </form>
+                            </c:if>
+
                         </div>
                         <table class="table table-bordered">
                             <thead>
