@@ -12,7 +12,7 @@ public class Iconstant {
 
     public static final String GOOGLE_CLIENT_ID = System.getenv("GOOGLE_CLIENT_ID");
     public static final String GOOGLE_CLIENT_SECRET = System.getenv("GOOGLE_CLIENT_SECRET");
-    public static String GOOGLE_REDIRECT_URI = "http://localhost:8081/SWP/LoginGoogle";
+    public static String GOOGLE_REDIRECT_URI = "http://localhost:9999/SWP/LoginGoogle";
     
    
     public static final String GOOGLE_GRANT_TYPE = "authorization_code";

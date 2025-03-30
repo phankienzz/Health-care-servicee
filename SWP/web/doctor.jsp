@@ -34,6 +34,7 @@
         <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+        <link rel="stylesheet" type="text/css" href="css/pagination.css">
         <!-- Main Stylesheet -->
         <link rel="stylesheet" href="css/style.css">
         <style>
@@ -388,7 +389,7 @@
                             <div class="profile-widget">
                                 <div class="doctor-img">
                                     <a class="" href="DetailDoctorServlet?id=${professional.getStaffID()}">
-                                        <img alt="" src="${professional.getProfilePicture()}">
+                                        <img alt="" src="assets/img/${professional.getPicture()}">
                                     </a>
                                 </div>
                                 <c:if test="${sessionScope.role eq 'admin'}">
@@ -418,11 +419,12 @@
                             </div>
                         </div>
                     </c:forEach>
-                    <div id="pagination-container" class="pagination text-center"></div>
+                    
                 </div>
 
 
             </div>
+                <div id="pagination-container" class="pagination text-center"></div>
         </div>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
