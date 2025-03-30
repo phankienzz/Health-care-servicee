@@ -139,6 +139,7 @@ public class ScheduleFilter implements Filter {
             List<Permission> list = roleDAO.getRoleByID(s.getRoleID()).getPermission();
             boolean canEdit = false;
             boolean canView = false;
+            boolean canEditSchedule = false;
             for (Permission p : list) {
                 if (p.getPermissionID() == 15) {
                     canView = true;
@@ -146,11 +147,18 @@ public class ScheduleFilter implements Filter {
                 if (p.getPermissionID() == 16) {
                     canEdit = true;
                 }
+                if (p.getPermissionID() == 31) {
+                    canEditSchedule = true;
+                }
             }
             if ((uri.contains("loadstaffforschedule") || uri.contains("listDoctor-demo.jsp")) && !canView) {
                 res.sendRedirect("errorPermission.jsp");
             }
-            if ((uri.contains("saveSchedule") || uri.contains("createWorkingSchedule.jsp")) && !canEdit) {
+            if ((uri.contains("saveSchedule") || uri.contains("createWorkingSchedule.jsp") 
+                    || uri.contains("professionalleave") || uri.contains("professionalleave.jsp")) && !canEdit) {
+                res.sendRedirect("errorPermission.jsp");
+            }
+            if ((uri.contains("viewPersonalSchedule.jsp") || uri.contains("viewpersonalschedule") ) && !canEdit) {
                 res.sendRedirect("errorPermission.jsp");
             }
         }

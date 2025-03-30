@@ -30,7 +30,7 @@ public class GoogleLoginServlet extends HttpServlet {
             throws ServletException, IOException {
         String code = request.getParameter("code");
         PrintWriter out = response.getWriter();
-        
+
         if (code == null || code.isEmpty()) {
             handleError(request, response, "Không tìm thấy authorization code", "error.jsp");
             return;
@@ -44,35 +44,34 @@ public class GoogleLoginServlet extends HttpServlet {
             }
             Customer user = getUserInfo(accessToken);
             if (user == null || user.getEmail() == null) {
-                 handleError(request, response, "Lỗi lấy thông tin user", "error.jsp");
+                handleError(request, response, "Lỗi lấy thông tin user", "error.jsp");
                 out.println(code);
                 out.print(3);
                 return;
             }
-                        System.out.println(user);
-
-            
+            System.out.println(user);
 
             CustomerDAO customerDAO = new CustomerDAO();
             Customer existingCustomer = customerDAO.getCustomerByEmail(user.getEmail());
-             String contextPath = request.getContextPath();
-             if (existingCustomer != null) {
-            // Nếu đã có tài khoản, đăng nhập thành công
-            request.getSession().setAttribute("customerAccount", existingCustomer);
-            response.sendRedirect(contextPath + "/index_1.jsp");
-            return;
+            String contextPath = request.getContextPath();
+            if (existingCustomer != null) {
+                // Nếu đã có tài khoản, đăng nhập thành công
+                request.getSession().setAttribute("customerAccount", existingCustomer);
+                response.sendRedirect(contextPath + "/index_1.jsp");
+                return;
+            }
+
+            // Nếu chưa có tài khoản, chuyển đến trang thông báo
+            request.setAttribute("email", user.getEmail());
+            request.setAttribute("username", user.getUsername());
+            request.setAttribute("profilePicture", user.getProfilePicture());
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            handleError(request, response, "Lỗi hệ thống: " + e.getMessage(), "error.jsp");
         }
-
-        // Nếu chưa có tài khoản, chuyển đến trang thông báo
-        request.setAttribute("email", user.getEmail());
-        request.setAttribute("username", user.getUsername());
-        request.setAttribute("profilePicture", user.getProfilePicture());
-        request.getRequestDispatcher("register.jsp").forward(request, response);
-
-    } catch (Exception e) {
-        handleError(request, response, "Lỗi hệ thống: " + e.getMessage(), "error.jsp");
     }
-}
+
     public static String getToken(String code) throws ClientProtocolException, IOException {
         String response = Request.Post(Iconstant.GOOGLE_LINK_GET_TOKEN)
                 .bodyForm(Form.form()
@@ -101,7 +100,7 @@ public class GoogleLoginServlet extends HttpServlet {
 
         Gson gson = new Gson();
         try {
-              Customer customer = gson.fromJson(response, Customer.class);
+            Customer customer = gson.fromJson(response, Customer.class);
             // Now check if the required fields exist
 //            if (!jsonResponse.has("email") || !jsonResponse.has("name")) {
 //                System.err.println("Error: Email or name not found in Google User Info response.");
@@ -115,7 +114,6 @@ public class GoogleLoginServlet extends HttpServlet {
 //            if (ga.getPicture()!=null) {
 //                customer.setProfilePicture(ga.getPicture());
 //            }
-
             return customer;
         } catch (Exception e) {
             System.err.println("Error parsing Google User Info response: " + e.getMessage());
@@ -140,5 +138,4 @@ public class GoogleLoginServlet extends HttpServlet {
         return "Short description";
     }
 
-    
 }
