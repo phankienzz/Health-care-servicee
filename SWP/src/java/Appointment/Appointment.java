@@ -38,12 +38,11 @@ public class Appointment extends HttpServlet {
         List<Professional> doctors = professionalDAO.getAllDoctors();
 
 
-        Map<Integer, List<String>> bookedTimes = medicalExaminationDAO.getBookedTimesForAllDoctors();
-        String bookedTimesJson = new Gson().toJson(bookedTimes); 
+       
 
         request.setAttribute("services", services);
         request.setAttribute("doctors", doctors);
-        request.setAttribute("bookedTimesJson", bookedTimesJson);
+       
 
         request.getRequestDispatcher("appointment.jsp").forward(request, response);
     }
@@ -114,8 +113,8 @@ public class Appointment extends HttpServlet {
                 return;
             }
 
-            if (!medicalExaminationDAO.isCustomerAvailable(customerProfile.getCustomerID(), examinationDate, Integer.parseInt(doctorId))) {
-                request.setAttribute("error", "You already have an appointment with this doctor at the specified time.");
+            if (!medicalExaminationDAO.isCustomerAvailable(customerProfile.getCustomerID(), examinationDate)) {
+                request.setAttribute("error", "You already have an appointment at the specified time.");
                 reloadFormData(request, response, serviceIds, doctorId, dateStr, timeStr, name, phone, message);
                 return;
             }

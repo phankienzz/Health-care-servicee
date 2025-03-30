@@ -27,8 +27,8 @@ public class ViewPersonalSchedule extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         WorkingScheduleDAO workingDAO = new WorkingScheduleDAO();
-         HttpSession session = request.getSession();
-        Staff s = (Staff)session.getAttribute("staffAccount");
+        HttpSession session = request.getSession();
+        Staff s = (Staff) session.getAttribute("staffAccount");
         RoleDAO rDAO = new RoleDAO();
         Role r = rDAO.getRoleByID(s.getRoleID());
         request.setAttribute("listPermission", r.getPermission());
@@ -101,6 +101,8 @@ public class ViewPersonalSchedule extends HttpServlet {
                 message = "Note is required when the reason is personal.";
             } else if (leaveDate.isBefore(LocalDate.now())) {
                 message = "Leave date cannot be in the past.";
+            } else if (leaveDate.equals(LocalDate.now())) {
+                message = "Leave date cannot be currunt date.";
             } else if (!(dao.isWorkingOnDate(professionalID, Date.valueOf(leaveDate)))) {
                 message = "No schedule on this day.";
             } else if (dao.isLeaveOnDate(professionalID, Date.valueOf(leaveDate))) {

@@ -222,71 +222,70 @@
         <script src="assets/js/app.js"></script>
 
         <script>
-        $(document).ready(function () {
-            // Initialize datetimepicker
-            $('.datetimepicker').datetimepicker({
-                format: 'DD/MM/YYYY',
-                minDate: new Date(), // Do not allow selecting dates before today
-                useCurrent: false
-            });
-
-            // Validate form before submitting
-            $('#appointmentForm').on('submit', function (e) {
-                var selectedDate = $('.datetimepicker').val();
-                var selectedServices = $('input[name="serviceIds[]"]:checked').length;
-
-                if (!selectedDate) {
-                    e.preventDefault();
-                    alert('Please select a date');
-                    return false;
-                }
-
-                // Parse selected date
-                var parts = selectedDate.split('/');
-                var selected = new Date(parts[2], parts[1] - 1, parts[0]);
-                var today = new Date();
-                today.setHours(0, 0, 0, 0); // Reset time for accurate comparison
-
-                if (selected < today) {
-                    e.preventDefault();
-                    alert('Please select a date from today onwards');
-                    $('.datetimepicker').val('');
-                    return false;
-                }
-
-                if (selectedServices === 0) {
-                    e.preventDefault();
-                    alert('Please select at least one service');
-                    return false;
-                }
-            });
+    $(document).ready(function () {
+        // Initialize datetimepicker
+        $('.datetimepicker').datetimepicker({
+            format: 'DD/MM/YYYY',
+            minDate: new Date(), // Do not allow selecting dates before today
+            useCurrent: false
         });
-        </script>
-<!--        <script>
 
-            var bookedTimes = ${bookedTimesJson};
+        // Validate form before submitting
+        $('#appointmentForm').on('submit', function (e) {
+            var selectedDate = $('.datetimepicker').val();
+            var selectedTime = $('select[name="time"]').val();
+            var selectedDoctorId = $('#doctorSelect').val();
 
-            document.getElementById("doctorSelect").addEventListener("change", function () {
-                var selectedDoctorId = this.value;
-                var timeSelect = document.querySelector('select[name="time"]');
+            if (!selectedDate) {
+                e.preventDefault();
+                alert('Please select a date');
+                return false;
+            }
 
+            // Parse selected date
+            var parts = selectedDate.split('/');
+            var selected = new Date(parts[2], parts[1] - 1, parts[0]);
+            var today = new Date();
+            today.setHours(0, 0, 0, 0); // Reset time for accurate comparison
 
-                Array.from(timeSelect.options).forEach(function (option) {
-                    option.style.display = "block";
+            if (selected < today) {
+                e.preventDefault();
+                alert('Please select a date from today onwards');
+                $('.datetimepicker').val('');
+                return false;
+            }
+
+            if (!selectedTime) {
+                e.preventDefault();
+                alert('Please select a time');
+                return false;
+            }
+
+            if (!selectedDoctorId) {
+                e.preventDefault();
+                alert('Please select a doctor');
+                return false;
+            }
+
+            // Check if the patient has already booked the same doctor at the same time
+            var bookedAppointments = ${bookedAppointmentsJson}; // This should be passed from the server
+            if (bookedAppointments) {
+                var isConflict = bookedAppointments.some(function (appointment) {
+                    return appointment.doctorId === selectedDoctorId &&
+                           appointment.date === selectedDate &&
+                           appointment.time === selectedTime;
                 });
 
-
-                if (bookedTimes[selectedDoctorId]) {
-                    bookedTimes[selectedDoctorId].forEach(function (time) {
-                        Array.from(timeSelect.options).forEach(function (option) {
-                            if (option.value === time) {
-                                option.style.display = "none";
-                            }
-                        });
-                    });
+                if (isConflict) {
+                    e.preventDefault();
+                    alert('You have already booked this doctor at the selected time. Please choose a different time or doctor.');
+                    return false;
                 }
-            });
-    </script>-->
+            }
+        });
+    });
+</script>
+
 
 </body>
 </html>

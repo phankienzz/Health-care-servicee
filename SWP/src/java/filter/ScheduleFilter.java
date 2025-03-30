@@ -154,13 +154,13 @@ public class ScheduleFilter implements Filter {
             if ((uri.contains("loadstaffforschedule") || uri.contains("listDoctor-demo.jsp")) && !canView) {
                 res.sendRedirect("errorPermission.jsp");
             }
-            if ((uri.contains("saveSchedule") || uri.contains("createWorkingSchedule.jsp") 
-                    || uri.contains("professionalleave") || uri.contains("professionalleave.jsp")) && !canEdit) {
-                res.sendRedirect("errorPermission.jsp");
-            }
-            if ((uri.contains("viewPersonalSchedule.jsp") || uri.contains("viewpersonalschedule") ) && !canEdit) {
-                res.sendRedirect("errorPermission.jsp");
-            }
+//            if ((uri.contains("saveSchedule") || uri.contains("createWorkingSchedule.jsp") 
+//                    || uri.contains("professionalleave") || uri.contains("professionalleave.jsp")) && !canEdit) {
+//                res.sendRedirect("errorPermission.jsp");
+//            }
+//            if ((uri.contains("viewPersonalSchedule.jsp") || uri.contains("viewpersonalschedule") ) && !canEditSchedule) {
+//                res.sendRedirect("errorPermission.jsp");
+//            }
         }
         // If there was a problem, we want to rethrow it if it is
         // a known type, otherwise log it.

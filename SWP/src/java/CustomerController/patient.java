@@ -122,6 +122,10 @@ public class patient extends HttpServlet {
                     }
                 }
             }
+            
+            for (Customer customer : listPatient) {
+                customer.setFullName(valid.normalizeName(customer.getFullName()));
+            }
 
             int endPage = (int) Math.ceil((double) totalPatient / pageSize);
 

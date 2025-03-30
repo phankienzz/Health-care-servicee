@@ -359,7 +359,7 @@ public class MedicalExaminationDAO extends DBContext {
         ServiceDAO dao = new ServiceDAO();
         CustomerDAO cusDAO = new CustomerDAO();
         ProfessionalDAO proDAO = new ProfessionalDAO();
-        String sql = "SELECT * FROM MedicalExamination ";
+        String sql = "  SELECT * FROM MedicalExamination WHERE status = 'Pending' order by createdAt desc";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -1099,38 +1099,37 @@ public class MedicalExaminationDAO extends DBContext {
         return count;
     }
 
-    public boolean isDoctorAvailable(int doctorId, String examinationDate) {
-        String sql = "SELECT COUNT(*) FROM MedicalExamination WHERE consultantID = ? AND examinationDate = ? AND status != 'Rejected'";
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1, doctorId);
-            ps.setString(2, examinationDate);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) == 0; // Return true if no appointments found
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+   public boolean isDoctorAvailable(int doctorId, String examinationDate) {
+    String sql = "SELECT COUNT(*) FROM MedicalExamination WHERE consultantID = ? AND examinationDate = ? AND status != 'Rejected'";
+    try {
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setInt(1, doctorId);
+        ps.setString(2, examinationDate);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) == 0; // Return true if no appointments found
         }
-        return false; // Return false if an error occurs or if the doctor is already booked
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return false; // Return false if an error occurs or if the doctor is already booked
+}
 
-    public boolean isCustomerAvailable(int customerId, String examinationDate, int doctorId) {
-        String sql = "SELECT COUNT(*) FROM MedicalExamination WHERE customerID = ? AND examinationDate = ? AND consultantID = ? AND status != 'Rejected'";
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1, customerId);
-            ps.setString(2, examinationDate);
-            ps.setInt(3, doctorId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) == 0; // Return true if no appointments found
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public boolean isCustomerAvailable(int customerId, String examinationDate) {
+    String sql = "SELECT COUNT(*) FROM MedicalExamination WHERE customerID = ? AND examinationDate = ? AND status != 'Rejected'";
+    try {
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setInt(1, customerId);
+        ps.setString(2, examinationDate);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) == 0; // Return true if no appointments found
         }
-        return false; // Return false if an error occurs or if the customer is already booked
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return false; // Return false if an error occurs or if the customer is already booked
+}
 
     public Map<Integer, Integer> getMonthlyAppointmentStatistics(int year) {
         Map<Integer, Integer> stats = new HashMap<>();
@@ -1155,21 +1154,7 @@ public class MedicalExaminationDAO extends DBContext {
 
     }
 
-    public Map<Integer, List<String>> getBookedTimesForAllDoctors() {
-        Map<Integer, List<String>> bookedTimes = new HashMap<>();
-        String sql = "SELECT consultantID, FORMAT(examinationDate, 'HH:mm') AS timeSlot "
-                + "FROM MedicalExamination WHERE status != 'Rejected'";
-        try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                int doctorId = rs.getInt("consultantID");
-                String timeSlot = rs.getString("timeSlot");
-                bookedTimes.computeIfAbsent(doctorId, k -> new ArrayList<>()).add(timeSlot);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return bookedTimes;
-    }
+    
 
     
 }

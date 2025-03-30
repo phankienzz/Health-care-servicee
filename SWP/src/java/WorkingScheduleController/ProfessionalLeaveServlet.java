@@ -140,7 +140,7 @@ public class ProfessionalLeaveServlet extends HttpServlet {
         String leaveDateStr = request.getParameter("leaveDate");
         LocalDate leaveDate = LocalDate.parse(leaveDateStr);
 
-        if (leaveDate.isBefore(LocalDate.now())) {
+        if (leaveDate.isBefore(LocalDate.now()) || leaveDate.isEqual(LocalDate.now())) {
             if (oldStatus.equalsIgnoreCase("Pending")) {
                 workingDAO.updateLeaveStatus(leaveID, "Missed time!");
                 String errorMessage = "Missed time to edit status.";

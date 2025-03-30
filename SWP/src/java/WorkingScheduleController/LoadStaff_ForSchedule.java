@@ -32,11 +32,6 @@ public class LoadStaff_ForSchedule extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         WorkingScheduleDAO workingDAO = new WorkingScheduleDAO();
-        HttpSession session = request.getSession();
-        Staff s = (Staff)session.getAttribute("staffAccount");
-        RoleDAO rDAO = new RoleDAO();
-        Role r = rDAO.getRoleByID(s.getRoleID());
-        request.setAttribute("listPermission", r.getPermission());
         List<WorkingSchedule> professionalList = workingDAO.getListProfessionalSchedules();
         paginateAndForward(request, response, professionalList);
     }
@@ -107,6 +102,11 @@ public class LoadStaff_ForSchedule extends HttpServlet {
 //        .sorted() // Sắp xếp tăng dần
 //        .collect(Collectors.toList()); // Chuyển về List
 
+        HttpSession session = request.getSession();
+        Staff s = (Staff) session.getAttribute("staffAccount");
+        RoleDAO rDAO = new RoleDAO();
+        Role r = rDAO.getRoleByID(s.getRoleID());
+        request.setAttribute("listPermission", r.getPermission());
         List<Integer> doctorIDs = new ArrayList<>();
         for (WorkingSchedule schedule : fullList) {
             int id = schedule.getProfessionalID();

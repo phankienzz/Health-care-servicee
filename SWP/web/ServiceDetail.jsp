@@ -134,7 +134,7 @@
             <div class="info"><span>Giá:</span> $${service.price}</div>
             <div class="info"><span>Thời Gian:</span> ${service.duration} phút</div>
             <div class="text-center mt-3">
-                <a href="appoinment.html" class="btn btn-primary btn-custom">Đặt Dịch Vụ</a>
+                <a href="appointment" class="btn btn-primary btn-custom">Đặt Dịch Vụ</a>
                 <a href="loadservice" class="btn btn-secondary btn-custom">Quay Lại Danh Sách</a>
             </div>
         </div>

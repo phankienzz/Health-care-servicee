@@ -20,7 +20,7 @@ import java.util.Properties;
  */
 public class Email {
 
-    public static final String pass = "rgne vgxm fiau oang";
+    public static final String pass = "ectf kpit qotd zgpc";
     // lấy pass
     public static final String from = "phankienk51@gmail.com";
 // gửi đến địa chỉ email

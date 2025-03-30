@@ -45,7 +45,7 @@
                         <h2>Medical Examinations</h2>
 
                         <!-- Form tï¿½m ki?m vï¿½ l?c -->
-                        <form method="get" action="manage_appointment" class="mb-4">
+                        <form method="get" action="listDoctorAppointment" class="mb-4">
                             <div class="row">
                                 <div class="col-md-3">
                                     <label for="patientName">Patient Name</label>
@@ -144,6 +144,9 @@
                                                             </c:when>
                                                             <c:when test="${exam.status == 'Completed'}">
                                                                 <span class="badge" style="background-color: #8bc34a; color: white;">${exam.status}</span>
+                                                                <c:if test="${exam.createdAt > recentTime}">
+                                                                    <span style="color: red; font-weight: bold; margin-left: 5px;">New</span>
+                                                                </c:if>
                                                             </c:when>
                                                             <c:when test="${exam.status == 'Rejected'}">
                                                                 <span class="badge" style="background-color: #f44336; color: white;">${exam.status}</span>
