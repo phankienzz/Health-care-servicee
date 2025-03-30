@@ -1171,24 +1171,5 @@ public class MedicalExaminationDAO extends DBContext {
         return bookedTimes;
     }
 
-    public boolean hasNewStatusChange(int customerId) {
-        String sql = "SELECT COUNT(*) AS count "
-                + "FROM MedicalExamination "
-                + "WHERE customerID = ? AND statusChanged = 1";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, customerId);
-            System.out.println("Executing SQL: " + ps.toString()); // Log câu truy vấn
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                int count = rs.getInt("count");
-                System.out.println("Status change count: " + count); // Log kết quả
-                return count > 0;
-            }
-        } catch (SQLException e) {
-            System.out.println("SQL Error in hasNewStatusChange: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return false; // Trả về false nếu không có trạng thái thay đổi hoặc xảy ra lỗi
-    }
-
+    
 }
