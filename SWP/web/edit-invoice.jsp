@@ -35,7 +35,7 @@
                     <div class="content">
                         <div class="row">
                             <div class="col-sm-12">
-                                <h4 class="page-title">Create Invoice</h4>
+                                <h4 class="page-title">Edit Invoice</h4>
                             </div>
                         </div>
                         <div class="row">

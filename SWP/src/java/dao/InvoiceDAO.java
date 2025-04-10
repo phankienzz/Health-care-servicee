@@ -649,10 +649,14 @@ public class InvoiceDAO extends DBContext {
     }
 
     public void updateInvoiceOnline(int invoiceID) {
-        String sql = "update invoice set paymentDate = SYSDATETIME(),paymentMethod=N'Credit Card', paymentStatus = N'Paid' where invoiceID = ?";
+        InvoiceDAO invDAO = new InvoiceDAO();
+        Invoice invoice = invDAO.getInvoiceByID(invoiceID);
+        int medicalID = invoice.getExaminationID().getExaminationID();
+        String sql = "update invoice set paymentDate = SYSDATETIME(),paymentMethod=N'Credit Card', paymentStatus = N'Paid' where invoiceID = ? update MedicalExamination set status = N'Completed' where examinationID = ?";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, invoiceID);
+            pre.setInt(2, medicalID);
             pre.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -672,11 +676,15 @@ public class InvoiceDAO extends DBContext {
     }
 
     public void updateInvoiceOffline(int invoiceID, String discountID) {
-        String sql = "update invoice set discountID = ?, paymentDate = SYSDATETIME(),paymentMethod=N'Cash', paymentStatus = N'Paid'  where invoiceID = ?";
+        InvoiceDAO invDAO = new InvoiceDAO();
+        Invoice invoice = invDAO.getInvoiceByID(invoiceID);
+        int medicalID = invoice.getExaminationID().getExaminationID();
+        String sql = "update invoice set discountID = ?, paymentDate = SYSDATETIME(),paymentMethod=N'Cash', paymentStatus = N'Paid'  where invoiceID = ? update MedicalExamination set status = N'Completed' where examinationID = ?";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, discountID);
             pre.setInt(2, invoiceID);
+            pre.setInt(3, medicalID);
             pre.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

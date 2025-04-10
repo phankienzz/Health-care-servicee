@@ -1,5 +1,6 @@
 package WorkingScheduleController;
 
+import dao.RoleDAO;
 import dao.WorkingScheduleDAO;
 import java.io.IOException;
 import java.time.DayOfWeek;
@@ -12,10 +13,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.ProfessionalLeave;
 import model.WorkingSchedule;
 import java.sql.Date;
 import java.sql.Time;
+import model.Role;
+import model.Staff;
 
 @WebServlet(name = "ViewPersonalSchedule", urlPatterns = {"/viewpersonalschedule"})
 public class ViewPersonalSchedule extends HttpServlet {
@@ -23,7 +27,11 @@ public class ViewPersonalSchedule extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         WorkingScheduleDAO workingDAO = new WorkingScheduleDAO();
-
+         HttpSession session = request.getSession();
+        Staff s = (Staff)session.getAttribute("staffAccount");
+        RoleDAO rDAO = new RoleDAO();
+        Role r = rDAO.getRoleByID(s.getRoleID());
+        request.setAttribute("listPermission", r.getPermission());
         try {
             int professionalID = Integer.parseInt(request.getParameter("professionalID"));
             String selectedDateStr = request.getParameter("selectedDate");
