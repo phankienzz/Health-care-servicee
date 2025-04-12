@@ -5,6 +5,7 @@
 
 package StaffController;
 
+import dao.ProfessionalDAO;
 import util.ValidFunction;
 import dao.RoleDAO;
 import dao.StaffDAO;
@@ -96,7 +97,12 @@ public class addStaff extends HttpServlet {
             request.setAttribute("error", "Please check your email " + email + " " + rand);
             request.getRequestDispatcher("add-staff.jsp").forward(request, response);
         } else {
-            staffDAO.createStaff(fullName, email, valid.hashPassword(rand), phone, hireDate, Integer.parseInt(roleID), status);
+            Staff sta = staffDAO.createStaff(fullName, email, valid.hashPassword(rand), phone, hireDate, Integer.parseInt(roleID), status);
+            int r = Integer.parseInt(roleID);
+            if(r == 4 || r == 5 ){
+                ProfessionalDAO proDAO = new ProfessionalDAO();
+                proDAO.addProfessional(sta.getStaffID());
+            }
             request.setAttribute("mess", "Add staff succesfully");
             request.removeAttribute("firstName");
             request.removeAttribute("lastName");

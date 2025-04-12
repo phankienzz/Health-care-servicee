@@ -235,10 +235,10 @@ public class ServiceDAO extends DBContext {
             case "price_desc":
                 sql = "SELECT * FROM ServicePackage WHERE status = 'on' ORDER BY price DESC";
                 break;
-            case "vip":
+            case "VIP":
                 sql = "SELECT * FROM ServicePackage WHERE status = 'on' AND type = 'VIP'";
                 break;
-            case "basic":
+            case "Basic":
                 sql = "SELECT * FROM ServicePackage WHERE status = 'on' AND type = 'Basic'";
                 break;
             case "duration_asc":
@@ -277,10 +277,10 @@ public class ServiceDAO extends DBContext {
             case "price_desc":
                 sql = "SELECT * FROM ServicePackage ORDER BY price DESC";
                 break;
-            case "vip":
+            case "VIP":
                 sql = "SELECT * FROM ServicePackage WHERE type = 'VIP'";
                 break;
-            case "basic":
+            case "Basic":
                 sql = "SELECT * FROM ServicePackage WHERE type = 'Basic'";
                 break;
             case "duration_asc":

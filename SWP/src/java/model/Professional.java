@@ -20,10 +20,10 @@ public class Professional extends Staff {
     }
 
     // Constructor có tham số
-    public Professional(int staffID, String fullName, String email, String password, Date dateOfBirth, String gender, String address, String phone, Date hireDate, String status, byte[] profilePicture, String specialization, String officeHours, String qualification, String biography, Date createdAt, int roleID) {
+    public Professional(int staffID, String fullName, String email, String password, String dateOfBirth, String gender, String address, String phone, Date hireDate, String status, byte[] profilePicture, String specialization, String officeHours, String qualification, String biography, Date createdAt, int roleID) {
         // Chuyển Date thành String khi gọi super() cho dateOfBirth và hireDate
         //int staffID, String fullName, String email, String password, String phone, String gender, String dateOfBirth, String address, String hireDate, int roleID, String status, String profilePicture
-        super(staffID, fullName, email, password, phone, gender, dateOfBirth.toString(), address, hireDate.toString(), roleID, status,profilePicture);  // convert to String
+        super(staffID, fullName, email, password, phone, gender, dateOfBirth, address, hireDate.toString(), roleID, status,profilePicture);  // convert to String
         this.specialization = specialization;
         this.officeHours = officeHours;
         this.qualification = qualification;

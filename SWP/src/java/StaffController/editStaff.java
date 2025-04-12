@@ -5,6 +5,7 @@
 package StaffController;
 
 
+import dao.ProfessionalDAO;
 import util.ValidFunction;
 import dao.RoleDAO;
 import dao.StaffDAO;
@@ -46,9 +47,10 @@ public class editStaff extends HttpServlet {
         String firstName = "";
         String lastName = split[split.length - 1];
         for (String str : split) {
-            if (i != str.length() - 1) {
+            if (i != split.length - 1) {
                 firstName += " " + str;
             }
+            i++;
         }
         request.setAttribute("staffID", staffID);
         request.setAttribute("firstName", firstName.trim());
@@ -58,7 +60,6 @@ public class editStaff extends HttpServlet {
         request.setAttribute("roleID", s.getRoleID());
         request.setAttribute("status", s.getStatus());
         request.setAttribute("hireDate", valid.formatDate(s.getHireDate()));
-
         RoleDAO roleDAO = new RoleDAO();
         List<Role> listRole = roleDAO.getAllRole();
         request.setAttribute("listRole", listRole);
@@ -83,7 +84,6 @@ public class editStaff extends HttpServlet {
         String phone = request.getParameter("phone");
         String roleID = request.getParameter("roleID");
         String hireDate = request.getParameter("hireDate");
-
         String status = request.getParameter("status");
         request.setAttribute("firstName", firstName);
         request.setAttribute("lastName", lastName);
@@ -105,7 +105,24 @@ public class editStaff extends HttpServlet {
             request.getRequestDispatcher("edit-staff.jsp").forward(request, response);
             return;
         }
+        ProfessionalDAO proDAO = new ProfessionalDAO();
+        int r = Integer.parseInt(roleID);
         String fullName = valid.normalizeName(firstName) + " " + valid.normalizeName(lastName);
+        if(s.getRoleID() == 4 || s.getRoleID() == 5){
+            if(r != 4 && r != 5){
+                if(proDAO.isProfessionalExists(s.getStaffID())){
+                    proDAO.changeStatusInactive(s.getStaffID());
+                }
+            }
+        }else{
+            if(r == 4 || r == 5){
+                if(proDAO.isProfessionalExists(s.getStaffID())){
+                    proDAO.changeStatusActive(s.getStaffID());
+                }else{
+                    proDAO.addProfessional(s.getStaffID());
+                }
+            }
+        }
         staffDAO.updateStaff(staffID, fullName, email, phone, hireDate, Integer.parseInt(roleID), status);
         request.setAttribute("mess", "Update staff succesfully");
         request.getRequestDispatcher("edit-staff.jsp").forward(request, response);

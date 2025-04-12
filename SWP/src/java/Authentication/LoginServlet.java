@@ -40,6 +40,12 @@ public class LoginServlet extends HttpServlet {
         String rememberMe = request.getParameter("rememberMe");
         ValidFunction valid = new ValidFunction();
         HttpSession session = request.getSession();
+        if(session.getAttribute("staffAccount") != null){
+            session.removeAttribute("staffAccount");
+        }
+        if(session.getAttribute("customerAccount") != null){
+            session.removeAttribute("customerAccount");
+        }
         if ("customer".equals(userType)) {
             CustomerDAO dao = new CustomerDAO();
             Customer customerAccount = dao.customerLogin(user);

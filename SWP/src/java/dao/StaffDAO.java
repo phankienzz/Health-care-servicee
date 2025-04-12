@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Staff;
 import java.sql.Blob;
+import java.sql.Statement;
 
 /**
  *
@@ -400,10 +401,10 @@ public class StaffDAO extends DBContext {
         return listStaff; // Trả về danh sách khách hàng
     }
 
-    public void createStaff(String fullName, String email, String password, String phone, String hireDate, int roleID, String status) {
+    public Staff createStaff(String fullName, String email, String password, String phone, String hireDate, int roleID, String status) {
         String sql = "INSERT [dbo].[Staff] ( [fullName], [email], [password], [phone], [hireDate], [roleID], [status], [profilePicture]) VALUES ( ?, ?, ?, ?, CONVERT(DATETIME, ?, 103), ?, ?, NULL)";
         try {
-            PreparedStatement st = connection.prepareStatement(sql);
+            PreparedStatement st = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
             st.setString(1, fullName);
             st.setString(2, email);
             st.setString(3, password);
@@ -412,9 +413,19 @@ public class StaffDAO extends DBContext {
             st.setInt(6, roleID);
             st.setString(7, status);
 
-            st.executeUpdate();
+            int rowsAffected = st.executeUpdate();
+
+        if (rowsAffected > 0) {
+            ResultSet rs = st.getGeneratedKeys();
+            if (rs.next()) {
+                int staffID = rs.getInt(1);
+                Staff staff = new Staff(staffID, fullName, email, password, phone, hireDate, roleID, status);
+                return staff;
+            }
+        }
         } catch (SQLException e) {
         }
+        return null;
     }
 
     public boolean checkOldPassword(int staffID, String oldPassword) {
@@ -451,6 +462,7 @@ public class StaffDAO extends DBContext {
 
     public static void main(String[] args) {
         StaffDAO dao = new StaffDAO();
-        System.out.println(dao.getStaffByID(2).getPassword());
+        for(Staff s : dao.getAllStaff())
+        System.out.println(s.getDateOfBirth());
     }
 }

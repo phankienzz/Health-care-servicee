@@ -1,6 +1,7 @@
 package dao;
 
 import context.DBContext;
+import static context.DBContext.connection;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.text.ParseException;
@@ -10,8 +11,9 @@ import java.util.List;
 import model.Doctor;
 import model.Professional;
 import model.Staff;
+import util.ValidFunction;
 
-public class ProfessionalDAO {
+public class ProfessionalDAO extends DBContext {
 
     private Connection conn;
     DBContext db = new DBContext();
@@ -52,45 +54,15 @@ public class ProfessionalDAO {
         return list;
     }
 
-    // CREATE Professional
-    public boolean addProfessional(Professional professional) {
-        String sql = "INSERT INTO Staff (fullName, email, password, phone, gender, dateOfBirth, address, hireDate, roleID, status, profilePicture)\n"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
-                + "INSERT INTO Professional (specialization, officeHours, qualification, biography, profilePicture, status, createdAt, staffID)\n"
-                + "VALUES (?, ?, ?, ?, ?, ?, GETDATE(), SCOPE_IDENTITY());";
+    public void addProfessional(int staffID) {
+        String sql = "INSERT [dbo].[Professional] ( [status], [staffID]) VALUES (N'Active',?)";
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
 
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            // Lấy roleID từ roleName
-            int roleID = getRoleIDByName(professional.getSpecialization());
-
-            if (roleID == -1) {
-                System.out.println("Không tìm thấy Role ID cho " + professional.getSpecialization());
-                return false;
-            }
-
-            stmt.setString(1, professional.getFullName());
-            stmt.setString(2, professional.getEmail());
-            stmt.setString(3, professional.getPassword());
-            stmt.setString(4, professional.getPhone());
-            stmt.setString(5, professional.getGender());
-            stmt.setDate(6, convertStringToSqlDate(professional.getDateOfBirth()));
-            stmt.setString(7, professional.getAddress());
-            stmt.setDate(8, convertStringToSqlDate(professional.getHireDate()));
-            stmt.setInt(9, roleID); // Gán roleID từ bảng Role
-            stmt.setString(10, professional.getStatus());
-            stmt.setBytes(11, professional.getProfilePicture());
-            stmt.setString(12, professional.getSpecialization());
-            stmt.setString(13, professional.getOfficeHours());
-            stmt.setString(14, professional.getQualification());
-            stmt.setString(15, professional.getBiography());
-            stmt.setBytes(16, professional.getProfilePicture());
-            stmt.setString(17, professional.getStatus());
-
-            return stmt.executeUpdate() > 0;
+            st.setInt(1, staffID);
+            st.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return false;
     }
 
     public int getRoleIDByName(String roleName) {
@@ -170,7 +142,7 @@ public class ProfessionalDAO {
                 + "    p.status AS professionalStatus,\n"
                 + "    p.createdAt\n"
                 + "FROM Staff s\n"
-                + "JOIN Professional p ON s.staffID = p.staffID;";
+                + "JOIN Professional p ON s.staffID = p.staffID where s.status = N'Active' and p.status = N'Active';";
         try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 list.add(extractProfessional(rs));
@@ -179,6 +151,42 @@ public class ProfessionalDAO {
             e.printStackTrace();
         }
         return list;
+    }
+
+    
+
+    public boolean isProfessionalExists(int staffID) {
+        String sql = "SELECT 1 FROM Professional WHERE staffID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, staffID);
+            ResultSet rs = st.executeQuery();
+            return rs.next(); // Nếu có kết quả, nghĩa là đã tồn tại
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public void changeStatusInactive(int staffID) {
+        String sql = "UPDATE Professional  SET status = N'Inactive' WHERE staffID = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, staffID);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error changing password: " + e.getMessage());
+        }
+    }
+    public void changeStatusActive(int staffID) {
+        String sql = "UPDATE Professional\n"
+                + "SET status = N'Active'"
+                + "WHERE staffID = ?;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1,staffID);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<Professional> get4Professionals() {
@@ -233,7 +241,6 @@ public class ProfessionalDAO {
                 + "    phone = ?,\n"
                 + "    address = ?,\n"
                 + "    status = ?,\n"
-                + "    profilePicture = ?\n"
                 + "WHERE staffID = ?;";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -242,14 +249,13 @@ public class ProfessionalDAO {
             stmt.setString(10, professional.getAddress());
             stmt.setString(9, professional.getPhone());
             stmt.setString(11, professional.getStatus());
-            stmt.setInt(13, professional.getStaffID());
+            stmt.setInt(12, professional.getStaffID());
             stmt.setString(1, professional.getSpecialization());
             stmt.setString(2, professional.getOfficeHours());
             stmt.setString(3, professional.getQualification());
             stmt.setString(4, professional.getBiography());
             stmt.setInt(7, professional.getStaffID());
             stmt.setBytes(6, professional.getProfilePicture());
-            stmt.setBytes(12, professional.getProfilePicture());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -279,7 +285,7 @@ public class ProfessionalDAO {
                 rs.getString("fullName"),
                 rs.getString("email"),
                 rs.getString("password"),
-                rs.getDate("dateOfBirth"),
+                rs.getString("dateOfBirth"),
                 rs.getString("gender"),
                 rs.getString("address"),
                 rs.getString("phone"),
@@ -367,9 +373,12 @@ public class ProfessionalDAO {
     public static void main(String[] args) {
         // Khởi tạo DAO
         ProfessionalDAO dao = new ProfessionalDAO();
-        List<Professional> list = dao.get4Professionals();
-        for (Professional professional : list) {
-            System.out.println(professional);
-        }
+        Professional p =  dao.getProfessionalbyID(1);
+        System.out.println(dao.updateProfessional(p));
+//       List<Professional> list = dao.getAllProfessionals();
+//       for(Professional pro : list){
+//           System.out.println(pro);
+//       }
+        
     }
 }
