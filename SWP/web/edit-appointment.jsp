@@ -133,7 +133,6 @@
                                             <option value="Pending" ${appointment.status == 'Pending' ? 'selected' : ''}>Pending</option>
                                             <option value="In process" ${appointment.status == 'In process' ? 'selected' : ''}>In process</option>
                                             <option value="Confirmed" ${appointment.status == 'Confirmed' ? 'selected' : ''}>Confirmed</option>
-                                            <option value="Completed" ${appointment.status == 'Completed' ? 'selected' : ''}>Completed</option>
                                             <option value="Rejected" ${appointment.status == 'Rejected' ? 'selected' : ''}>Rejected</option>
                                         </select>
                                     </div>

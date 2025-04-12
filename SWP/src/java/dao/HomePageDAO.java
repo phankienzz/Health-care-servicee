@@ -89,7 +89,7 @@ public class HomePageDAO extends DBContext {
                 rs.getString("fullName"),
                 rs.getString("email"),
                 rs.getString("password"),
-                rs.getDate("dateOfBirth"),
+                rs.getString("dateOfBirth"),
                 rs.getString("gender"),
                 rs.getString("address"),
                 rs.getString("phone"),

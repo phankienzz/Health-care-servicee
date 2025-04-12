@@ -25,6 +25,17 @@ public class Staff {
     public Staff() {
     }
 
+    public Staff(int staffID, String fullName, String email, String password, String phone, String hireDate, int roleID, String status) {
+        this.staffID = staffID;
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.hireDate = hireDate;
+        this.roleID = roleID;
+        this.status = status;
+    }
+
     public Staff(int staffID, String fullName, String email, String password, String phone, String gender, String dateOfBirth, String address, String hireDate, int roleID, String status, byte[] profilePicture) {
         this.staffID = staffID;
         this.fullName = fullName;

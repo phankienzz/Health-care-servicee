@@ -39,8 +39,8 @@
                                 <div class="btn-group btn-group-sm">
                                     <form action="xuatPDF" method="get">
                                         <input name="invoiceID" value="${invoice.invoiceID}" hidden=""/>
-                                    </form>
-                                <button class="btn btn-white"><i class="fa fa-print fa-lg"></i> PDF</button>
+                                    <button class="btn btn-white"><i class="fa fa-print fa-lg"></i> PDF</button>
+                                </form>
                             </div>
                         </div>
                     </div>

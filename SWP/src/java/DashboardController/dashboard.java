@@ -72,7 +72,6 @@ public class dashboard extends HttpServlet {
         request.setAttribute("listDoctor", listDoc);
         request.setAttribute("listAppointment", listMe);
         request.setAttribute("pending", countPending);
-//        request.setAttribute("visitCount", visitCount);
         request.setAttribute("docCount", listDoc != null ? listDoc.size() : 0);
 
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);

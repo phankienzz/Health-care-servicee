@@ -72,7 +72,7 @@
                             <div class="divider my-4"></div>
                             <p>${professional.getBiography()}</p>
                             <p>${professional.getQualification()}</p>
-                            <a href="appoinment.html" class="btn btn-main-2 btn-round-full mt-3">
+                            <a href="appointment" class="btn btn-main-2 btn-round-full mt-3">
                                 Make an Appointment <i class="icofont-simple-right ml-2"></i>
                             </a>
                         </div>

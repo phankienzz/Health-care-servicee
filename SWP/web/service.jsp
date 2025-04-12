@@ -78,8 +78,8 @@
                                     <option value="reload">Chọn tiêu chí</option>
                                     <option value="price_asc" ${param.sortBy == 'price_asc' ? 'selected' : ''}>Giá tăng dần</option>
                                 <option value="price_desc" ${param.sortBy == 'price_desc' ? 'selected' : ''}>Giá giảm dần</option>
-                                <option value="vip" ${param.sortBy == 'vip' ? 'selected' : ''}>Loại VIP</option>
-                                <option value="basic" ${param.sortBy == 'basic' ? 'selected' : ''}>Loại cơ bản</option>
+                                <option value="VIP" ${param.sortBy == 'VIP' ? 'selected' : ''}>Loại VIP</option>
+                                <option value="Basic" ${param.sortBy == 'Basic' ? 'selected' : ''}>Loại cơ bản</option>
                                 <option value="duration_asc" ${param.sortBy == 'duration_asc' ? 'selected' : ''}>Thời gian tăng dần</option>
                                 <option value="duration_desc" ${param.sortBy == 'duration_desc' ? 'selected' : ''}>Thời gian giảm dần</option>
                             </select>
@@ -111,7 +111,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="service-block mb-5">
                                 <div class="image-container">
-                                    <img src="${empty service.packageID ? 'images/default-image.jpg' : 'getimage?packageID='}${service.packageID}" alt="Service Image">
+                                    <img src="${empty service.packageID  ? 'images/default-image.jpg' : 'getimage?packageID='}${service.packageID}" alt="Service Image">
                                 </div>
                                 <div class="content">
                                     <h4 class="mt-4 mb-2 title-color">
