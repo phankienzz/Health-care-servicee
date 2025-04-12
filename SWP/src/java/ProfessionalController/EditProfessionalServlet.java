@@ -67,6 +67,7 @@ public class EditProfessionalServlet extends HttpServlet {
         if (pro.getDOB() != null) {
             pro.setDateOfBirth(valid.formatDateNews(pro.getDOB()));
         }
+
         session.setAttribute("pro", pro);
         request.getRequestDispatcher("edit-doctor.jsp").forward(request, response);
     }

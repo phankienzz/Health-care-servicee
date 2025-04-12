@@ -241,6 +241,7 @@ public class ProfessionalDAO extends DBContext {
                 + "    phone = ?,\n"
                 + "    address = ?,\n"
                 + "    status = ?,\n"
+                + "    profilePicture = ?\n"
                 + "WHERE staffID = ?;";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -249,13 +250,14 @@ public class ProfessionalDAO extends DBContext {
             stmt.setString(10, professional.getAddress());
             stmt.setString(9, professional.getPhone());
             stmt.setString(11, professional.getStatus());
-            stmt.setInt(12, professional.getStaffID());
+            stmt.setInt(13, professional.getStaffID());
             stmt.setString(1, professional.getSpecialization());
             stmt.setString(2, professional.getOfficeHours());
             stmt.setString(3, professional.getQualification());
             stmt.setString(4, professional.getBiography());
             stmt.setInt(7, professional.getStaffID());
             stmt.setBytes(6, professional.getProfilePicture());
+            stmt.setBytes(12, professional.getProfilePicture());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();

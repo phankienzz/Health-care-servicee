@@ -128,7 +128,7 @@
                                 <div class="profile-widget">
                                     <div class="doctor-img">
                                         <a class="avatar" href="DetailDoctorServlet?id=${professional.getStaffID()}">
-                                           
+
                                             <img src="assets/img/${professional.getPicture()}" alt="" class="img-fluid"/>
                                         </a>
                                     </div>

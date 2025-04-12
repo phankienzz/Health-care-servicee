@@ -64,6 +64,7 @@
                                 </a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="profile.jsp">My Profile</a>
+                                    <a class="dropdown-item" href="roleStaff">Staff Site</a>
                                     <a class="dropdown-item" href="logout">Logout</a>
                                 </div>
                             </li>
